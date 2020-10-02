@@ -1,0 +1,7 @@
+{
+  "name": "Queseritos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
