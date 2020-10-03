@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController } from "@ionic/angular";
 import { FBservicesService } from "../../fbservices.service";
+import { AlertController, ToastController } from "@ionic/angular";
+
+
 
 @Component({
   selector: 'app-registrar-usuario',
@@ -12,16 +14,14 @@ export class RegistrarUsuarioPage {
   password;
   password2;
   user;
-
   constructor(
-
     public alertController: AlertController,
     private FB: FBservicesService,
     public toastController: ToastController
 
-  ) { }
+  ) {}
 
-  crearUsuario() {
+  crear(){
     this.FB.crearUsuario(this.email, this.password, this.user, this.password2);
   }
 
