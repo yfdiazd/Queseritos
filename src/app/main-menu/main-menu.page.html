@@ -1,9 +1,22 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>mainMenu</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
-
-</ion-content>
+<ion-router-outlet main></ion-router-outlet>
+<ion-menu-button (click)="openFirst()"></ion-menu-button>
+<ion-menu side="start" menuId="first">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Configurar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item (click)="irPageTipoQueso()">Tipos de Queso</ion-item>
+      <ion-item (click)="irPageEstadoQueso()">Estados del Queso</ion-item>
+      <ion-item (click)="irPageRegistrarProveedor()">Proveedores</ion-item>
+      <ion-item (click)="irPageTipoAnticipo()">Tipos de Anticipo</ion-item>
+      <ion-item (click)="irPageTipoTrueque()">Tipos de Trueque</ion-item>  
+      <ion-item (click)="irPageRegistrarCliente()">Clientes</ion-item>
+      <ion-item (click)="irPageCrearCiudad()">Ciudades</ion-item>
+      <ion-item (click)="irPageRegistrarConductor()">Conductores</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
