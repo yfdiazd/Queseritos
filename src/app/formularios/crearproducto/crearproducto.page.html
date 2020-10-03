@@ -6,30 +6,18 @@
 </ion-header>
 
 <ion-content>
-<<<<<<< HEAD
   <ion-text>
     <p>Completa el formulario para crear los tipos de Queso</p>
   </ion-text>
-  <ion-label>Código:</ion-label>
-  <ion-input class="inputs-tipoqueso" type="codigo" size= "15" placeholder="Escribe el código del producto" required="true"
-  [(ngModel)]="codigoProducto"></ion-input>
-  <ion-label>Descripción:</ion-label>
-  <ion-input class="inputs-descripcion" type="descripcion" placeholder="Escribe el nombre del producto" required="true"
-  [(ngModel)]="descripcionProducto"></ion-input>
-=======
-  <div>
-    <ion-text>
-      <p>Completa el formulario para crear los tipos de Queso</p>
-    </ion-text>
-    <input type="text" placeholder="Código" />
-    <input type="text" placeholder="Nombre del tipo de queso" />
->>>>>>> f88288df1a6da6dba365e2f599aedd49dd0488cb
 
+  <div>
+    <input type="text" placeholder="Código del producto" />
+    <input type="text" placeholder="Nombre del producto" />
   </div>
   
   <div>
     <ion-button (click)="agregarProducto()" expand="full">
-      <ion-icon name="cloudy"></ion-icon>
+      <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
   </div>
