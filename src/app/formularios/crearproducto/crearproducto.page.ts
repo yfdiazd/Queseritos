@@ -17,7 +17,7 @@ private FB: FBservicesService
   ) {}
 
 agregarProducto(){
-  this.FB.crearProducto(this.codigoProducto, this.descripcionProducto);
+  this.FB.crearProdcuto(this.codigoProducto, this.descripcionProducto);
 }
   
 

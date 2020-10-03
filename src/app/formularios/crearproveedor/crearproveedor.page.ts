@@ -27,8 +27,7 @@ export class CrearproveedorPage {
    
 
   crearProveedor() {
-  
-    this.FB.crearProveedor(this.tipoIdentificacionProveedor, this.numIndetificacionProveedor, this.nombreProveedor, this.apellidoProveedor, this.telefonoProveedor, this.direccionProveedor, this.correoProveedor);
-  }
+      this.FB.crearProveedor("cd", this.numIndetificacionProveedor, this.nombreProveedor, this.apellidoProveedor, this.telefonoProveedor, this.direccionProveedor, this.correoProveedor);
+  };
 
 }
