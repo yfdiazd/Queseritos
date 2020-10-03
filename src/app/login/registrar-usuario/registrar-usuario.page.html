@@ -9,6 +9,9 @@
     <h1>Registrate a life$easier.</h1>
     <p>Completa el formulario para crear tu unica cuenta</p>
   </ion-text>
+  <ion-label>Correo electronico:</ion-label>
+  <ion-input class="inputs-register" type="email" placeholder="Escribe tu correo electronico" required="true"
+  [(ngModel)]="email"></ion-input>
   <ion-label>Usuario:</ion-label>
   <ion-input class="inputs-register" type="text" placeholder="Escribe tu usuario" aria-required="true"
   [(ngModel)]="user"></ion-input>
@@ -18,9 +21,6 @@
   <ion-label>Confirmar contraseña:</ion-label>
   <ion-input class="inputs-register" type="password" placeholder="Repite tu contraseña" required="true"
   [(ngModel)]="password2"></ion-input>
-  <ion-label>Correo electronico:</ion-label>
-  <ion-input class="inputs-register" type="email" placeholder="Escribe tu correo electronico" required="true"
-  [(ngModel)]="email"></ion-input>
 
   <ion-text>
     <p>
