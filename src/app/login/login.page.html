@@ -18,5 +18,8 @@
       <ion-icon color="dark" slot="start" name="person-add"></ion-icon>Crear cuenta
     </ion-button>
   </div>
+  <mat-list>
+    <mat-list-item *ngFor="let item of items">{{ item }}</mat-list-item>
+  </mat-list>
 
 </ion-content>
