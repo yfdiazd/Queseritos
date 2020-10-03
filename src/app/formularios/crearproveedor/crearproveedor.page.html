@@ -10,8 +10,18 @@
   <ion-text>
     <p>Completa el formulario para registrar un nuevo proveedor</p>
   </ion-text>
-  <ion-label>Tipo de Identificación:</ion-label>
-  <ion-input class="inputs-register" type="email" placeholder="Escribe tu correo electronico" required="true"
-  [(ngModel)]="email"></ion-input>
-
+  <select name="tipoidentificacion">Tipo de Identificación</select>
+  <p><input type="text" size="25" value="Número de Identificación" /></p>
+  <p><input type="text" size="25" value="Nombres" /></p>
+  <p><input type="text" size="25" value="Apellidos" /></p>
+  <p><input type="text" size="25" value="Celular" /></p>
+  <p><input type="text" size="25" value="Dirección" /></p>
+  <p><input type="text" size="25" value="Correo Electrónico" /></p>
+ 
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
 </ion-content>
