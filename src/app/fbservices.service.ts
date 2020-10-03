@@ -10,9 +10,11 @@ import { ToastController, AlertController } from "@ionic/angular";
   providedIn: "root"
 })
 export class FBservicesService {
+  //variable que guarda u obtiene el UID del usuario
   usuarioUid: string;
-  totalGastoP;
-  numeroIngresos;
+  //Variables para la creacion de productos
+  codigoProducto: String;
+  descripcionProducto: String;
 
   //Variables para ingresos
   public listI: any[] = [];
@@ -37,6 +39,7 @@ export class FBservicesService {
   fecha: Date;
   milisegundos = 5000;
 
+  //Configuracion de Firebase
   config = {
     apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
     authDomain: "queseritos.firebaseapp.com",
@@ -56,6 +59,8 @@ export class FBservicesService {
     this.verificarsesion();
   }
   // todos los mentodos que tienen que ver solo con el usuario
+
+  //Metodo que obtiene el nombre de usuario
   mostrarNombre() {
     firebase
       .database()
@@ -65,6 +70,7 @@ export class FBservicesService {
         console.log(this.usuario);
       });
   }
+  //Metodo que permite iniciar sesion
   iniciarSesion(email, password) {
     firebase
       .auth()
@@ -80,9 +86,11 @@ export class FBservicesService {
         console.log(error);
       });
   }
+  //Metodo que permite cerrar la sesion del usuario
   cerrarSesion() {
     firebase.auth().signOut();
   }
+  //Metodo que permite crear el usuario de la aplicacion
   crearUsuario(email, password, user, password2) {
     if (password == password2) {
       firebase
@@ -107,8 +115,10 @@ export class FBservicesService {
     } else {
       this.toastContras();
     }
-    this.router.navigate(["login"]);
+    this.router.navigate(["main-menu"]);
   }
+
+//  Metodo que permite recuperar la contraseña
   recuperarClave(correo) {
     var auth = firebase.auth();
     auth
@@ -121,15 +131,17 @@ export class FBservicesService {
         console.log("correo no enviado validar correo", error);
       });
   }
+
+  //Metodo que verifica la sesion del usuario
   verificarsesion() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.router.navigate(["home"]);
+        //this.router.navigate(["main-menu"]);
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.mostrarNombre();
         console.log("usuario:", this.usuarioUid);
       } else {
-        this.router.navigate(["login"]);
+        //this.router.navigate(["login"]);
       }
     });
   }
@@ -175,6 +187,14 @@ export class FBservicesService {
     });
     toast.present();
   }
+  async toastProductoCrado(){
+    const toast = await this.toastController.create({
+      message: "Se ha creado el producto correctamente",
+      color: "danger",
+      duration: 7000
+    });
+    toast.present();
+  }
   // Alertas
   async alertRecuperacion() {
     const alert = await this.alertController.create({
@@ -186,5 +206,18 @@ export class FBservicesService {
 
     await alert.present();
   }
+
+  crearProducto(codigoProducto, descripcionProducto){
+    this.usuarioUid = firebase.auth().currentUser.uid;
+    
+    firebase.database()
+    .ref("usuarios/" + this.usuarioUid + "/productos/" + descripcionProducto)
+    .set({
+     codigo: codigoProducto,
+     descripcion: descripcionProducto
+    });
+    this.toastProductoCrado();
+  }
+
 
 }
