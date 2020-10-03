@@ -13,8 +13,7 @@ export class FBservicesService {
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para la creacion de productos
-    codigoProducto: String;
-    descripcionProducto: String;
+    
     //Variables para la creacion de proveedores
     tipoIdentificacionProveedor: String;
     numIndetificacionProveedor: String;
