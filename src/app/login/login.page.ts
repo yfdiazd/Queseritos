@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from "@ionic/angular";
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,11 +10,12 @@ import { Router } from '@angular/router';
 export class LoginPage implements OnInit {
 
   constructor(
+    public navCtrl: NavController,
     private router: Router
   ) { }
 
   irPaginaRegistro() {
-    this.router.navigate(["registrar-usuario"]);
+    this.router.navigate(["register"]);
   }
 
   ngOnInit() {
