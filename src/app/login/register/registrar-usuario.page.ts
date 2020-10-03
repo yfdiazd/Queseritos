@@ -1,15 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController, ToastController } from "@ionic/angular";
+import { FBservicesService } from "../../fbservices.service";
 
 @Component({
   selector: 'app-registrar-usuario',
   templateUrl: './registrar-usuario.page.html',
   styleUrls: ['./registrar-usuario.page.scss'],
 })
-export class RegistrarUsuarioPage implements OnInit {
+export class RegistrarUsuarioPage {
+  email;
+  password;
+  password2;
+  user;
 
-  constructor() { }
+  constructor(
 
-  ngOnInit() {
+    public alertController: AlertController,
+    private FB: FBservicesService,
+    public toastController: ToastController
+
+  ) { }
+
+  crearUsuario() {
+    this.FB.crearUsuario(this.email, this.password, this.user, this.password2);
   }
 
 }
