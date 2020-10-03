@@ -6,8 +6,10 @@
 </ion-header>
 
 <ion-content>
-  <p><input type="text" size="25" value="Código" /></p>
-  <p><input type="text" size="25" value="Descripción del tipo de Trueque" /></p>
+  <div>
+  <input type="text" placeholder="Código" />
+  <input type="text" placeholder="Descripción del tipo de Trueque" />
+</div>
   <div>
     <ion-button (click)="guardar()" expand="full">
     <ion-icon name="save-outline"></ion-icon>

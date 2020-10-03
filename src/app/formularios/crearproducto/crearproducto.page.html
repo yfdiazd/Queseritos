@@ -6,16 +6,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-text>
-    <p>Completa el formulario para crear los tipos de Queso</p>
-  </ion-text>
-  <ion-label>Código:</ion-label>
-  <ion-input class="inputs-tipoqueso" type="codigo" size= "15" placeholder="Escribe el código del producto" required="true"
-  [(ngModel)]="tipoqueso"></ion-input>
-  <ion-label>Descripción:</ion-label>
-  <ion-input class="inputs-descripcion" type="descripcion" placeholder="Escribe el nombre del producto" required="true"
-  [(ngModel)]="descripcion"></ion-input>
+  <div>
+    <ion-text>
+      <p>Completa el formulario para crear los tipos de Queso</p>
+    </ion-text>
+    <input type="text" placeholder="Código" />
+    <input type="text" placeholder="Nombre del tipo de queso" />
 
+  </div>
+  
   <div>
     <ion-button (click)="Guardar()" expand="full">
       <ion-icon name="cloudy"></ion-icon>

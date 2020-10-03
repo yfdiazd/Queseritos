@@ -6,8 +6,10 @@
 </ion-header>
 
 <ion-content>
-  <p><input type="text" size="25" value="Código" /></p>
-  <p><input type="text" size="25" value="Descripción" /></p>
+  <div>
+  <input type="text" placeholder="Código" />
+  <input type="text" placeholder="Descripción del estado" />
+</div>
   <div>
     <ion-button (click)="guardar()" expand="full">
     <ion-icon name="save-outline"></ion-icon>
