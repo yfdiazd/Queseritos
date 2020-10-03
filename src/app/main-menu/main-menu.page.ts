@@ -29,7 +29,7 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageTipoQueso(){
-    this.router.navigate(["login"]);
+    this.router.navigate(["crearproducto"]);
   }
 
   irPageEstadoQueso(){
@@ -38,10 +38,6 @@ export class MainMenuPage implements OnInit {
 
   irPageRegistrarProveedor(){
     this.router.navigate(["login"]);
-  }
-
-  irPageRegistrarProveedor(){
-  this.router.navigate(["login"]);
   }
 
   irPageTipoAnticipo(){

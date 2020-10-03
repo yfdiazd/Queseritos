@@ -1,9 +1,17 @@
+<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>crearproveedor</ion-title>
+    <ion-title>Crear Proveedor</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-text>
+    <p>Completa el formulario para registrar un nuevo proveedor</p>
+  </ion-text>
+  <ion-label>Tipo de Identificación:</ion-label>
+  <ion-input class="inputs-register" type="email" placeholder="Escribe tu correo electronico" required="true"
+  [(ngModel)]="email"></ion-input>
 
 </ion-content>
