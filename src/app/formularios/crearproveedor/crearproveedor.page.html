@@ -10,14 +10,17 @@
   <ion-text>
     <p>Completa el formulario para registrar un nuevo proveedor</p>
   </ion-text>
-  <select name="tipoidentificacion">Tipo de Identificación</select>
-  <p><input type="text" size="25" value="Número de Identificación" /></p>
-  <p><input type="text" size="25" value="Nombres" /></p>
-  <p><input type="text" size="25" value="Apellidos" /></p>
-  <p><input type="text" size="25" value="Celular" /></p>
-  <p><input type="text" size="25" value="Dirección" /></p>
-  <p><input type="text" size="25" value="Correo Electrónico" /></p>
- 
+  <div>
+    <select value = "tipoidentificacion" name="tipoidentificacion">
+      <option>Cédula de Ciudadanía</option>
+     </select>
+  <input type="text" placeholder="Número de Identificación"/>
+  <input type="text" placeholder="Nombres"/>
+  <input type="text" placeholder="Apellidos"/>
+  <input type="text" placeholder="Celular"/>
+  <input type="text" placeholder="Dirección" />
+  <input type="text" placeholder="Correo Electrónico" />
+</div>
   <div>
     <ion-button (click)="crearProveedor()" expand="full">
       <ion-icon name="save-outline"></ion-icon>

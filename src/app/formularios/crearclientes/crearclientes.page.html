@@ -1,0 +1,38 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear Clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-text>
+    <p>Completa el formulario para registrar un nuevo cliente</p>
+  </ion-text>
+  <div>
+  <select value = "tipoidentificacion" name="tipoidentificacion">
+    <option>Cédula de Ciudadanía</option>
+   </select>
+  <input type="text" placeholder="Número de Identificación" />
+  <input type="text" placeholder="Nombres" />
+  <input type="text" placeholder="Apellidos" />
+  <input type="text" placeholder="Quesera" />
+  <select value = "ciudad" name="Ciudad">
+    <option>Bogotá</option>
+    <option>Cali</option>
+    <option>Medellín</option>
+    <option>Debe cargar la lista de ciudades creadas</option>
+   </select>
+  <input type="text" placeholder="Celular" />
+  <input type="text" placeholder="Dirección" />
+  <input type="text" placeholder="Correo Electrónico" />
+  </div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>
+

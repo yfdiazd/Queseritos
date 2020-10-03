@@ -259,7 +259,7 @@ export class FBservicesService {
                 telefono: telefonoProveedor,
                 direccion: direccionProveedor,
                 correo: correoProveedor,
-                fechaCreacion: this.fechaActuial()
+                fechaCreacion: this.fechaActual()
 
             });
         this.toastProveedorCrado();
@@ -267,7 +267,7 @@ export class FBservicesService {
 
     //Metodo que permite consultar la fecha actual:
 
-    fechaActuial() {
+    fechaActual() {
         this.today = new Date();
         this.dd = String(this.today.getDate()).padStart(2, '0');
         this.mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!

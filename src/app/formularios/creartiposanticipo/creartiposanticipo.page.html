@@ -1,0 +1,20 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Tipos de Anticipo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+  <input type="text" placeholder="Código" />
+  <input type="text" placeholder="Descripción del tipo de Anticipo" />
+</div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+    <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+
+</ion-content>
