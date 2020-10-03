@@ -1,0 +1,18 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Estados del Queso</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p><input type="text" size="25" value="Código" /></p>
+  <p><input type="text" size="25" value="Descripción" /></p>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+    <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+
+</ion-content>
