@@ -6,7 +6,15 @@ const routes: Routes = [
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
   { path: 'login',loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)},
   { path: 'main-menu', loadChildren: () => import('./main-menu/main-menu.module').then(m => m.MainMenuPageModule)},
-  { path: 'register', loadChildren:() => import('./login/register/registrar-usuario.module').then(m=> m.RegistrarUsuarioPageModule)}
+  { path: 'register', loadChildren:() => import('./login/register/registrar-usuario.module').then(m=> m.RegistrarUsuarioPageModule)},  {
+    path: 'crearproducto',
+    loadChildren: () => import('./formularios/crearproducto/crearproducto.module').then( m => m.CrearproductoPageModule)
+  },
+  {
+    path: 'crearproveedor',
+    loadChildren: () => import('./formularios/crearproveedor/crearproveedor.module').then( m => m.CrearproveedorPageModule)
+  }
+
   ];
 
 @NgModule({
