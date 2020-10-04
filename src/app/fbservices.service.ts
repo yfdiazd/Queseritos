@@ -116,7 +116,7 @@ export class FBservicesService {
 
                     firebase
                         .database()
-                        .ref("usuarios/" + this.usuarioUid + "/datosBasicos")
+                        .ref("usuario/" + this.usuarioUid + "/datosBasicos")
                         .set({
                             usuario: user,
                             email: email

@@ -21,7 +21,7 @@ export class RegistrarUsuarioPage {
 
   ) {}
 
-  crear(){
+  crearUsuario(){
     this.FB.crearUsuario(this.email, this.password, this.user, this.password2);
   }
 
