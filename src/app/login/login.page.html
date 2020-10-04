@@ -1,23 +1,32 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>Iniciar sesion
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <label for="">Usuario</label>
-  <input type="text" placeholder="Ingrese su usuario">
-  <label for="">Contraseña</label>
-  <input type="password" placeholder="Insrese su contraseña">
-  <button type="submit"></button>
-  <ion-button id="button-login" color="success" (click)="irPaginaHome()">
-    <ion-icon color="dark" slot="start" name="log-in"></ion-icon>Entrar
-  </ion-button>
-  <div class="div-button2-login">
-    <ion-button id="button2-login" color="primary" (click)="irPaginaRegistro()">
-      <ion-icon color="dark" slot="start" name="person-add"></ion-icon>Crear cuenta
+  <ion-img class="img-logo" src="assets/img/LOGO.png"></ion-img>
+  <div class="div-formulario">
+    <label>Usuario</label>
+    <input type="text" placeholder="Ingrese su usuario">
+    <label>Contraseña</label>
+    <input type="password" placeholder="Insrese su contraseña">
+    <ion-button id="button-login" color="success" (click)="irPaginaHome()">
+      <ion-icon color="dark" slot="start" name="log-in"></ion-icon>Entrar
     </ion-button>
   </div>
+    <div class="div-links">
+      <a id="registrar" color="primary" (click)="irPaginaRegistro()">
+        <ion-icon color="medium" slot="start" name="person-add"></ion-icon> Crear cuenta
+      </a>
+      <br>
+      <a id="recuperar" color="primary" (click)="irPaginaRegistro()">
+        <ion-icon color="medium" slot="start" name="key-outline"></ion-icon> Recuperar contraseña
+      </a>
+
+    </div>
+  
 
 </ion-content>
