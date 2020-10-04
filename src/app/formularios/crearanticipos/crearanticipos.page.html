@@ -30,8 +30,16 @@
   -->
 
     <input type="number" placeholder="Valor" />
-    <input class="file" type="file" id="myFile" name="filename">
-    
+    <div class="div-input">
+      <ion-item class="item-file">
+        <label for=""> subir archivo </label>
+        <input class="file-upload" onchange='cambiar()' type="file" />
+      </ion-item>
+    </div>
+
+
+
+
 
     <input type="submit">
 
