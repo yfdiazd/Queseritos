@@ -18,6 +18,9 @@ export class LoginPage implements OnInit {
   irPaginaRegistro() {
     this.router.navigate(["register"]);
   }
+  irRecuperar(){
+    this.router.navigate(["recuperar"]);
+  }
 
   ngOnInit() {
   }

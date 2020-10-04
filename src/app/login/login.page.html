@@ -1,5 +1,5 @@
 <ion-router-outlet main></ion-router-outlet>
-<ion-header>
+<ion-header >
   <ion-toolbar>
     <ion-title>Iniciar sesion
     </ion-title>
@@ -9,9 +9,7 @@
 <ion-content>
   <ion-img class="img-logo" src="assets/img/LOGO.png"></ion-img>
   <div class="div-formulario">
-    <label>Usuario</label>
     <input type="text" placeholder="Ingrese su usuario">
-    <label>Contraseña</label>
     <input type="password" placeholder="Insrese su contraseña">
     <ion-button id="button-login" color="success" (click)="irPaginaHome()">
       <ion-icon color="dark" slot="start" name="log-in"></ion-icon>Entrar
@@ -19,10 +17,10 @@
   </div>
     <div class="div-links">
       <a id="registrar" color="primary" (click)="irPaginaRegistro()">
-        <ion-icon color="medium" slot="start" name="person-add"></ion-icon> Crear cuenta
+        <ion-icon color="medium" slot="start" name="person-circle-outline"></ion-icon> Crear cuenta
       </a>
       <br>
-      <a id="recuperar" color="primary" (click)="irPaginaRegistro()">
+      <a id="recuperar" color="primary" (click)="irRecuperar()">
         <ion-icon color="medium" slot="start" name="key-outline"></ion-icon> Recuperar contraseña
       </a>
 
