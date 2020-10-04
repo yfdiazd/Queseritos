@@ -1,0 +1,41 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Trueques </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-text>
+    <p>Registrale trueque a: {{proveedor}}"</p>
+    <p> {{idproveedor}}</p>
+  </ion-text>
+  <div>
+    <form>
+      <form>
+        <div>
+          <label for="ttrueque">Fecha Trueque:</label>
+          <input type="date" id="ttrueque" name="ttrueque" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+          <span class="validity"></span>
+        </div>
+      </form>
+    </form>
+    <select value = "codigomodalidad" name="Concepto del trueque">
+    <option>Mercado</option>
+    <option>Debe listar los tipos de trueque configurados tabla modalidad pago</option>
+   </select>
+   <input type="text" placeholder="Valor" />
+   <option>Adjunta el soporte del trueque realizado</option>
+   <form action="/action_page.php">
+    <input type="file" id="myFile" name="filename">
+    <input type="submit">
+  </form>
+  </div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>

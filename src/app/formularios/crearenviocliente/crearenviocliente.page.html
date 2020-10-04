@@ -1,0 +1,54 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Envíos nacionales </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-text>
+    <p>Registrale un nuevo envío a: {{cliente}}"</p>
+    <p> {{idcliente}}</p>
+    <p> {{codigociudad}}</p>
+  </ion-text>
+  <div>
+    <form>
+      <form>
+        <div>
+          <label for="fenvio">Fecha Envío:</label>
+          <input type="date" id="fenvio" name="fenvio" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+          <span class="validity"></span>
+        </div>
+      </form>
+    </form>
+    <input type="text" placeholder="Cantidad de pesadas" />
+    <select value = "codigoproducto" name="Tipo de Queso">
+      <option>Queso Costeño</option>
+      <option>Debe listar los tipos de queso parametrizados</option>
+     </select>
+     <select value = "codigoestado" name="Estado">
+      <option>Borona</option>
+      <option>Debe listar los estados de producto  parametrizados</option>
+     </select>
+     <input type="text" placeholder="Peso" />
+     <input type="text" placeholder="Costo Kg pesada" />
+     <p>El conductor que entrega el pedido es: {{conductor}}"</p>
+     <input type="text" placeholder="Número Placa" />
+     <ion-text>
+       <p>El costo de la pesada es: {{costopesada}}"</p>
+     </ion-text>
+
+  <p>Adjunte el soporte de la factura</p>
+   <form action="/action_page.php">
+    <input type="file" id="myFile" name="filename">
+    <input type="submit">
+  </form>
+  </div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,37 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pesaje Compra </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-text>
+    <p>Registrale un nuevo pesaje a: {{proveedor}}"</p>
+    <p> {{idproveedor}}</p>
+    <p>Fecha de la compra: {{fechcompra}}</p>
+  </ion-text>
+  <div>
+  <input type="text" placeholder="Bulto No" />
+  <select value = "codigoproducto" name="Tipo de Queso">
+    <option>Queso Costeño</option>
+    <option>Debe listar los tipos de queso parametrizados</option>
+   </select>
+   <select value = "codigoestado" name="Estado">
+    <option>Borona</option>
+    <option>Debe listar los estados de producto  parametrizados</option>
+   </select>
+  <input type="text" placeholder="Peso" />
+  <input type="text" placeholder="Costo Kg" />
+  <ion-text>
+    <p>El costo del pesaje es: {{costopesaje}}"</p>
+  </ion-text>
+  </div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>

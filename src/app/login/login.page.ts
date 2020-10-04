@@ -24,6 +24,9 @@ export class LoginPage {
   irPaginaRegistro() {
     this.router.navigate(["register"]);
   }
+  irRecuperar(){
+    this.router.navigate(["recuperar"]);
+  }
 
   //Metodo que inicia sesion
   iniciarSesion() {

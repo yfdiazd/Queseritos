@@ -33,34 +33,38 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageEstadoQueso(){
-    this.router.navigate(["login"]);
+    this.router.navigate(["crearestadoproducto"]);
   }
 
   irPageRegistrarProveedor(){
-    this.router.navigate(["login"]);
+    this.router.navigate(["crearproveedor"]);
   }
 
   irPageTipoAnticipo(){
-    this.router.navigate(["login"]);
+    this.router.navigate(["creartiposanticipo"]);
     }
   
   irPageTipoTrueque(){
-      this.router.navigate(["login"]);
+      this.router.navigate(["creartipostrueque"]);
     
   }
 
+  irPageTipoIdentificacion(){
+    this.router.navigate(["creartiposidentificacion"]);
+  }
+  
   irPageRegistrarCliente(){
-    this.router.navigate(["login"]);
+    this.router.navigate(["crearclientes"]);
   
 }
 
 irPageCrearCiudad(){
-  this.router.navigate(["login"]);
+  this.router.navigate(["crearciudad"]);
 
 }
 
 irPageRegistrarConductor(){
-  this.router.navigate(["login"]);
+  this.router.navigate(["crearconductor"]);
 }
 
 }
