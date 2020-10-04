@@ -45,6 +45,10 @@ const routes: Routes = [
   {
     path: 'crearconductor',
     loadChildren: () => import('./formularios/crearconductor/crearconductor.module').then(m => m.CrearconductorPageModule)
+  },
+  {
+    path: 'crearanticipos',
+    loadChildren: () => import('./formularios/crearanticipos/crearanticipos.module').then(m => m.CrearanticiposPageModule)
   }
 
 
