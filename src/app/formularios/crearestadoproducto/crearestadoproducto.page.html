@@ -10,11 +10,11 @@
     <p>Completa el formulario configurar los estados del producto</p>
   </ion-text>
   <div>
-  <input type="text" placeholder="Código" />
-  <input type="text" placeholder="Descripción del estado" />
+  <input type="text" placeholder="Código" [(ngModel)]="codigoEstado" />
+  <input type="text" placeholder="Descripción del estado" [(ngModel)]="descripcionEstado" />
 </div>
   <div>
-    <ion-button (click)="guardar()" expand="full">
+    <ion-button (click)="guardarEstadoProducto()" expand="full">
     <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>

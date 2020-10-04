@@ -6,20 +6,15 @@
 </ion-header>
 
 <ion-content>
-<<<<<<< HEAD
-  <input type="text" size="25" value="Código" />
-  <input type="text" size="25" value="Descripción del tipo de Anticipo" />
-=======
   <ion-text>
     <p>Completa el formulario para predefinir los tipos de anticipos</p>
   </ion-text>
   <div>
-  <input type="text" placeholder="Código" />
-  <input type="text" placeholder="Descripción del tipo de Anticipo" />
+  <input type="text" placeholder="Código" [(ngModel)]="codigoTipoAnticipo" /> 
+  <input type="text" placeholder="Descripción del tipo de Anticipo" [(ngModel)]="descripcionTipoAnticipo" />
 </div>
->>>>>>> 978eabf137feee835895f4d84d38aab364b7c818
   <div>
-    <ion-button (click)="guardar()" expand="full">
+    <ion-button (click)="guardarTipoAnticipo()" expand="full">
     <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>

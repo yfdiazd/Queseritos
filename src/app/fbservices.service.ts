@@ -13,7 +13,7 @@ export class FBservicesService {
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para la creacion de productos
-    
+
     //Variables para la creacion de proveedores
     tipoIdentificacionProveedor: String;
     numIndetificacionProveedor: String;
@@ -79,7 +79,7 @@ export class FBservicesService {
             .database()
             .ref("usuarios/" + this.usuarioUid + "/datosBasicos")
             .on("value", snapshot => {
-                this.usuario = snapshot.val().usuario;
+                this.usuario = snapshot.val().Usuario;
                 console.log(this.usuario);
             });
     }
@@ -217,6 +217,8 @@ export class FBservicesService {
             duration: 7000
         });
         toast.present();
+
+
     }
     // Alertas
     async alertRecuperacion() {
@@ -229,13 +231,22 @@ export class FBservicesService {
 
         await alert.present();
     }
+    //toast operacion exitosa
+    async toastOperacionExitosa() {
+        const toast = await this.toastController.create({
+            message: "Operacion ejecutada con exito",
+            color: "danger",
+            duration: 5000
+        });
+        toast.present();
+    }
 
     //Metodo que permite crear productos
     crearProdcuto(codigoProducto, descripcionProducto) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/productos/" + descripcionProducto)
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos/" + codigoProducto)
             .set({
                 codigo: codigoProducto,
                 descripcion: descripcionProducto
@@ -249,7 +260,7 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/proveedores/" + numIndetificacionProveedor + "-" + nombreProveedor)
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores/" + numIndetificacionProveedor + "-" + nombreProveedor)
             .set({
                 tipoIdentificacion: tipoIdentificacionProveedor,
                 numIndetificacion: numIndetificacionProveedor,
@@ -275,5 +286,102 @@ export class FBservicesService {
         return this.today;
     }
 
+    //Metodo que permite crear los tipos de identificacion
+    agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion/" + codigoTipoIdentificacion)
+            .set({
+                codigo: codigoTipoIdentificacion,
+                descripcion: descripcionTipoIdentificacion
+            });
+        this.toastOperacionExitosa();
+    }
+
+    //Metodo para agregar estados de producto
+    agregarEstadoProducto(codigoEstadoProducto, descripcionEstadoProducto) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos/" + codigoEstadoProducto)
+            .set({
+                codigo: codigoEstadoProducto,
+                descripcion: descripcionEstadoProducto
+            });
+        this.toastOperacionExitosa();
+    }
+    //Metodo para agregar el tipo de anticipo
+    agregarTipoAnticipo(codigoTipoAnticipo, descripcionTipoanticipo) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo/" + codigoTipoAnticipo)
+            .set({
+                codigo: codigoTipoAnticipo,
+                descripcion: descripcionTipoanticipo
+            });
+        this.toastOperacionExitosa();
+    }
+
+    //Metodo para agregar el tipo de trueque.
+    agregarTipoTrueque(codigoTipoTrueque, descripcionTipoTrueque) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque/" + codigoTipoTrueque)
+            .set({
+                codigo: codigoTipoTrueque,
+                descripcion: descripcionTipoTrueque
+            });
+        this.toastOperacionExitosa();
+    }
+
+    //Metodo que permite crear las ciudades del sistema
+    agregarCiudad(codigoCiudad, describcionCiudad) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/" + codigoCiudad)
+            .set({
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad
+            });
+        this.toastOperacionExitosa();
+    }
+    //Metodo que permite agregar clientes
+    agregarCliente(tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionCliente + "-" + nombresClietne)
+            .set({
+                identificacion: tipoIdentificacion,
+                numeroIdentificacion: numeroIdentificacionCliente,
+                nombres: nombresClietne,
+                apellidos: apellidosCliente,
+                empresa: empresaCliente,
+                codigoCiudad: codigoCiudad,
+                celular: celularCliente,
+                direccion: direccionCliente,
+                correo: correoCliente
+            });
+        this.toastOperacionExitosa();
+    }
+    //Metodo para agregar conductores
+    agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor){
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionConductor + "-" + nombreConductor)
+        .set({
+            identificacion: tipoIdentificacionConductor,
+            numeroIdentificacion: numeroIdentificacionConductor,
+            nombres: nombreConductor,
+            apellidos: apelidoConductor,
+            celular: celularConductor
+        });
+        this.toastOperacionExitosa();
+    }
 
 }
