@@ -1,0 +1,40 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Anticipos en Efectivo </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-text>
+    <p>Registrale un nuevo anticipo a: {{proveedor}}"</p>
+    <p> {{idproveedor}}</p>
+  </ion-text>
+  <div>
+    <form>
+      <form>
+        <div>
+          <label for="tanticipo">Fecha anticipo:</label>
+          <input type="date" id="tanticipo" name="tanticipo" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+          <span class="validity"></span>
+        </div>
+      </form>
+    </form>
+    <select value = "codigoanticipo" name="Concepto del anticipo en efectivo">
+    <option>Empleado</option>
+    <option>Debe listar los tipos de anticipo de la tabla tipos_anticipo</option>
+   </select>
+   <input type="text" placeholder="Valor" />
+   <form action="/action_page.php">
+    <input type="file" id="myFile" name="filename">
+    <input type="submit">
+  </form>
+  </div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>
