@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FBservicesService } from "../../fbservices.service";
 import { AlertController, ToastController } from "@ionic/angular";
-import { FBservicesService } from "../../fbServices.service";
+
+
 
 @Component({
   selector: 'app-registrar-usuario',

@@ -1,0 +1,28 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear Conductor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-text>
+    <p>Completa el formulario para registrar un nuevo conductor</p>
+  </ion-text>
+  <div>
+    <select value = "tipoidentificacion" name="tipoidentificacion">
+      <option>Cédula de Ciudadanía</option>
+     </select>
+  <input type="text" placeholder="Número de Identificación"/>
+  <input type="text" placeholder="Nombres"/>
+  <input type="text" placeholder="Apellidos"/>
+  <input type="text" placeholder="Celular"/>
+</div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>
