@@ -2,32 +2,28 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
+import { Observable } from 'rxjs';
+import { element } from 'protractor';
 
 
 
 
 @Injectable({
     providedIn: "root"
+
 })
 export class FBservicesService {
+
+
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
-    //Variables para la creacion de productos
-
-    //Variables para la creacion de proveedores
-    tipoIdentificacionProveedor: String;
-    numIndetificacionProveedor: String;
-    nombreProveedor: String;
-    apellidoProveedor: String;
-    telefonoProveedor: String;
-    direccionProveedor: String;
-    correoProveedor: String;
-    fechaCreacionProveedor: String;
     //Variables para obtener la fecha actual
     today: any;
     dd: any;
     mm: any;
     yyyy: any;
+    //Variables para lista de ciudades
+    ciudadesLista: any[];
 
     //Variables para ingresos
     public listI: any[] = [];
@@ -70,7 +66,11 @@ export class FBservicesService {
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
+
     }
+
+
+
     // todos los mentodos que tienen que ver solo con el usuario
 
     //Metodo que obtiene el nombre de usuario
@@ -79,8 +79,9 @@ export class FBservicesService {
             .database()
             .ref("usuarios/" + this.usuarioUid + "/datosBasicos")
             .on("value", snapshot => {
-                this.usuario = snapshot.val().Usuario;
+                this.usuario = snapshot.val();
                 console.log(this.usuario);
+                console.log(this.usuarioUid);
             });
     }
     //Metodo que permite iniciar sesion
@@ -152,6 +153,7 @@ export class FBservicesService {
                 //this.router.navigate(["main-menu"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
+                this.getCiudades();
                 console.log("usuario:", this.usuarioUid);
             } else {
                 //this.router.navigate(["login"]);
@@ -369,19 +371,40 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     //Metodo para agregar conductores
-    agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor){
+    agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionConductor + "-" + nombreConductor)
-        .set({
-            identificacion: tipoIdentificacionConductor,
-            numeroIdentificacion: numeroIdentificacionConductor,
-            nombres: nombreConductor,
-            apellidos: apelidoConductor,
-            celular: celularConductor
-        });
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionConductor + "-" + nombreConductor)
+            .set({
+                identificacion: tipoIdentificacionConductor,
+                numeroIdentificacion: numeroIdentificacionConductor,
+                nombres: nombreConductor,
+                apellidos: apelidoConductor,
+                celular: celularConductor
+            });
         this.toastOperacionExitosa();
+    }
+    //obtener uid
+    getUID() {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        return this.usuarioUid;
+    }
+    local;
+    //Obtener lista de ciudades
+    getCiudades() {
+
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad")
+            .on("value", snapshot => {
+                this.ciudadesLista = [];
+                snapshot.forEach(element => {
+                    this.ciudadesLista.push(element.val());
+                });
+                return this.ciudadesLista;
+            });
     }
 
 }
+
