@@ -9,13 +9,6 @@ import { FBservicesService } from "../../fbservices.service";
 })
 
 export class CrearproveedorPage {
-
-  constructor(
-    private FB: FBservicesService
-
-
-  ) { }
-
   //variables para crear proveedor
   tipoIdentificacionProveedor: String;
   numIndetificacionProveedor: String;
@@ -24,10 +17,15 @@ export class CrearproveedorPage {
   telefonoProveedor: String;
   direccionProveedor: String;
   correoProveedor: String;
-   
+
+  constructor(
+    private FB: FBservicesService
+  ) { }
+
+
 
   crearProveedor() {
-      this.FB.crearProveedor("cd", this.numIndetificacionProveedor, this.nombreProveedor, this.apellidoProveedor, this.telefonoProveedor, this.direccionProveedor, this.correoProveedor);
+    this.FB.crearProveedor("as", this.numIndetificacionProveedor, this.nombreProveedor, this.apellidoProveedor, this.telefonoProveedor, this.direccionProveedor, this.correoProveedor)
   };
 
 }

@@ -16,10 +16,10 @@ export class CrearproductoPage {
 private FB: FBservicesService
   ) {}
 
-agregarProducto(){
+  //crearProducto
+  agregarProducto(){
   this.FB.crearProdcuto(this.codigoProducto, this.descripcionProducto);
 }
   
 
-  //crearProducto
 }
