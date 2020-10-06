@@ -1,6 +1,51 @@
-
 <ion-router-outlet main></ion-router-outlet>
-<ion-menu-button (click)="openFirst()"></ion-menu-button>
+<ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="start" (click)="openFirst()"></ion-menu-button>
+    <ion-title> MENU PRINCIPAL</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="row1">
+    <ion-col id="col1">
+      <ion-card id="card1">
+        <div id="title1">COMPRAR</div>
+        <div id="div-boton-lote">
+          <ion-button id="boton-n-lote" (click)="guardar()" expand="full" color="dark">
+            <ion-icon name="add"></ion-icon>
+            Nuevo LOTE
+          </ion-button>
+        </div>
+      </ion-card>
+    </ion-col>
+    <ion-col id="col2">
+      <ion-card id="card2">
+        <div id="title2">VENDER</div>
+        <div id="div-boton-lote">
+          <ion-button id="boton-v-lote" (click)="guardar()" expand="full" color="succefull">
+            <ion-icon name="add"></ion-icon>
+            VENDER LOTE
+          </ion-button>
+        </div>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="row2">
+    <ion-col id="col3">
+      <ion-card id="card3">
+        <div id="title3">ANTICIPOS</div>
+      </ion-card>
+    </ion-col>
+    <ion-col id="col4">
+      <ion-card id="card4">
+        <div id="title3">TRUEQUES</div>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
 <ion-menu side="start" menuId="first">
   <ion-header>
     <ion-toolbar color="primary">
@@ -12,11 +57,11 @@
       <ion-item (click)="irPageTipoQueso()">Tipos de Queso</ion-item>
       <ion-item (click)="irPageEstadoQueso()">Estados del Queso</ion-item>
       <ion-item (click)="irPageTipoAnticipo()">Tipos de Anticipo</ion-item>
-      <ion-item (click)="irPageTipoTrueque()">Tipos de Trueque</ion-item> 
+      <ion-item (click)="irPageTipoTrueque()">Tipos de Trueque</ion-item>
       <ion-item (click)="irPageCrearCiudad()">Ciudades</ion-item>
       <ion-item (click)="irPageTipoIdentificacion()">Tipos de Identificación</ion-item>
-      <ion-item (click)="irPageRegistrarProveedor()">Proveedores</ion-item> 
-      <ion-item (click)="irPageRegistrarCliente()">Clientes</ion-item>      
+      <ion-item (click)="irPageRegistrarProveedor()">Proveedores</ion-item>
+      <ion-item (click)="irPageRegistrarCliente()">Clientes</ion-item>
       <ion-item (click)="irPageRegistrarConductor()">Conductores</ion-item>
     </ion-list>
   </ion-content>
