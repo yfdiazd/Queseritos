@@ -18,11 +18,8 @@
   <input type="text" placeholder="Nombres" [(ngModel)]="nombresClietne" />
   <input type="text" placeholder="Apellidos" [(ngModel)]="apellidosCliente" />
   <input type="text" placeholder="Quesera" [(ngModel)]="empresaCliente" />
-  <select value = "ciudad" name="Ciudad">
-    <option>Bogotá</option>
-    <option>Cali</option>
-    <option>Medellín</option>
-    <option>Debe cargar la lista de ciudades creadas</option>
+  <select name="Ciudad" [(ngModel)]="codigoCiudad" >
+    <option *ngFor="let ciudad of FB.ciudadesLista">{{ciudad.descripcion}}</option>
    </select>
   <input type="text" placeholder="Celular" [(ngModel)]="celularCliente" />
   <input type="text" placeholder="Dirección" [(ngModel)]="direccionCliente" />
