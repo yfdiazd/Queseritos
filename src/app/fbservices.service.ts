@@ -3,6 +3,9 @@ import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
 
+
+
+
 @Injectable({
     providedIn: "root"
 })
@@ -129,6 +132,7 @@ export class FBservicesService {
                 this.router.navigate(["home"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
+
             } else {
                 console.log("No hay sesion, toca loguear");
                 this.router.navigate(["login"]);
