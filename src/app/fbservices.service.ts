@@ -10,24 +10,9 @@ import { ToastController, AlertController } from "@ionic/angular";
     providedIn: "root"
 })
 export class FBservicesService {
-    //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
-    //Variables para la creacion de productos
-    
-    //Variables para la creacion de proveedores
-    tipoIdentificacionProveedor: String;
-    numIndetificacionProveedor: String;
-    nombreProveedor: String;
-    apellidoProveedor: String;
-    telefonoProveedor: String;
-    direccionProveedor: String;
-    correoProveedor: String;
-    fechaCreacionProveedor: String;
-    //Variables para obtener la fecha actual
-    today: any;
-    dd: any;
-    mm: any;
-    yyyy: any;
+    totalGastoP;
+    numeroIngresos;
 
     //Variables para ingresos
     public listI: any[] = [];
@@ -52,7 +37,6 @@ export class FBservicesService {
     fecha: Date;
     milisegundos = 5000;
 
-    //Configuracion de Firebase
     config = {
         apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
         authDomain: "queseritos.firebaseapp.com",
@@ -66,14 +50,12 @@ export class FBservicesService {
         private router: Router,
         public toastController: ToastController,
         public alertController: AlertController,
-
+        
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
     }
     // todos los mentodos que tienen que ver solo con el usuario
-
-    //Metodo que obtiene el nombre de usuario
     mostrarNombre() {
         firebase
             .database()
@@ -83,7 +65,6 @@ export class FBservicesService {
                 console.log(this.usuario);
             });
     }
-    //Metodo que permite iniciar sesion
     iniciarSesion(email, password) {
         firebase
             .auth()
@@ -99,11 +80,10 @@ export class FBservicesService {
                 console.log(error);
             });
     }
-    //Metodo que permite cerrar la sesion del usuario
     cerrarSesion() {
         firebase.auth().signOut();
     }
-    //Metodo que permite crear el usuario de la aplicacion
+    //Metodo para registrar el usuario
     crearUsuario(email, password, user, password2) {
         if (password == password2) {
             firebase
@@ -116,22 +96,23 @@ export class FBservicesService {
 
                     firebase
                         .database()
-                        .ref("usuario/" + this.usuarioUid + "/datosBasicos")
+                        .ref("usuarios/" + this.usuarioUid + "/datosBasicos")
                         .set({
                             usuario: user,
                             email: email
                         });
-                });
+                console.log('bres me registre');
+                    });
             this.toastRegistroCorrecto().catch(error => {
                 console.log(error);
             });
         } else {
             this.toastContras();
         }
-        this.router.navigate(["main-menu"]);
+        this.router.navigate(["login"]);
     }
-
-    //  Metodo que permite recuperar la contraseña
+    
+    //Metodo que recupera la clve.
     recuperarClave(correo) {
         var auth = firebase.auth();
         auth
@@ -144,17 +125,17 @@ export class FBservicesService {
                 console.log("correo no enviado validar correo", error);
             });
     }
-
-    //Metodo que verifica la sesion del usuario
     verificarsesion() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                //this.router.navigate(["main-menu"]);
+
+                this.router.navigate(["home"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
-                console.log("usuario:", this.usuarioUid);
+
             } else {
-                //this.router.navigate(["login"]);
+                console.log("No hay sesion, toca loguear");
+                this.router.navigate(["login"]);
             }
         });
     }
@@ -163,7 +144,7 @@ export class FBservicesService {
     //toast
     async toastContras() {
         const toast = await this.toastController.create({
-            message: "Las contraseñas no son iguales",
+            message: "Las contraseñas no son iguales.",
             duration: 3000
         });
         toast.present();
@@ -183,11 +164,10 @@ export class FBservicesService {
         toast.present();
     }
 
-
     async toastRecuperacionFail() {
         const toast = await this.toastController.create({
             message:
-                "Por favor revisar el correo electronico ya que no existe en el sistema",
+                "Por favor revisar el correo electronico ya que no existe en Life$Easier",
             duration: 7000
         });
         toast.present();
@@ -195,24 +175,6 @@ export class FBservicesService {
     async toastElimino() {
         const toast = await this.toastController.create({
             message: "Se ha eliminado correctamente",
-            color: "danger",
-            duration: 7000
-        });
-        toast.present();
-    }
-    //mensaje que indica la creacion del producto
-    async toastProductoCrado() {
-        const toast = await this.toastController.create({
-            message: "Se ha creado el producto correctamente",
-            color: "danger",
-            duration: 7000
-        });
-        toast.present();
-    }
-    //mensaje que indica la creacion del proveedor
-    async toastProveedorCrado() {
-        const toast = await this.toastController.create({
-            message: "Se ha creado el proveedor de manera correcta",
             color: "danger",
             duration: 7000
         });
@@ -228,51 +190,6 @@ export class FBservicesService {
         });
 
         await alert.present();
-    }
-
-    //Metodo que permite crear productos
-    crearProdcuto(codigoProducto, descripcionProducto) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/productos/" + descripcionProducto)
-            .set({
-                codigo: codigoProducto,
-                descripcion: descripcionProducto
-
-            });
-        this.toastProductoCrado();
-    }
-
-    //Metodo que permite crear proveedores
-    crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/proveedores/" + numIndetificacionProveedor + "-" + nombreProveedor)
-            .set({
-                tipoIdentificacion: tipoIdentificacionProveedor,
-                numIndetificacion: numIndetificacionProveedor,
-                nombre: nombreProveedor,
-                apellido: apellidoProveedor,
-                telefono: telefonoProveedor,
-                direccion: direccionProveedor,
-                correo: correoProveedor,
-                fechaCreacion: this.fechaActual()
-
-            });
-        this.toastProveedorCrado();
-    }
-
-    //Metodo que permite consultar la fecha actual:
-
-    fechaActual() {
-        this.today = new Date();
-        this.dd = String(this.today.getDate()).padStart(2, '0');
-        this.mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        this.yyyy = this.today.getFullYear();
-        this.today = this.dd + '/' + this.mm + '/' + this.yyyy;
-        return this.today;
     }
 
 
