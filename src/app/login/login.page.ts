@@ -29,7 +29,7 @@ export class LoginPage {
   }
 
   //Metodo que inicia sesion
-  iniciarSesion() {
+  irPaginaHome() {
     this.FB.iniciarSesion(this.email, this.password);
   }
 
