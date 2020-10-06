@@ -390,7 +390,6 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         return this.usuarioUid;
     }
-    local;
     //Obtener lista de ciudades
     getCiudades() {
 
