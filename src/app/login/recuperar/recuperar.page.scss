@@ -1,26 +1,16 @@
-ion-header ion-toolbar{
-    --background-color: aqua;
-}
-
 ion-content {
     margin: 0;
     padding: 0;
-    --background: rgba(245,240,184,1);
-    // --background: rgba(147,206,222,1);
-    
-
-    .img-logo {
-        height: 25%;
-        padding: 5%;
-    }
+    --background: rgba(245, 240, 184, 1);
 
     .div-formulario {
         padding: 0;
         width: 80%;
         margin: auto;
+        margin-top: 90px;
     }
 
-    input {
+    ion-input {
         background-color: transparentize($color: grey, $amount: 0.5);
         border-style: hidden;
         color: white;
@@ -33,22 +23,21 @@ ion-content {
     }
 
     .div-formulario ion-button {
-        margin-bottom: 40px;
+        text-decoration-color: white;
         font-size: 20px;
         height: 60px;
         width: 100%;
     }
 
-    .div-links {
-        margin-top: 40px;
+    p{
+        color: black;  
+        
+    }
+    h1{
         text-align: center;
-        padding: 0;
-        font-size: small;
-        width: 80%;
-        margin: auto;
+        color: rgb(56, 21, 0);
+        height: 60px;
+        font-size: 25px;
     }
 
-    .div-links a {
-        margin-bottom: 20px;
-    }
 }

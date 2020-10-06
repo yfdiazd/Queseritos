@@ -9,35 +9,38 @@ const routes: Routes = [
   { path: 'register', loadChildren:() => import('./login/register/registrar-usuario.module').then(m=> m.RegistrarUsuarioPageModule)},
   {
     path: 'crearproducto',
-    loadChildren: () => import('./formularios/crearproducto/crearproducto.module').then( m => m.CrearproductoPageModule)
+    loadChildren: () => import('./formularios/crearproducto/crearproducto.module').then(m => m.CrearproductoPageModule)
   },
   {
     path: 'crearproveedor',
-    loadChildren: () => import('./formularios/crearproveedor/crearproveedor.module').then( m => m.CrearproveedorPageModule)
+    loadChildren: () => import('./formularios/crearproveedor/crearproveedor.module').then(m => m.CrearproveedorPageModule)
   },
   {
+    path: 'recuperar',
+    loadChildren: () => import('./login/recuperar/recuperar.module').then(m => m.RecuperarPageModule)
+  }, {
     path: 'crearestadoproducto',
-    loadChildren: () => import('./formularios/crearestadoproducto/crearestadoproducto.module').then( m => m.CrearestadoproductoPageModule)
+    loadChildren: () => import('./formularios/crearestadoproducto/crearestadoproducto.module').then(m => m.CrearestadoproductoPageModule)
   },
   {
     path: 'creartiposanticipo',
-    loadChildren: () => import('./formularios/creartiposanticipo/creartiposanticipo.module').then( m => m.CreartiposanticipoPageModule)
+    loadChildren: () => import('./formularios/creartiposanticipo/creartiposanticipo.module').then(m => m.CreartiposanticipoPageModule)
   },
   {
     path: 'creartipostrueque',
-    loadChildren: () => import('./formularios/creartipostrueque/creartipostrueque.module').then( m => m.CreartipostruequePageModule)
+    loadChildren: () => import('./formularios/creartipostrueque/creartipostrueque.module').then(m => m.CreartipostruequePageModule)
   },
   {
     path: 'crearclientes',
-    loadChildren: () => import('./formularios/crearclientes/crearclientes.module').then( m => m.CrearclientesPageModule)
+    loadChildren: () => import('./formularios/crearclientes/crearclientes.module').then(m => m.CrearclientesPageModule)
   },
   {
     path: 'creartiposidentificacion',
-    loadChildren: () => import('./formularios/creartiposidentificacion/creartiposidentificacion.module').then( m => m.CreartiposidentificacionPageModule)
+    loadChildren: () => import('./formularios/creartiposidentificacion/creartiposidentificacion.module').then(m => m.CreartiposidentificacionPageModule)
   },
   {
     path: 'crearciudad',
-    loadChildren: () => import('./formularios/crearciudad/crearciudad.module').then( m => m.CrearciudadPageModule)
+    loadChildren: () => import('./formularios/crearciudad/crearciudad.module').then(m => m.CrearciudadPageModule)
   },
   {
     path: 'crearconductor',
