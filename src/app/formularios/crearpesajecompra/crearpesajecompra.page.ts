@@ -10,6 +10,7 @@ export class CrearpesajecompraPage implements OnInit {
   idproveedor = "1053790255";
   fechcompra = "03/10/2020";
   costopesaje= "$350.000";
+  numbulto= 1;
   constructor() { }
 
   ngOnInit() {

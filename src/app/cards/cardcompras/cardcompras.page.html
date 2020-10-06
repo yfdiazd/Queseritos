@@ -1,0 +1,16 @@
+<div class="card-columns">
+
+<div **ngFor="let items of items" class="card">
+<img class="card-img-top" [src]= "items.images | no image">
+<div class ="card-body">
+<h5 class "card-title">{{item.name}}</h5>
+<p class "card-text">
+  <span **ngFor="let item of items">
+
+  </span>
+</p>
+
+</div>
+</div>
+
+</div>

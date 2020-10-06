@@ -6,7 +6,8 @@ const routes: Routes = [
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
   { path: 'login',loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)},
   { path: 'main-menu', loadChildren: () => import('./main-menu/main-menu.module').then(m => m.MainMenuPageModule)},
-  { path: 'register', loadChildren:() => import('./login/register/registrar-usuario.module').then(m=> m.RegistrarUsuarioPageModule)},  {
+  { path: 'register', loadChildren:() => import('./login/register/registrar-usuario.module').then(m=> m.RegistrarUsuarioPageModule)},
+  {
     path: 'crearproducto',
     loadChildren: () => import('./formularios/crearproducto/crearproducto.module').then( m => m.CrearproductoPageModule)
   },
@@ -41,6 +42,26 @@ const routes: Routes = [
   {
     path: 'crearconductor',
     loadChildren: () => import('./formularios/crearconductor/crearconductor.module').then( m => m.CrearconductorPageModule)
+  },
+  {
+    path: 'crearpesajecompra',
+    loadChildren: () => import('./formularios/crearpesajecompra/crearpesajecompra.module').then( m => m.CrearpesajecompraPageModule)
+  },
+  {
+    path: 'crearanticipos',
+    loadChildren: () => import('./formularios/crearanticipos/crearanticipos.module').then( m => m.CrearanticiposPageModule)
+  },
+  {
+    path: 'creartrueque',
+    loadChildren: () => import('./formularios/creartrueque/creartrueque.module').then( m => m.CreartruequePageModule)
+  },
+  {
+    path: 'crearenviocliente',
+    loadChildren: () => import('./formularios/crearenviocliente/crearenviocliente.module').then( m => m.CrearenvioclientePageModule)
+  },
+  {
+    path: 'cardcompras',
+    loadChildren: () => import('./cards/cardcompras/cardcompras.module').then( m => m.CardcomprasPageModule)
   }
 
   ];
