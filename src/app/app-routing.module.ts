@@ -65,7 +65,12 @@ const routes: Routes = [
   {
     path: 'cardcompras',
     loadChildren: () => import('./cards/cardcompras/cardcompras.module').then( m => m.CardcomprasPageModule)
+  },
+  {
+    path: 'confirmarpesaje',
+    loadChildren: () => import('./formularios/confirmarpesaje/confirmarpesaje.module').then( m => m.ConfirmarpesajePageModule)
   }
+
 
   ];
 
