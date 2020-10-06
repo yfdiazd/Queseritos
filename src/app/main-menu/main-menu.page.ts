@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import {Router} from '@angular/router';
+import { FBservicesService } from '../fbservices.service';
 
 @Component({
   selector: 'app-main-menu',
@@ -9,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class MainMenuPage implements OnInit {
 
-  constructor(private menu: MenuController, private router:Router) { }
+  constructor(private menu: MenuController, private router:Router,private FB: FBservicesService) { }
 
   openFirst() {
     this.menu.enable(true, 'first');
