@@ -6,35 +6,47 @@
 </ion-header>
 
 <ion-content>
+  <div class="div-formulario">
+    <ion-text>
+      <div>
+        <p>Registrale un nuevo anticipo a: {{proveedor}}</p>
+        <p> {{idproveedor}}</p>
+      </div>
+    </ion-text>
 
-  <ion-text>
-    <p>Registrale un nuevo anticipo a: {{proveedor}}"</p>
-    <p> {{idproveedor}}</p>
-  </ion-text>
-  <div>
-    <form>
-      <form>
-        <div>
-          <label for="tanticipo">Fecha anticipo:</label>
-          <input type="date" id="tanticipo" name="tanticipo" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
-          <span class="validity"></span>
-        </div>
-      </form>
-    </form>
-    <select value = "codigoanticipo" name="Concepto del anticipo en efectivo">
-    <option>Empleado</option>
-    <option>Debe listar los tipos de anticipo de la tabla tipos_anticipo</option>
-   </select>
-   <input type="text" placeholder="Valor" />
-   <form action="/action_page.php">
-    <input type="file" id="myFile" name="filename">
+    <label for="tanticipo">Fecha anticipo:</label>
+    <input type="date" id="tanticipo" name="tanticipo" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+    <span class="validity"></span>
+
+    <ion-select class="select" [interfaceOptions]="customAlertOptions" title="seleccione el anticipo" interface="alert"
+      multiple="false" placeholder="Tipo de anticipo">
+      <ion-select-option value="bacon" *ngFor="let lista of FB.listI" > {{item}}</ion-select-option>
+    </ion-select>
+
+    <!--<select value="codigoanticipo" name="Concepto del anticipo en efectivo">
+      <option>Empleado</option>
+      <option>Debe listar los tipos de anticipo de la tabla tipos_anticipo</option>
+    </select>
+  -->
+
+    <input type="number" placeholder="Valor" />
+    <div class="div-input">
+      <ion-item class="item-file">
+        <label for=""> subir archivo </label>
+        <input class="file-upload" onchange='cambiar()' type="file" />
+      </ion-item>
+    </div>
+
+
+
+
+
     <input type="submit">
-  </form>
-  </div>
-  <div>
+
+
     <ion-button (click)="guardar()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
-      Guardar
+      Guardar anticipo
     </ion-button>
   </div>
 </ion-content>

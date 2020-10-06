@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-crearanticipos',
@@ -8,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 export class CrearanticiposPage implements OnInit {
   proveedor = "fernanda";
   idproveedor = "1053790255";
-  constructor() { }
+  constructor(public alertController: AlertController) { }
 
   ngOnInit() {
   }
+  nombreAnticipo: string;
+
+  customAlertOptions: any = {
+    header: 'Seleccione anticipo',
+    translucent: true
+  };
+
 
 }
