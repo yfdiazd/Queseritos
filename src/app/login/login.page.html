@@ -9,8 +9,8 @@
 <ion-content>
   <ion-img class="img-logo" src="assets/img/LOGO.png"></ion-img>
   <div class="div-formulario">
-    <input type="text" placeholder="Ingrese su usuario">
-    <input type="password" placeholder="Insrese su contraseña">
+    <input type="text" placeholder="Ingrese su usuario" [(ngModel)]="email"> 
+    <input type="password" placeholder="Insrese su contraseña" [(ngModel)]="password" >
     <ion-button id="button-login" color="success" (click)="irPaginaHome()">
       <ion-icon color="dark" slot="start" name="log-in"></ion-icon>Entrar
     </ion-button>
