@@ -1,5 +1,5 @@
 <ion-router-outlet main></ion-router-outlet>
-<ion-header >
+<ion-header>
   <ion-toolbar>
     <ion-title>Iniciar sesion
     </ion-title>
@@ -7,7 +7,9 @@
 </ion-header>
 
 <ion-content>
-  <ion-img class="img-logo" src="assets/img/LOGO.png"></ion-img>
+  <div class="div-img">
+    <ion-img class="img-logo" src="assets/img/LOGO.png"></ion-img>
+  </div>
   <div class="div-formulario">
     <input type="text" placeholder="Ingrese su usuario" [(ngModel)]="email"> 
     <input type="password" placeholder="Insrese su contraseña" [(ngModel)]="password" >
@@ -15,16 +17,16 @@
       <ion-icon color="dark" slot="start" name="log-in"></ion-icon>Entrar
     </ion-button>
   </div>
-    <div class="div-links">
-      <a id="registrar" color="primary" (click)="irPaginaRegistro()">
-        <ion-icon color="medium" slot="start" name="person-circle-outline"></ion-icon> Crear cuenta
-      </a>
-      <br>
-      <a id="recuperar" color="primary" (click)="irRecuperar()">
-        <ion-icon color="medium" slot="start" name="key-outline"></ion-icon> Recuperar contraseña
-      </a>
+  <div class="div-links">
+    <a id="registrar" color="primary" (click)="irPaginaRegistro()">
+      <ion-icon color="medium" slot="start" name="person-circle-outline"></ion-icon> Crear cuenta
+    </a>
+    <br>
+    <a id="recuperar" color="primary" (click)="irRecuperar()">
+      <ion-icon color="medium" slot="start" name="key-outline"></ion-icon> Recuperar contraseña
+    </a>
 
-    </div>
-  
+  </div>
+
 
 </ion-content>
