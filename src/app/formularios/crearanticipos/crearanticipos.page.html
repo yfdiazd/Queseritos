@@ -20,7 +20,7 @@
 
     <ion-select class="select" [interfaceOptions]="customAlertOptions" title="seleccione el anticipo" interface="alert"
       multiple="false" placeholder="Tipo de anticipo">
-      <ion-select-option value="bacon">Bacosssssssssssssssssssssssn</ion-select-option>
+      <ion-select-option value="bacon" *ngFor="let lista of FB.listI" > {{item}}</ion-select-option>
     </ion-select>
 
     <!--<select value="codigoanticipo" name="Concepto del anticipo en efectivo">

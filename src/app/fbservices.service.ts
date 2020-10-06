@@ -2,17 +2,15 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
-import { Observable } from 'rxjs';
-import { element } from 'protractor';
 
 
 
 
 @Injectable({
     providedIn: "root"
-
 })
 export class FBservicesService {
+<<<<<<< HEAD
 
 
     //variable que guarda u obtiene el UID del usuario
@@ -24,6 +22,11 @@ export class FBservicesService {
     yyyy: any;
     //Variables para lista de ciudades
     ciudadesLista: any[];
+=======
+    usuarioUid: string;
+    totalGastoP;
+    numeroIngresos;
+>>>>>>> 1fd53bfbccca7a0b1344996b20498eeebf7d4570
 
     //Variables para ingresos
     public listI: any[] = [];
@@ -65,20 +68,15 @@ export class FBservicesService {
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
-
     }
-
-
-
     // todos los mentodos que tienen que ver solo con el usuario
     mostrarNombre() {
         firebase
             .database()
             .ref("usuarios/" + this.usuarioUid + "/datosBasicos")
             .on("value", snapshot => {
-                this.usuario = snapshot.val();
+                this.usuario = snapshot.val().usuario;
                 console.log(this.usuario);
-                console.log(this.usuarioUid);
             });
     }
     iniciarSesion(email, password) {
@@ -112,7 +110,7 @@ export class FBservicesService {
 
                     firebase
                         .database()
-                        .ref("usuario/" + this.usuarioUid + "/datosBasicos")
+                        .ref("usuarios/" + this.usuarioUid + "/datosBasicos")
                         .set({
                             usuario: user,
                             email: email
@@ -148,8 +146,12 @@ export class FBservicesService {
                 this.router.navigate(["home"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
+<<<<<<< HEAD
                 this.getCiudades();
                 console.log("usuario:", this.usuarioUid);
+=======
+
+>>>>>>> 1fd53bfbccca7a0b1344996b20498eeebf7d4570
             } else {
                 console.log("No hay sesion, toca loguear");
                 this.router.navigate(["login"]);
@@ -197,6 +199,7 @@ export class FBservicesService {
         });
         toast.present();
     }
+<<<<<<< HEAD
     //mensaje que indica la creacion del producto
     async toastProductoCrado() {
         const toast = await this.toastController.create({
@@ -217,6 +220,8 @@ export class FBservicesService {
 
 
     }
+=======
+>>>>>>> 1fd53bfbccca7a0b1344996b20498eeebf7d4570
     // Alertas
     async alertRecuperacion() {
         const alert = await this.alertController.create({
@@ -228,6 +233,7 @@ export class FBservicesService {
 
         await alert.present();
     }
+<<<<<<< HEAD
     //toast operacion exitosa
     async toastOperacionExitosa() {
         const toast = await this.toastController.create({
@@ -402,3 +408,8 @@ export class FBservicesService {
     }
 
 }
+=======
+
+
+}
+>>>>>>> 1fd53bfbccca7a0b1344996b20498eeebf7d4570
