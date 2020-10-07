@@ -1,16 +1,33 @@
-<div class="card-columns">
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>COMPRAR A PROVEEDORES</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-<div **ngFor="let items of items" class="card">
-<img class="card-img-top" [src]= "items.images | no image">
-<div class ="card-body">
-<h5 class "card-title">{{item.name}}</h5>
-<p class "card-text">
-  <span **ngFor="let item of items">
+<ion-content>
+  <div>
+    <p>Peso Límite: {{pesolimite}}</p>
+    <p>Peso Actual: {{pesoacumulado}}</p>
+    <p>Saldo Débito: {{saldodebitototal}}</p>
+    <p>Saldo Crédito: {{saldocreditotal}}</p>
+  </div>
+  <ion-row class="row1">
+    <ion-col id="col1">
+      <ion-card id="card1">
+        <div id="title1">Fernanda</div>
+        <div id="div-boton-lote">
+          <ion-button id="boton-n-lote" (click)="guardar()" expand="full" color="dark">
+            <ion-icon name="add-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <ion-fab vertical="center" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-  </span>
-</p>
-
-</div>
-</div>
-
-</div>
+</ion-content>

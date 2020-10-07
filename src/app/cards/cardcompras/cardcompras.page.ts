@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-cardcompras',
@@ -6,7 +6,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./cardcompras.page.scss'],
 })
 export class CardcomprasPage implements OnInit {
-@Input() items: any[] = [];
+  pesolimite="500";
+  pesoacumulado="$0";
+  saldodebitototal="$0";
+  saldocreditotal="$0";
   constructor() { }
 
   ngOnInit() {
