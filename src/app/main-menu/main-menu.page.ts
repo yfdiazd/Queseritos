@@ -12,6 +12,10 @@ export class MainMenuPage implements OnInit {
 
   constructor(private menu: MenuController, private router:Router,private FB: FBservicesService) { }
 
+
+  irVender(){
+    this.router.navigate(["cardcompras"]);
+  }
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');

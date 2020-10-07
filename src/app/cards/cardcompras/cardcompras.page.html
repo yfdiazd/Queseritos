@@ -6,28 +6,45 @@
 </ion-header>
 
 <ion-content>
-  <div>
-    <p>Peso Límite: {{pesolimite}}</p>
-    <p>Peso Actual: {{pesoacumulado}}</p>
-    <p>Saldo Débito: {{saldodebitototal}}</p>
-    <p>Saldo Crédito: {{saldocreditotal}}</p>
+  <div class="div-principal">
+    <div class="div-f-1">
+      <div class="div-saldo-l">
+        <div class="div-sdt">Peso Límite:</div>
+        <div>{{pesolimite}}</div>
+      </div>
+      <div class="div-saldo-a">
+        <div class="div-sdt">Peso Actual:</div>
+        <div>{{pesoacumulado}}</div>
+      </div>
+    </div>
+    <div class="div-f-2">
+      <div class="div-saldo-d">
+        <div class="div-sdt">Saldo Débito:</div>
+        <div class="div-sdv">{{saldodebitototal}}</div>
+      </div>
+      <div class="div-saldo-c">
+        <div class="div-sdt">Saldo Crédito:</div>
+        <div class="div-sdv">{{saldocreditotal}}</div>
+      </div>
+    </div>
   </div>
-  <ion-row class="row1">
-    <ion-col id="col1">
-      <ion-card id="card1">
-        <div id="title1">Fernanda</div>
-        <div id="div-boton-lote">
-          <ion-button id="boton-n-lote" (click)="guardar()" expand="full" color="dark">
-            <ion-icon name="add-outline"></ion-icon>
-          </ion-button>
-        </div>
-      </ion-card>
-    </ion-col>
-  </ion-row>
-  <ion-fab vertical="center" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
+  <div class="div-secundario">
+    <ion-row class="row1">
+      <ion-col id="col1">
+        <ion-card id="card1">
+          <div id="title1">Fernanda</div>
+          <div id="div-boton-lote">
+            <ion-button id="boton-n-lote" (click)="guardar()" expand="full" color="dark">
+              <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
 </ion-content>

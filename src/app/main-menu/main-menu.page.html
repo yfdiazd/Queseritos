@@ -10,15 +10,16 @@
   <ion-row class="row1">
     <ion-col class="col1">
       <ion-card class="card1">
-        <ion-button class="btn-title1">COMPRAS</ion-button>
+        <ion-button (click)="irVender()" class="btn-title1">COMPRAS</ion-button>
         <div class="div-boton-lote">
-          <ion-button class="boton-n-lote" (click)="guardar()" expand="full">
+          <ion-button class="boton-n-lote"  expand="full">
             <ion-icon name="add"></ion-icon>
             Nuevo LOTE
           </ion-button>
         </div>
       </ion-card>
     </ion-col>
+    
     <ion-col class="col2">
       <ion-card class="card2">
         <ion-button class="btn-title2">VENTAS</ion-button>
