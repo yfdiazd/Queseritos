@@ -1,0 +1,40 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Confirmar Pesaje </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-text>
+    <p>Confirma el pesaje de: {{proveedor}}"</p>
+    <p> {{idproveedor}}</p>
+    <p>Fecha de la compra: {{fechcompra}}</p>
+  </ion-text>
+  <div>
+  <div>
+  <p>Tipo de queso: {{tipqueso}}"</p> 
+  <p>Total Bultos: {{totalbultos}}"</p>
+  <p>Total Peso Total: {{pesototal}}"</p>
+  <select value = "codigoestado" name="Estado">
+    <option>Borona</option>
+    <option>Debe listar los estados de producto  parametrizados</option>
+   </select>
+  <input type="text" placeholder="Cantidad" />
+  <input type="text" placeholder="Costo Kg" />
+  </div>
+  </div>
+  <ion-text>
+    <p>Costo total {{estadoqueso}}: {{costopesaje}}"</p>
+    <p>Costo total {{estadoqueso1}}: {{costopesaje}}"</p>
+
+  </ion-text>
+  
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>
