@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
 import { element } from 'protractor';
+import { constants } from 'buffer';
 
 
 
@@ -121,7 +122,7 @@ export class FBservicesService {
                     firebase
                         .database()
                         .ref("usuario/" + this.usuarioUid + "/datosBasicos")
-                        .set({
+                        .push({
                             usuario: user,
                             email: email
                         });
@@ -153,7 +154,7 @@ export class FBservicesService {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
 
-                this.router.navigate(["home"]);
+                //this.router.navigate(["home"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
                 this.getCiudades();
@@ -258,8 +259,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos/" + codigoProducto)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/")
+            .push({
                 codigo: codigoProducto,
                 descripcion: descripcionProducto
 
@@ -272,8 +273,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores/" + numIndetificacionProveedor + "-" + nombreProveedor)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/")
+            .push({
                 tipoIdentificacion: tipoIdentificacionProveedor,
                 numIndetificacion: numIndetificacionProveedor,
                 nombre: nombreProveedor,
@@ -303,8 +304,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion/" + codigoTipoIdentificacion)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion")
+            .push({
                 codigo: codigoTipoIdentificacion,
                 descripcion: descripcionTipoIdentificacion
             });
@@ -316,8 +317,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos/" + codigoEstadoProducto)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos")
+            .push({
                 codigo: codigoEstadoProducto,
                 descripcion: descripcionEstadoProducto
             });
@@ -328,8 +329,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo/" + codigoTipoAnticipo)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo")
+            .push({
                 codigo: codigoTipoAnticipo,
                 descripcion: descripcionTipoanticipo
             });
@@ -341,8 +342,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque/" + codigoTipoTrueque)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque")
+            .push({
                 codigo: codigoTipoTrueque,
                 descripcion: descripcionTipoTrueque
             });
@@ -354,8 +355,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/" + codigoCiudad)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad")
+            .push({
                 codigo: codigoCiudad,
                 descripcion: describcionCiudad
             });
@@ -366,8 +367,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionCliente + "-" + nombresClietne)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente")
+            .push({
                 identificacion: tipoIdentificacion,
                 numeroIdentificacion: numeroIdentificacionCliente,
                 nombres: nombresClietne,
@@ -385,8 +386,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionConductor + "-" + nombreConductor)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor")
+            .push({
                 identificacion: tipoIdentificacionConductor,
                 numeroIdentificacion: numeroIdentificacionConductor,
                 nombres: nombreConductor,
@@ -395,7 +396,7 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-        
+
     //Obtener listas des configuraciones
     getCiudades() {
 
@@ -410,92 +411,102 @@ export class FBservicesService {
                 return this.ciudadesLista;
             });
     }
-    getClientes(){
+    getClientes() {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente")
-        .on("value", snapshot =>{
-            this.clientesLista =[];
-            snapshot.forEach(element =>{
-                this.clientesLista.push(element.val());
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente")
+            .on("value", snapshot => {
+                this.clientesLista = [];
+                snapshot.forEach(element => {
+                    this.clientesLista.push(element.val());
+                });
+                return this.clientesLista;
             });
-            return this.clientesLista;
-        });
     }
-    getEstadoProducto(){
+    getEstadoProducto() {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos")
-        .on("value", snaphot =>{
-            this.estadoProductoLista = [];
-            snaphot.forEach(element =>{
-                this.estadoProductoLista.push(element.val());
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos")
+            .on("value", snaphot => {
+                this.estadoProductoLista = [];
+                snaphot.forEach(element => {
+                    this.estadoProductoLista.push(element.val());
+                });
+                console.log(this.estadoProductoLista);
+                return this.estadoProductoLista;
             });
-            return this.estadoProductoLista;
-        });
     }
-    getProductos(){
+    getProductos() {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos")
-        .on("value", snaphot =>{
-            this.productosLista = [];
-            snaphot.forEach(element =>{
-                this.productosLista.push(element.val());
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos")
+            .on("value", snaphot => {
+                this.productosLista = [];
+                snaphot.forEach(element => {
+                    this.productosLista.push(element.val());
+                });
+                return this.productosLista;
             });
-            return this.productosLista;
-        });
     }
-    getProveedores(){
+    getProveedores() {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores")
-        .on("value", snaphot =>{
-            this.proveedoresLista = [];
-            snaphot.forEach(element =>{
-                this.proveedoresLista.push(element.val());
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores")
+            .on("value", snaphot => {
+                this.proveedoresLista = [];
+                snaphot.forEach(element => {
+                    this.proveedoresLista.push(element.val());
+                });
+                return this.proveedoresLista;
             });
-            return this.proveedoresLista;
-        });
     }
-    getTipoAnticipos(){
+    getTipoAnticipos() {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo")
-        .on("value", snaphot =>{
-            this.tipoAnticipoLista = [];
-            snaphot.forEach(element =>{
-                this.tipoAnticipoLista.push(element.val());
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo")
+            .on("value", snaphot => {
+                this.tipoAnticipoLista = [];
+                snaphot.forEach(element => {
+                    this.tipoAnticipoLista.push(element.val());
+                });
+                return this.tipoAnticipoLista;
             });
-            return this.tipoAnticipoLista;
-        });
     }
-    getTipoTrueque(){
+    getTipoTrueque() {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
-        .on("value", snaphot =>{
-            this.tipoTruequeLista = [];
-            snaphot.forEach(element =>{
-                this.tipoTruequeLista.push(element.val());
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
+            .on("value", snaphot => {
+                this.tipoTruequeLista = [];
+                snaphot.forEach(element => {
+                    this.tipoTruequeLista.push(element.val());
+                });
+                return this.tipoTruequeLista;
             });
-            return this.tipoTruequeLista;
-        });
     }
-    getTiposIdentificacion(){
+    getTiposIdentificacion() {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion")
-        .on("value", snaphot =>{
-            this.tiposIdentificacionLista = [];
-            snaphot.forEach(element =>{
-                this.tiposIdentificacionLista.push(element.val());
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion")
+            .on("value", snaphot => {
+                this.tiposIdentificacionLista = [];
+                snaphot.forEach(element => {
+                    this.tiposIdentificacionLista.push(element.val());
+                });
+                return this.tiposIdentificacionLista;
             });
-            return this.tiposIdentificacionLista;
-        });
     }
 
-
+    //Metodos para eliminar registros configuracion
+    updateCiudad(uid, codigoCiudad, describcionCiudad) {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad"+ uid)
+            .update({
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad
+            });
+    }
 
 
 }
