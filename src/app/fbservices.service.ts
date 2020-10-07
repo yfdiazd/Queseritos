@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
+import { element } from 'protractor';
 
 
 
@@ -21,8 +22,16 @@ export class FBservicesService {
     dd: any;
     mm: any;
     yyyy: any;
-    //Variables para lista de ciudades
-    ciudadesLista: any[];
+    //Variables para listas
+    public ciudadesLista: any[];
+    public clientesLista: any[];
+    public estadoProductoLista: any[];
+    public productosLista: any[];
+    public proveedoresLista: any[];
+    public tipoAnticipoLista: any[];
+    public tipoTruequeLista: any[];
+    public tiposIdentificacionLista: any[];
+
 
     //Variables para ingresos
     public listI: any[] = [];
@@ -379,13 +388,8 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //obtener uid
-    getUID() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        return this.usuarioUid;
-    }
-    local;
-    //Obtener lista de ciudades
+        
+    //Obtener listas des configuraciones
     getCiudades() {
 
         firebase
@@ -399,4 +403,92 @@ export class FBservicesService {
                 return this.ciudadesLista;
             });
     }
+    getClientes(){
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente")
+        .on("value", snapshot =>{
+            this.clientesLista =[];
+            snapshot.forEach(element =>{
+                this.clientesLista.push(element.val());
+            });
+            return this.clientesLista;
+        });
+    }
+    getEstadoProducto(){
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos")
+        .on("value", snaphot =>{
+            this.estadoProductoLista = [];
+            snaphot.forEach(element =>{
+                this.estadoProductoLista.push(element.val());
+            });
+            return this.estadoProductoLista;
+        });
+    }
+    getProductos(){
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos")
+        .on("value", snaphot =>{
+            this.productosLista = [];
+            snaphot.forEach(element =>{
+                this.productosLista.push(element.val());
+            });
+            return this.productosLista;
+        });
+    }
+    getProveedores(){
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores")
+        .on("value", snaphot =>{
+            this.proveedoresLista = [];
+            snaphot.forEach(element =>{
+                this.proveedoresLista.push(element.val());
+            });
+            return this.proveedoresLista;
+        });
+    }
+    getTipoAnticipos(){
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo")
+        .on("value", snaphot =>{
+            this.tipoAnticipoLista = [];
+            snaphot.forEach(element =>{
+                this.tipoAnticipoLista.push(element.val());
+            });
+            return this.tipoAnticipoLista;
+        });
+    }
+    getTipoTrueque(){
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
+        .on("value", snaphot =>{
+            this.tipoTruequeLista = [];
+            snaphot.forEach(element =>{
+                this.tipoTruequeLista.push(element.val());
+            });
+            return this.tipoTruequeLista;
+        });
+    }
+    getTiposIdentificacion(){
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion")
+        .on("value", snaphot =>{
+            this.tiposIdentificacionLista = [];
+            snaphot.forEach(element =>{
+                this.tiposIdentificacionLista.push(element.val());
+            });
+            return this.tiposIdentificacionLista;
+        });
+    }
+
+
+
+
 }
