@@ -27,7 +27,7 @@ export class CrearclientesPage implements OnInit {
   ngOnInit() {
   }
   guardarCliente(){
-    this.FB.agregarCliente("1112", this.numeroIdentificacionCliente, this.nombresClietne, this.apellidosCliente, this.empresaCliente, "1", this.celularCliente, this.direccionCliente, this.correoCliente)
+    this.FB.agregarCliente(this.tipoIdentificacion, this.numeroIdentificacionCliente, this.nombresClietne, this.apellidosCliente, this.empresaCliente, this.codigoCiudad, this.celularCliente, this.direccionCliente, this.correoCliente)
   }
 
 
