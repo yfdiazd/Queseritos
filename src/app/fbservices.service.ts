@@ -157,6 +157,13 @@ export class FBservicesService {
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
                 this.getCiudades();
+                this.getClientes();
+                this.getEstadoProducto();
+                this.getProductos();
+                this.getProveedores();
+                this.getTipoAnticipos();
+                this.getTipoTrueque();
+                this.getTiposIdentificacion();
                 console.log("usuario:", this.usuarioUid);
             } else {
                 console.log("No hay sesion, toca loguear");
