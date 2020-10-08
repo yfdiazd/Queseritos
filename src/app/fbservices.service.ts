@@ -22,7 +22,7 @@ export class FBservicesService {
     mm: any;
     yyyy: any;
     //Variables para lista de ciudades
-    ciudadesLista: any[];
+    ciudadesLista: any[] = [];
 
     //Variables para ingresos
     public listI: any[] = [];

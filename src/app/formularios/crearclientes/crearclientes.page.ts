@@ -26,9 +26,13 @@ export class CrearclientesPage implements OnInit {
 
   ngOnInit() {
   }
-  guardarCliente(){
+  guardarCliente() {
     this.FB.agregarCliente("1112", this.numeroIdentificacionCliente, this.nombresClietne, this.apellidosCliente, this.empresaCliente, "1", this.celularCliente, this.direccionCliente, this.correoCliente)
   }
+  customAlertOptions: any = {
+    header: 'Seleccione anticipo',
+    translucent: true
+  };
 
 
 }
