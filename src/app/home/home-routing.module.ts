@@ -6,7 +6,11 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },  {
+    path: 'homeclientes',
+    loadChildren: () => import('./homeclientes/homeclientes.module').then( m => m.HomeclientesPageModule)
   }
+
 ];
 
 @NgModule({

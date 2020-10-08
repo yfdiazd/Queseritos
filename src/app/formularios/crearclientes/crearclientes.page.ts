@@ -11,7 +11,7 @@ export class CrearclientesPage implements OnInit {
   //variables para agregar clientes
   tipoIdentificacion: string;
   numeroIdentificacionCliente: string;
-  nombresClietne: string;
+  nombresCliente: string;
   apellidosCliente: string;
   empresaCliente: string;
   codigoCiudad: string;
@@ -27,8 +27,13 @@ export class CrearclientesPage implements OnInit {
   ngOnInit() {
   }
   guardarCliente(){
-    this.FB.agregarCliente("1112", this.numeroIdentificacionCliente, this.nombresClietne, this.apellidosCliente, this.empresaCliente, "1", this.celularCliente, this.direccionCliente, this.correoCliente)
+    console.log("Este es la identificación " + this.tipoIdentificacion);
+    this.FB.agregarCliente(this.tipoIdentificacion, this.numeroIdentificacionCliente, this.nombresCliente, this.apellidosCliente, this.empresaCliente, this.codigoCiudad, this.celularCliente, this.direccionCliente, this.correoCliente)
   }
+  customAlertOptions: any = {
+    header: 'Seleccione identificacion',
+    translucent: true
+  };
 
 
 }
