@@ -1,11 +1,14 @@
 ion-toolbar {
-    --background: #1c51e0;
+    --background: #1a1446;
+}
+.titulo {
+    color: white;
 }
 
 ion-content {
     margin: 0;
     padding: 0;
-    --background: rgb(189, 189, 189);
+    --background: #c8f7f3;
     //--background: rgba(245, 240, 184, 1);
 
     .row1,
@@ -35,20 +38,20 @@ ion-content {
     }
 
     .btn-title1 {
-        --background: rgb(114, 18, 18);
+        --background: #4376ff;
     }
 
     .btn-title2 {
-        --background: rgb(59, 129, 59);
-    }
+        --background: #ff2f73;
+        }
 
     .btn-title3 {
-        --background: rgb(189, 92, 22);
-    }
+        --background: #1a1446;  
+       }
 
     .btn-title4 {
-        --background: rgb(161, 161, 0);
-    }
+        --background: #4376ff;
+        }
 
     .btn-title1,
     .btn-title2 {
@@ -87,11 +90,11 @@ ion-content {
     }
 
     .boton-n-lote {
-        --background: rgb(70, 0, 0);
+        --background: #1a1446; 
     }
 
     .boton-v-lote {
-        --background: rgb(1, 75, 1);
+        --background: #4346ff;
     }
 
     ion-card {

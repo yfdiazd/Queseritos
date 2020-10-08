@@ -1,6 +1,9 @@
 ion-toolbar {
     --background: #1a1446;
 }
+.titulo {
+    color: white;
+}
 ion-content {
     padding: 0;
     margin: 0;
@@ -13,25 +16,13 @@ ion-content {
         
     }
 
-    .div-f-1{
+   .div-saldo-a{
         display: inline-block;
         width: 100%;
-        height: 50%;
-    }
-
-    .div-saldo-a{
-        display: inline-block;
-        width: 50%;
         height: 100%;
         border-bottom: 2px solid green;
     }
-    .div-saldo-l{
-        display: inline-block;
-        width: 50%;
-        height: 100%;
-        border-bottom: 2px solid pink;
-    }
-     .div-f-2{
+    .div-f-2{
         display: inline-block;
         width: 100%;
         height: 50%;
@@ -49,6 +40,20 @@ ion-content {
         width: 50%;
         height: 100%;
     }
+    .div-bultot{
+        display: inline-block;
+        width: 50%;
+        height: 100%;
+        border-right: 2px solid white;
+    }
+    .div-pesoc{
+        padding: 5px;
+        justify-content: center;
+        display: inline-block;
+        width: 50%;
+        height: 100%;
+    }
+
     .div-sdt{
         padding-top: 1rem;
         text-align: center;
@@ -70,17 +75,26 @@ ion-content {
         background-color: #c8f7f3;
 
     #boton-n-lote{
-    line-height: 20px; 
-    width: 18px; 
-    font-size: 20pt; 
-    font-family: tahoma; 
+    width: 22px; 
+    font-size: 20px; 
     margin-top: 0; 
-    margin-right: 2px; 
+    margin-right: 0; 
     position: absolute;
     top:0; 
     right:10px; 
-    background: #ff2f73;
+    --background: #ff2f73;
     }
+    #boton-n-lote1{
+        padding:0;
+        width: 18px; 
+        font-size: 15px; 
+        margin-top: 0; 
+        margin-right: 0; 
+        position: sticky;
+        top:0; 
+        right:0; 
+       --background: #ff2f73;
+        }
         
     }
 }

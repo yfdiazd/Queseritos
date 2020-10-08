@@ -44,12 +44,30 @@ ion-content {
         width: 100%;
         height: 70%;
     }
-
+  
     .div-secundario {
         height: 90%;
         width: 100%;
         background-color: #c8f7f3;
 
+        .div-pesoc{
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+        }
+        .div-atributo1{
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+    
+        }
+        .div-atributo2{
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+        }
+       
     .card1{
         margin: auto;
         text-align: left;

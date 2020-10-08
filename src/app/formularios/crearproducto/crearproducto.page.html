@@ -1,25 +1,32 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>Tipos de Queso</ion-title>
+    <ion-title class="titulo">TIPOS DE QUESO</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="white"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-text>
-    <p>Completa el formulario para crear los tipos de Queso</p>
-  </ion-text>
+  <div class="div-formulario">
+    <ion-text>
+      <div class="bloque">
+        <p>Completa el formulario para crear un tipo de queso</p>
+      </div>
+    </ion-text>
+  </div>
 
-  <div>
-    <input type="text" placeholder="Código del producto" [(ngModel)]="codigoProducto"/>
-    <input type="text" placeholder="Nombre del producto" [(ngModel)]="descripcionProducto" />
-  </div>
-  
-  <div>
-    <ion-button (click)="agregarProducto()" expand="full">
-      <ion-icon name="save-outline"></ion-icon>
-      Guardar
-    </ion-button>
-  </div>
+    <div>
+      <input type="number" placeholder="Código del Producto" />
+      <input type="number" placeholder="Descripción del Producto" />
+    </div>
+
+    <div>
+      <ion-button (click)="agregarProducto()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
 
 </ion-content>

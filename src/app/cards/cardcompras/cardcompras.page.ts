@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import {Router} from '@angular/router';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-cardcompras',
   templateUrl: './cardcompras.page.html',
@@ -12,7 +13,8 @@ export class CardcomprasPage implements OnInit {
   saldodebitototal="$1000.000";
   saldocreditotal="$1.500.000";
   pestotoalcomprado="300";
-  constructor(public actionSheetController: ActionSheetController, private router:Router) { }
+  totalbultos="2";
+  constructor(public actionSheetController: ActionSheetController, public alertController: AlertController, private router:Router) { }
   irVender(){
     this.router.navigate(["cardcompras"]);
   }
@@ -20,7 +22,29 @@ export class CardcomprasPage implements OnInit {
   ngOnInit() {
   }
 
-
+  async presentAlertConfirm() 
+  {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm!',
+      message: 'Message <strong>text</strong>!!!',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+          }
+        }
+      ]
+    });
+  }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Acciones',

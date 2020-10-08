@@ -2,16 +2,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">COMPRAR A PROVEEDORES</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="div-principal">
     <div class="div-f-1">
-      <div class="div-saldo-l">
-        <div class="div-sdt">Peso Límite:</div>
-        <div class="div-sdv">{{pesolimite}}</div>
-      </div>
       <div class="div-saldo-a">
         <div class="div-sdt">Peso Actual:</div>
         <div class="div-sdv">{{pesoacumulado}}</div>
@@ -33,21 +32,30 @@
       <ion-col id="col1">
         <ion-card id="card1">
           <div id="title1">Fernanda</div>
+          <div class="div-bultot">
+            <div class="div-sdt">Bultos:</div>
+            <div class="div-sdv">{{totalbultos}}</div>
+          </div>
           <div class="div-pesoc">
             <div class="div-sdt">Peso Total Comprado:</div>
             <div class="div-sdv">{{pestotoalcomprado}} Kg</div>
           </div>
-          <div class="div-saldo-d">
+           <div class="div-saldo-d">
             <div class="div-sdt">Saldo Débito:</div>
             <div class="div-sdv">{{saldodebitototal}}</div>
           </div>
           <div class="div-saldo-c">
-          <div class="div-sdt">Saldo Crédito</div>
-          <div class="div-sdv">{{saldocreditotal}}</div>
-        </div>
+            <div class="div-sdt">Saldo Crédito</div>
+            <div class="div-sdv">{{saldocreditotal}}</div>
+          </div>
           <div id="div-boton-lote">
             <ion-button id="boton-n-lote" (click)="irVender()" expand="full">
               <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+          </div>
+          <div id="div-boton-lote1">
+            <ion-button id="boton-n-lote1" (click)="irVender()" expand="full">
+              <ion-icon name="create-outline"></ion-icon>
             </ion-button>
           </div>
         </ion-card>
