@@ -1,25 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
-import {Router} from '@angular/router';
-@Component({
-  selector: 'app-cardcompras',
-  templateUrl: './cardcompras.page.html',
-  styleUrls: ['./cardcompras.page.scss'],
-})
-export class CardcomprasPage implements OnInit {
-  pesolimite="500";
-  pesoacumulado="300";
-  saldodebitototal="$1000.000";
-  saldocreditotal="$1.500.000";
-  pestotoalcomprado="300";
-  constructor(public actionSheetController: ActionSheetController, private router:Router) { }
-  irVender(){
-    this.router.navigate(["cardcompras"]);
-  }
 
+@Component({
+  selector: 'app-cardcompradetallada',
+  templateUrl: './cardcompradetallada.page.html',
+  styleUrls: ['./cardcompradetallada.page.scss'],
+})
+export class CardcompradetalladaPage implements OnInit {
+  
+  constructor(public actionSheetController: ActionSheetController) { }
+  pesototal="500";
+  idproveedor="Fernanda Díaz";
+  tipoqueso="Costeño";
+  fechcompra="07-10-2020";
+  cantbulto="30";
+  idbulto="1";
+  pesobulto="10"
   ngOnInit() {
   }
-
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -32,14 +30,7 @@ export class CardcomprasPage implements OnInit {
         handler: () => {
           console.log('Delete clicked');
         }
-      }, {
-        text: 'Agregar',
-        role: 'edit',
-        icon: 'add',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, 
+      },
       {
         text: 'Cancelar',
         icon: 'close',

@@ -1,7 +1,7 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>COMPRAR A PROVEEDORES</ion-title>
+    <ion-title class="titulo">COMPRAR A PROVEEDORES</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,11 +10,11 @@
     <div class="div-f-1">
       <div class="div-saldo-l">
         <div class="div-sdt">Peso Límite:</div>
-        <div>{{pesolimite}}</div>
+        <div class="div-sdv">{{pesolimite}}</div>
       </div>
       <div class="div-saldo-a">
         <div class="div-sdt">Peso Actual:</div>
-        <div>{{pesoacumulado}}</div>
+        <div class="div-sdv">{{pesoacumulado}}</div>
       </div>
     </div>
     <div class="div-f-2">
@@ -33,8 +33,20 @@
       <ion-col id="col1">
         <ion-card id="card1">
           <div id="title1">Fernanda</div>
+          <div class="div-pesoc">
+            <div class="div-sdt">Peso Total Comprado:</div>
+            <div class="div-sdv">{{pestotoalcomprado}} Kg</div>
+          </div>
+          <div class="div-saldo-d">
+            <div class="div-sdt">Saldo Débito:</div>
+            <div class="div-sdv">{{saldodebitototal}}</div>
+          </div>
+          <div class="div-saldo-c">
+          <div class="div-sdt">Saldo Crédito</div>
+          <div class="div-sdv">{{saldocreditotal}}</div>
+        </div>
           <div id="div-boton-lote">
-            <ion-button id="boton-n-lote" (click)="guardar()" expand="full" color="dark">
+            <ion-button id="boton-n-lote" (click)="irVender()" expand="full">
               <ion-icon name="add-outline"></ion-icon>
             </ion-button>
           </div>
@@ -42,7 +54,7 @@
       </ion-col>
     </ion-row>
     <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button>
+      <ion-fab-button id="boton-add">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab>

@@ -73,10 +73,13 @@ const routes: Routes = [
     loadChildren: () => import('./formularios/confirmarpesaje/confirmarpesaje.module').then( m => m.ConfirmarpesajePageModule)
   },
   {
-    path: 'homeclientes',
-    loadChildren: () => import('./home/homeclientes/homeclientes.module').then( m => m.HomeclientesPageModule)
-  }
-
+    path: 'cardcompradetallada',
+    loadChildren: () => import('./cards/cardcompradetallada/cardcompradetallada.module').then( m => m.CardcompradetalladaPageModule)
+  },
+{
+  path: 'homeclientes',
+  loadChildren: () => import('./home/homeclientes/homeclientes.module').then( m => m.HomeclientesPageModule)
+}
 
   ];
 
