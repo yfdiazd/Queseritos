@@ -71,6 +71,10 @@ const routes: Routes = [
   {
     path: 'confirmarpesaje',
     loadChildren: () => import('./formularios/confirmarpesaje/confirmarpesaje.module').then( m => m.ConfirmarpesajePageModule)
+  },
+  {
+    path: 'homeclientes',
+    loadChildren: () => import('./home/homeclientes/homeclientes.module').then( m => m.HomeclientesPageModule)
   }
 
 

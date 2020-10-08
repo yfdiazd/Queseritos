@@ -2,11 +2,8 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
-<<<<<<< HEAD
-=======
 import { element } from 'protractor';
 import { constants } from 'buffer';
->>>>>>> b044da746f60a7f4c7514bff929515c28c8429d3
 
 
 
@@ -27,14 +24,14 @@ export class FBservicesService {
     mm: any;
     yyyy: any;
     //Variables para listas
-    public ciudadesLista: any[];
-    public clientesLista: any[];
-    public estadoProductoLista: any[];
-    public productosLista: any[];
-    public proveedoresLista: any[];
-    public tipoAnticipoLista: any[];
-    public tipoTruequeLista: any[];
-    public tiposIdentificacionLista: any[];
+    public ciudadesLista: any[] = [];
+    public clientesLista: any[] = [];
+    public estadoProductoLista: any[] = [];
+    public productosLista: any[] = [];
+    public proveedoresLista: any[] = [];
+    public tipoAnticipoLista: any[] = [];
+    public tipoTruequeLista: any[] = [];
+    public tiposIdentificacionLista: any[] = [];
 
 
     //Variables para ingresos

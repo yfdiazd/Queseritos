@@ -59,7 +59,7 @@ export class MainMenuPage implements OnInit {
   }
   
   irPageRegistrarCliente(){
-    this.router.navigate(["crearclientes"]);
+    this.router.navigate(["homeclientes"]);
   
 }
 
