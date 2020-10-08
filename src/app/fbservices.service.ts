@@ -2,6 +2,11 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
+<<<<<<< HEAD
+=======
+import { element } from 'protractor';
+import { constants } from 'buffer';
+>>>>>>> b044da746f60a7f4c7514bff929515c28c8429d3
 
 
 
@@ -21,8 +26,16 @@ export class FBservicesService {
     dd: any;
     mm: any;
     yyyy: any;
-    //Variables para lista de ciudades
-    ciudadesLista: any[] = [];
+    //Variables para listas
+    public ciudadesLista: any[];
+    public clientesLista: any[];
+    public estadoProductoLista: any[];
+    public productosLista: any[];
+    public proveedoresLista: any[];
+    public tipoAnticipoLista: any[];
+    public tipoTruequeLista: any[];
+    public tiposIdentificacionLista: any[];
+
 
     //Variables para ingresos
     public listI: any[] = [];
@@ -112,7 +125,7 @@ export class FBservicesService {
                     firebase
                         .database()
                         .ref("usuario/" + this.usuarioUid + "/datosBasicos")
-                        .set({
+                        .push({
                             usuario: user,
                             email: email
                         });
@@ -148,6 +161,13 @@ export class FBservicesService {
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
                 this.getCiudades();
+                this.getClientes();
+                this.getEstadoProducto();
+                this.getProductos();
+                this.getProveedores();
+                this.getTipoAnticipos();
+                this.getTipoTrueque();
+                this.getTiposIdentificacion();
                 console.log("usuario:", this.usuarioUid);
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -242,8 +262,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos/" + codigoProducto)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/")
+            .push({
                 codigo: codigoProducto,
                 descripcion: descripcionProducto
 
@@ -256,8 +276,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores/" + numIndetificacionProveedor + "-" + nombreProveedor)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/")
+            .push({
                 tipoIdentificacion: tipoIdentificacionProveedor,
                 numIndetificacion: numIndetificacionProveedor,
                 nombre: nombreProveedor,
@@ -287,8 +307,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion/" + codigoTipoIdentificacion)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion")
+            .push({
                 codigo: codigoTipoIdentificacion,
                 descripcion: descripcionTipoIdentificacion
             });
@@ -300,8 +320,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos/" + codigoEstadoProducto)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos")
+            .push({
                 codigo: codigoEstadoProducto,
                 descripcion: descripcionEstadoProducto
             });
@@ -312,8 +332,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo/" + codigoTipoAnticipo)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo")
+            .push({
                 codigo: codigoTipoAnticipo,
                 descripcion: descripcionTipoanticipo
             });
@@ -325,8 +345,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque/" + codigoTipoTrueque)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque")
+            .push({
                 codigo: codigoTipoTrueque,
                 descripcion: descripcionTipoTrueque
             });
@@ -338,8 +358,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/" + codigoCiudad)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad")
+            .push({
                 codigo: codigoCiudad,
                 descripcion: describcionCiudad
             });
@@ -350,8 +370,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionCliente + "-" + nombresClietne)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente")
+            .push({
                 identificacion: tipoIdentificacion,
                 numeroIdentificacion: numeroIdentificacionCliente,
                 nombres: nombresClietne,
@@ -369,8 +389,8 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente/" + numeroIdentificacionConductor + "-" + nombreConductor)
-            .set({
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor")
+            .push({
                 identificacion: tipoIdentificacionConductor,
                 numeroIdentificacion: numeroIdentificacionConductor,
                 nombres: nombreConductor,
@@ -379,13 +399,8 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //obtener uid
-    getUID() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        return this.usuarioUid;
-    }
-    local;
-    //Obtener lista de ciudades
+
+    //Obtener listas des configuraciones
     getCiudades() {
 
         firebase
@@ -399,4 +414,102 @@ export class FBservicesService {
                 return this.ciudadesLista;
             });
     }
+    getClientes() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente")
+            .on("value", snapshot => {
+                this.clientesLista = [];
+                snapshot.forEach(element => {
+                    this.clientesLista.push(element.val());
+                });
+                return this.clientesLista;
+            });
+    }
+    getEstadoProducto() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos")
+            .on("value", snaphot => {
+                this.estadoProductoLista = [];
+                snaphot.forEach(element => {
+                    this.estadoProductoLista.push(element.val());
+                });
+                console.log(this.estadoProductoLista);
+                return this.estadoProductoLista;
+            });
+    }
+    getProductos() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos")
+            .on("value", snaphot => {
+                this.productosLista = [];
+                snaphot.forEach(element => {
+                    this.productosLista.push(element.val());
+                });
+                return this.productosLista;
+            });
+    }
+    getProveedores() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores")
+            .on("value", snaphot => {
+                this.proveedoresLista = [];
+                snaphot.forEach(element => {
+                    this.proveedoresLista.push(element.val());
+                });
+                return this.proveedoresLista;
+            });
+    }
+    getTipoAnticipos() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo")
+            .on("value", snaphot => {
+                this.tipoAnticipoLista = [];
+                snaphot.forEach(element => {
+                    this.tipoAnticipoLista.push(element.val());
+                });
+                return this.tipoAnticipoLista;
+            });
+    }
+    getTipoTrueque() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
+            .on("value", snaphot => {
+                this.tipoTruequeLista = [];
+                snaphot.forEach(element => {
+                    this.tipoTruequeLista.push(element.val());
+                });
+                return this.tipoTruequeLista;
+            });
+    }
+    getTiposIdentificacion() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion")
+            .on("value", snaphot => {
+                this.tiposIdentificacionLista = [];
+                snaphot.forEach(element => {
+                    this.tiposIdentificacionLista.push(element.val());
+                });
+                return this.tiposIdentificacionLista;
+            });
+    }
+
+    //Metodos para eliminar registros configuracion
+    updateCiudad(uid, codigoCiudad, describcionCiudad) {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad"+ uid)
+            .update({
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad
+            });
+    }
+
+
 }
