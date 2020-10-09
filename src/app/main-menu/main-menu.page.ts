@@ -34,7 +34,7 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageTipoQueso(){
-    this.router.navigate(["crearproducto"]);
+    this.router.navigate(["hometiposqueso"]);
   }
 
   irPageEstadoQueso(){
@@ -46,7 +46,7 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageTipoAnticipo(){
-    this.router.navigate(["crearanticipos"]);
+    this.router.navigate(["creartiposanticipo"]);
     }
   
   irPageTipoTrueque(){

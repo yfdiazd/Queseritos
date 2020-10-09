@@ -9,13 +9,15 @@ import { ActionSheetController } from '@ionic/angular';
 export class CardcompradetalladaPage implements OnInit {
   
   constructor(public actionSheetController: ActionSheetController) { }
-  pesototal="500";
+  pesototal="300";
   idproveedor="Fernanda Díaz";
   tipoqueso="Costeño";
   fechcompra="07-10-2020";
   cantbulto="30";
   idbulto="1";
-  pesobulto="10"
+  pesobulto="150";
+  idbulto1="2";
+  pesobulto2="150";
   ngOnInit() {
   }
 

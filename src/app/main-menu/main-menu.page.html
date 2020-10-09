@@ -2,7 +2,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-menu-button slot="start" (click)="openFirst()"></ion-menu-button>
-    <ion-title> MENU PRINCIPAL</ion-title>
+    <ion-title class= "titulo"> MENU PRINCIPAL</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -60,13 +60,13 @@
       <ion-item (click)="irPageTipoAnticipo()">Tipos de Anticipo</ion-item>
       <ion-item (click)="irPageTipoTrueque()">Tipos de Trueque</ion-item>
       <ion-item (click)="irPageCrearCiudad()">Ciudades</ion-item>
-      <ion-item (click)="irPageTipoclassentificacion()">Tipos de classentificación</ion-item>
+      <ion-item (click)="irPageTipoIdentificacion()">Tipos de Identificación</ion-item>
       <ion-item (click)="irPageRegistrarProveedor()">Proveedores</ion-item>
       <ion-item (click)="irPageRegistrarCliente()">Clientes</ion-item>
       <ion-item (click)="irPageRegistrarConductor()">Conductores</ion-item>
     </ion-list>
     <ion-button (click)="FB.cerrarSesion()">
-      CERRAR SESION
+      Cerrar Sesión
     </ion-button>
   </ion-content>
 </ion-menu>

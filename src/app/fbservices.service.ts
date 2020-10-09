@@ -43,7 +43,24 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
-  
+
+
+    //Variables para ingresos
+    public listI: any[] = [];
+    valorT: any[] = [];
+    val;
+    public totalIngreso;
+    //Variables para gastos
+    numeroGastos;
+    numeroGastosEliminados;
+    numeroGastosPagos;
+    public listG: any[] = [];
+    public listGEliminados: any[] = [];
+    public listGPagados: any[] = [];
+    valorTG: any[] = [];
+    valG;
+    public totalGasto;
+
     // Variable usuario
     usuario: string;
     public totalTodo;

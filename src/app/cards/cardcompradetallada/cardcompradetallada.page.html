@@ -2,9 +2,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">PESAJES DETALLADOS</ion-title>
-  <ion-buttons slot="start">
-    <ion-back-button defaultHref="/cardcompras" color ="success"></ion-back-button>
-  </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -22,12 +22,23 @@
     <ion-row class="row1">
       <ion-col id="col1">
         <ion-card id="card1">
-          <div id="title1">Fecha: {{fechcompra}}</div>
+          <div id="title1">Tipo de queso: {{tipoqueso}}</div>
           <div class="div-pesoc">
-            <div class="div-sdp">Bulto:{{idbulto}}</div>
-            <div class="div-stq">Tipo de queso: {{tipoqueso}}</div>
-            <div class="div-spu">Peso: {{pesobulto}} Kg</div>
+            <div class="div-stq">Fecha: {{fechcompra}} </div>
           </div>
+          <div class="div-atributo1">
+            <div>Bulto:{{idbulto}}</div>
+          </div>
+          <div class="div-atributo2">
+            <div>Peso: {{pesobulto}} Kg</div>
+          </div>
+          <div class="div-atributo1">
+            <div>Bulto:{{idbulto1}}</div>
+          </div>
+          <div class="div-atributo2">
+            <div>Peso: {{pesobulto2}} Kg</div>
+          </div>
+
         </ion-card>
       </ion-col>
     </ion-row>
