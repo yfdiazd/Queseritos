@@ -34,7 +34,7 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageTipoQueso(){
-    this.router.navigate(["crearproducto"]);
+    this.router.navigate(["hometiposqueso"]);
   }
 
   irPageEstadoQueso(){

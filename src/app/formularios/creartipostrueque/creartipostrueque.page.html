@@ -18,12 +18,12 @@
   </div>
 
     <div>
-      <input type="number" placeholder="Código del Trueque" />
-      <input type="number" placeholder="Descripción del Trueque" />
+      <input type="text" placeholder="Código del Trueque" [(ngModel)]="codigoTipoTrueque" />
+      <input type="text" placeholder="Descripción del Trueque" [(ngModel)]="descripcionTipoTrueque" />
     </div>
 
     <div>
-      <ion-button (click)="agregarProducto()" expand="full">
+      <ion-button (click)="guardarTipoTrueque()" expand="full">
         <ion-icon name="save-outline"></ion-icon>
         Guardar
       </ion-button>

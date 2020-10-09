@@ -24,7 +24,7 @@ export class HometiposquesoPage implements OnInit {
         icon: 'person-add',
         handler: () => {
           console.log('Play clicked');
-          this.router.navigate(["crearclientes"]);
+          this.router.navigate(["crearproducto"]);
         }
       }, 
       {

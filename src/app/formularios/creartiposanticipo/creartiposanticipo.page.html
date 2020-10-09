@@ -18,12 +18,12 @@
   </div>
 
     <div>
-      <input type="number" placeholder="Código del Anticipo" />
-      <input type="number" placeholder="Descripción del Anticipo" />
+      <input type="text" placeholder="Código del Anticipo" [(ngModel)]="codigoTipoAnticipo" />
+      <input type="text" placeholder="Descripción del Anticipo" [(ngModel)]="descripcionTipoAnticipo"/>
     </div>
 
     <div>
-      <ion-button (click)="agregarProducto()" expand="full">
+      <ion-button (click)="guardarTipoAnticipo()" expand="full">
         <ion-icon name="save-outline"></ion-icon>
         Guardar
       </ion-button>

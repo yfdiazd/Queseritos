@@ -1,0 +1,49 @@
+ion-toolbar {
+    --background: #1a1446;
+}
+.titulo {
+    color: white;
+}
+
+ion-content {
+    margin: 0;
+    padding: 0;
+    --color: #1a1446;
+    --background: #c8f7f3;
+
+    .div-formulario {
+        padding: 0;
+        width: 80%;
+        margin: auto;
+    }
+
+    input {
+        background-color: white; 
+        //background-color: transparentize($color: grey, $amount: 0.5);
+        border-style: hidden;
+        color: #1a1446;
+        font-size: medium;
+        padding-left: 10px;
+        border-radius: 5px;
+        height: 40px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .div-formulario ion-button {
+        margin-bottom: 40px;
+        font-size: 20px;
+        height: 60px;
+        width: 100%;
+    }
+
+    .select {
+        color: #1a1446;;
+        padding-right: 10px;
+        background: white;
+        width: 100%;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+}

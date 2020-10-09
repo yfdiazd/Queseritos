@@ -18,13 +18,13 @@
   </div>
 
     <div>
-      <input type="number" placeholder="Código del Producto" />
-      <input type="number" placeholder="Descripción del Producto" />
+      <input type="text" placeholder="Código del Producto" [(ngModel)]="codigoProducto" />
+      <input type="text" placeholder="Descripción del Producto" [(ngModel)]="descripcionProducto"/>
     </div>
 
     <div>
       <ion-button (click)="agregarProducto()" expand="full">
-        <ion-icon name="save-outline"></ion-icon>
+       <ion-icon name="save-outline"></ion-icon>
         Guardar
       </ion-button>
     </div>

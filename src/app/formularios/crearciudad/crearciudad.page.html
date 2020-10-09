@@ -18,12 +18,12 @@
   </div>
 
     <div>
-      <input type="number" placeholder="Código de ciudad" />
-      <input type="number" placeholder="Descripción de la ciudad" />
+      <input type="text" placeholder="Código de ciudad" [(ngModel)]="codigoCiudad"/>
+      <input type="text" placeholder="Descripción de la ciudad" [(ngModel)]="descripcionCiudad" />
     </div>
 
     <div>
-      <ion-button (click)="agregarProducto()" expand="full">
+      <ion-button (click)="guardarCiudad()" expand="full">
         <ion-icon name="save-outline"></ion-icon>
         Guardar
       </ion-button>

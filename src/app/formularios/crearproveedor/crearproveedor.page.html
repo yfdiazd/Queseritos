@@ -20,7 +20,7 @@
 
   <div>
     <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-      placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacion">
+      placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacionProveedor">
       <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
         {{lista.descripcion}}
       </ion-select-option>
@@ -33,7 +33,7 @@
     <input type="text" placeholder="Correo Electrónico" [(ngModel)]="correoProveedor" />
   </div>
   <div>
-    <ion-button (click)="guardarCliente()" expand="full">
+    <ion-button (click)="crearProveedor()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
