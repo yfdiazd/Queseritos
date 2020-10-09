@@ -1,61 +1,61 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="medium"></ion-back-button>
+    </ion-buttons>
     <ion-title class="titulo">COMPRAR A PROVEEDORES</ion-title>
   </ion-toolbar>
 </ion-header>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <ion-content>
   <div class="div-principal">
-    <div class="div-f-1">
-      <div class="div-saldo-l">
-        <div class="div-sdt">Peso Límite:</div>
-        <div class="div-sdv">{{pesolimite}}</div>
-      </div>
-      <div class="div-saldo-a">
-        <div class="div-sdt">Peso Actual:</div>
-        <div class="div-sdv">{{pesoacumulado}}</div>
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Peso Actual</p>
+        <p class="div-v">{{pesoacumulado}} <label> Kg</label></p>
       </div>
     </div>
-    <div class="div-f-2">
-      <div class="div-saldo-d">
-        <div class="div-sdt">Saldo Débito:</div>
-        <div class="div-sdv">{{saldodebitototal}}</div>
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Saldo Débito</p>
+        <p class="div-v" id="saldo-debito">{{saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
       </div>
-      <div class="div-saldo-c">
-        <div class="div-sdt">Saldo Crédito:</div>
-        <div class="div-sdv">{{saldocreditotal}}</div>
+      <div class="div-f">
+        <p class="div-t">Saldo Crédito</p>
+        <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
       </div>
     </div>
   </div>
   <div class="div-secundario">
-    <ion-row class="row1">
-      <ion-col id="col1">
-        <ion-card id="card1">
-          <div id="title1">Fernanda</div>
-          <div class="div-pesoc">
-            <div class="div-sdt">Peso Total Comprado:</div>
-            <div class="div-sdv">{{pestotoalcomprado}} Kg</div>
-          </div>
-          <div class="div-saldo-d">
-            <div class="div-sdt">Saldo Débito:</div>
-            <div class="div-sdv">{{saldodebitototal}}</div>
-          </div>
-          <div class="div-saldo-c">
-          <div class="div-sdt">Saldo Crédito</div>
-          <div class="div-sdv">{{saldocreditotal}}</div>
-        </div>
-          <div id="div-boton-lote">
-            <ion-button id="boton-n-lote" (click)="irVender()" expand="full">
-              <ion-icon name="add-outline"></ion-icon>
-            </ion-button>
-          </div>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+    <ion-card class="card" (click)="irCompraDetallada()">
+      <div class="div-title">
+        <ion-title>FERNANDA</ion-title>
+        <ion-button (click)="irPesajeCompra()" color="success" expand="full">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Bultos</p>
+        <p class="div-v">{{pestotoalcomprado}}</p>
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Peso Total Comprado</p>
+        <p class="div-v">{{pestotoalcomprado}} <label> Kg</label></p>
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Saldo Débito</p>
+        <p class="div-v" id="saldo-debito2">{{saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Saldo Crédito</p>
+        <p class="div-v" id="saldo-credito2">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+      </div>
+    </ion-card>
     <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button id="boton-add">
-        <ion-icon name="add"></ion-icon>
+        <ion-icon name="hammer"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </div>

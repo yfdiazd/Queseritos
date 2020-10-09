@@ -27,7 +27,6 @@ export class CrearclientesPage implements OnInit {
   ngOnInit() {
   }
   guardarCliente(){
-    console.log("Este es la identificación " + this.tipoIdentificacion);
     this.FB.agregarCliente(this.tipoIdentificacion, this.numeroIdentificacionCliente, this.nombresCliente, this.apellidosCliente, this.empresaCliente, this.codigoCiudad, this.celularCliente, this.direccionCliente, this.correoCliente)
   }
   customAlertOptions: any = {
