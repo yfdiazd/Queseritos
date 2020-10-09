@@ -13,6 +13,9 @@ import { constants } from 'buffer';
 
 })
 export class FBservicesService {
+    //variables idGenerator
+    varIdGenerator: any = 0;
+    time: any;
     //variables id
     idCiudad: string;
     idCliente: String;
@@ -39,7 +42,7 @@ export class FBservicesService {
     public tipoAnticipoLista: any[];
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
-    public conductoresLista:any[];
+    public conductoresLista: any[];
 
 
     //Variables para ingresos
@@ -264,6 +267,18 @@ export class FBservicesService {
         toast.present();
     }
 
+    
+    //-------------Metodo que permite consultar la fecha actual:----------------------------------
+    fechaActual() {
+        this.today = new Date();
+        this.dd = String(this.today.getDate()).padStart(2, '0');
+        this.mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        this.yyyy = this.today.getFullYear();
+        this.today = this.dd + '/' + this.mm + '/' + this.yyyy;
+
+        return this.today;
+    }
+    //-----------------------------Metodos creacion parametrizacion------------------------------------------------------
     //Metodo que permite crear productos
     crearProdcuto(codigoProducto, descripcionProducto) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -274,12 +289,12 @@ export class FBservicesService {
             .set({
                 id: this.idProducto,
                 codigo: codigoProducto,
-                descripcion: descripcionProducto
+                descripcion: descripcionProducto,
+                estado: 1
 
             });
         this.toastProductoCrado();
     }
-
     //Metodo que permite crear proveedores
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -289,31 +304,19 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + this.idProveedor)
             .set({
                 id: this.idProveedor,
-                tipoIdentificacion: tipoIdentificacionProveedor,
+                idTipoIdentificacion: tipoIdentificacionProveedor,
                 numIndetificacion: numIndetificacionProveedor,
                 nombre: nombreProveedor,
                 apellido: apellidoProveedor,
                 telefono: telefonoProveedor,
                 direccion: direccionProveedor,
                 correo: correoProveedor,
-                fechaCreacion: this.fechaActual()
+                fechaCreacion: this.fechaActual(),
+                estado: 1
 
             });
         this.toastProveedorCrado();
     }
-
-    //Metodo que permite consultar la fecha actual:
-
-    fechaActual() {
-        this.today = new Date();
-        this.dd = String(this.today.getDate()).padStart(2, '0');
-        this.mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        this.yyyy = this.today.getFullYear();
-        this.today = this.dd + '/' + this.mm + '/' + this.yyyy;
-
-        return this.today;
-    }
-
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
         this.idTipoIdentificacion = this.idGenerator();
@@ -324,11 +327,11 @@ export class FBservicesService {
             .set({
                 id: this.idTipoIdentificacion,
                 codigo: codigoTipoIdentificacion,
-                descripcion: descripcionTipoIdentificacion
+                descripcion: descripcionTipoIdentificacion,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
-
     //Metodo para agregar estados de producto
     agregarEstadoProducto(codigoEstadoProducto, descripcionEstadoProducto) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -339,7 +342,8 @@ export class FBservicesService {
             .set({
                 id: this.idEstadoProducto,
                 codigo: codigoEstadoProducto,
-                descripcion: descripcionEstadoProducto
+                descripcion: descripcionEstadoProducto,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
@@ -353,11 +357,11 @@ export class FBservicesService {
             .set({
                 id: this.idTipoAnticipo,
                 codigo: codigoTipoAnticipo,
-                descripcion: descripcionTipoanticipo
+                descripcion: descripcionTipoanticipo,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
-
     //Metodo para agregar el tipo de trueque.
     agregarTipoTrueque(codigoTipoTrueque, descripcionTipoTrueque) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -368,11 +372,11 @@ export class FBservicesService {
             .set({
                 id: this.idTipoTrueque,
                 codigo: codigoTipoTrueque,
-                descripcion: descripcionTipoTrueque
+                descripcion: descripcionTipoTrueque,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
-
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -383,7 +387,8 @@ export class FBservicesService {
             .set({
                 id: this.idCiudad,
                 codigo: codigoCiudad,
-                descripcion: describcionCiudad
+                descripcion: describcionCiudad,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
@@ -396,15 +401,16 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + this.idCliente)
             .set({
                 id: this.idCliente,
-                identificacion: tipoIdentificacion,
+                idTipoIdentificacion: tipoIdentificacion,
                 numeroIdentificacion: numeroIdentificacionCliente,
                 nombres: nombresClietne,
                 apellidos: apellidosCliente,
                 empresa: empresaCliente,
-                codigoCiudad: codigoCiudad,
+                idCiudad: codigoCiudad,
                 celular: celularCliente,
                 direccion: direccionCliente,
-                correo: correoCliente
+                correo: correoCliente,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
@@ -417,16 +423,17 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + this.idConductor)
             .set({
                 id: this.idConductor,
-                identificacion: tipoIdentificacionConductor,
+                idTipoIdentificacion: tipoIdentificacionConductor,
                 numeroIdentificacion: numeroIdentificacionConductor,
                 nombres: nombreConductor,
                 apellidos: apelidoConductor,
-                celular: celularConductor
+                celular: celularConductor,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
 
-    //Obtener listas des configuraciones
+    //-----------------------Obtener listas des configuraciones------------------------------------------------
     getCiudades() {
 
         firebase
@@ -525,7 +532,7 @@ export class FBservicesService {
                 return this.tiposIdentificacionLista;
             });
     }
-    getConductor(){
+    getConductor() {
         firebase
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor")
@@ -538,10 +545,110 @@ export class FBservicesService {
             });
     }
 
-    //btenert uid de algo
+    //----------------------------------Metodos para eliminar estado 0-----------------------------------------
 
-    //Metodos para eliminar registros configuracion
+    deleteProducto(idProducto) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + idProducto)
+            .update({
+                estado: 0
+
+            });
+        this.toastOperacionExitosa();
+    }
+    deleteProveedor(idProveedor) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + idProveedor)
+            .update({
+                estado: 0
+            });
+        this.toastOperacionExitosa();
+    }
+    deleteTipoIdentificacion(idTipoIdentificacion) {
+
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion/" + idTipoIdentificacion)
+            .update({
+                estado: 0
+            });
+        this.toastOperacionExitosa();
+    }
+    deleteEstadoProducto(idEstadoProducto) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos/" + idEstadoProducto)
+            .update({
+
+                estado: 0
+            });
+        this.toastOperacionExitosa();
+    }
+    deleteTipoAnticipo(idTipoAnticipo){
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
+            .update({
+                estado: 0
+            });
+        this.toastOperacionExitosa();
+    }
+    deleteTipoTrueque(idTipoTrueque){
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
+            .update({
+                estado: 0
+            });
+        this.toastOperacionExitosa();
+    }
+    deleteCiudad(idCiudad) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/" + idCiudad)
+            .update({
+                estado: 0
+            }).then()
+        this.toastOperacionExitosa();
+    }
+    deleteCliente(idCliente){
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + idCliente)
+            .update({
+                estado: 0
+            });
+        this.toastOperacionExitosa();
+    }
+    deleteConductor(idConductor){
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + idConductor)
+            .update({
+                estado: 0
+            });
+        this.toastOperacionExitosa();
+    }
+    //----------------------------------------Metodos para actualizar  registros configuracion-------------------------------
     updateCiudad(codigoCiudad, describcionCiudad) {
+
         firebase
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad")
@@ -551,8 +658,7 @@ export class FBservicesService {
             });
     }
 
-    varIdGenerator: any = 0;
-    time: any;
+
     idGenerator() {
         this.varIdGenerator = new Date();
         this.time = String(this.varIdGenerator.getTime());
