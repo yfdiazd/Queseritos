@@ -43,31 +43,13 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
-
-
-    //Variables para ingresos
-    public listI: any[] = [];
-    valorT: any[] = [];
-    val;
-    public totalIngreso;
-    //Variables para gastos
-    numeroGastos;
-    numeroGastosEliminados;
-    numeroGastosPagos;
-    public listG: any[] = [];
-    public listGEliminados: any[] = [];
-    public listGPagados: any[] = [];
-    valorTG: any[] = [];
-    valG;
-    public totalGasto;
-
+  
     // Variable usuario
     usuario: string;
     public totalTodo;
 
     fecha: Date;
-    milisegundos = 5000;
-
+ 
     config = {
         apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
         authDomain: "queseritos.firebaseapp.com",
@@ -148,7 +130,6 @@ export class FBservicesService {
         }
         this.router.navigate(["login"]);
     }
-
     //Metodo que recupera la clve.
     recuperarClave(correo) {
         var auth = firebase.auth();
@@ -185,7 +166,6 @@ export class FBservicesService {
             }
         });
     }
-
     // TODOS LOS TOAS o mensajes emergentes
     //toast
     async toastContras() {
@@ -209,7 +189,6 @@ export class FBservicesService {
         });
         toast.present();
     }
-
     async toastRecuperacionFail() {
         const toast = await this.toastController.create({
             message:
@@ -266,7 +245,7 @@ export class FBservicesService {
         });
         toast.present();
     }
-
+    
 
     //-------------Metodo que permite consultar la fecha actual:----------------------------------
     fechaActual() {
@@ -299,6 +278,15 @@ export class FBservicesService {
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idProveedor = this.idGenerator();
+        if (apellidoProveedor == null){
+            apellidoProveedor = "";
+        } 
+        if (direccionProveedor == null){
+            direccionProveedor = "";
+        }
+        if (correoProveedor == null){
+            correoProveedor = "";
+        }
         firebase
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + this.idProveedor)
@@ -395,6 +383,15 @@ export class FBservicesService {
     //Metodo que permite agregar clientes
     agregarCliente(tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
+        if(apellidosCliente == null){
+            apellidosCliente = "";
+        }
+        if(empresaCliente == null){
+            empresaCliente = "";
+        }
+        if(correoCliente == null){
+            correoCliente = "";
+        }
         this.idCliente = this.idGenerator();
         firebase
             .database()
@@ -417,6 +414,9 @@ export class FBservicesService {
     //Metodo para agregar conductores
     agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
+        if(apelidoConductor == null){
+            apelidoConductor = "";
+        }
         this.idConductor = this.idGenerator();
         firebase
             .database()
@@ -661,6 +661,15 @@ export class FBservicesService {
     }
     updateProveedor(idProveedor, tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
+        if (apellidoProveedor == null){
+            apellidoProveedor = "";
+        } 
+        if (direccionProveedor == null){
+            direccionProveedor = "";
+        }
+        if (correoProveedor == null){
+            correoProveedor = "";
+        }
         firebase
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + idProveedor)
@@ -732,6 +741,15 @@ export class FBservicesService {
     }
     updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
+        if(apellidosCliente == null){
+            apellidosCliente = "";
+        }
+        if(empresaCliente == null){
+            empresaCliente = "";
+        }
+        if(correoCliente == null){
+            correoCliente = "";
+        }
         firebase
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + idCliente)
@@ -751,6 +769,9 @@ export class FBservicesService {
     }
     updateConductor(idConductor, tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
+        if(apelidoConductor == null){
+            apelidoConductor = "";
+        }
         firebase
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + idConductor)
@@ -763,8 +784,6 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-
-
     //---------------------------------- Metodo que genera los id unicos
     idGenerator() {
         this.varIdGenerator = new Date();
