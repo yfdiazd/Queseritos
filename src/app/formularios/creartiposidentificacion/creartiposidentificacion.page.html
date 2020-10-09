@@ -1,23 +1,32 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>Tipos de Identificación</ion-title>
+    <ion-title class="titulo">TIPOS DE IDENTIFICACIÓN</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-text>
-    <p>Completa el formulario para crear los tipos de identificación de proveedores y/o clientes</p>
-  </ion-text>
-  <div>
-  <input type="text" placeholder="Código Tipo Identificación" [(ngModel)]="codigoTipoIdentificacion"/>
-  <input type="text" placeholder="Descripción del tipo de Identificación" [(ngModel)]="descripcionTipoIdentificacion" />
-</div>
-  <div>
-    <ion-button (click)="guardarTipoIdentificacion()" expand="full">
-    <ion-icon name="save-outline"></ion-icon>
-      Guardar
-    </ion-button>
+  <div class="div-formulario">
+    <ion-text>
+      <div class="bloque">
+        <p>Completa el formulario para crear tipos de identificación de tus clientes y/o proveedores</p>
+      </div>
+    </ion-text>
   </div>
+
+    <div>
+      <input type="number" placeholder="Código" />
+      <input type="number" placeholder="Descripción" />
+    </div>
+
+    <div>
+      <ion-button (click)="agregarProducto()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
 
 </ion-content>

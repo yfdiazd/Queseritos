@@ -46,7 +46,7 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageTipoAnticipo(){
-    this.router.navigate(["crearanticipos"]);
+    this.router.navigate(["creartiposanticipo"]);
     }
   
   irPageTipoTrueque(){
