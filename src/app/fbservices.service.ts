@@ -13,6 +13,8 @@ import { constants } from 'buffer';
 
 })
 export class FBservicesService {
+    //flag 
+    flag: boolean = false;
     //variables idGenerator
     varIdGenerator: any = 0;
     time: any;
@@ -43,13 +45,13 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
-  
+
     // Variable usuario
     usuario: string;
     public totalTodo;
 
     fecha: Date;
- 
+
     config = {
         apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
         authDomain: "queseritos.firebaseapp.com",
@@ -245,7 +247,16 @@ export class FBservicesService {
         });
         toast.present();
     }
-    
+
+    async toastElementoDuplicado() {
+        const toas = await this.toastController.create({
+            message: "El codigo que intenta agregar ya existe",
+            color: "danger",
+            duration: 5000
+        });
+        toas.present();
+    }
+
 
     //-------------Metodo que permite consultar la fecha actual:----------------------------------
     fechaActual() {
@@ -278,13 +289,13 @@ export class FBservicesService {
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idProveedor = this.idGenerator();
-        if (apellidoProveedor == null){
+        if (apellidoProveedor == null) {
             apellidoProveedor = "";
-        } 
-        if (direccionProveedor == null){
+        }
+        if (direccionProveedor == null) {
             direccionProveedor = "";
         }
-        if (correoProveedor == null){
+        if (correoProveedor == null) {
             correoProveedor = "";
         }
         firebase
@@ -367,29 +378,35 @@ export class FBservicesService {
     }
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idCiudad = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad/" + this.idCiudad)
-            .set({
-                id: this.idCiudad,
-                codigo: codigoCiudad,
-                descripcion: describcionCiudad,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        
+        if (this.validaCiudad(codigoCiudad) == false) {
+            this.usuarioUid = firebase.auth().currentUser.uid;
+            this.idCiudad = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad/" + this.idCiudad)
+                .set({
+                    id: this.idCiudad,
+                    codigo: codigoCiudad,
+                    descripcion: describcionCiudad,
+                    estado: 1
+                });
+            this.toastOperacionExitosa();
+        } else {
+            this.toastElementoDuplicado();
+        }
     }
+
     //Metodo que permite agregar clientes
     agregarCliente(tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apellidosCliente == null){
+        if (apellidosCliente == null) {
             apellidosCliente = "";
         }
-        if(empresaCliente == null){
+        if (empresaCliente == null) {
             empresaCliente = "";
         }
-        if(correoCliente == null){
+        if (correoCliente == null) {
             correoCliente = "";
         }
         this.idCliente = this.idGenerator();
@@ -414,7 +431,7 @@ export class FBservicesService {
     //Metodo para agregar conductores
     agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apelidoConductor == null){
+        if (apelidoConductor == null) {
             apelidoConductor = "";
         }
         this.idConductor = this.idGenerator();
@@ -431,6 +448,26 @@ export class FBservicesService {
                 estado: 1
             });
         this.toastOperacionExitosa();
+    }
+    //
+
+    validaCiudad(codigoCiudad) {
+
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (codigoCiudad == element.val().codigo) {
+                        console.log("ojo omeome ome");
+                        return this.flag = true;
+                    }else{
+                        this.flag = false;
+                    }
+                });
+            });
+        return this.flag;
     }
 
     //-----------------------Obtener listas des configuraciones------------------------------------------------
@@ -661,13 +698,13 @@ export class FBservicesService {
     }
     updateProveedor(idProveedor, tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if (apellidoProveedor == null){
+        if (apellidoProveedor == null) {
             apellidoProveedor = "";
-        } 
-        if (direccionProveedor == null){
+        }
+        if (direccionProveedor == null) {
             direccionProveedor = "";
         }
-        if (correoProveedor == null){
+        if (correoProveedor == null) {
             correoProveedor = "";
         }
         firebase
@@ -741,13 +778,13 @@ export class FBservicesService {
     }
     updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apellidosCliente == null){
+        if (apellidosCliente == null) {
             apellidosCliente = "";
         }
-        if(empresaCliente == null){
+        if (empresaCliente == null) {
             empresaCliente = "";
         }
-        if(correoCliente == null){
+        if (correoCliente == null) {
             correoCliente = "";
         }
         firebase
@@ -769,7 +806,7 @@ export class FBservicesService {
     }
     updateConductor(idConductor, tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apelidoConductor == null){
+        if (apelidoConductor == null) {
             apelidoConductor = "";
         }
         firebase
