@@ -66,10 +66,8 @@ export class FBservicesService {
     constructor(
         private router: Router,
         public toastController: ToastController,
-        public alertController: AlertController
-
-
-    ) {
+        public alertController: AlertController,  
+        ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
 

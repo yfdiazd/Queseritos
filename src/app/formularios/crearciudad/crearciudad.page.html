@@ -1,8 +1,8 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button (click)="volver()">CERRAR</ion-button>
     </ion-buttons>
     <ion-title class="titulo">CIUDADES</ion-title>
   </ion-toolbar>
@@ -10,22 +10,13 @@
 
 <ion-content>
   <div class="div-formulario">
-    <ion-text>
-      <div class="bloque">
-        <p>Completa el formulario para crear una ciudad de envío</p>
-      </div>
-    </ion-text>
-  </div>
-
-  <div>
-    <input type="text" placeholder="Código de ciudad" [(ngModel)]="codigoCiudad" />
-    <input type="text" placeholder="Descripción de la ciudad" [(ngModel)]="descripcionCiudad" />
-  </div>
-  <div>
+    <p>Codigo</p>
+    <input type="text" placeholder="{{codigoEdit}}" [(ngModel)]="FB.getCiudades.codigo"/>
+    <p>Descripción</p>
+    <input type="text" placeholder="{{descripcionEdit}}" [(ngModel)]="descripcionCiudad"/>
     <ion-button (click)="guardarCiudad()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
   </div>
-
 </ion-content>

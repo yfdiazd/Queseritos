@@ -1,20 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { HomeciudadesPageRoutingModule } from './homeciudades-routing.module';
+import { HomeciudadesPageRoutingModule } from "./homeciudades-routing.module";
 
-import { HomeciudadesPage } from './homeciudades.page';
+import { HomeciudadesPage } from "./homeciudades.page";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomeciudadesPageRoutingModule
+    HomeciudadesPageRoutingModule,
   ],
-  declarations: [HomeciudadesPage]
+  declarations: [HomeciudadesPage],
 })
 export class HomeciudadesPageModule {}

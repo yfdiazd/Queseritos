@@ -1,78 +1,120 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ActionSheetController, AlertController } from '@ionic/angular';
-import { FBservicesService } from 'src/app/fbservices.service';
-import { __values } from 'tslib';
+import { listLazyRoutes } from "@angular/compiler/src/aot/lazy_routes";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import {
+  ActionSheetController,
+  AlertController,
+  ModalController,
+} from "@ionic/angular";
+import { FBservicesService } from "src/app/fbservices.service";
+import { CrearciudadPage } from "src/app/formularios/crearciudad/crearciudad.page";
+import { __values } from "tslib";
 @Component({
-  selector: 'app-homeciudades',
-  templateUrl: './homeciudades.page.html',
-  styleUrls: ['./homeciudades.page.scss'],
+  selector: "app-homeciudades",
+  templateUrl: "./homeciudades.page.html",
+  styleUrls: ["./homeciudades.page.scss"],
 })
 export class HomeciudadesPage implements OnInit {
-
-  constructor(private FB: FBservicesService,
+  constructor(
+    private FB: FBservicesService,
     private actionSheetController: ActionSheetController,
     public alertController: AlertController,
-    private router: Router) { }
+    private router: Router,
+    public modalController: ModalController
+  ) {}
 
   codigoCiudad: string;
   descripcionCiudad: string;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  crear() {
-    this.router.navigate(["crearciudad"])
-  }
-
-  confirarEdición(cod,des){
-    this.FB.updateCiudad(cod,des);
-  }
-
-  editar(cod: string, des: string) {
-    this.presentAlertConfirm(cod, des);
-  }
-
-  val1;
-  val2;
-  async presentAlertConfirm(cod, des) {
+  async editar(cod) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Modificar registro',
+      cssClass: "my-custom-class",
+      header: "Modificar registro",
+
       inputs: [
         {
-          name: 'Codigo',
-          type: 'text',
-          value: cod,
-          placeholder: ' Codigo'
+          name: "Codigo",
+          type: "text",
+          value: cod.codigo,
+          placeholder: " Codigo",
         },
         {
-          name: 'Codigo',
-          type: 'text',
-          value: des,
-          placeholder: ' Descripción',
-          handler: () =>{
-          
-          }
-        }
+          name: "Descripcion",
+          type: "text",
+          value: cod.descripcion,
+          placeholder: "Descripción",          
+        },
       ],
 
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
+          text: "Cancelar",
+          role: "cancel",
+          cssClass: "secondary",
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
-          }
-        }, {
-          text: 'Modificar',
+            console.log("Confirm Cancel: blah");
+          },
+        },
+        {
+          text: "Modificar",
+          handler: data => {
+
+            console.log("data: " , data.values.codigo);
+            console.log("Presionó en editar");
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(" Despues del esperar",result);
+  }
+
+  async editarModal(lista) {
+    const modal = await this.modalController.create({
+      component: CrearciudadPage,
+      cssClass: "my-custom-class",
+      componentProps: {
+        codigoEdit: lista.codigo,
+        descripcionEdit: lista.descripcion,
+        id: lista.id,
+      },
+    });
+    return await modal.present();
+  }
+  async crearModal() {
+    const modal = await this.modalController.create({
+      component: CrearciudadPage,
+      cssClass: "my-custom-class"      
+    });
+    return await modal.present();
+  }
+
+  async eliminar(lista) {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "Espera",
+      message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
+      buttons: [
+        {
+          text: "CANCELAR",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: (blah) => {
+            console.log("Confirm Cancel: blah");
+          },
+        },
+        {
+          text: "SI",
           handler: () => {
-            
-            console.log("Se modifico correctamente");
-          }
-        }
-      ]
+            console.log("Confirm Okay");
+            this.FB.deleteCiudad(lista.id);
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -83,5 +125,4 @@ export class HomeciudadesPage implements OnInit {
   //   //this.FB.deleteCiudad("1602202142339");
 
   // }
-
 }
