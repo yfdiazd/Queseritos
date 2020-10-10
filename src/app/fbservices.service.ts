@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, ɵConsole } from "@angular/core";
 import { Router } from "@angular/router";
 import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
@@ -226,8 +226,15 @@ export class FBservicesService {
             duration: 7000
         });
         toast.present();
-
-
+    }
+    //mensaje que indica la creacion del proveedor
+    async toastNumIdentificaExiste() {
+        const toast = await this.toastController.create({
+            message: "El numero de identificacion ingresado ya existe.",
+            color: "danger",
+            duration: 7000
+        });
+        toast.present();
     }
     // Alertas
     async alertRecuperacion() {
@@ -296,7 +303,7 @@ export class FBservicesService {
     //Metodo que permite crear proveedores
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idProveedor = this.idGenerator();
+
         if (apellidoProveedor == null) {
             apellidoProveedor = "";
         }
@@ -306,31 +313,33 @@ export class FBservicesService {
         if (correoProveedor == null) {
             correoProveedor = "";
         }
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + this.idProveedor)
-            .set({
-                id: this.idProveedor,
-                idTipoIdentificacion: tipoIdentificacionProveedor,
-                numIndetificacion: numIndetificacionProveedor,
-                nombre: nombreProveedor,
-                apellido: apellidoProveedor,
-                telefono: telefonoProveedor,
-                direccion: direccionProveedor,
-                correo: correoProveedor,
-                fechaCreacion: this.fechaActual(),
-                estado: 1
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores");
+        if (this.validaNumDocs(numIndetificacionProveedor, this.pathPush) == false) {
+            this.idProveedor = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + this.idProveedor)
+                .set({
+                    id: this.idProveedor,
+                    idTipoIdentificacion: tipoIdentificacionProveedor,
+                    numIndetificacion: numIndetificacionProveedor,
+                    nombre: nombreProveedor,
+                    apellido: apellidoProveedor,
+                    telefono: telefonoProveedor,
+                    direccion: direccionProveedor,
+                    correo: correoProveedor,
+                    fechaCreacion: this.fechaActual(),
+                    estado: 1
 
-            });
-        this.toastProveedorCrado();
+                });
+            this.toastProveedorCrado();
+        } else {
+            this.toastNumIdentificaExiste();
+        }
+
     }
 
-    validaProveedor() {
-      //  firebase
-       // .database()
-       // .ref()
-       // .on()
-    }
+
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -414,6 +423,7 @@ export class FBservicesService {
 
     agregarCiudad(codigoCiudad, describcionCiudad) {
         this.usuarioUid = firebase.auth().currentUser.uid;
+        this.pathPush = "";
         this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
             this.idCiudad = this.idGenerator();
@@ -444,24 +454,31 @@ export class FBservicesService {
         if (correoCliente == null) {
             correoCliente = "";
         }
-        this.idCliente = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + this.idCliente)
-            .set({
-                id: this.idCliente,
-                idTipoIdentificacion: tipoIdentificacion,
-                numeroIdentificacion: numeroIdentificacionCliente,
-                nombres: nombresClietne,
-                apellidos: apellidosCliente,
-                empresa: empresaCliente,
-                idCiudad: codigoCiudad,
-                celular: celularCliente,
-                direccion: direccionCliente,
-                correo: correoCliente,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        this.pathPush="";
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "cliente");
+        if(this.validaNumDocs(numeroIdentificacionCliente, this.pathPush) == false){
+
+            this.idCliente = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + this.idCliente)
+                .set({
+                    id: this.idCliente,
+                    idTipoIdentificacion: tipoIdentificacion,
+                    numIndetificacion: numeroIdentificacionCliente,
+                    nombres: nombresClietne,
+                    apellidos: apellidosCliente,
+                    empresa: empresaCliente,
+                    idCiudad: codigoCiudad,
+                    celular: celularCliente,
+                    direccion: direccionCliente,
+                    correo: correoCliente,
+                    estado: 1
+                });
+            this.toastOperacionExitosa();
+        }else{
+            this.toastNumIdentificaExiste();
+        }
     }
     //Metodo para agregar conductores
     agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
@@ -469,31 +486,38 @@ export class FBservicesService {
         if (apelidoConductor == null) {
             apelidoConductor = "";
         }
-        this.idConductor = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + this.idConductor)
-            .set({
-                id: this.idConductor,
-                idTipoIdentificacion: tipoIdentificacionConductor,
-                numeroIdentificacion: numeroIdentificacionConductor,
-                nombres: nombreConductor,
-                apellidos: apelidoConductor,
-                celular: celularConductor,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        this.pathPush = "";
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "conductor");
+        if(this.validaNumDocs(numeroIdentificacionConductor, this.pathPush) == false){
+            this.idConductor = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + this.idConductor)
+                .set({
+                    id: this.idConductor,
+                    idTipoIdentificacion: tipoIdentificacionConductor,
+                    numIndetificacion: numeroIdentificacionConductor,
+                    nombres: nombreConductor,
+                    apellidos: apelidoConductor,
+                    celular: celularConductor,
+                    estado: 1
+                });
+                this.toastOperacionExitosa();
+            }else{
+                this.toastNumIdentificaExiste();
+            }
+            
     }
 
 
-    //Metodos de validacion de codigos
-    validaCodigos(codigoCiudad, path) {
+    //Metodos de validaciones
+    validaCodigos(codigo, path) {
         firebase
             .database()
             .ref(path)
             .on("value", snapshot => {
                 snapshot.forEach(element => {
-                    if (codigoCiudad == element.val().codigo && element.val().estado == 1) {
+                    if (codigo == element.val().codigo && element.val().estado == 1 && element.val().codigo != null) {
                         return this.flag = true;
                     } else {
                         this.flag = false;
@@ -503,7 +527,23 @@ export class FBservicesService {
         return this.flag;
     }
 
-
+    validaNumDocs(numIdentifica, path) {
+        firebase
+            .database()
+            .ref(path)
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (numIdentifica == element.val().numIndetificacion && element.val().estado == 1 && element.val() != null) {
+                        return this.flag = true;
+                    } else {
+                        this.flag = false;
+                    }
+                });
+            });
+            numIdentifica = "";
+            path = "";
+        return this.flag;
+    }
 
 
 
@@ -516,7 +556,10 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.ciudadesLista = [];
                 snapshot.forEach(element => {
-                    this.ciudadesLista.push(element.val());
+                    if(element.val().estado == 1){
+                        this.ciudadesLista.push(element.val());
+                    }
+
                 });
                 return this.ciudadesLista;
             });
@@ -528,7 +571,9 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.clientesLista = [];
                 snapshot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.clientesLista.push(element.val());
+                    }
                 });
                 return this.clientesLista;
             });
@@ -540,9 +585,10 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.estadoProductoLista = [];
                 snaphot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.estadoProductoLista.push(element.val());
+                    }
                 });
-                console.log(this.estadoProductoLista);
                 return this.estadoProductoLista;
             });
     }
@@ -553,7 +599,9 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.productosLista = [];
                 snaphot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.productosLista.push(element.val());
+                    }
                 });
                 return this.productosLista;
             });
@@ -565,7 +613,9 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.proveedoresLista = [];
                 snaphot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.proveedoresLista.push(element.val());
+                    }
                 });
                 return this.proveedoresLista;
             });
@@ -577,7 +627,9 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.tipoAnticipoLista = [];
                 snaphot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.tipoAnticipoLista.push(element.val());
+                    }
                 });
                 return this.tipoAnticipoLista;
             });
@@ -589,7 +641,9 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.tipoTruequeLista = [];
                 snaphot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.tipoTruequeLista.push(element.val());
+                    }
                 });
                 return this.tipoTruequeLista;
             });
@@ -601,7 +655,9 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.tiposIdentificacionLista = [];
                 snaphot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.tiposIdentificacionLista.push(element.val());
+                    }
                 });
                 return this.tiposIdentificacionLista;
             });
@@ -611,9 +667,11 @@ export class FBservicesService {
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor")
             .on("value", snaphot => {
-                this.tiposIdentificacionLista = [];
+                this.conductoresLista = [];
                 snaphot.forEach(element => {
+                    if(element.val().estado == 1){
                     this.conductoresLista.push(element.val());
+                    }
                 });
                 return this.conductoresLista;
             });
