@@ -48,26 +48,6 @@ export class FBservicesService {
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
 
-<<<<<<< HEAD
-
-    //Variables para ingresos
-    public listI: any[] = [];
-    valorT: any[] = [];
-    val;
-    public totalIngreso;
-    //Variables para gastos
-    numeroGastos;
-    numeroGastosEliminados;
-    numeroGastosPagos;
-    public listG: any[] = [];
-    public listGEliminados: any[] = [];
-    public listGPagados: any[] = [];
-    valorTG: any[] = [];
-    valG;
-    public totalGasto;
-
-=======
->>>>>>> 3b48f8096815a341e54ae47d95925f5b256c649c
     // Variable usuario
     usuario: string;
     public totalTodo;
