@@ -1,23 +1,32 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>Crear Ciudades</ion-title>
+    <ion-title class="titulo">CIUDADES</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-text>
-    <p>Completa el formulario para crear la ciudad de destino del producto</p>
-  </ion-text>
-  <div>
-  <input type="text" placeholder="Código" [(ngModel)]="codigoCiudad" />
-  <input type="text" placeholder="Descripción" [(ngModel)]="descripcionCiudad" />
-</div>
-  <div> 
-    <ion-button (click)="guardarCiudad()" expand="full">
-    <ion-icon name="save-outline"></ion-icon>
-      Guardar
-    </ion-button>
+  <div class="div-formulario">
+    <ion-text>
+      <div class="bloque">
+        <p>Completa el formulario para crear una ciudad de envío</p>
+      </div>
+    </ion-text>
   </div>
+
+    <div>
+      <input type="text" placeholder="Código de ciudad" [(ngModel)]="codigoCiudad"/>
+      <input type="text" placeholder="Descripción de la ciudad" [(ngModel)]="descripcionCiudad" />
+    </div>
+
+    <div>
+      <ion-button (click)="guardarCiudad()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
 
 </ion-content>

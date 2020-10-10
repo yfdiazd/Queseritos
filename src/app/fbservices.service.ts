@@ -96,7 +96,7 @@ export class FBservicesService {
                 console.log("Se inicio correctamente");
                 console.log("suario:", firebase.auth().currentUser);
                 console.log("token ususuario:", firebase.auth().currentUser.uid);
-                //this.router.navigate(["home"]);
+                this.router.navigate(["main-menu"]);
             })
             .catch(error => {
                 this.toastErrorAutenticacion();
@@ -151,7 +151,7 @@ export class FBservicesService {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
 
-                //this.router.navigate(["home"]);
+                this.router.navigate(["main-menu"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
                 this.getCiudades();

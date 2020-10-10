@@ -1,0 +1,65 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="medium"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="titulo">COMPRAR A PROVEEDORES</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<ion-content>
+  <div class="div-principal">
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Peso Actual</p>
+        <p class="div-v">{{pesoacumulado}} <label> Kg</label></p>
+      </div>
+    </div>
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Saldo Débito</p>
+        <p class="div-v" id="saldo-debito">{{saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
+      </div>
+      <div class="div-f">
+        <p class="div-t">Saldo Crédito</p>
+        <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="div-secundario">
+    <ion-card class="card" (click)="irCompraDetallada()">
+      <div class="div-title">
+        <ion-title>FERNANDA</ion-title>
+        <ion-button (click)="irPesajeCompra()" color="success" expand="full">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Bultos</p>
+        <p class="div-v">{{pestotoalcomprado}}</p>
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Peso Total Comprado</p>
+        <p class="div-v">{{pestotoalcomprado}} <label> Kg</label></p>
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Saldo Débito</p>
+        <p class="div-v" id="saldo-debito2">{{saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
+      </div>
+      <div class="div-cajita">
+        <p class="div-t">Saldo Crédito</p>
+        <p class="div-v" id="saldo-credito2">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+      </div>
+    </ion-card>
+    <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button id="boton-add">
+        <ion-icon name="hammer"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>

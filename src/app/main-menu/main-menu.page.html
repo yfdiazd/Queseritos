@@ -2,28 +2,29 @@
 <ion-header>
   <ion-toolbar>
     <ion-menu-button slot="start" (click)="openFirst()"></ion-menu-button>
-    <ion-title> MENU PRINCIPAL</ion-title>
+    <ion-title class= "titulo"> MENU PRINCIPAL</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-row class="row1">
-    <ion-col id="col1">
-      <ion-card id="card1">
-        <div id="title1">COMPRAR</div>
-        <div id="div-boton-lote">
-          <ion-button id="boton-n-lote" (click)="guardar()" expand="full" color="dark">
+    <ion-col class="col1">
+      <ion-card class="card1">
+        <ion-button (click)="irVender()" class="btn-title1">COMPRAS</ion-button>
+        <div class="div-boton-lote">
+          <ion-button class="boton-n-lote"  expand="full">
             <ion-icon name="add"></ion-icon>
             Nuevo LOTE
           </ion-button>
         </div>
       </ion-card>
     </ion-col>
-    <ion-col id="col2">
-      <ion-card id="card2">
-        <div id="title2">VENDER</div>
-        <div id="div-boton-lote">
-          <ion-button id="boton-v-lote" (click)="guardar()" expand="full" color="succefull">
+    
+    <ion-col class="col2">
+      <ion-card class="card2">
+        <ion-button class="btn-title2">VENTAS</ion-button>
+        <div class="div-boton-lote">
+          <ion-button class="boton-v-lote" (click)="guardar()" expand="full">
             <ion-icon name="add"></ion-icon>
             VENDER LOTE
           </ion-button>
@@ -33,20 +34,20 @@
   </ion-row>
 
   <ion-row class="row2">
-    <ion-col id="col3">
-      <ion-card id="card3">
-        <div id="title3">ANTICIPOS</div>
+    <ion-col class="col3">
+      <ion-card class="card3">
+        <ion-button class="btn-title3">ANTICIPOS</ion-button>
       </ion-card>
     </ion-col>
-    <ion-col id="col4">
-      <ion-card id="card4">
-        <div id="title3">TRUEQUES</div>
+    <ion-col class="col4">
+      <ion-card class="card4">
+        <ion-button class="btn-title4">TRUEQUES</ion-button>
       </ion-card>
     </ion-col>
   </ion-row>
 </ion-content>
 
-<ion-menu side="start" menuId="first">
+<ion-menu sclasse="start" menuclass="first">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Configurar</ion-title>
@@ -64,5 +65,8 @@
       <ion-item (click)="irPageRegistrarCliente()">Clientes</ion-item>
       <ion-item (click)="irPageRegistrarConductor()">Conductores</ion-item>
     </ion-list>
+    <ion-button (click)="FB.cerrarSesion()">
+      Cerrar Sesión
+    </ion-button>
   </ion-content>
 </ion-menu>

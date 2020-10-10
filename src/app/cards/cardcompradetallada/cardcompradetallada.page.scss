@@ -1,0 +1,92 @@
+ion-toolbar {
+    --background: #1a1446;
+}
+.titulo {
+    color: white;
+}
+
+ion-content {
+    padding: 0;
+    margin: 0;
+
+
+    .div-principal {
+        display: inline-block;
+        width: 100%;
+        height: 10%;
+        
+    }
+   .div-saldo-l{
+        display: inline-block;
+        width: 100%;
+        height: 50%;
+        border-bottom: 2px solid pink;
+        text-align: center;
+    }
+    .div-saldo-a{
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border-right: 2px solid green;
+        text-align: center;
+    }
+    .div-sdt{
+        padding-top: 10px;
+        text-align: center;
+        width: 100%;
+        height: 30%;
+    }
+    .div-sdv{
+        padding-top: 5px;
+        font-size: 4vw;
+        text-align: center;
+        position: relative;
+        width: 100%;
+        height: 70%;
+    }
+  
+    .div-secundario {
+        height: 90%;
+        width: 100%;
+        background-color: #c8f7f3;
+
+        .div-pesoc{
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+        }
+        .div-atributo1{
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+    
+        }
+        .div-atributo2{
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+        }
+       
+    .card1{
+        margin: auto;
+        text-align: left;
+      --background: #ff2f73;
+    }
+
+    #boton-n-lote{
+    padding: 0;
+    line-height: 20px; 
+    width: 18px; 
+    font-size: 20pt; 
+    font-family: tahoma; 
+    margin-top: 0; 
+    margin-right: 2px; 
+    position: absolute;
+    top:0; 
+    right:10px; 
+    background: #ff2f73;
+    }
+        
+    }
+}

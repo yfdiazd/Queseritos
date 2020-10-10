@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import {Router} from '@angular/router';
+import { FBservicesService } from '../fbservices.service';
 
 @Component({
   selector: 'app-main-menu',
@@ -9,8 +10,12 @@ import {Router} from '@angular/router';
 })
 export class MainMenuPage implements OnInit {
 
-  constructor(private menu: MenuController, private router:Router) { }
+  constructor(private menu: MenuController, private router:Router,private FB: FBservicesService) { }
 
+
+  irVender(){
+    this.router.navigate(["cardcompras"]);
+  }
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
@@ -29,7 +34,7 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageTipoQueso(){
-    this.router.navigate(["crearproducto"]);
+    this.router.navigate(["hometiposqueso"]);
   }
 
   irPageEstadoQueso(){
@@ -54,7 +59,7 @@ export class MainMenuPage implements OnInit {
   }
   
   irPageRegistrarCliente(){
-    this.router.navigate(["crearclientes"]);
+    this.router.navigate(["homeclientes"]);
   
 }
 

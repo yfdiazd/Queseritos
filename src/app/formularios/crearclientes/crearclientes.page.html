@@ -1,34 +1,44 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    </ion-buttons>
     <ion-title>Crear Clientes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div class="div-formulario">
+    <ion-text>
+      <p>Completa el formulario para registrar un nuevo cliente</p>
+    </ion-text>
+    <div>
+      <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
+        placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacion">
+        <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
+          {{lista.descripcion}}
+        </ion-select-option>
+      </ion-select>
+      <input type="text" placeholder="Número de Identificación" [(ngModel)]="numeroIdentificacionCliente" />
+      <input type="text" placeholder="Nombres" [(ngModel)]="nombresCliente" />
+      <input type="text" placeholder="Apellidos" [(ngModel)]="apellidosCliente" />
+      <input type="text" placeholder="Quesera" [(ngModel)]="empresaCliente" />
 
-  <ion-text>
-    <p>Completa el formulario para registrar un nuevo cliente</p>
-  </ion-text>
-  <div>
-  <select value = "tipoidentificacion" name="tipoidentificacion">
-    <option>Cédula de Ciudadanía</option>
-   </select>
-  <input type="text" placeholder="Número de Identificación" [(ngModel)]="numeroIdentificacionCliente" />
-  <input type="text" placeholder="Nombres" [(ngModel)]="nombresClietne" />
-  <input type="text" placeholder="Apellidos" [(ngModel)]="apellidosCliente" />
-  <input type="text" placeholder="Quesera" [(ngModel)]="empresaCliente" />
-  <select name="Ciudad" [(ngModel)]="codigoCiudad" >
-    <option *ngFor="let ciudad of FB.ciudadesLista">{{ciudad.descripcion}}</option>
-   </select>
-  <input type="text" placeholder="Celular" [(ngModel)]="celularCliente" />
-  <input type="text" placeholder="Dirección" [(ngModel)]="direccionCliente" />
-  <input type="text" placeholder="Correo Electrónico" [(ngModel)]="correoCliente" />
-  </div>
-  <div>
-    <ion-button (click)="guardarCliente()" expand="full">
-      <ion-icon name="save-outline"></ion-icon>
-      Guardar
-    </ion-button>
+      <ion-select class="select" [interfaceOptions]="customAlertOptions" title="seleccione el anticipo"
+        interface="alert" multiple="false" placeholder="Ciudad" [(ngModel)]="codigoCiudad">
+        <ion-select-option value="{{ciudad.codigo}}" *ngFor="let ciudad of FB.ciudadesLista"> {{ciudad.descripcion}}
+        </ion-select-option>
+      </ion-select>
+      <input type="text" placeholder="Celular" [(ngModel)]="celularCliente" />
+      <input type="text" placeholder="Dirección" [(ngModel)]="direccionCliente" />
+      <input type="text" placeholder="Correo Electrónico" [(ngModel)]="correoCliente" />
+    </div>
+    <div>
+      <ion-button (click)="guardarCliente()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
   </div>
 </ion-content>
