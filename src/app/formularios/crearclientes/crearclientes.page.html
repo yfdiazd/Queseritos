@@ -15,7 +15,7 @@
     </ion-text>
     <div>
       <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-        placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacion">
+        placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacion" ok-text="Aceptar" cancel-text = "CANCELAR">
         <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
           {{lista.descripcion}}
         </ion-select-option>

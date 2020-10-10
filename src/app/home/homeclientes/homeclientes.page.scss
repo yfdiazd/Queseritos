@@ -24,11 +24,20 @@ ion-content {
 
     .card{
         padding: 5%;
+        width: 100%;
+        margin: 20px auto;
         
     } 
     .card p{
         padding: 0;
         margin: 0;
+    }
+    .slider{
+        --background: blue;
+    }
+    .item{
+        --border-style: none;
+        --background:transparent;
     }
 
 }

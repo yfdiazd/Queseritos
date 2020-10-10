@@ -31,7 +31,7 @@ export class CrearclientesPage implements OnInit {
   }
   customAlertOptions: any = {
     header: 'Seleccione identificacion',
-    translucent: true
+    translucent: true,
   };
 
 
