@@ -84,7 +84,38 @@ const routes: Routes = [
 {
   path: 'hometiposqueso',
   loadChildren: () => import('./home/hometiposqueso/hometiposqueso.module').then( m => m.HometiposquesoPageModule)
+},
+{
+  path: 'hometipoanticipo',
+  loadChildren: () => import('./home/hometipoanticipo/hometipoanticipo.module').then( m => m.HometipoanticipoPageModule )
+},
+{
+  path: 'homeestadoqueso',
+  loadChildren: () => import('./home/homeestadoqueso/homeestadoqueso.module').then( m => m.HomeestadoquesoPageModule )
+},
+{
+  path: 'hometipotrueque',
+  loadChildren: () => import('./home/hometipotrueque/hometipotrueque.module').then( m => m.HometipotruequePageModule )
+},
+{
+  path: 'homeciudades',
+  loadChildren: () => import('./home/homeciudades/homeciudades.module').then( m => m.HomeciudadesPageModule )
+},
+{
+  path: 'hometiposidentificacion',
+  loadChildren: () => import('./home/hometiposidentificacion/hometiposidentificacion.module').then( m => m.HometiposidentificacionPageModule )
+},
+{
+  path: 'homeproveedores',
+  loadChildren: () => import('./home/homeproveedores/homeproveedores.module').then( m => m.HomeproveedoresPageModule )
+},
+{
+  path: 'homeconductores',
+  loadChildren: () => import('./home/homeconductores/homeconductores.module').then( m => m.HomeconductoresPageModule )
 }
+
+
+
 
   ];
 

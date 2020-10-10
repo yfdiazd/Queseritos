@@ -38,24 +38,24 @@ export class MainMenuPage implements OnInit {
   }
 
   irPageEstadoQueso(){
-    this.router.navigate(["crearestadoproducto"]);
+    this.router.navigate(["homeestadoqueso"]);
   }
 
   irPageRegistrarProveedor(){
-    this.router.navigate(["crearproveedor"]);
+    this.router.navigate(["homeproveedores"]);
   }
 
   irPageTipoAnticipo(){
-    this.router.navigate(["creartiposanticipo"]);
+    this.router.navigate(["hometipoanticipo"]);
     }
   
   irPageTipoTrueque(){
-      this.router.navigate(["creartipostrueque"]);
+      this.router.navigate(["hometipotrueque"]);
     
   }
 
   irPageTipoIdentificacion(){
-    this.router.navigate(["creartiposidentificacion"]);
+    this.router.navigate(["hometiposidentificacion"]);
   }
   
   irPageRegistrarCliente(){
@@ -64,12 +64,12 @@ export class MainMenuPage implements OnInit {
 }
 
 irPageCrearCiudad(){
-  this.router.navigate(["crearciudad"]);
+  this.router.navigate(["homeciudades"]);
 
 }
 
 irPageRegistrarConductor(){
-  this.router.navigate(["crearconductor"]);
+  this.router.navigate(["homeconductores"]);
 }
 
 }

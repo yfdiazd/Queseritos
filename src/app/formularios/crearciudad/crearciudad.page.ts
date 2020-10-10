@@ -22,6 +22,7 @@ export class CrearciudadPage implements OnInit {
   guardarCiudad() {
     this.FB.agregarCiudad(this.codigoCiudad, this.descripcionCiudad);
     //this.FB.deleteCiudad("1602202142339");
+    
   }
 
 }

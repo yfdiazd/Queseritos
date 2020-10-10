@@ -13,6 +13,10 @@ import { constants } from 'buffer';
 
 })
 export class FBservicesService {
+    //Variable para paths de validacion
+    pathPush: any;
+    //flag 
+    flag: boolean = false;
     //variables idGenerator
     varIdGenerator: any = 0;
     time: any;
@@ -44,29 +48,12 @@ export class FBservicesService {
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
 
-
-    //Variables para ingresos
-    public listI: any[] = [];
-    valorT: any[] = [];
-    val;
-    public totalIngreso;
-    //Variables para gastos
-    numeroGastos;
-    numeroGastosEliminados;
-    numeroGastosPagos;
-    public listG: any[] = [];
-    public listGEliminados: any[] = [];
-    public listGPagados: any[] = [];
-    valorTG: any[] = [];
-    valG;
-    public totalGasto;
-
     // Variable usuario
     usuario: string;
     public totalTodo;
 
     fecha: Date;
- 
+
     config = {
         apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
         authDomain: "queseritos.firebaseapp.com",
@@ -175,7 +162,7 @@ export class FBservicesService {
                 this.getTipoAnticipos();
                 this.getTipoTrueque();
                 this.getTiposIdentificacion();
-
+                this.getConductor();
                 console.log("usuario:", this.usuarioUid);
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -262,7 +249,16 @@ export class FBservicesService {
         });
         toast.present();
     }
-    
+
+    async toastElementoDuplicado() {
+        const toas = await this.toastController.create({
+            message: "El codigo que intenta agregar ya existe",
+            color: "danger",
+            duration: 5000
+        });
+        toas.present();
+    }
+
 
     //-------------Metodo que permite consultar la fecha actual:----------------------------------
     fechaActual() {
@@ -278,30 +274,36 @@ export class FBservicesService {
     //Metodo que permite crear productos
     crearProdcuto(codigoProducto, descripcionProducto) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idProducto = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + this.idProducto)
-            .set({
-                id: this.idProducto,
-                codigo: codigoProducto,
-                descripcion: descripcionProducto,
-                estado: 1
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "productos");
+        if (this.validaCodigos(codigoProducto, this.pathPush) == false) {
 
-            });
-        this.toastProductoCrado();
+            this.idProducto = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + this.idProducto)
+                .set({
+                    id: this.idProducto,
+                    codigo: codigoProducto,
+                    descripcion: descripcionProducto,
+                    estado: 1
+
+                });
+            this.toastOperacionExitosa();
+        } else {
+            this.toastElementoDuplicado();
+        }
     }
     //Metodo que permite crear proveedores
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idProveedor = this.idGenerator();
-        if (apellidoProveedor == null){
+        if (apellidoProveedor == null) {
             apellidoProveedor = "";
-        } 
-        if (direccionProveedor == null){
+        }
+        if (direccionProveedor == null) {
             direccionProveedor = "";
         }
-        if (correoProveedor == null){
+        if (correoProveedor == null) {
             correoProveedor = "";
         }
         firebase
@@ -322,91 +324,124 @@ export class FBservicesService {
             });
         this.toastProveedorCrado();
     }
+
+    validaProveedor() {
+      //  firebase
+       // .database()
+       // .ref()
+       // .on()
+    }
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
-        this.idTipoIdentificacion = this.idGenerator();
         this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion/" + this.idTipoIdentificacion)
-            .set({
-                id: this.idTipoIdentificacion,
-                codigo: codigoTipoIdentificacion,
-                descripcion: descripcionTipoIdentificacion,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion");
+        if (this.validaCodigos(codigoTipoIdentificacion, this.pathPush) == false) {
+            this.idTipoIdentificacion = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion/" + this.idTipoIdentificacion)
+                .set({
+                    id: this.idTipoIdentificacion,
+                    codigo: codigoTipoIdentificacion,
+                    descripcion: descripcionTipoIdentificacion,
+                    estado: 1
+                });
+            this.toastOperacionExitosa();
+        } else {
+            this.toastElementoDuplicado();
+        }
     }
     //Metodo para agregar estados de producto
     agregarEstadoProducto(codigoEstadoProducto, descripcionEstadoProducto) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idEstadoProducto = this.idGenerator()
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos/" + this.idEstadoProducto)
-            .set({
-                id: this.idEstadoProducto,
-                codigo: codigoEstadoProducto,
-                descripcion: descripcionEstadoProducto,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos");
+        if (this.validaCodigos(codigoEstadoProducto, this.pathPush) == false) {
+            this.idEstadoProducto = this.idGenerator()
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos/" + this.idEstadoProducto)
+                .set({
+                    id: this.idEstadoProducto,
+                    codigo: codigoEstadoProducto,
+                    descripcion: descripcionEstadoProducto,
+                    estado: 1
+                });
+            this.toastOperacionExitosa();
+        } else {
+            this.toastElementoDuplicado();
+        }
     }
     //Metodo para agregar el tipo de anticipo
     agregarTipoAnticipo(codigoTipoAnticipo, descripcionTipoanticipo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idTipoAnticipo = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + this.idTipoAnticipo)
-            .set({
-                id: this.idTipoAnticipo,
-                codigo: codigoTipoAnticipo,
-                descripcion: descripcionTipoanticipo,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo");
+        if (this.validaCodigos(codigoTipoAnticipo, this.pathPush) == false) {
+            this.idTipoAnticipo = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + this.idTipoAnticipo)
+                .set({
+                    id: this.idTipoAnticipo,
+                    codigo: codigoTipoAnticipo,
+                    descripcion: descripcionTipoanticipo,
+                    estado: 1
+                });
+            this.toastOperacionExitosa();
+        } else {
+            this.toastElementoDuplicado();
+        }
     }
     //Metodo para agregar el tipo de trueque.
     agregarTipoTrueque(codigoTipoTrueque, descripcionTipoTrueque) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idTipoTrueque = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + this.idTipoTrueque)
-            .set({
-                id: this.idTipoTrueque,
-                codigo: codigoTipoTrueque,
-                descripcion: descripcionTipoTrueque,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque");
+        if (this.validaCodigos(codigoTipoTrueque, this.pathPush) == false) {
+            this.idTipoTrueque = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + this.idTipoTrueque)
+                .set({
+                    id: this.idTipoTrueque,
+                    codigo: codigoTipoTrueque,
+                    descripcion: descripcionTipoTrueque,
+                    estado: 1
+                });
+            this.toastOperacionExitosa();
+        }
+        this.toastElementoDuplicado();
     }
     //Metodo que permite crear las ciudades del sistema
+
     agregarCiudad(codigoCiudad, describcionCiudad) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idCiudad = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad/" + this.idCiudad)
-            .set({
-                id: this.idCiudad,
-                codigo: codigoCiudad,
-                descripcion: describcionCiudad,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad");
+        if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
+            this.idCiudad = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad/" + this.idCiudad)
+                .set({
+                    id: this.idCiudad,
+                    codigo: codigoCiudad,
+                    descripcion: describcionCiudad,
+                    estado: 1
+                });
+            this.toastOperacionExitosa();
+        } else {
+            this.toastElementoDuplicado();
+        }
     }
+
     //Metodo que permite agregar clientes
     agregarCliente(tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apellidosCliente == null){
+        if (apellidosCliente == null) {
             apellidosCliente = "";
         }
-        if(empresaCliente == null){
+        if (empresaCliente == null) {
             empresaCliente = "";
         }
-        if(correoCliente == null){
+        if (correoCliente == null) {
             correoCliente = "";
         }
         this.idCliente = this.idGenerator();
@@ -431,7 +466,7 @@ export class FBservicesService {
     //Metodo para agregar conductores
     agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apelidoConductor == null){
+        if (apelidoConductor == null) {
             apelidoConductor = "";
         }
         this.idConductor = this.idGenerator();
@@ -449,6 +484,28 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
+
+
+    //Metodos de validacion de codigos
+    validaCodigos(codigoCiudad, path) {
+        firebase
+            .database()
+            .ref(path)
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (codigoCiudad == element.val().codigo && element.val().estado == 1) {
+                        return this.flag = true;
+                    } else {
+                        this.flag = false;
+                    }
+                });
+            });
+        return this.flag;
+    }
+
+
+
+
 
     //-----------------------Obtener listas des configuraciones------------------------------------------------
     getCiudades() {
@@ -678,13 +735,13 @@ export class FBservicesService {
     }
     updateProveedor(idProveedor, tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if (apellidoProveedor == null){
+        if (apellidoProveedor == null) {
             apellidoProveedor = "";
-        } 
-        if (direccionProveedor == null){
+        }
+        if (direccionProveedor == null) {
             direccionProveedor = "";
         }
-        if (correoProveedor == null){
+        if (correoProveedor == null) {
             correoProveedor = "";
         }
         firebase
@@ -758,13 +815,13 @@ export class FBservicesService {
     }
     updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apellidosCliente == null){
+        if (apellidosCliente == null) {
             apellidosCliente = "";
         }
-        if(empresaCliente == null){
+        if (empresaCliente == null) {
             empresaCliente = "";
         }
-        if(correoCliente == null){
+        if (correoCliente == null) {
             correoCliente = "";
         }
         firebase
@@ -786,7 +843,7 @@ export class FBservicesService {
     }
     updateConductor(idConductor, tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        if(apelidoConductor == null){
+        if (apelidoConductor == null) {
             apelidoConductor = "";
         }
         firebase

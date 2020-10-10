@@ -13,6 +13,34 @@ const routes: Routes = [
   {
     path: 'hometiposqueso',
     loadChildren: () => import('./hometiposqueso/hometiposqueso.module').then( m => m.HometiposquesoPageModule)
+  },
+  {
+    path: 'hometipoanticipo',
+    loadChildren: () => import('./hometipoanticipo/hometipoanticipo.module').then( m => m.HometipoanticipoPageModule)
+  },
+  {
+    path: 'homeestadoqueso',
+    loadChildren: () => import('./homeestadoqueso/homeestadoqueso.module').then( m => m.HomeestadoquesoPageModule)
+  },
+  {
+    path: 'hometipotrueque',
+    loadChildren: () => import('./hometipotrueque/hometipotrueque.module').then( m => m.HometipotruequePageModule)
+  },
+  {
+    path: 'homeciudades',
+    loadChildren: () => import('./homeciudades/homeciudades.module').then( m => m.HomeciudadesPageModule)
+  },
+  {
+    path: 'hometiposidentificacion',
+    loadChildren: () => import('./hometiposidentificacion/hometiposidentificacion.module').then( m => m.HometiposidentificacionPageModule)
+  },
+  {
+    path: 'homeproveedores',
+    loadChildren: () => import('./homeproveedores/homeproveedores.module').then( m => m.HomeproveedoresPageModule)
+  },
+  {
+    path: 'homeconductores',
+    loadChildren: () => import('./homeconductores/homeconductores.module').then( m => m.HomeconductoresPageModule)
   }
 
 ];
