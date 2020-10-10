@@ -296,7 +296,7 @@ export class FBservicesService {
     //Metodo que permite crear proveedores
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idProveedor = this.idGenerator();
+        
         if (apellidoProveedor == null) {
             apellidoProveedor = "";
         }
@@ -306,32 +306,46 @@ export class FBservicesService {
         if (correoProveedor == null) {
             correoProveedor = "";
         }
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + this.idProveedor)
-            .set({
-                id: this.idProveedor,
-                idTipoIdentificacion: tipoIdentificacionProveedor,
-                numIndetificacion: numIndetificacionProveedor,
-                nombre: nombreProveedor,
-                apellido: apellidoProveedor,
-                telefono: telefonoProveedor,
-                direccion: direccionProveedor,
-                correo: correoProveedor,
-                fechaCreacion: this.fechaActual(),
-                estado: 1
+        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores");
+        if (this.validaProveedor(numIndetificacionProveedor, this.pathPush) == false) {
+            this.idProveedor = this.idGenerator();
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + this.idProveedor)
+                .set({
+                    id: this.idProveedor,
+                    idTipoIdentificacion: tipoIdentificacionProveedor,
+                    numIndetificacion: numIndetificacionProveedor,
+                    nombre: nombreProveedor,
+                    apellido: apellidoProveedor,
+                    telefono: telefonoProveedor,
+                    direccion: direccionProveedor,
+                    correo: correoProveedor,
+                    fechaCreacion: this.fechaActual(),
+                    estado: 1
+    
+                });
+            this.toastProveedorCrado();
+        }else{
+            this.toastElementoDuplicado();
+        }
 
-            });
-        this.toastProveedorCrado();
     }
 
-    validaProveedor() {
-       firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores")
-        .on("value", snapshot =>{
-            snapshot.forEach(element =>{})
-        })
+    validaProveedor(numIdentifica, path) {
+        firebase
+            .database()
+            .ref(path)
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (numIdentifica == element.val().numIndetificacion && element.val().estado == 1) {
+                        return this.flag = true;
+                    } else {
+                        this.flag = false;
+                    }
+                });
+            });
+        return this.flag;
     }
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
