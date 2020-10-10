@@ -1,10 +1,10 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title class="titulo">CIUDADES</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+      <ion-back-button defaultHref="/main-menu"></ion-back-button>
     </ion-buttons>
+    <ion-title class="titulo">CIUDADES</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,16 +17,15 @@
     </ion-text>
   </div>
 
-    <div>
-      <input type="text" placeholder="Código de ciudad" [(ngModel)]="codigoCiudad"/>
-      <input type="text" placeholder="Descripción de la ciudad" [(ngModel)]="descripcionCiudad" />
-    </div>
-
-    <div>
-      <ion-button (click)="guardarCiudad()" expand="full">
-        <ion-icon name="save-outline"></ion-icon>
-        Guardar
-      </ion-button>
-    </div>
+  <div>
+    <input type="text" placeholder="Código de ciudad" [(ngModel)]="codigoCiudad" />
+    <input type="text" placeholder="Descripción de la ciudad" [(ngModel)]="descripcionCiudad" />
+  </div>
+  <div>
+    <ion-button (click)="guardarCiudad()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
 
 </ion-content>

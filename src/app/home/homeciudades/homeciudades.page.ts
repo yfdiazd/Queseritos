@@ -15,43 +15,11 @@ export class HomeciudadesPage implements OnInit {
 
   ngOnInit() {
   }
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Que deseas hacer?',
-      cssClass: 'my-custom-class',
-      buttons: [{
-        text: 'Crear',
-        icon: 'person-add',
-        handler: () => {
-          console.log('Play clicked');
-          this.router.navigate(["crearciudad"]);
-        }
-      }, 
-      {
-        text: 'Editar',
-        icon: 'pencil',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, 
-      {
-        text: 'Eliminar',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          console.log('Delete clicked');
-        }
-      }, 
-      {
-        text: 'Cancelar',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-    await actionSheet.present();
+
+  crear(){
+    this.router.navigate(["crearciudad"])
   }
+
+  
 
 }

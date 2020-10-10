@@ -5,19 +5,27 @@
       <ion-back-button defaultHref="/main-menu"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">CIUDADES DE ENVÍO</ion-title>
+    <ion-buttons slot="end" (click)="crear()">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="div-principal">
-    <ion-card class="card" *ngFor="let lista of FB.ciudadesLista">
-      <p>Código: {{lista.codigo}}</p>
-      <p>Descripción: {{lista.descripcion}}</p>
-    </ion-card>
+    <ion-item-sliding class="slider" *ngFor="let lista of FB.ciudadesLista">
+      <ion-item class="item">
+        <ion-card class="card">
+          <p><span>Código: </span> {{lista.codigo}}</p>
+          <p><span>Descripción: </span> {{lista.descripcion}}</p>
+        </ion-card>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="unread(item)">Eliminar</ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="unread(item)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </div>
-  <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="hammer"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content> 
+</ion-content>
