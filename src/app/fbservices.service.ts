@@ -326,10 +326,12 @@ export class FBservicesService {
     }
 
     validaProveedor() {
-      //  firebase
-       // .database()
-       // .ref()
-       // .on()
+       firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores")
+        .on("value", snapshot =>{
+            snapshot.forEach(element =>{})
+        })
     }
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
@@ -611,7 +613,7 @@ export class FBservicesService {
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor")
             .on("value", snaphot => {
-                this.tiposIdentificacionLista = [];
+                this.conductoresLista = [];
                 snaphot.forEach(element => {
                     this.conductoresLista.push(element.val());
                 });
