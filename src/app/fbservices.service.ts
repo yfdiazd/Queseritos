@@ -35,6 +35,7 @@ export class FBservicesService {
     idConductor: string;
     //Id compras
     idCompra: string;
+    idPesajeCompra: string;
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para obtener la fecha actual
@@ -169,7 +170,6 @@ export class FBservicesService {
                 this.getProductos();
                 this.getProveedores();
                 this.getTipoAnticipos();
-                this.getTipoTrueque();
                 this.getTiposIdentificacion();
                 this.getConductor();
                 this.listaOrdenLotes();
@@ -415,25 +415,25 @@ export class FBservicesService {
         }
     }
     //Metodo para agregar el tipo de trueque.
-    agregarTipoTrueque(codigoTipoTrueque, descripcionTipoTrueque) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque");
-        if (this.validaCodigos(codigoTipoTrueque, this.pathPush) == false) {
-            this.idTipoTrueque = this.idGenerator();
-            firebase
-                .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + this.idTipoTrueque)
-                .set({
-                    id: this.idTipoTrueque,
-                    codigo: codigoTipoTrueque,
-                    descripcion: descripcionTipoTrueque,
-                    estado: 1
-                });
-            this.toastOperacionExitosa();
+    //agregarTipoTrueque(codigoTipoTrueque, descripcionTipoTrueque) {
+    //  this.usuarioUid = firebase.auth().currentUser.uid;
+    //this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque");
+    //if (this.validaCodigos(codigoTipoTrueque, this.pathPush) == false) {
+    //   this.idTipoTrueque = this.idGenerator();
+    // firebase
+    //   .database()
+    // .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + this.idTipoTrueque)
+    //.set({
+    //  id: this.idTipoTrueque,
+    //codigo: codigoTipoTrueque,
+    //descripcion: descripcionTipoTrueque,
+    //estado: 1
+    // });
+    //this.toastOperacionExitosa();
 
-        }
-        this.toastElementoDuplicado();
-    }
+    //}
+    //this.toastElementoDuplicado();
+    // }
 
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
@@ -665,20 +665,20 @@ export class FBservicesService {
                 return this.tipoAnticipoLista;
             });
     }
-    getTipoTrueque() {
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
-            .on("value", snaphot => {
-                this.tipoTruequeLista = [];
-                snaphot.forEach(element => {
-                    if (element.val().estado == 1) {
-                        this.tipoTruequeLista.push(element.val());
-                    }
-                });
-                return this.tipoTruequeLista;
-            });
-    }
+    //  getTipoTrueque() {
+    //    firebase
+    //      .database()
+    //     .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
+    //    .on("value", snaphot => {
+    //      this.tipoTruequeLista = [];
+    //      snaphot.forEach(element => {
+    //        if (element.val().estado == 1) {
+    //           this.tipoTruequeLista.push(element.val());
+    //      }
+    //    });
+    //     return this.tipoTruequeLista;
+    // });
+    //}
     getTiposIdentificacion() {
         firebase
             .database()
@@ -766,17 +766,17 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    deleteTipoTrueque(idTipoTrueque) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+    //  deleteTipoTrueque(idTipoTrueque) {
+    //      this.usuarioUid = firebase.auth().currentUser.uid;
 
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
-            .update({
-                estado: 0
-            });
-        this.toastOperacionExitosa();
-    }
+    //   firebase
+    //     .database()
+    //    .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
+    //    .update({
+    //       estado: 0
+    //    });
+    //   this.toastOperacionExitosa();
+    //}
     deleteCiudad(idCiudad) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
@@ -870,17 +870,17 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
-            .update({
-                codigo: codigoTipoAnticipo,
-                descripcion: descripcionTipoanticipo
-            });
-        this.toastOperacionExitosa();
-    }
+    //  updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
+    //    this.usuarioUid = firebase.auth().currentUser.uid;
+    //   firebase
+    //     .database()
+    //    .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
+    //    .update({
+    //     codigo: codigoTipoAnticipo,
+    //      descripcion: descripcionTipoanticipo
+    //  });
+    // this.toastOperacionExitosa();
+    //}
     updateTipoTrueque(idTipoTrueque, codigoTipoTrueque, descripcionTipoTrueque) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
@@ -994,12 +994,11 @@ export class FBservicesService {
 
     }
     //Metodos para las comprassssss
-    agregarPesajeCompra(idProveedor, idProducto, numBulto, pesoBulto, idEstadoProducto) {
+    agregarPesajeCompra(idProveedor, idProducto, numBulto, pesoBulto) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        
+
         this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length-1));
-        console.log("asdasdasdasdasdasd " + this.lastLote.toString());
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         this.idCompra = this.idGenerator();
         firebase
             .database()
@@ -1012,9 +1011,29 @@ export class FBservicesService {
                 idProducto: idProducto,
                 bulto: numBulto,
                 pesoBulto: pesoBulto,
-                idEstadoProducto: idEstadoProducto
+                estado: 1
             });
         this.toastOperacionExitosa();
+    }
+
+    agregarConfirmarPesaje(idProveedor, codigoProducto, totalBulto, pesoBultos) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        this.idPesajeCompra = this.idGenerator();
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+        .database()
+        .ref("usuario/" + this.usuarioUid + "/pesajeCompra/" + this.idPesajeCompra)
+        .set({
+            id: this.idPesajeCompra,
+            lote: this.lastLote.toString(),
+            fechaCompra: this.fechaActual(),
+            idProveedor: idProveedor,
+            idProducto: codigoProducto,
+            totalBulto: totalBulto,
+            pesoBultos: pesoBultos,
+            costoTotalCompra: 0
+        })
     }
 
 
