@@ -4,6 +4,8 @@ import * as firebase from "firebase";
 import { ToastController, AlertController } from "@ionic/angular";
 import { element } from 'protractor';
 import { constants } from 'buffer';
+import { setTimeout } from 'timers';
+import { TIMEOUT } from 'dns';
 
 
 
@@ -21,6 +23,7 @@ export class FBservicesService {
     varIdGenerator: any = 0;
     time: any;
     //variables id
+    idLote: string;
     idCiudad: string;
     idCliente: String;
     idEstadoProducto: String;
@@ -30,6 +33,8 @@ export class FBservicesService {
     idTipoTrueque: string;
     idTipoIdentificacion: String;
     idConductor: string;
+    //Id compras
+    idCompra: string;
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para obtener la fecha actual
@@ -47,6 +52,10 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
+    //Lista lotes
+    listaLotes: any[] = [];
+    ultimoLote: any[];
+    lastLote: any[];
 
     // Variable usuario
     usuario: string;
@@ -151,7 +160,7 @@ export class FBservicesService {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
 
-                this.router.navigate(["main-menu"]);
+                //this.router.navigate(["main-menu"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
                 this.getCiudades();
@@ -163,6 +172,8 @@ export class FBservicesService {
                 this.getTipoTrueque();
                 this.getTiposIdentificacion();
                 this.getConductor();
+                this.listaOrdenLotes();
+                //this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -296,6 +307,7 @@ export class FBservicesService {
 
                 });
             this.toastOperacionExitosa();
+
         } else {
             this.toastElementoDuplicado();
         }
@@ -333,13 +345,12 @@ export class FBservicesService {
 
                 });
             this.toastProveedorCrado();
+
         } else {
             this.toastNumIdentificaExiste();
         }
 
     }
-
-
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -356,6 +367,7 @@ export class FBservicesService {
                     estado: 1
                 });
             this.toastOperacionExitosa();
+
         } else {
             this.toastElementoDuplicado();
         }
@@ -376,6 +388,7 @@ export class FBservicesService {
                     estado: 1
                 });
             this.toastOperacionExitosa();
+
         } else {
             this.toastElementoDuplicado();
         }
@@ -396,6 +409,7 @@ export class FBservicesService {
                     estado: 1
                 });
             this.toastOperacionExitosa();
+
         } else {
             this.toastElementoDuplicado();
         }
@@ -416,11 +430,12 @@ export class FBservicesService {
                     estado: 1
                 });
             this.toastOperacionExitosa();
+
         }
         this.toastElementoDuplicado();
     }
-    //Metodo que permite crear las ciudades del sistema
 
+    //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.pathPush = "";
@@ -436,11 +451,21 @@ export class FBservicesService {
                     descripcion: describcionCiudad,
                     estado: 1
                 });
+
             this.toastOperacionExitosa();
+
         } else {
             this.toastElementoDuplicado();
         }
     }
+    sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+            currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+    }
+
 
     //Metodo que permite agregar clientes
     agregarCliente(tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
@@ -454,9 +479,9 @@ export class FBservicesService {
         if (correoCliente == null) {
             correoCliente = "";
         }
-        this.pathPush="";
+        this.pathPush = "";
         this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "cliente");
-        if(this.validaNumDocs(numeroIdentificacionCliente, this.pathPush) == false){
+        if (this.validaNumDocs(numeroIdentificacionCliente, this.pathPush) == false) {
 
             this.idCliente = this.idGenerator();
             firebase
@@ -476,7 +501,8 @@ export class FBservicesService {
                     estado: 1
                 });
             this.toastOperacionExitosa();
-        }else{
+
+        } else {
             this.toastNumIdentificaExiste();
         }
     }
@@ -488,7 +514,7 @@ export class FBservicesService {
         }
         this.pathPush = "";
         this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "conductor");
-        if(this.validaNumDocs(numeroIdentificacionConductor, this.pathPush) == false){
+        if (this.validaNumDocs(numeroIdentificacionConductor, this.pathPush) == false) {
             this.idConductor = this.idGenerator();
             firebase
                 .database()
@@ -502,16 +528,18 @@ export class FBservicesService {
                     celular: celularConductor,
                     estado: 1
                 });
-                this.toastOperacionExitosa();
-            }else{
-                this.toastNumIdentificaExiste();
-            }
-            
+            this.toastOperacionExitosa();
+
+        } else {
+            this.toastNumIdentificaExiste();
+        }
+
     }
 
 
     //Metodos de validaciones
     validaCodigos(codigo, path) {
+        this.flag = false;
         firebase
             .database()
             .ref(path)
@@ -524,10 +552,13 @@ export class FBservicesService {
                     }
                 });
             });
+        codigo = "";
+        path = "";
         return this.flag;
     }
 
     validaNumDocs(numIdentifica, path) {
+        this.pathPush = false;
         firebase
             .database()
             .ref(path)
@@ -540,8 +571,8 @@ export class FBservicesService {
                     }
                 });
             });
-            numIdentifica = "";
-            path = "";
+        numIdentifica = "";
+        path = "";
         return this.flag;
     }
 
@@ -556,7 +587,7 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.ciudadesLista = [];
                 snapshot.forEach(element => {
-                    if(element.val().estado == 1){
+                    if (element.val().estado == 1) {
                         this.ciudadesLista.push(element.val());
                     }
 
@@ -571,8 +602,8 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.clientesLista = [];
                 snapshot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.clientesLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.clientesLista.push(element.val());
                     }
                 });
                 return this.clientesLista;
@@ -585,8 +616,8 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.estadoProductoLista = [];
                 snaphot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.estadoProductoLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.estadoProductoLista.push(element.val());
                     }
                 });
                 return this.estadoProductoLista;
@@ -599,8 +630,8 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.productosLista = [];
                 snaphot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.productosLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.productosLista.push(element.val());
                     }
                 });
                 return this.productosLista;
@@ -613,8 +644,8 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.proveedoresLista = [];
                 snaphot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.proveedoresLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.proveedoresLista.push(element.val());
                     }
                 });
                 return this.proveedoresLista;
@@ -627,8 +658,8 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.tipoAnticipoLista = [];
                 snaphot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.tipoAnticipoLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.tipoAnticipoLista.push(element.val());
                     }
                 });
                 return this.tipoAnticipoLista;
@@ -641,8 +672,8 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.tipoTruequeLista = [];
                 snaphot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.tipoTruequeLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.tipoTruequeLista.push(element.val());
                     }
                 });
                 return this.tipoTruequeLista;
@@ -655,8 +686,8 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.tiposIdentificacionLista = [];
                 snaphot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.tiposIdentificacionLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.tiposIdentificacionLista.push(element.val());
                     }
                 });
                 return this.tiposIdentificacionLista;
@@ -669,8 +700,8 @@ export class FBservicesService {
             .on("value", snaphot => {
                 this.conductoresLista = [];
                 snaphot.forEach(element => {
-                    if(element.val().estado == 1){
-                    this.conductoresLista.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.conductoresLista.push(element.val());
                     }
                 });
                 return this.conductoresLista;
@@ -923,5 +954,68 @@ export class FBservicesService {
         this.varIdGenerator = this.time;
         return this.varIdGenerator;
     }
+
+    //Generador de lotes fechaactual+L+consecutivo de lotes 1, 2, 3, ....
+    generarLote() {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        this.idLote = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/lotes")
+            .on("value", snapshot => {
+                console.log("chiliiiiiiiiiiiiiiiii " + snapshot.numChildren());
+                firebase
+                    .database()
+                    .ref("usuario/" + this.usuarioUid + "/configuracion/lotes/" + this.idLote)
+                    .set({
+                        id: this.idLote,
+                        lote: (this.fechaActual() + "-L" + snapshot.numChildren())
+                    });
+
+            });
+    }
+    //Obtiene los lotes del mas antiguo al mas nuevo
+
+    listaOrdenLotes() {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/lotes")
+            .orderByValue()
+            .on("value", snapshot => {
+                this.ultimoLote = [];
+                snapshot.forEach(element => {
+
+                    this.ultimoLote.push(element.val().lote);
+
+                });
+            });
+        return this.ultimoLote;
+
+    }
+    //Metodos para las comprassssss
+    agregarPesajeCompra(idProveedor, idProducto, numBulto, pesoBulto, idEstadoProducto) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length-1));
+        console.log("asdasdasdasdasdasd " + this.lastLote.toString());
+        this.idCompra = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/pesajeCompra/" + this.idCompra)
+            .set({
+                idCompra: this.idCompra,
+                lote: this.lastLote.toString(),
+                fechaCompra: this.fechaActual(),
+                idProveedor: idProveedor,
+                idProducto: idProducto,
+                bulto: numBulto,
+                pesoBulto: pesoBulto,
+                idEstadoProducto: idEstadoProducto
+            });
+        this.toastOperacionExitosa();
+    }
+
 
 }
