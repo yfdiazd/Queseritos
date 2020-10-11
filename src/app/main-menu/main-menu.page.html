@@ -1,8 +1,8 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-menu-button slot="start" (click)="openFirst()"></ion-menu-button>
-    <ion-title class= "titulo"> MENU PRINCIPAL</ion-title>
+    <ion-menu-button slot="start" (click)="abrirConfiguracion()"></ion-menu-button>
+    <ion-title class="titulo"> MENU PRINCIPAL</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,14 +12,13 @@
       <ion-card class="card1">
         <ion-button (click)="irVender()" class="btn-title1">COMPRAS</ion-button>
         <div class="div-boton-lote">
-          <ion-button class="boton-n-lote"  expand="full">
+          <ion-button class="boton-n-lote" expand="full">
             <ion-icon name="add"></ion-icon>
             Nuevo LOTE
           </ion-button>
         </div>
       </ion-card>
     </ion-col>
-    
     <ion-col class="col2">
       <ion-card class="card2">
         <ion-button class="btn-title2">VENTAS</ion-button>
@@ -32,22 +31,21 @@
       </ion-card>
     </ion-col>
   </ion-row>
-
   <ion-row class="row2">
     <ion-col class="col3">
-      <ion-card class="card3">
-        <ion-button class="btn-title3">ANTICIPOS</ion-button>
+      <ion-card class="card3" (click)="irLotes()">
+        <ion-button class="btn-title3">LOTES</ion-button>
       </ion-card>
     </ion-col>
     <ion-col class="col4">
       <ion-card class="card4">
-        <ion-button class="btn-title4">TRUEQUES</ion-button>
+        <ion-button class="btn-title4">ESTADO</ion-button>
       </ion-card>
     </ion-col>
   </ion-row>
 </ion-content>
-
-<ion-menu sclasse="start" menuclass="first">
+<ion-router-outlet id="myMenu"></ion-router-outlet>
+<ion-menu side="start" menuId="myMenu" contentId="myMenu" class="myMenu">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Configurar</ion-title>
@@ -55,18 +53,20 @@
   </ion-header>
   <ion-content>
     <ion-list>
-      <ion-item (click)="irPageCrearCiudad()">Ciudades</ion-item>
-      <ion-item (click)="irPageRegistrarCliente()">Clientes</ion-item>
-      <ion-item (click)="irPageRegistrarConductor()">Conductores</ion-item>
-      <ion-item (click)="irPageEstadoQueso()">Estados del Queso</ion-item>
-      <ion-item (click)="irPageRegistrarProveedor()">Proveedores</ion-item>
-      <ion-item (click)="irPageTipoAnticipo()">Tipos de Anticipo</ion-item>
-      <ion-item (click)="irPageTipoIdentificacion()">Tipos de Identificación</ion-item>
-      <ion-item (click)="irPageTipoQueso()">Tipos de Queso</ion-item>
-      <ion-item (click)="irPageTipoTrueque()">Tipos de Trueque</ion-item>
+      <ion-item (click)="irCiudad()">Ciudades</ion-item>
+      <ion-item (click)="irCliente()">Clientes</ion-item>
+      <ion-item (click)="irConductor()">Conductores</ion-item>
+      <ion-item (click)="irEstadoQueso()">Estados del Queso</ion-item>
+      <ion-item (click)="irProveedor()">Proveedores</ion-item>
+      <ion-item (click)="irTipoAnticipo()">Tipos de Anticipo</ion-item>
+      <ion-item (click)="irTipoIdentificacion()">Tipos de Identificación</ion-item>
+      <ion-item (click)="irTipoQueso()">Tipos de Queso</ion-item>
+      <ion-item (click)="irTipoTrueque()">Tipos de Trueque</ion-item>
     </ion-list>
-    <ion-button (click)="FB.cerrarSesion()">
+  </ion-content>
+  <ion-footer>
+    <ion-button class="cerraSesion" expand="full" (click)="FB.cerrarSesion()">
       Cerrar Sesión
     </ion-button>
-  </ion-content>
+  </ion-footer>
 </ion-menu>

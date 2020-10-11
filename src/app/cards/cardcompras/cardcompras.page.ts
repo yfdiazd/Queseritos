@@ -75,7 +75,7 @@ export class CardcomprasPage {
   }
 
   customAlertOptions: any = {
-    header: 'Seleccione identificacion',
+    header: 'Seleccione proveedor',
     translucent: true,
   };
 
