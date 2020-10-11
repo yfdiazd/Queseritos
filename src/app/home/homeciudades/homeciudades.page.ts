@@ -28,50 +28,50 @@ export class HomeciudadesPage implements OnInit {
 
   ngOnInit() {}
 
-  async editar(cod) {
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Modificar registro",
+  // async editar(cod) {
+  //   const alert = await this.alertController.create({
+  //     cssClass: "my-custom-class",
+  //     header: "Modificar registro",
 
-      inputs: [
-        {
-          name: "Codigo",
-          type: "text",
-          value: cod.codigo,
-          placeholder: " Codigo",
-        },
-        {
-          name: "Descripcion",
-          type: "text",
-          value: cod.descripcion,
-          placeholder: "Descripción",          
-        },
-      ],
+  //     inputs: [
+  //       {
+  //         name: "Codigo",
+  //         type: "text",
+  //         value: cod.codigo,
+  //         placeholder: " Codigo",
+  //       },
+  //       {
+  //         name: "Descripcion",
+  //         type: "text",
+  //         value: cod.descripcion,
+  //         placeholder: "Descripción",          
+  //       },
+  //     ],
 
-      buttons: [
-        {
-          text: "Cancelar",
-          role: "cancel",
-          cssClass: "secondary",
-          handler: (blah) => {
-            console.log("Confirm Cancel: blah");
-          },
-        },
-        {
-          text: "Modificar",
-          handler: data => {
+  //     buttons: [
+  //       {
+  //         text: "Cancelar",
+  //         role: "cancel",
+  //         cssClass: "secondary",
+  //         handler: (blah) => {
+  //           console.log("Confirm Cancel: blah");
+  //         },
+  //       },
+  //       {
+  //         text: "Modificar",
+  //         handler: data => {
 
-            console.log("data: " , data.values.codigo);
-            console.log("Presionó en editar");
-          },
-        },
-      ],
-    });
+  //           console.log("data: " , data.values.codigo);
+  //           console.log("Presionó en editar");
+  //         },
+  //       },
+  //     ],
+  //   });
 
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(" Despues del esperar",result);
-  }
+  //   await alert.present();
+  //   let result = await alert.onDidDismiss();
+  //   console.log(" Despues del esperar",result);
+  // }
 
   async editarModal(lista) {
     const modal = await this.modalController.create({
@@ -85,6 +85,7 @@ export class HomeciudadesPage implements OnInit {
     });
     return await modal.present();
   }
+  
   async crearModal() {
     const modal = await this.modalController.create({
       component: CrearciudadPage,
@@ -119,10 +120,8 @@ export class HomeciudadesPage implements OnInit {
 
     await alert.present();
   }
-  // editarCiudad() {
-  //   this.router.navigate(["crearciudad"]);
-  //   // this.FB.updateCiudad(this.codigoCiudad, this.descripcionCiudad);
-  //   //this.FB.deleteCiudad("1602202142339");
 
-  // }
+  async cerrar(){
+    this.modalController.dismiss();
+  }
 }

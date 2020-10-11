@@ -1,14 +1,14 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu"></ion-back-button>
+    <ion-title class="titulo">Clientes</ion-title>
+    <ion-buttons slot="start" (click)="cerrar()">
+      <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
     </ion-buttons>
-    <ion-title>Clientes</ion-title>
-    <ion-buttons slot="end" (click)="crear()">
-      <ion-icon slot="icon-only" name="add" ></ion-icon>
-    </ion-buttons>
+    <ion-buttons slot="end" (click)="crearModal()">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
   </ion-toolbar>
+  </ion-buttons>
 </ion-header>
 <ion-content>
   <div class="div-principal">
@@ -24,10 +24,10 @@
         </ion-card>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="unread(item)">Eliminar</ion-item-option>
+        <ion-item-option color="danger" (click)="eliminar(lista)">Eliminar</ion-item-option>
       </ion-item-options>
       <ion-item-options side="start">
-        <ion-item-option color="warning" (click)="unread(item)">Editar</ion-item-option>
+        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </div>

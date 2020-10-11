@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ModalController} from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { FBservicesService } from "../../fbservices.service";
 
 @Component({
@@ -8,7 +8,7 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearciudad.page.scss"],
 })
 export class CrearciudadPage implements OnInit {
-  
+
   codigoCiudad: string;
   descripcionCiudad: string;
 
@@ -18,26 +18,31 @@ export class CrearciudadPage implements OnInit {
 
   constructor(
     private FB: FBservicesService,
-    private modalCtrl:ModalController) {      
-    }
+    private modalCtrl: ModalController) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   guardarCiudad() {
-    console.log("ID del dato a editar", this.id);
-    console.log("CODIGO" , this.codigoCiudad, " -- descripción " ,this.descripcionCiudad);
-    if(this.id == undefined){
-      console.log("CODIGO" , this.codigoEdit, this.codigoCiudad, " -- descripción " , this.descripcionEdit, this.descripcionCiudad );
-      // this.FB.agregarCiudad(this.codigoCiudad, this.descripcionCiudad);
-      console.log("Se debe crear")
-    }else{
-
-      console.log("CODIGO" , this.codigoEdit, this.codigoCiudad, " -- descripción " , this.descripcionEdit, this.descripcionCiudad );
-      // this.FB.updateCiudad(this.codigoEdit,this.descripcionCiudad);
-      console.log("Se debe modificar")
+    if (this.id == undefined) {
+      if (this.codigoCiudad == undefined) {
+        this.FB.agregarCiudad(this.codigoEdit, this.descripcionCiudad);
+        this.modalCtrl.dismiss();
+      } else if (this.descripcionCiudad == undefined) {
+        this.FB.agregarCiudad(this.codigoCiudad, this.descripcionEdit);
+        this.modalCtrl.dismiss();
+      } else {
+        this.FB.agregarCiudad(this.codigoCiudad, this.descripcionCiudad);
+        this.modalCtrl.dismiss();
+      }
+      console.log("Se debebió crear")
+    } else {
+      this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionCiudad);
+      // console.log("Se debe modificar")
+      this.modalCtrl.dismiss();
     }
   }
-  volver(){
+  volver() {
     this.modalCtrl.dismiss();
   }
 }

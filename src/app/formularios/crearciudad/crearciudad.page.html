@@ -11,9 +11,9 @@
 <ion-content>
   <div class="div-formulario">
     <p>Codigo</p>
-    <input type="text" placeholder="{{codigoEdit}}" [(ngModel)]="FB.getCiudades.codigo"/>
+    <input maxlength="4" type="text" placeholder="{{codigoEdit}}" [(ngModel)]="codigoCiudad"/>
     <p>Descripción</p>
-    <input type="text" placeholder="{{descripcionEdit}}" [(ngModel)]="descripcionCiudad"/>
+    <input maxlength="30" type="text" placeholder="{{descripcionEdit}}" [(ngModel)]="descripcionCiudad"/>
     <ion-button (click)="guardarCiudad()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
