@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { CrearclientesPage } from 'src/app/formularios/crearclientes/crearclientes.page';
 
@@ -11,6 +11,7 @@ import { CrearclientesPage } from 'src/app/formularios/crearclientes/crearclient
 export class HomeclientesPage implements OnInit {
 
   constructor(
+    private navCtrl: NavController,
     private FB: FBservicesService,
     private modalController: ModalController,
     private alertController: AlertController
@@ -87,7 +88,7 @@ export class HomeclientesPage implements OnInit {
   }
 
   async cerrar() {
-    this.modalController.dismiss();
+    this.navCtrl.navigateForward('main-menu');
   }
 
 

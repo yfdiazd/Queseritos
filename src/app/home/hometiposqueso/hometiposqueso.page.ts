@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {
    AlertController,
    ModalController,
+   NavController,
   } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { CrearproductoPage } from 'src/app/formularios/crearproducto/crearproducto.page';
@@ -15,6 +16,7 @@ import { CrearproductoPage } from 'src/app/formularios/crearproducto/crearproduc
 export class HometiposquesoPage implements OnInit {
 
   constructor(
+    private navCtrl: NavController,
     private FB: FBservicesService,
     private router: Router,
     public alertController: AlertController,
@@ -75,7 +77,7 @@ export class HometiposquesoPage implements OnInit {
   }
 
   async cerrar(){
-    this.modalController.dismiss();
+    this.navCtrl.navigateForward('main-menu');
   }
  
 }

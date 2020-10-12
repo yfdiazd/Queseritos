@@ -1,7 +1,12 @@
-<ion-router-outlet  id="main"></ion-router-outlet>
+<ion-router-outlet id="first"></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-menu-button slot="start" (click)="abrirConfiguracion()"></ion-menu-button>
+    <ion-buttons slot="start">
+      <ion-menu-button (click)="lista()"></ion-menu-button>
+      <!-- <ion-menu>
+        <ion-nav [root]="menuList"> </ion-nav>
+      </ion-menu> -->
+    </ion-buttons>
     <ion-title class="titulo"> MENU PRINCIPAL</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,7 +15,8 @@
   <ion-row class="row1">
     <ion-col class="col1">
       <ion-card class="card1">
-        <ion-button (click)="vender()" class="btn-title1">COMPRAS</ion-button>
+        <!-- [href]="'/cardcompras'" routerDirection="forward" --- OR -----  (click)="comprar()"-->
+        <ion-button (click)="comprar()" class="btn-title1">COMPRAS</ion-button>
         <div class="div-boton-lote">
           <ion-button class="boton-n-lote" expand="full">
             <ion-icon name="add"></ion-icon>
@@ -45,7 +51,8 @@
   </ion-row>
 </ion-content>
 
-<ion-menu side="start" menuId="first" contentId="main">
+
+<ion-menu side="start" type="push" menuId="first" contentId="first">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Configurar</ion-title>
@@ -61,7 +68,7 @@
       <ion-item (click)="irTipoAnticipo()">Tipos de Anticipo</ion-item>
       <ion-item (click)="irTipoIdentificacion()">Tipos de Identificación</ion-item>
       <ion-item (click)="irTipoQueso()">Tipos de Queso</ion-item>
-      <!--<ion-item (click)="irTipoTrueque()">Tipos de Trueque</ion-item>-->
+      <!-- <ion-item (click)="irTipoTrueque()">Tipos de Trueque</ion-item> -->
     </ion-list>
   </ion-content>
   <ion-footer>

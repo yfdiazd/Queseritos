@@ -21,22 +21,17 @@ export class CrearciudadPage implements OnInit {
 
   ngOnInit() { }
 
-  guardarCiudad() {
+  guardar() {
     if (this.id == undefined) {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarCiudad(this.codigoEdit, this.descripcionEdit);
         this.modalCtrl.dismiss();
-
       }
-
-    } else {
-     
+    } else {     
         this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionEdit);
-
-        this.modalCtrl.dismiss();
-      
+        this.modalCtrl.dismiss();      
     }
   }
 

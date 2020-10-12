@@ -1,17 +1,17 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { MenuController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from '../fbservices.service';
-import { HomeciudadesPage } from '../home/homeciudades/homeciudades.page';
-import { HomeclientesPage } from '../home/homeclientes/homeclientes.page';
-import { HomeconductoresPage } from '../home/homeconductores/homeconductores.page';
-import { HomeestadoquesoPage } from '../home/homeestadoqueso/homeestadoqueso.page';
-import { HomeproveedoresPage } from '../home/homeproveedores/homeproveedores.page';
-import { HometipoanticipoPage } from '../home/hometipoanticipo/hometipoanticipo.page';
-import { HometiposidentificacionPage } from '../home/hometiposidentificacion/hometiposidentificacion.page';
-import { HometiposquesoPage } from '../home/hometiposqueso/hometiposqueso.page';
-import { HometipotruequePage } from '../home/hometipotrueque/hometipotrueque.page';
-import { timeStamp } from 'console';
+import { NavController } from '@ionic/angular';
+// import { HomeciudadesPage } from '../home/homeciudades/homeciudades.page';
+// import { HometipotruequePage } from '../home/hometipotrueque/hometipotrueque.page';
+// import { HometiposquesoPage } from '../home/hometiposqueso/hometiposqueso.page';
+// import { HometiposidentificacionPage } from '../home/hometiposidentificacion/hometiposidentificacion.page';
+// import { HometipoanticipoPage } from '../home/hometipoanticipo/hometipoanticipo.page';
+// import { HomeproveedoresPage } from '../home/homeproveedores/homeproveedores.page';
+// import { HomeestadoquesoPage } from '../home/homeestadoqueso/homeestadoqueso.page';
+// import { HomeconductoresPage } from '../home/homeconductores/homeconductores.page';
+// import { HomeclientesPage } from '../home/homeclientes/homeclientes.page';
 
 @Component({
   selector: 'app-main-menu',
@@ -20,93 +20,91 @@ import { timeStamp } from 'console';
 })
 export class MainMenuPage {
 
+
   constructor(
+    private modalCtrl: ModalController,
     private menu: MenuController,
-    private router: Router,
     private FB: FBservicesService,
-    public modalController: ModalController
+    private navCtrl: NavController
   ) { }
 
-  abrirConfiguracion() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
+  comprar() {
+    this.navCtrl.navigateForward('cardcompras');
   }
-  vender(){
-    this.menu.enable(true, 'first');
-    this.menu.close('first');
-    this.router.navigate(["cardcompras"]);
-  }
-  cerrarSesion(){
+  cerrarSesion() {
     this.FB.cerrarSesion();
   }
 
-  
+  lista() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+
   //Redireccionamiento a las paginas de configuración
   async irCiudad() {
-    const modal = await this.modalController.create({
-      component: HomeciudadesPage,
-      cssClass: "my-custom-class"
-    });
-    this.menu.enable(false, 'first');
-    this.menu.close('first');
-    return await modal.present();
+    this.navCtrl.navigateForward('homeciudades')
+    // const modal = await this.modalCtrl.create({
+    //   component: HomeciudadesPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // this.modalCtrl.dismiss();
+    // return await modal.present();
   }
   async irCliente() {
-    const modal = await this.modalController.create({
-      component: HomeclientesPage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
+    this.navCtrl.navigateForward('homeclientes');
+    // const modal = await this.modalCtrl.create({
+    //   component: HomeclientesPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // return await modal.present();
   }
   async irConductor() {
-    const modal = await this.modalController.create({
-      component: HomeconductoresPage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
+    this.navCtrl.navigateForward('homeconductores');
+    // const modal = await this.modalCtrl.create({
+    //   component: HomeconductoresPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // return await modal.present();
   }
   async irEstadoQueso() {
-    const modal = await this.modalController.create({
-      component: HomeestadoquesoPage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
+    this.navCtrl.navigateForward('homeestadoqueso');
+    // const modal = await this.modalCtrl.create({
+    //   component: HomeestadoquesoPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // return await modal.present();
   }
   async irProveedor() {
-    const modal = await this.modalController.create({
-      component: HomeproveedoresPage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
+    this.navCtrl.navigateForward('homeproveedores');
+    // const modal = await this.modalCtrl.create({
+    //   component: HomeproveedoresPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // this.menu.close('first');
+    // return await modal.present();
   }
   async irTipoAnticipo() {
-    const modal = await this.modalController.create({
-      component: HometipoanticipoPage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
+    this.navCtrl.navigateForward('hometipoanticipo');
+    // const modal = await this.modalCtrl.create({
+    //   component: HometipoanticipoPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // return await modal.present();
   }
   async irTipoIdentificacion() {
-    const modal = await this.modalController.create({
-      component: HometiposidentificacionPage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
+    this.navCtrl.navigateForward('hometiposidentificacion');
+    // const modal = await this.modalCtrl.create({
+    //   component: HometiposidentificacionPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // return await modal.present();
   }
   async irTipoQueso() {
-    const modal = await this.modalController.create({
-      component: HometiposquesoPage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
+    this.navCtrl.navigateForward('hometiposqueso');
+    // const modal = await this.modalCtrl.create({
+    //   component: HometiposquesoPage,
+    //   cssClass: "my-custom-class"
+    // });
+    // return await modal.present();
   }
-  async irTipoTrueque() {
-    const modal = await this.modalController.create({
-      component: HometipotruequePage,
-      cssClass: "my-custom-class"
-    });
-    return await modal.present();
-  }
-
-
 }

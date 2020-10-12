@@ -1,9 +1,10 @@
 import { listLazyRoutes } from "@angular/compiler/src/aot/lazy_routes";
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { 
+import {
   AlertController,
   ModalController,
+  NavController,
 } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { CreartiposanticipoPage } from 'src/app/formularios/creartiposanticipo/creartiposanticipo.page';
@@ -17,17 +18,18 @@ import { __values } from "tslib";
 export class HometipoanticipoPage implements OnInit {
 
   constructor(
+    private navCtrl: NavController,
     private FB: FBservicesService,
     public alertController: AlertController,
     private router: Router,
     public modalController: ModalController) { }
 
-    codigoCiudad: string;
-    descripcionCiudad: string;
+  codigoCiudad: string;
+  descripcionCiudad: string;
 
   ngOnInit() {
   }
-async editarModal(lista) {
+  async editarModal(lista) {
     const modal = await this.modalController.create({
       component: CreartiposanticipoPage,
       cssClass: "my-custom-class",
@@ -39,11 +41,11 @@ async editarModal(lista) {
     });
     return await modal.present();
   }
-  
+
   async crearModal() {
     const modal = await this.modalController.create({
       component: CreartiposanticipoPage,
-      cssClass: "my-custom-class"      
+      cssClass: "my-custom-class"
     });
     return await modal.present();
   }
@@ -66,7 +68,7 @@ async editarModal(lista) {
           text: "SI",
           handler: () => {
             console.log("Confirm Okay");
-            this.FB.deleteCiudad(lista.id);
+            this.FB.deleteTipoAnticipo(lista.id);
           },
         },
       ],
@@ -75,8 +77,8 @@ async editarModal(lista) {
     await alert.present();
   }
 
-  async cerrar(){
-    this.modalController.dismiss();
+  async cerrar() {
+    this.navCtrl.navigateForward('main-menu');
   }
 
 

@@ -1,9 +1,10 @@
 import { listLazyRoutes } from "@angular/compiler/src/aot/lazy_routes";
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { 
+import {
   AlertController,
   ModalController,
+  NavController,
 
 } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
@@ -17,6 +18,7 @@ import { __values } from "tslib";
 export class HomeconductoresPage implements OnInit {
 
   constructor(
+    private navCtrl: NavController,
     private FB: FBservicesService,
     public alertController: AlertController,
     private router: Router,
@@ -30,27 +32,28 @@ export class HomeconductoresPage implements OnInit {
 
   ngOnInit() {
   }
+
   async editarModal(lista) {
     const modal = await this.modalController.create({
       component: CrearconductorPage,
       cssClass: "my-custom-class",
       componentProps: {
         idTipoIdentificacionEdit: lista.idTipoIdentificacion,
-        numidentificacionEdit:lista.numIndetificacion,
-        nombresEdit:lista.nombres,
-        apellidosEdit:lista.apellidos,
-        celularEdit:lista.celular,
+        numidentificacionEdit: lista.numIndetificacion,
+        nombresEdit: lista.nombres,
+        apellidosEdit: lista.apellidos,
+        celularEdit: lista.celular,
         id: lista.id
 
       },
     });
     return await modal.present();
   }
-  
+
   async crearModal() {
     const modal = await this.modalController.create({
       component: CrearconductorPage,
-      cssClass: "my-custom-class"      
+      cssClass: "my-custom-class"
     });
     return await modal.present();
   }
@@ -82,8 +85,8 @@ export class HomeconductoresPage implements OnInit {
     await alert.present();
   }
 
-  async cerrar(){
-    this.modalController.dismiss();
+  async cerrar() {
+    this.navCtrl.navigateForward('main-menu');
   }
 
 

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import {
   AlertController,
   ModalController,
+  NavController,
 } from "@ionic/angular";
 import { FBservicesService } from "src/app/fbservices.service";
 import { CrearciudadPage } from "src/app/formularios/crearciudad/crearciudad.page";
@@ -18,6 +19,7 @@ export class HomeciudadesPage implements OnInit {
     private FB: FBservicesService,
     public alertController: AlertController,
     private router: Router,
+    private navCtrl: NavController,
     public modalController: ModalController
   ) {}
 
@@ -26,6 +28,7 @@ export class HomeciudadesPage implements OnInit {
 
   ngOnInit() {}
 
+  
   async editarModal(lista) {
     const modal = await this.modalController.create({
       component: CrearciudadPage,
@@ -75,6 +78,6 @@ export class HomeciudadesPage implements OnInit {
   }
 
   async cerrar(){
-    this.modalController.dismiss();
+    this.navCtrl.navigateForward('main-menu');
   }
 }

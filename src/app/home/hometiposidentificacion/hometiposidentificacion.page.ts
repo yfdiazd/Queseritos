@@ -1,9 +1,10 @@
 import { listLazyRoutes } from "@angular/compiler/src/aot/lazy_routes";
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { 
+import {
   AlertController,
   ModalController,
+  NavController,
 } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { CreartiposidentificacionPage } from 'src/app/formularios/creartiposidentificacion/creartiposidentificacion.page';
@@ -17,13 +18,14 @@ import { __values } from "tslib";
 export class HometiposidentificacionPage implements OnInit {
 
   constructor(
+    private navCtrl: NavController,
     private FB: FBservicesService,
     public alertController: AlertController,
     private router: Router,
     public modalController: ModalController) { }
-    
-    codigoCiudad: string;
-    descripcionCiudad: string;
+
+  codigoCiudad: string;
+  descripcionCiudad: string;
   ngOnInit() {
   }
   async editarModal(lista) {
@@ -38,11 +40,11 @@ export class HometiposidentificacionPage implements OnInit {
     });
     return await modal.present();
   }
-  
+
   async crearModal() {
     const modal = await this.modalController.create({
       component: CreartiposidentificacionPage,
-      cssClass: "my-custom-class"      
+      cssClass: "my-custom-class"
     });
     return await modal.present();
   }
@@ -65,7 +67,7 @@ export class HometiposidentificacionPage implements OnInit {
           text: "SI",
           handler: () => {
             console.log("Confirm Okay");
-            this.FB.deleteCiudad(lista.id);
+            this.FB.deleteTipoIdentificacion(lista.id);
           },
         },
       ],
@@ -74,8 +76,8 @@ export class HometiposidentificacionPage implements OnInit {
     await alert.present();
   }
 
-  async cerrar(){
-    this.modalController.dismiss();
+  async cerrar() {
+    this.navCtrl.navigateForward('main-menu');
   }
 
 
