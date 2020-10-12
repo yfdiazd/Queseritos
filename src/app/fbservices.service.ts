@@ -900,7 +900,7 @@ export class FBservicesService {
                 descripcion: describcionCiudad
             });
     }
-    updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
+    updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresCliente, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         if (apellidosCliente == null) {
             apellidosCliente = "";
@@ -917,7 +917,7 @@ export class FBservicesService {
             .update({
                 idTipoIdentificacion: tipoIdentificacion,
                 numeroIdentificacion: numeroIdentificacionCliente,
-                nombres: nombresClietne,
+                nombres: nombresCliente,
                 apellidos: apellidosCliente,
                 empresa: empresaCliente,
                 idCiudad: codigoCiudad,
