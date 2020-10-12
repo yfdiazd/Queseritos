@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
 @Component({
   selector: 'app-creartiposanticipo',
@@ -8,12 +8,16 @@ import { FBservicesService } from '../../fbservices.service'
 })
 export class CreartiposanticipoPage implements OnInit {
   //variables para guardar el tipo de anticipo
-  codigoTipoAnticipo:string;
-  descripcionTipoAnticipo:string;
+ 
+
+  @Input() codigoEdit;
+  @Input() descripcionEdit;
+  @Input() id;
 
   constructor( 
 
-    private FB:FBservicesService
+    private FB:FBservicesService,
+    private modalCtrl: ModalController
 
    ) { }
 
@@ -21,7 +25,26 @@ export class CreartiposanticipoPage implements OnInit {
   }
 
   guardarTipoAnticipo(){
-    this.FB.agregarTipoAnticipo(this.codigoTipoAnticipo, this.descripcionTipoAnticipo);
+    if (this.id == undefined) {
+      if (this.codigoEdit == undefined) {
+        this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
+        this.modalCtrl.dismiss();
+      } else if (this.descripcionEdit == undefined) {
+        this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
+        this.modalCtrl.dismiss();
+      } else {
+        this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
+        this.modalCtrl.dismiss();
+      }
+      console.log("Se debebió crear")
+    } else {
+      this.FB.updateTipoAnticipo(this.id, this.codigoEdit, this.descripcionEdit);
+      // console.log("Se debe modificar")
+      this.modalCtrl.dismiss();
+    }
+  }
+  volver() {
+    this.modalCtrl.dismiss();
   }
 
 }

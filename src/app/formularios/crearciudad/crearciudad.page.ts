@@ -8,8 +8,6 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearciudad.page.scss"],
 })
 export class CrearciudadPage implements OnInit {
-codigoedit = "HOLA MUNDO";
- 
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
@@ -23,8 +21,7 @@ codigoedit = "HOLA MUNDO";
 
   ngOnInit() { }
 
-  guardar() {
-
+  guardarCiudad() {
     if (this.id == undefined) {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
