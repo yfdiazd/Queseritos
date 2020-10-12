@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MenuController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from '../fbservices.service';
@@ -11,6 +11,7 @@ import { HometipoanticipoPage } from '../home/hometipoanticipo/hometipoanticipo.
 import { HometiposidentificacionPage } from '../home/hometiposidentificacion/hometiposidentificacion.page';
 import { HometiposquesoPage } from '../home/hometiposqueso/hometiposqueso.page';
 import { HometipotruequePage } from '../home/hometipotrueque/hometipotrueque.page';
+import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-main-menu',
@@ -27,8 +28,16 @@ export class MainMenuPage {
   ) { }
 
   abrirConfiguracion() {
-    this.menu.enable(true, 'myMenu');
-    this.menu.open('myMenu');
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+  vender(){
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
+    this.router.navigate(["cardcompras"]);
+  }
+  cerrarSesion(){
+    this.FB.cerrarSesion();
   }
 
   
@@ -38,6 +47,8 @@ export class MainMenuPage {
       component: HomeciudadesPage,
       cssClass: "my-custom-class"
     });
+    this.menu.enable(false, 'first');
+    this.menu.close('first');
     return await modal.present();
   }
   async irCliente() {

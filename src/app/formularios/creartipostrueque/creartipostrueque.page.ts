@@ -19,6 +19,6 @@ export class CreartipostruequePage implements OnInit {
   }
 
   guardarTipoTrueque() {
-    this.FB.agregarTipoTrueque(this.codigoTipoTrueque, this.descripcionTipoTrueque);
+   
   }
 }
