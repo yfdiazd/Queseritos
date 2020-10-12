@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service';
 
 @Component({
@@ -8,15 +8,17 @@ import { FBservicesService } from '../../fbservices.service';
   styleUrls: ['./crearconductor.page.scss'],
 })
 export class CrearconductorPage implements OnInit {
-  //Variables para agregar conductores
-  tipoIdentificacionConductor: string;
-  numeroIdentificacionConductor: string;
-  nombreConductor: string;
-  apelidoConductor: string;
-  celularConductor: string;
+
+  @Input() idTipoIdentificacionEdit;
+  @Input() numidentificacionEdit;
+  @Input() nombresEdit;
+  @Input() apellidosEdit;
+  @Input() celularEdit;
+  @Input() id;
 
   constructor(
-    private FB: FBservicesService
+    private FB: FBservicesService,
+    private modalCtrl: ModalController
 
   ) {
 
@@ -25,7 +27,26 @@ export class CrearconductorPage implements OnInit {
   ngOnInit() {
   }
   guardarConductor() {
-    this.FB.agregarConductor("1", this.numeroIdentificacionConductor, this.nombreConductor, this.apelidoConductor, this.celularConductor);
+    if (this.id == undefined) {
+      if (this.idTipoIdentificacionEdit == undefined) {
+        this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit,this.nombresEdit, this.apellidosEdit, this.celularEdit);
+        this.modalCtrl.dismiss();
+      } else if (this.numidentificacionEdit == undefined) {
+        this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit,this.nombresEdit, this.apellidosEdit, this.celularEdit);
+        this.modalCtrl.dismiss();
+      } else {
+        this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit, this.apellidosEdit, this.celularEdit);
+        this.modalCtrl.dismiss();
+      }
+      console.log("Se debebió crear")
+    } else {
+      this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit,this.numidentificacionEdit,this.nombresEdit, this.celularEdit);
+      // console.log("Se debe modificar")
+      this.modalCtrl.dismiss();
+    }
+  }
+  volver() {
+    this.modalCtrl.dismiss();
   }
 
 

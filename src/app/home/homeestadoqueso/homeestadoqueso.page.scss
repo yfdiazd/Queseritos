@@ -21,7 +21,12 @@ ion-content {
     color: #1a1446;
     width: 100%;
     box-shadow: #1a1446 0px 4px 4px 4px;
-    font-size: 4vw;
+    font-size: 15px;
+  }
+  .item {
+    --max-height:15px;
+    --border-style: none;
+    --background: #c8f7f3;
   }
   .card p {
     padding: 0;
@@ -30,16 +35,16 @@ ion-content {
   .slider {
     --background: blue;
   }
-  .item {
-    --border-style: none;
-    --background: #c8f7f3;
-  }
 
   p > span {
+    
     font-weight: bold;
   }
   .my-custom-class {
     --background: #e5e5e5;
+    width: 500px;
+    max-width: 500px;
+    height: auto;
   }
   
 }

@@ -868,28 +868,28 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //  updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
-    //    this.usuarioUid = firebase.auth().currentUser.uid;
-    //   firebase
-    //     .database()
-    //    .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
-    //    .update({
-    //     codigo: codigoTipoAnticipo,
-    //      descripcion: descripcionTipoanticipo
-    //  });
-    // this.toastOperacionExitosa();
-    //}
-    updateTipoTrueque(idTipoTrueque, codigoTipoTrueque, descripcionTipoTrueque) {
+      updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
-            .update({
-                codigo: codigoTipoTrueque,
-                descripcion: descripcionTipoTrueque
-            });
-        this.toastOperacionExitosa();
+       firebase
+         .database()
+        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
+        .update({
+         codigo: codigoTipoAnticipo,
+          descripcion: descripcionTipoanticipo
+      });
+     this.toastOperacionExitosa();
     }
+    // updateTipoTrueque(idTipoTrueque, codigoTipoTrueque, descripcionTipoTrueque) {
+    //     this.usuarioUid = firebase.auth().currentUser.uid;
+    //     firebase
+    //         .database()
+    //         .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
+    //         .update({
+    //             codigo: codigoTipoTrueque,
+    //             descripcion: descripcionTipoTrueque
+    //         });
+    //     this.toastOperacionExitosa();
+    // }
     updateCiudad(idCiudad,codigoCiudad, describcionCiudad) {
 
         firebase

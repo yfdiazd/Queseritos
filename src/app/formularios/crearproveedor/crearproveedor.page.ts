@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { FBservicesService } from "../../fbservices.service";
 
 
@@ -10,22 +11,43 @@ import { FBservicesService } from "../../fbservices.service";
 
 export class CrearproveedorPage {
   //variables para crear proveedor
-  tipoIdentificacionProveedor: String;
-  numIndetificacionProveedor: String;
-  nombreProveedor: String;
-  apellidoProveedor: String;
-  telefonoProveedor: String;
-  direccionProveedor: String;
-  correoProveedor: String;
+  
+  @Input() idTipoIdentificacionEdit;
+  @Input() numIndetificacionEdit;
+  @Input() nombreEdit;
+  @Input() apellidoEdit;
+  @Input() telefonoEdit;
+  @Input() direccionEdit;
+  @Input() correoEdit;
+  @Input() id;
 
   constructor(
-    private FB: FBservicesService
+    private FB: FBservicesService,
+    private modalCtrl: ModalController
   ) { }
 
 
 
   crearProveedor() {
-    this.FB.crearProveedor(this.tipoIdentificacionProveedor, this.numIndetificacionProveedor, this.nombreProveedor, this.apellidoProveedor, this.telefonoProveedor, this.direccionProveedor, this.correoProveedor)
-  };
-
+    if (this.id == undefined) {
+      if (this.idTipoIdentificacionEdit == undefined) {
+        this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit,this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
+        this.modalCtrl.dismiss();
+      } else if (this.numIndetificacionEdit == undefined) {
+        this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit,this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
+        this.modalCtrl.dismiss();
+      } else {
+        this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
+        this.modalCtrl.dismiss();
+      }
+      console.log("Se debebió crear")
+    } else {
+      this.FB.updateProveedor(this.id, this.idTipoIdentificacionEdit, this.numIndetificacionEdit,this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
+      // console.log("Se debe modificar")
+      this.modalCtrl.dismiss();
+    }
+  }
+  volver() {
+    this.modalCtrl.dismiss();
+  }
 }

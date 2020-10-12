@@ -21,7 +21,7 @@ export class CrearciudadPage implements OnInit {
     private modalCtrl: ModalController) {
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   guardarCiudad() {
     if (this.id == undefined) {

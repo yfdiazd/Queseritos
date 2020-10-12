@@ -1,25 +1,35 @@
-<ion-router-outlet main></ion-router-outlet>
+<ion-router-outlet id="myMenu" main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu"></ion-back-button>
+    <ion-title class="titulo">PROVEEDORES</ion-title>
+    <ion-buttons slot="start" (click)="cerrar()" color="danger">
+      <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
     </ion-buttons>
-    <ion-title>PROVEEDORES</ion-title>
+    <ion-buttons slot="end" (click)="crearModal()">
+      <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <div class="div-principal">
-    <ion-card class="card" *ngFor="let lista of FB.proveedoresLista">
-      <ion-card-subtitle>{{lista.numIndetificacion}}</ion-card-subtitle>
-      <ion-card-title>{{lista.nombre}} {{lista.apellido}}</ion-card-title>
-      <p>Tel: {{lista.telefono}}</p>
-      <p>Correo: {{lista.correo}}</p>
-      <p>Dirección: {{lista.direccion}}</p>
-    </ion-card>
+    <ion-item-sliding class="slider" *ngFor="let lista of FB.proveedoresLista">
+      <ion-item class="item">
+        <ion-card class="card">
+          <p><span>Nombres: </span> {{lista.nombre}}</p>
+          <p><span>Apellidos: </span> {{lista.apellido}}</p>
+          <p><span>Número de Identificación: </span> {{lista.numIndetificacion}}</p>
+          <p><span>Celular: </span> {{lista.telefono}}</p>
+          <p><span>Dirección: </span> {{lista.direccion}}</p>
+          <p><span>Correo Electrónico: </span> {{lista.correo}}</p>
+        </ion-card>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminar(lista)">Eliminar</ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </div>
-  <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="hammer"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>
