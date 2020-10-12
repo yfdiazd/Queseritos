@@ -1,44 +1,60 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button (click)="volver()" color="danger">CERRAR</ion-button>
     </ion-buttons>
-    <ion-title>Crear Clientes</ion-title>
+    <ion-title>CLIENTES</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="div-formulario">
-    <ion-text>
-      <p>Completa el formulario para registrar un nuevo cliente</p>
-    </ion-text>
-    <div>
-      <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-        placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacion" ok-text="Aceptar" cancel-text = "CANCELAR">
-        <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
-          {{lista.descripcion}}
-        </ion-select-option>
-      </ion-select>
-      <input type="text" placeholder="Número de Identificación" [(ngModel)]="numeroIdentificacionCliente" />
-      <input type="text" placeholder="Nombres" [(ngModel)]="nombresCliente" />
-      <input type="text" placeholder="Apellidos" [(ngModel)]="apellidosCliente" />
-      <input type="text" placeholder="Quesera" [(ngModel)]="empresaCliente" />
 
-      <ion-select class="select" [interfaceOptions]="customAlertOptions" title="seleccione el anticipo"
-        interface="alert" multiple="false" placeholder="Ciudad" [(ngModel)]="codigoCiudad">
-        <ion-select-option value="{{ciudad.codigo}}" *ngFor="let ciudad of FB.ciudadesLista"> {{ciudad.descripcion}}
-        </ion-select-option>
-      </ion-select>
-      <input type="text" placeholder="Celular" [(ngModel)]="celularCliente" />
-      <input type="text" placeholder="Dirección" [(ngModel)]="direccionCliente" />
-      <input type="text" placeholder="Correo Electrónico" [(ngModel)]="correoCliente" />
-    </div>
-    <div>
-      <ion-button (click)="guardarCliente()" expand="full">
-        <ion-icon name="save-outline"></ion-icon>
-        Guardar
-      </ion-button>
-    </div>
+    <p>Tipo de identificación<span>*</span></p>
+    <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="CANCELAR">
+      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
+
+    <p>Número de identificación<span>*</span></p>
+    <input type="text" placeholder="{{numeroIdentificacionClienteEdit}}"
+      [(ngModel)]="numeroIdentificacionClienteEdit" />
+
+    <p>Nombres<span>*</span></p>
+    <input type="text" placeholder="{{nombresClienteEdit}}" [(ngModel)]="nombresClienteEdit" />
+
+    <p>Apellidos</p>
+    <input type="text" placeholder="{{apellidosClienteEdit}}" [(ngModel)]="apellidosClienteEdit" />
+
+    <p>nombre empresa<span>*</span></p>
+    <input type="text" placeholder="{{empresaClienteEdit}}" [(ngModel)]="empresaClienteEdit" />
+
+    <p>Ciudad<span>*</span></p>
+    <ion-select [(ngModel)]="codigociudadEdit" class="select" [interfaceOptions]="customAlertOptions2" interface="alert"
+      multiple="false" ok-text="Aceptar" cancel-text="CANCELAR">
+      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.ciudadesLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
+
+    <p>Celular<span>*</span></p>
+    <input type="text" placeholder="{{celularClienteEdit}}" [(ngModel)]="celularClienteEdit" />
+
+    <p>Dirección<span>*</span></p>
+    <input type="text" placeholder="{{direccionClienteEdit}}" [(ngModel)]="direccionClienteEdit" />
+
+    <p>Correo</p>
+    <input type="text" placeholder="{{correoClienteEdit}}" [(ngModel)]="correoClienteEdit" />
+
+  </div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+
   </div>
 </ion-content>
