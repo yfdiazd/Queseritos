@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
 
 @Component({
@@ -8,8 +8,6 @@ import { FBservicesService } from '../../fbservices.service'
   styleUrls: ['./crearestadoproducto.page.scss'],
 })
 export class CrearestadoproductoPage implements OnInit {
-  //variables para guardar el estado del producto
-
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
@@ -18,15 +16,16 @@ export class CrearestadoproductoPage implements OnInit {
   constructor(
 
     private FB: FBservicesService,
-    private modalCtrl: ModalController) { 
-    }
+    private modalCtrl: ModalController,
+    private toastController: ToastController) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   guardarEstadoProducto() {
 
-    if(this.id==undefined){
-      if(this.codigoEdit == undefined){
+    if (this.id == undefined) {
+      if (this.codigoEdit == undefined) {
         this.FB.agregarEstadoProducto(this.codigoEdit, this.descripcionEdit);
         this.modalCtrl.dismiss();
       } else if (this.descripcionEdit == undefined) {
