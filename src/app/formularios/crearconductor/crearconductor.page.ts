@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { ModalController, ToastController } from '@ionic/angular';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FBservicesService } from '../../fbservices.service';
 
 @Component({
@@ -7,6 +8,10 @@ import { FBservicesService } from '../../fbservices.service';
   templateUrl: './crearconductor.page.html',
   styleUrls: ['./crearconductor.page.scss'],
 })
+@NgModule({
+  imports: [ReactiveFormsModule]
+})
+
 export class CrearconductorPage implements OnInit {
 
   @Input() idTipoIdentificacionEdit;
@@ -18,7 +23,8 @@ export class CrearconductorPage implements OnInit {
 
   constructor(
     private FB: FBservicesService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private toastController: ToastController
 
   ) {
 
@@ -26,28 +32,46 @@ export class CrearconductorPage implements OnInit {
 
   ngOnInit() {
   }
+  customAlertOptions: any = {
+    header: "Seleccione uno",
+    translucent: true,
+  };
   guardarConductor() {
+
     if (this.id == undefined) {
-      if (this.idTipoIdentificacionEdit == undefined) {
-        this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit,this.nombresEdit, this.apellidosEdit, this.celularEdit);
-        this.modalCtrl.dismiss();
-      } else if (this.numidentificacionEdit == undefined) {
-        this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit,this.nombresEdit, this.apellidosEdit, this.celularEdit);
-        this.modalCtrl.dismiss();
+      console.log("Entro a crear")
+      if (this.idTipoIdentificacionEdit == undefined || this.numidentificacionEdit == undefined || this.nombresEdit == undefined || this.celularEdit == undefined ) {
+        this.toastCamposRequeridos();
       } else {
         this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit, this.apellidosEdit, this.celularEdit);
         this.modalCtrl.dismiss();
       }
-      console.log("Se debebió crear")
+
     } else {
-      this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit,this.numidentificacionEdit,this.nombresEdit, this.celularEdit);
-      // console.log("Se debe modificar")
-      this.modalCtrl.dismiss();
+      console.log("Entro a MODIFICAR---")
+      if (this.idTipoIdentificacionEdit == "" || this.numidentificacionEdit == "" || this.nombresEdit == "" ||  this.celularEdit == "") {
+        this.toastCamposRequeridos();
+        console.log("No modificaste nada")
+      } else {
+        this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit, this.apellidosEdit, this.celularEdit);
+        this.modalCtrl.dismiss();
+      }
     }
   }
+
   volver() {
     this.modalCtrl.dismiss();
   }
 
+  async toastCamposRequeridos() {
+    const toast = await this.toastController.create({
+      message: "Falta diligenciar campos requeridos.",
+      cssClass: "toast",
+      color: 'warning',
+      position: 'middle',
+      duration: 5000
+    });
+    toast.present();
+  }
 
 }

@@ -8,8 +8,7 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearciudad.page.scss"],
 })
 export class CrearciudadPage implements OnInit {
-codigoedit = "HOLA MUNDO";
- 
+
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
@@ -49,7 +48,7 @@ codigoedit = "HOLA MUNDO";
 
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
-      message: "Los campos codigo y descripión son requeridos",
+      message: "Falta diligenciar campos requeridos.",
       cssClass: "toast",
       color: 'warning',
       position: 'top',

@@ -3,7 +3,6 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FBservicesService } from "../../fbservices.service";
 
-
 @Component({
   selector: "app-crearclientes",
   templateUrl: "./crearclientes.page.html",
@@ -82,7 +81,7 @@ export class CrearclientesPage implements OnInit {
 
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
-      message: "Faltan diligenciar campos requeridos.",
+      message: "Falta diligenciar campos requeridos.",
       cssClass: "toast",
       color: 'warning',
       position: 'middle',

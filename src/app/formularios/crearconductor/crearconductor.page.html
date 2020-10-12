@@ -10,24 +10,27 @@
 
 <ion-content>
   <div class="div-formulario">
-    <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-    placeholder="{{idTipoIdentificacionEdit}}" [(ngModel)]="idTipoIdentificacionEdit">
-    <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
-      {{lista.descripcion}}
-    </ion-select-option>
-  </ion-select>
+    <p>Tipo de identificación<span>*</span></p>
+    <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
 
     <p>Número de Identificación <span>*</span></p>
-    <input maxlength="15" type="text" placeholder="{{numidentificacionEdit}}" [(ngModel)]="numidentificacionEdit"/>
+    <input maxlength="15" type="text" placeholder="{{numidentificacionEdit}}" [(ngModel)]="numidentificacionEdit" />
     <p>Nombres <span>*</span></p>
-    <input maxlength="30" type="text" placeholder="{{nombresEdit}}" [(ngModel)]="nombresEdit"/>
+    <input maxlength="30" type="text" placeholder="{{nombresEdit}}" [(ngModel)]="nombresEdit" />
     <p>Apellidos</p>
-    <input maxlength="30" type="text" placeholder="{{apellidosEdit}}" [(ngModel)]="apellidosEdit"/>
+    <input maxlength="30" type="text" placeholder="{{apellidosEdit}}" [(ngModel)]="apellidosEdit" />
     <p>Celular <span>*</span></p>
-    <input maxlength="12" type="text" placeholder="{{celularEdit}}" [(ngModel)]="celularEdit"/>
+    <input maxlength="12" type="text" placeholder="{{celularEdit}}" [(ngModel)]="celularEdit" />
+  </div>
+  <div>
     <ion-button (click)="guardarConductor()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
   </div>
- </ion-content>
+</ion-content>

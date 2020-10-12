@@ -10,10 +10,9 @@
 
 <ion-content>
   <div class="div-formulario">
-
     <p>Tipo de identificación<span>*</span></p>
     <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
-      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="CANCELAR">
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
       <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
         {{lista.descripcion}}
       </ion-select-option>

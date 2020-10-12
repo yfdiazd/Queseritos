@@ -11,12 +11,15 @@
 <ion-content>
 
   <div class="div-formulario">
-    <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-    placeholder="{{idTipoIdentificacionEdit}}" [(ngModel)]="idTipoIdentificacionEdit">
-    <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
+    <p>Tipo de identificación<span>*</span></p>
+    <ion-select [(ngModel)]="idTipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
+    interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+    <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
       {{lista.descripcion}}
     </ion-select-option>
   </ion-select>
+
+
 
     <p>Número de Identificación <span>*</span></p>
     <input maxlength="15" type="text" placeholder="{{numIndetificacionEdit}}" [(ngModel)]="numIndetificacionEdit"/>
@@ -30,7 +33,8 @@
     <input maxlength="50" type="text" placeholder="{{direccionEdit}}" [(ngModel)]="direccionEdit"/>
     <p>Correo Electrónico</p>
     <input maxlength="50" type="text" placeholder="{{correoEdit}}" [(ngModel)]="correoEdit"/>
-
+  </div>
+  <div>
     <ion-button (click)="crearProveedor()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
