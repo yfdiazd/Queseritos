@@ -1,20 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { CrearciudadPageRoutingModule } from './crearciudad-routing.module';
+import { CrearciudadPageRoutingModule } from "./crearciudad-routing.module";
 
-import { CrearciudadPage } from './crearciudad.page';
+import { CrearciudadPage } from "./crearciudad.page";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CrearciudadPageRoutingModule
+    CrearciudadPageRoutingModule,
   ],
-  declarations: [CrearciudadPage]
+  declarations: [CrearciudadPage],
 })
 export class CrearciudadPageModule {}

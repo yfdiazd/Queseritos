@@ -78,10 +78,8 @@ export class FBservicesService {
     constructor(
         private router: Router,
         public toastController: ToastController,
-        public alertController: AlertController
-
-
-    ) {
+        public alertController: AlertController,  
+        ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
 
@@ -264,7 +262,7 @@ export class FBservicesService {
     async toastOperacionExitosa() {
         const toast = await this.toastController.create({
             message: "Operacion ejecutada con exito",
-            color: "danger",
+            color: "success",
             duration: 5000
         });
         toast.present();
@@ -894,11 +892,11 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    updateCiudad(codigoCiudad, describcionCiudad) {
+    updateCiudad(idCiudad,codigoCiudad, describcionCiudad) {
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad")
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/"+ idCiudad)
             .update({
                 codigo: codigoCiudad,
                 descripcion: describcionCiudad

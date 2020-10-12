@@ -1,0 +1,25 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu"></ion-back-button>
+    </ion-buttons>
+    <ion-title>PROVEEDORES</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="div-principal">
+    <ion-card class="card" *ngFor="let lista of FB.proveedoresLista">
+      <ion-card-subtitle>{{lista.numIndetificacion}}</ion-card-subtitle>
+      <ion-card-title>{{lista.nombre}} {{lista.apellido}}</ion-card-title>
+      <p>Tel: {{lista.telefono}}</p>
+      <p>Correo: {{lista.correo}}</p>
+      <p>Dirección: {{lista.direccion}}</p>
+    </ion-card>
+  </div>
+  <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="hammer"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

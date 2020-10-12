@@ -1,26 +1,34 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu"></ion-back-button>
+    <ion-title class="titulo">Clientes</ion-title>
+    <ion-buttons slot="start" (click)="cerrar()">
+      <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
     </ion-buttons>
-    <ion-title>Clientes</ion-title>
+    <ion-buttons slot="end" (click)="crearModal()">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div class="div-principal">
-    <ion-card class="card" *ngFor="let lista of FB.clientesLista">
-      <ion-card-subtitle>{{lista.numeroIdentificacion}}</ion-card-subtitle>
-      <ion-card-title>{{lista.nombres}} {{lista.apellidos}}</ion-card-title>
-      <p>Empresa: {{lista.empresa}}</p>
-      <p>Tel: {{lista.celular}}</p>
-      <p>Correo: {{lista.correo}}</p>
-      <p>Dirección: {{lista.direccion}}</p>
-    </ion-card>
+    <ion-item-sliding class="slider" *ngFor="let lista of FB.clientesLista">
+      <ion-item class="item">
+        <ion-card class="card">
+          <ion-card-title><span>{{lista.nombres}} {{lista.apellidos}}</span></ion-card-title>
+          <p><span>{{lista.numIndetificacion}}</span></p>
+          <p><span>Empresa:</span>{{lista.empresa}}</p>
+          <p><span>Tel:</span>{{lista.celular}}</p>
+          <p><span>Correo:</span>{{lista.correo}}</p>
+          <p><span>Dirección:</span>{{lista.direccion}}</p>
+        </ion-card>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminar(lista)">Eliminar</ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </div>
-  <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="hammer"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

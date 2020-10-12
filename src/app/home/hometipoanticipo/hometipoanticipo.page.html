@@ -1,0 +1,23 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="titulo">TIPOS DE ANTICIPO</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div-principal">
+    <ion-card class="card" *ngFor="let lista of FB.tipoAnticipoLista">
+      <p>Código: {{lista.codigo}}</p>
+      <p>Descripción: {{lista.descripcion}}</p>
+    </ion-card>
+  </div>
+  <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="hammer"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content> 
