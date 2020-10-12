@@ -19,10 +19,9 @@ export class CrearciudadPage implements OnInit {
     private toastController: ToastController) {
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  guardar() {
-
+  guardarCiudad() {
     if (this.id == undefined) {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();

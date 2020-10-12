@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FBservicesService } from '../../fbservices.service'
 @Component({
   selector: 'app-crearpesajecompra',
   templateUrl: './crearpesajecompra.page.html',
@@ -11,9 +11,13 @@ export class CrearpesajecompraPage implements OnInit {
   fechcompra = "03/10/2020";
   costopesaje= "$350.000";
   numbulto= 1;
-  constructor() { }
+  constructor(
+    private FB: FBservicesService
+  ) { }
 
   ngOnInit() {
   }
+
+
 
 }

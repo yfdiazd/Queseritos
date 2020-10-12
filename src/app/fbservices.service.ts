@@ -15,6 +15,8 @@ import { TIMEOUT } from 'dns';
 
 })
 export class FBservicesService {
+
+    
     //Variable para paths de validacion
     pathPush: any;
     //flag 
@@ -992,29 +994,10 @@ export class FBservicesService {
 
     }
     //Metodos para las comprassssss
-    agregarPesajeCompra(idProveedor, idProducto, numBulto, pesoBulto) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-
-        this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.idCompra = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/pesajeCompra/" + this.idCompra)
-            .set({
-                idCompra: this.idCompra,
-                lote: this.lastLote.toString(),
-                fechaCompra: this.fechaActual(),
-                idProveedor: idProveedor,
-                idProducto: idProducto,
-                bulto: numBulto,
-                pesoBulto: pesoBulto,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
-    }
-
-    agregarConfirmarPesaje(idProveedor, codigoProducto, totalBulto, pesoBultos) {
+   
+    listasss: any[];
+    agregarPesaje(idProveedor, codigoProducto, totalBultos, pesoBultos, bultosTT) {
+       
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
@@ -1028,9 +1011,10 @@ export class FBservicesService {
             fechaCompra: this.fechaActual(),
             idProveedor: idProveedor,
             idProducto: codigoProducto,
-            totalBulto: totalBulto,
+            totalBulto: totalBultos,
             pesoBultos: pesoBultos,
-            costoTotalCompra: 0
+            costoTotalCompra: 0,
+            bultoLista: bultosTT
         })
     }
 
