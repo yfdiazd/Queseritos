@@ -8,10 +8,6 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearciudad.page.scss"],
 })
 export class CrearciudadPage implements OnInit {
-<<<<<<< HEAD
-=======
-
->>>>>>> 7f775cabc814fdc10e933bf46e733fcecbaf86ba
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
