@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
 @Component({
   selector: 'app-creartiposanticipo',
@@ -7,8 +7,7 @@ import { FBservicesService } from '../../fbservices.service'
   styleUrls: ['./creartiposanticipo.page.scss'],
 })
 export class CreartiposanticipoPage implements OnInit {
-  //variables para guardar el tipo de anticipo
- 
+
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
@@ -17,7 +16,8 @@ export class CreartiposanticipoPage implements OnInit {
   constructor( 
 
     private FB:FBservicesService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private toastController: ToastController
 
    ) { }
 
@@ -25,26 +25,38 @@ export class CreartiposanticipoPage implements OnInit {
   }
 
   guardarTipoAnticipo(){
+
     if (this.id == undefined) {
-      if (this.codigoEdit == undefined) {
-        this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
-        this.modalCtrl.dismiss();
-      } else if (this.descripcionEdit == undefined) {
-        this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
-        this.modalCtrl.dismiss();
+      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+        this.toastCamposRequeridos();
       } else {
         this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
         this.modalCtrl.dismiss();
+
       }
-      console.log("Se debebió crear")
+
     } else {
-      this.FB.updateTipoAnticipo(this.id, this.codigoEdit, this.descripcionEdit);
-      // console.log("Se debe modificar")
-      this.modalCtrl.dismiss();
+     
+        this.FB.updateTipoAnticipo(this.id, this.codigoEdit, this.descripcionEdit);
+
+        this.modalCtrl.dismiss();
+      
     }
   }
+
   volver() {
     this.modalCtrl.dismiss();
+  }
+
+  async toastCamposRequeridos() {
+    const toast = await this.toastController.create({
+      message: "Falta diligenciar campos requeridos.",
+      cssClass: "toast",
+      color: 'warning',
+      position: 'top',
+      duration: 5000
+    });
+    toast.present();
   }
 
 }

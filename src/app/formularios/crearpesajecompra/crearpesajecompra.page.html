@@ -2,20 +2,38 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompradetallada" color="medium"></ion-back-button>
+      <ion-back-button defaultHref="/main-menu" color="medium"></ion-back-button>
     </ion-buttons>
-    <ion-title>Pesaje Compra </ion-title>
+    <ion-title class="titulo">PESAJE COMPRA</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div class="div-principal">
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Regístrale un nuevo pesaje a:</p>
+        <p class="div-v">{{idproveedor}}</p>
+      </div>
+    </div>
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Fecha Compra</p>
+        <p class="div-v" id="saldo-debito">{{saldodebitototal}}</p>
+      </div>
+      <!--<div class="div-f">
+        <p class="div-t">Saldo Crédito</p>
+        <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+      </div>-->
+    </div>
+  </div>
 
-  <ion-text>
-    <p>Registrale un nuevo pesaje a: {{proveedor}}"</p>
-    <p> {{idproveedor}}</p>
-    <p>Fecha de la compra: {{fechcompra}}</p>
-  </ion-text>
-  <div>
+
+  <div class="div-secundario">
+ 
+
+
+  </div>
   <p>Bulto No: {{numbulto}}"</p>
   <select value = "codigoproducto" name="Tipo de Queso">
     <option>Queso Costeño</option>

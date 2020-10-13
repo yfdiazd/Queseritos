@@ -8,6 +8,10 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearciudad.page.scss"],
 })
 export class CrearciudadPage implements OnInit {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7f775cabc814fdc10e933bf46e733fcecbaf86ba
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
@@ -25,13 +29,16 @@ export class CrearciudadPage implements OnInit {
     if (this.id == undefined) {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
-      } else {
-        this.FB.agregarCiudad(this.codigoEdit, this.descripcionEdit);
-        this.modalCtrl.dismiss();
       }
-    } else {     
-        this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionEdit);
-        this.modalCtrl.dismiss();      
+      this.FB.agregarCiudad(this.codigoEdit, this.descripcionEdit);
+      this.modalCtrl.dismiss();
+
+    } else {
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
+        this.toastCamposRequeridos();
+      }
+      this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionEdit);
+      this.modalCtrl.dismiss();
     }
   }
 
@@ -41,7 +48,7 @@ export class CrearciudadPage implements OnInit {
 
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
-      message: "Los campos codigo y descripión son requeridos",
+      message: "Falta diligenciar campos requeridos.",
       cssClass: "toast",
       color: 'warning',
       position: 'top',

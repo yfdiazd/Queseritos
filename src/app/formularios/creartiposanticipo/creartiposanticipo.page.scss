@@ -1,6 +1,10 @@
 ion-toolbar {
     --background: #1a1446;
 }
+.titulo{
+    color: white;
+
+}
 
 ion-content {
     margin: 0;
@@ -31,6 +35,10 @@ ion-content {
         font-weight: bold;
         margin: 0 auto;
         color: #1a1446;
+    }
+
+    p > span{
+        color: red;
     }
 
     ion-button {

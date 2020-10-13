@@ -1,7 +1,6 @@
 ion-toolbar {
     --background: #1a1446;
 }
-
 ion-content {
     margin: 0;
     padding: 0;
@@ -13,7 +12,8 @@ ion-content {
         margin: 30px auto;
     }
 
-    input {
+    input,
+    .select {
         background-color: white;
         color: #1a1446;
         border-style: solid;
@@ -32,6 +32,9 @@ ion-content {
         margin: 0 auto;
         color: #1a1446;
     }
+    p > span{
+        color: red;
+    }
 
     ion-button {
         --background: #1a1446;
@@ -40,6 +43,4 @@ ion-content {
         width: 100%;
         color: white;
     }
-
-
 }

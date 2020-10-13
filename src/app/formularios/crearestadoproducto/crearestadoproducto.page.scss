@@ -33,6 +33,10 @@ ion-content {
         color: #1a1446;
     }
 
+    p > span{
+        color: red;
+    }
+
     ion-button {
         --background: #1a1446;
         font-size: 20px;
