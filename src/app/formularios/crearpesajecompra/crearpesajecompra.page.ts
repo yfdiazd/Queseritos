@@ -11,6 +11,18 @@ export class CrearpesajecompraPage implements OnInit {
   fechcompra = "03/10/2020";
   costopesaje= "$350.000";
   numbulto= 1;
+  private fieldArray: Array<any> = []; 
+  private newAttribute: any = {}; 
+
+  addFieldValue() { 
+   this.fieldArray.push(this.newAttribute) 
+   this.newAttribute = {}; 
+  } 
+
+  deleteFieldValue(index) { 
+   this.fieldArray.splice(index, 1); 
+  } 
+  
   constructor() { }
 
   ngOnInit() {

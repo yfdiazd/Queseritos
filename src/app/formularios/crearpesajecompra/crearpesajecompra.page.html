@@ -13,38 +13,55 @@
     <div class="div-fila">
       <div class="div-f">
         <p class="div-t">Regístrale un nuevo pesaje a:</p>
-        <p class="div-v">{{idproveedor}}</p>
+        <p class="div-v">{{proveedor}}</p>
       </div>
     </div>
     <div class="div-fila">
       <div class="div-f">
         <p class="div-t">Fecha Compra</p>
-        <p class="div-v" id="saldo-debito">{{saldodebitototal}}</p>
+        <p class="div-v" id="fech-compra">{{fechcompra}}</p>
       </div>
-      <!--<div class="div-f">
-        <p class="div-t">Saldo Crédito</p>
-        <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
-      </div>-->
     </div>
-  </div>
-
-
-  <div class="div-secundario">
- 
-
-
-  </div>
-  <p>Bulto No: {{numbulto}}"</p>
-  <select value = "codigoproducto" name="Tipo de Queso">
-    <option>Queso Costeño</option>
-    <option>Debe listar los tipos de queso parametrizados</option>
-   </select>
-  <input type="text" placeholder="Peso" />
+    <div class="div-secundario">
+      <table class="Pesaje">
+        <thead>
+          <th>Bulto</th>
+          <th>Peso</th>
+        </thead>
+        <tbody>
+          <td> 
+            <button class="btn btn-default" type="button" (click)="addFieldValue()">Add</button> 
+           </td> 
+          <td>
+            <button class="btn btn-default" type="button" (click)="deleteFieldValue(i)">Delete</button>
+          </td>
+          <tr *ngFor="let field of fieldArray; let i=index">
+            <td>
+              <input [(ngModel)]="field.bulto" class="form-control" type="text" name="{{field.bulto}}" />
+            </td>
+            <td>
+              <input [(ngModel)]="field.peso" class="form-control" type="text" name="{{field.peso}}" />
+            </td>
+            
+          </tr>
+          <tr>
+            <td>
+              <input class="form-control" type="text" id="newAttributeBulto" [(ngModel)]="newAttribute.Bulto"
+                name="newAttributeBulto" />
+            </td>
+            <td>
+              <input class="form-control" type="text" id="newAttributePeso" [(ngModel)]="newAttribute.Peso"
+                name="newAttributePeso" />
+            </td>
+            </tr> 
+        </tbody>
+      </table>
   </div>
   <div>
-    <ion-button (click)="guardar()" expand="full">
+    <ion-button (click)="agregarPesajeCompra()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
+  </div>
   </div>
 </ion-content>
