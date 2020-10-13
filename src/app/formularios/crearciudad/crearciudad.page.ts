@@ -9,7 +9,6 @@ import { FBservicesService } from "../../fbservices.service";
 })
 export class CrearciudadPage implements OnInit {
 
-
   @Input() codigoEdit;
   @Input() descripcionEdit;
   @Input() id;
@@ -20,25 +19,22 @@ export class CrearciudadPage implements OnInit {
     private toastController: ToastController) {
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   guardar() {
-
     if (this.id == undefined) {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
-      } else {
-        this.FB.agregarCiudad(this.codigoEdit, this.descripcionEdit);
-        this.modalCtrl.dismiss();
-
       }
+      this.FB.agregarCiudad(this.codigoEdit, this.descripcionEdit);
+      this.modalCtrl.dismiss();
 
     } else {
-     
-        this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionEdit);
-
-        this.modalCtrl.dismiss();
-      
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
+        this.toastCamposRequeridos();
+      }
+      this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionEdit);
+      this.modalCtrl.dismiss();
     }
   }
 

@@ -8,7 +8,7 @@ import { FBservicesService } from '../../fbservices.service'
   styleUrls: ['./crearestadoproducto.page.scss'],
 })
 export class CrearestadoproductoPage implements OnInit {
-  
+
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
@@ -18,29 +18,27 @@ export class CrearestadoproductoPage implements OnInit {
 
     private FB: FBservicesService,
     private modalCtrl: ModalController,
-    private toastController: ToastController) { 
-    }
+    private toastController: ToastController) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   guardarEstadoProducto() {
-
-
     if (this.id == undefined) {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarEstadoProducto(this.codigoEdit, this.descripcionEdit);
         this.modalCtrl.dismiss();
-
+      }
+    } else {
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
+        this.toastCamposRequeridos();
+      } else {
+        this.FB.updateEstadoProducto(this.id, this.codigoEdit, this.descripcionEdit);
+        this.modalCtrl.dismiss();
       }
 
-    } else {
-     
-        this.FB.updateEstadoProducto(this.id, this.codigoEdit, this.descripcionEdit);
-
-        this.modalCtrl.dismiss();
-      
     }
   }
 
@@ -58,5 +56,5 @@ export class CrearestadoproductoPage implements OnInit {
     });
     toast.present();
   }
-   
+
 }

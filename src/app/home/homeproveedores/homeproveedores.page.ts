@@ -1,9 +1,10 @@
 import { listLazyRoutes } from "@angular/compiler/src/aot/lazy_routes";
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { 
+import {
   AlertController,
   ModalController,
+  NavController,
 
 } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
@@ -17,44 +18,45 @@ import { __values } from "tslib";
 export class HomeproveedoresPage implements OnInit {
 
   constructor(
+    private navCtrl: NavController,
     private FB: FBservicesService,
     public alertController: AlertController,
     private router: Router,
     public modalController: ModalController) { }
 
-    nombre: string;
-    apellido: string;
-    numIndetificacion: number;
-    telefono: number;
-    direccion: string;
+  nombre: string;
+  apellido: string;
+  numIndetificacion: number;
+  telefono: number;
+  direccion: string;
 
 
   ngOnInit() {
   }
-  
+
   async editarModal(lista) {
     const modal = await this.modalController.create({
       component: CrearproveedorPage,
       cssClass: "my-custom-class",
       componentProps: {
         idTipoIdentificacionEdit: lista.idTipoIdentificacion,
-        numIndetificacionEdit:lista.numIndetificacion,
-        nombreEdit:lista.nombre,
-        apellidoEdit:lista.apellido,
-        telefonoEdit:lista.telefono,
-        direccionEdit:lista.direccion,
-        correoEdit:lista.correo,
+        numIndetificacionEdit: lista.numIndetificacion,
+        nombreEdit: lista.nombre,
+        apellidoEdit: lista.apellido,
+        telefonoEdit: lista.telefono,
+        direccionEdit: lista.direccion,
+        correoEdit: lista.correo,
         id: lista.id
 
       },
     });
     return await modal.present();
   }
-  
+
   async crearModal() {
     const modal = await this.modalController.create({
       component: CrearproveedorPage,
-      cssClass: "my-custom-class"      
+      cssClass: "my-custom-class"
     });
     return await modal.present();
   }
@@ -77,7 +79,7 @@ export class HomeproveedoresPage implements OnInit {
           text: "SI",
           handler: () => {
             console.log("Confirm Okay");
-            this.FB.deleteCiudad(lista.id);
+            this.FB.deleteProveedor(lista.id);
           },
         },
       ],
@@ -86,8 +88,8 @@ export class HomeproveedoresPage implements OnInit {
     await alert.present();
   }
 
-  async cerrar(){
-    this.modalController.dismiss();
+  async cerrar() {
+    this.navCtrl.navigateForward('main-menu');
   }
 
 

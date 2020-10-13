@@ -1,9 +1,11 @@
 import { listLazyRoutes } from "@angular/compiler/src/aot/lazy_routes";
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { 
-  AlertController, 
-  ModalController, } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { CrearestadoproductoPage } from 'src/app/formularios/crearestadoproducto/crearestadoproducto.page';
 
@@ -17,13 +19,14 @@ import { __values } from "tslib";
 export class HomeestadoquesoPage implements OnInit {
 
   constructor(
+    private navCtrl: NavController,
     private FB: FBservicesService,
     public alertController: AlertController,
-    private router: Router, 
+    private router: Router,
     public modalController: ModalController) { }
 
-    codigoEstado: string;
-    descripcionEstado: string;
+  codigoEstado: string;
+  descripcionEstado: string;
 
   ngOnInit() {
   }
@@ -43,11 +46,10 @@ export class HomeestadoquesoPage implements OnInit {
   async crearModal() {
     const modal = await this.modalController.create({
       component: CrearestadoproductoPage,
-      cssClass: "my-custom-class"      
+      cssClass: "my-custom-class"
     });
     return await modal.present();
   }
-
   async eliminar(lista) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
@@ -66,7 +68,7 @@ export class HomeestadoquesoPage implements OnInit {
           text: "SI",
           handler: () => {
             console.log("Confirm Okay");
-            this.FB.deleteCiudad(lista.id);
+            this.FB.deleteEstadoProducto(lista.id);
           },
         },
       ],
@@ -74,7 +76,7 @@ export class HomeestadoquesoPage implements OnInit {
 
     await alert.present();
   }
-  async cerrar(){
-  this.modalController.dismiss();
+  async cerrar() {
+    this.navCtrl.navigateForward('main-menu');
   }
 }
