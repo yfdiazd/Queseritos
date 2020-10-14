@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'creartiposidentificacion', loadChildren: () => import('./formularios/creartiposidentificacion/creartiposidentificacion.module').then(m => m.CreartiposidentificacionPageModule) },
   { path: 'crearciudad', loadChildren: () => import('./formularios/crearciudad/crearciudad.module').then(m => m.CrearciudadPageModule) },
   { path: 'crearconductor', loadChildren: () => import('./formularios/crearconductor/crearconductor.module').then(m => m.CrearconductorPageModule) },
-  { path: 'crearpesajecompra', loadChildren: () => import('./formularios/crearpesajecompra/crearpesajecompra.module').then(m => m.CrearpesajecompraPageModule) },
+  { path: 'crearpesajecompra/:id', loadChildren: () => import('./formularios/crearpesajecompra/crearpesajecompra.module').then(m => m.CrearpesajecompraPageModule) },
   { path: 'crearanticipos', loadChildren: () => import('./formularios/crearanticipos/crearanticipos.module').then(m => m.CrearanticiposPageModule) },
   { path: 'creartrueque', loadChildren: () => import('./formularios/creartrueque/creartrueque.module').then(m => m.CreartruequePageModule) },
   { path: 'crearenviocliente', loadChildren: () => import('./formularios/crearenviocliente/crearenviocliente.module').then(m => m.CrearenvioclientePageModule) },

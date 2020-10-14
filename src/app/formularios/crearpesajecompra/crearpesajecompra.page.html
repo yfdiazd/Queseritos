@@ -2,7 +2,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="medium"></ion-back-button>
+      <ion-back-button defaultHref="/cardcompras" color="medium"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">PESAJE COMPRA</ion-title>
   </ion-toolbar>
@@ -27,24 +27,42 @@
       </div>-->
     </div>
   </div>
-
-
   <div class="div-secundario">
- 
+    <label for=""> {{id}}</label>
+    <ion-button (click)="addRegister()" expand="block" fill="clear" shape="round">
+      Agregar
+    </ion-button>    
+    <table>
+      <thead>
+        <th>Bulto</th>
+        <th>Peso</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lista of listaBultos; let i=index">
+          <td>
+            <input [(ngModel)]="listaBultos.Bulto" name="{{listaBultos.Bulto}}" >
+          </td>
+          <td>
+            <input [(ngModel)]="listaBultos.Peso" name="{{listaBultos.Peso}}">
+          </td>
+          <ion-button (click)="removeRegister()" expand="block" fill="clear" shape="round">
+            Borrar
+          </ion-button>
+        </tr>        
+      </tbody>
+    </table>
 
+    <p>Bulto No: {{numbulto}}"</p>
+    <select value="codigoproducto" name="Tipo de Queso">
+      <option>Queso Costeño</option>
+    </select>
+    <input type="text" placeholder="Peso" />
 
-  </div>
-  <p>Bulto No: {{numbulto}}"</p>
-  <select value = "codigoproducto" name="Tipo de Queso">
-    <option>Queso Costeño</option>
-    <option>Debe listar los tipos de queso parametrizados</option>
-   </select>
-  <input type="text" placeholder="Peso" />
-  </div>
-  <div>
-    <ion-button (click)="guardar()" expand="full">
-      <ion-icon name="save-outline"></ion-icon>
-      Guardar
-    </ion-button>
+    <div>
+      <ion-button (click)="guardar()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
   </div>
 </ion-content>

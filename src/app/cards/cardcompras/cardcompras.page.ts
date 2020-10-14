@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { AlertController } from '@ionic/angular';
@@ -21,19 +21,24 @@ export class CardcomprasPage {
     public actionSheetController: ActionSheetController,
     private router: Router,
     private FB: FBservicesService,
-    private alertController: AlertController
-  ) { }
+    private alertController: AlertController,
+    private navCtrl: NavController
+  ) {
+    this.FB.getCompras();
+   }
 
   irVender() {
     this.router.navigate(["cardcompras"]);
   }
 
-  irPesajeCompra() {
-    this.router.navigate(["crearpesajecompra"]);
+  irPesajeCompra(card) {
+    this.FB.getNumBultos(card.id);
+    this.navCtrl.navigateForward(["crearpesajecompra/",card.id]);
+    console.log("ID:", card.id)
   }
 
   irCompraDetallada() {
-    this.router.navigate(["cardcompradetallada"]);
+    this.navCtrl.navigateForward(["cardcompradetallada"]);
   }
 
   async presentActionSheet() {
