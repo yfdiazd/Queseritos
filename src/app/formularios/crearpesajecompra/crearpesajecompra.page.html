@@ -29,9 +29,9 @@
   </div>
   <div class="div-secundario">
     <label for=""> {{id}}</label>
-    <ion-button (click)="addRegister()" expand="block" fill="clear" shape="round">
+    <ion-button (click)="agregarBultoLista()" expand="block" fill="clear" shape="round">
       Agregar
-    </ion-button>    
+    </ion-button>
     <table>
       <thead>
         <th>Bulto</th>
@@ -40,15 +40,15 @@
       <tbody>
         <tr *ngFor="let lista of listaBultos; let i=index">
           <td>
-            <input [(ngModel)]="listaBultos.Bulto" name="{{listaBultos.Bulto}}" >
+            <input [(ngModel)]="numbulto">
           </td>
           <td>
-            <input [(ngModel)]="listaBultos.Peso" name="{{listaBultos.Peso}}">
+            <input [(ngModel)]="peso">
           </td>
           <ion-button (click)="removeRegister()" expand="block" fill="clear" shape="round">
             Borrar
           </ion-button>
-        </tr>        
+        </tr>
       </tbody>
     </table>
 

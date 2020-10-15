@@ -6,6 +6,7 @@ import { element } from 'protractor';
 import { constants } from 'buffer';
 import { setTimeout } from 'timers';
 import { TIMEOUT } from 'dns';
+import { getuid } from 'process';
 
 
 
@@ -38,6 +39,7 @@ export class FBservicesService {
     //Id compras
     idCompra: string;
     idPesajeCompra: string;
+    idConfirmarPesajeCompra: string;
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para obtener la fecha actual
@@ -55,6 +57,8 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
+    //Lista compras
+    public pesajeCompraLista: any[];
     public listaCompras: any[];
     //Lista lotes
     listaLotes: any[] = [];
@@ -76,6 +80,8 @@ export class FBservicesService {
         messagingSenderId: "589566808528"
     };
 
+
+
     constructor(
         private router: Router,
         public toastController: ToastController,
@@ -86,7 +92,21 @@ export class FBservicesService {
 
     }
 
-
+    //offline
+    offLine() {
+        firebase.firestore().enablePersistence()
+            .catch(function (err) {
+                if (err.code == 'failed-precondition') {
+                    // Multiple tabs open, persistence can only be enabled
+                    // in one tab at a a time.
+                    // ...
+                } else if (err.code == 'unimplemented') {
+                    // The current browser does not support all of the
+                    // features required to enable persistence
+                    // ...
+                }
+            });
+    }
 
     // todos los mentodos que tienen que ver solo con el usuario
     mostrarNombre() {
@@ -108,11 +128,13 @@ export class FBservicesService {
                 console.log("suario:", firebase.auth().currentUser);
                 console.log("token ususuario:", firebase.auth().currentUser.uid);
                 this.router.navigate(["main-menu"]);
+                this.usuarioUid = firebase.auth().currentUser.uid;
             })
             .catch(error => {
                 this.toastErrorAutenticacion();
                 console.log(error);
             });
+        return this.usuarioUid;
     }
     cerrarSesion() {
         firebase.auth().signOut();
@@ -161,7 +183,8 @@ export class FBservicesService {
     verificarsesion() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-
+                this.getUid();
+                //this.offLine();
                 //this.router.navigate(["main-menu"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
@@ -174,8 +197,8 @@ export class FBservicesService {
                 this.getTiposIdentificacion();
                 this.getConductor();
                 this.listaOrdenLotes();
+                this.getPesajeCompra();
                 this.getCompras();
-                // this.getNumBultos();
                 //this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -183,6 +206,7 @@ export class FBservicesService {
                 this.router.navigate(["login"]);
             }
         });
+        return this.usuarioUid;
     }
     // TODOS LOS TOAS o mensajes emergentes
     //toast
@@ -884,17 +908,6 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    // updateTipoTrueque(idTipoTrueque, codigoTipoTrueque, descripcionTipoTrueque) {
-    //     this.usuarioUid = firebase.auth().currentUser.uid;
-    //     firebase
-    //         .database()
-    //         .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
-    //         .update({
-    //             codigo: codigoTipoTrueque,
-    //             descripcion: descripcionTipoTrueque
-    //         });
-    //     this.toastOperacionExitosa();
-    // }
     updateCiudad(idCiudad, codigoCiudad, describcionCiudad) {
 
         firebase
@@ -921,7 +934,7 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + idCliente)
             .update({
                 idTipoIdentificacion: tipoIdentificacion,
-                numeroIdentificacion: numeroIdentificacionCliente,
+                numIndetificacion: numeroIdentificacionCliente,
                 nombres: nombresCliente,
                 apellidos: apellidosCliente,
                 empresa: empresaCliente,
@@ -943,7 +956,7 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + idConductor)
             .set({
                 idTipoIdentificacion: tipoIdentificacionConductor,
-                numeroIdentificacion: numeroIdentificacionConductor,
+                numIndetificacion: numeroIdentificacionConductor,
                 nombres: nombreConductor,
                 apellidos: apelidoConductor,
                 celular: celularConductor
@@ -998,7 +1011,6 @@ export class FBservicesService {
     }
     //Metodos para las comprassssss
 
-    listasss: any[];
     agregarPesaje(idProveedor, codigoProducto, totalBultos, pesoBultos, bultosTT) {
 
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -1007,7 +1019,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1018,7 +1030,56 @@ export class FBservicesService {
                 pesoBultos: pesoBultos,
                 costoTotalCompra: 0,
                 bultoLista: bultosTT
-            })
+            });
+    }
+
+    agregarConfirmaPesaje(idPesajeCompra, idProveedor, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        this.idConfirmarPesajeCompra = this.idGenerator();
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .set({
+                id: this.idConfirmarPesajeCompra,
+                codigoLote: this.lastLote.toString(),
+                idPesajeCompra: idPesajeCompra,
+                idProveedor: idProveedor,
+                idEstadoProducto: idEstadoProducto,
+                cantidadEstado: cantidadEstado,
+                costoKilo: costoKilo,
+                costoTotalEstado: costoTotalEstado
+            });
+    }
+    getUid() {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        return this.usuarioUid;
+    }
+    getPesajeCompra() {
+        //this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
+            .on("value", snapshot => {
+                this.pesajeCompraLista = [];
+                snapshot.forEach(element => {
+                    this.pesajeCompraLista.push(element.val());
+
+                });
+                console.log("metodo lelelel " + this.pesajeCompraLista.length);
+                return this.pesajeCompraLista;
+            });
+    }
+
+
+    updatePesajeCompra(idPesaje, pesoUp) {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + idPesaje)
+            .update({
+                costoTotalCompra: pesoUp
+            });
     }
 
     getCompras() {
@@ -1032,22 +1093,6 @@ export class FBservicesService {
                 });
                 return this.listaCompras;
             });
+
     }
-
-    // public numBultos: any[];
-    // getNumBultos(id) {
-    //     firebase
-    //         .database()
-    //         .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra/" + id)
-    //         .on("value", snapshot => {
-    //             this.numBultos = [];
-    //             snapshot.forEach(element => {
-    //                 this.numBultos.push(element.val());
-    //             });
-    //             return this.numBultos;
-    //         });
-    // }
-
-
-
 }
