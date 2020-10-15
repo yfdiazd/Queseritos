@@ -16,6 +16,16 @@ export class CardcomprasPage {
   saldodebitototal = "120000000";
   saldocreditotal = "160100000";
   pestotoalcomprado = "300";
+  proveedor;
+
+dinero = 0
+  total = 0;
+  num = 0;
+  calcular(valor) {
+
+    console.log("valor:", valor,"num:", this.num)
+    this.total = (valor * this.num);
+  }
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -25,7 +35,7 @@ export class CardcomprasPage {
     private navCtrl: NavController
   ) {
     this.FB.getCompras();
-   }
+  }
 
   irVender() {
     this.router.navigate(["cardcompras"]);
@@ -33,13 +43,17 @@ export class CardcomprasPage {
 
   irPesajeCompra(card) {
     // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearpesajecompra/",card.id]);
+    this.navCtrl.navigateForward(["crearpesajecompra/", card.id]);
     console.log("ID:", card.id)
   }
 
   irCompraDetallada() {
     this.navCtrl.navigateForward(["cardcompradetallada"]);
   }
+
+
+  listaProveedores: any[];
+  input = { data: [] };
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -51,8 +65,18 @@ export class CardcomprasPage {
         icon: 'person-add',
         handler: () => {
           // this.presentAlertRadio();
-          var elemento = document.getElementById("select-alert");
-          elemento.click();
+          this.input = { data: [] };
+          this.listaProveedores = [];
+          console.log("this.listaProveedores: ", this.listaProveedores)
+          this.FB.proveedoresLista.forEach(element => {
+            let provee = element;
+            this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
+          });
+          console.log("Se obtuvo esto_:", this.input);
+          this.presentAlertRadio();
+
+          // var elemento = document.getElementById("select-alert");
+          // elemento.click();
         }
       }, {
         text: 'Distribuir pesos',
@@ -79,10 +103,33 @@ export class CardcomprasPage {
     await actionSheet.present();
   }
 
-  customAlertOptions: any = {
-    header: 'Seleccione proveedor',
-    translucent: true,
-  };
+  async presentAlertRadio() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Radio',
+      inputs: this.input.data,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (value) => {
+            console.log('Confirm Ok', value);
+            this.FB.agregarPesaje(value, "", 0, 0, 0)
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
 
 }
 

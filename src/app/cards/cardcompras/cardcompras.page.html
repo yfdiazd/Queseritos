@@ -78,13 +78,8 @@
         <ion-icon name="hammer"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-
-    <ion-select hidden id="select-alert" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-      placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacion">
-      <ion-select-option #fileInput value="{{lista.id}}" *ngFor="let lista of FB.clientesLista">
-        {{lista.nombres}}
-      </ion-select-option>
-    </ion-select>
-
+    <input [(ngModel)]="num">
+    <input [ngModel]="dinero"(ngModelChange)="calcular($event)">
+    <p>{{total}}</p>
   </div>
 </ion-content>
