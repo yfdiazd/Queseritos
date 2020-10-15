@@ -9,15 +9,49 @@ export class CrearpesajecompraPage implements OnInit {
   proveedor = "fernanda";
   idproveedor = "1053790255";
   fechcompra = "03/10/2020";
-  costopesaje= "$350.000";
-  numbulto= 1;
+  costopesaje = "$350.000";
+  numbulto = 1;
   constructor(
     private FB: FBservicesService
   ) { }
+  //Variables para los bultos
+  listaBultos: any[] = [];
+  bultoObj: any = null;
+  contadorPeso: number;
 
   ngOnInit() {
   }
 
+  agregarBultoLista() {
 
+    this.bultoObj = {
+      bulto: "1",
+      peso: "30"
+    };
+    console.log("Codddddddd" + this.bultoObj.bulto);
+    console.log("pesssssssssssss" + this.bultoObj.peso);
+    this.listaBultos.push(this.bultoObj);
+  }
+  eliminarBulto(index){
+    this.listaBultos.splice(index);
+  }
+
+  
+  contarPeso() {
+    this.contadorPeso = 0;
+    this.listaBultos.forEach(element => {
+      console.log("Peeepepeeeeee" + element.peso);
+      this.contadorPeso = (this.contadorPeso + parseInt(element.peso));
+    });
+    console.log("Ttotal tttttt " + this.contadorPeso);
+  }
+
+  guardarPesaje(){
+    this.contarPeso();
+    console.log("Arrayyyyyy lennnnn " + this.listaBultos.length);
+    console.log("Peso que enviamos es de " + this.contadorPeso)
+    this.FB.agregarPesaje("proveedor", "producto", this.listaBultos.length, this.contadorPeso, this.listaBultos);
+    this.listaBultos = [];
+  }
 
 }
