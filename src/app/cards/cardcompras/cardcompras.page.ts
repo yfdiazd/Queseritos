@@ -32,7 +32,7 @@ export class CardcomprasPage {
   }
 
   irPesajeCompra(card) {
-    this.FB.getNumBultos(card.id);
+    // this.FB.getNumBultos(card.id);
     this.navCtrl.navigateForward(["crearpesajecompra/",card.id]);
     console.log("ID:", card.id)
   }

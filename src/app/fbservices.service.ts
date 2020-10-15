@@ -175,7 +175,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getCompras();
-                this.getNumBultos();
+                // this.getNumBultos();
                 //this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -1034,19 +1034,19 @@ export class FBservicesService {
             });
     }
 
-    public numBultos: any[];
-    getNumBultos(id) {
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra/" + id)
-            .on("value", snapshot => {
-                this.numBultos = [];
-                snapshot.forEach(element => {
-                    this.numBultos.push(element.val());
-                });
-                return this.numBultos;
-            });
-    }
+    // public numBultos: any[];
+    // getNumBultos(id) {
+    //     firebase
+    //         .database()
+    //         .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra/" + id)
+    //         .on("value", snapshot => {
+    //             this.numBultos = [];
+    //             snapshot.forEach(element => {
+    //                 this.numBultos.push(element.val());
+    //             });
+    //             return this.numBultos;
+    //         });
+    // }
 
 
 
