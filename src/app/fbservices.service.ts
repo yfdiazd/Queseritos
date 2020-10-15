@@ -16,7 +16,7 @@ import { TIMEOUT } from 'dns';
 })
 export class FBservicesService {
 
-    
+
     //Variable para paths de validacion
     pathPush: any;
     //flag 
@@ -55,6 +55,7 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
+    public listaCompras: any[];
     //Lista lotes
     listaLotes: any[] = [];
     ultimoLote: any[];
@@ -78,8 +79,8 @@ export class FBservicesService {
     constructor(
         private router: Router,
         public toastController: ToastController,
-        public alertController: AlertController,  
-        ) {
+        public alertController: AlertController,
+    ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
 
@@ -173,6 +174,8 @@ export class FBservicesService {
                 this.getTiposIdentificacion();
                 this.getConductor();
                 this.listaOrdenLotes();
+                this.getCompras();
+                this.getNumBultos();
                 //this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -870,16 +873,16 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-      updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
+    updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
-       firebase
-         .database()
-        .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
-        .update({
-         codigo: codigoTipoAnticipo,
-          descripcion: descripcionTipoanticipo
-      });
-     this.toastOperacionExitosa();
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
+            .update({
+                codigo: codigoTipoAnticipo,
+                descripcion: descripcionTipoanticipo
+            });
+        this.toastOperacionExitosa();
     }
     // updateTipoTrueque(idTipoTrueque, codigoTipoTrueque, descripcionTipoTrueque) {
     //     this.usuarioUid = firebase.auth().currentUser.uid;
@@ -892,11 +895,11 @@ export class FBservicesService {
     //         });
     //     this.toastOperacionExitosa();
     // }
-    updateCiudad(idCiudad,codigoCiudad, describcionCiudad) {
+    updateCiudad(idCiudad, codigoCiudad, describcionCiudad) {
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/"+ idCiudad)
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/" + idCiudad)
             .update({
                 codigo: codigoCiudad,
                 descripcion: describcionCiudad
@@ -994,29 +997,57 @@ export class FBservicesService {
 
     }
     //Metodos para las comprassssss
-   
+
     listasss: any[];
     agregarPesaje(idProveedor, codigoProducto, totalBultos, pesoBultos, bultosTT) {
-       
+
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/pesajeCompra/" + this.idPesajeCompra)
-        .set({
-            id: this.idPesajeCompra,
-            lote: this.lastLote.toString(),
-            fechaCompra: this.fechaActual(),
-            idProveedor: idProveedor,
-            idProducto: codigoProducto,
-            totalBulto: totalBultos,
-            pesoBultos: pesoBultos,
-            costoTotalCompra: 0,
-            bultoLista: bultosTT
-        })
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/pesajeCompra/" + this.idPesajeCompra)
+            .set({
+                id: this.idPesajeCompra,
+                lote: this.lastLote.toString(),
+                fechaCompra: this.fechaActual(),
+                idProveedor: idProveedor,
+                idProducto: codigoProducto,
+                totalBulto: totalBultos,
+                pesoBultos: pesoBultos,
+                costoTotalCompra: 0,
+                bultoLista: bultosTT
+            })
     }
+
+    getCompras() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra")
+            .on("value", snapshot => {
+                this.listaCompras = [];
+                snapshot.forEach(element => {
+                    this.listaCompras.push(element.val());
+                });
+                return this.listaCompras;
+            });
+    }
+
+    public numBultos: any[];
+    getNumBultos(id) {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra/" + id)
+            .on("value", snapshot => {
+                this.numBultos = [];
+                snapshot.forEach(element => {
+                    this.numBultos.push(element.val());
+                });
+                return this.numBultos;
+            });
+    }
+
 
 
 }

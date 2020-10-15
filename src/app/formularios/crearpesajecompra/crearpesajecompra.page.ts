@@ -1,60 +1,46 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import {FormBuilder, FormsModule, ReactiveFormsModule, FormArray} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FBservicesService } from '../../fbservices.service';
 @Component({
   selector: 'app-crearpesajecompra',
   templateUrl: './crearpesajecompra.page.html',
   styleUrls: ['./crearpesajecompra.page.scss'],
 })
-@NgModule({
-    imports: [
-    // other imports ...
-    ReactiveFormsModule,
-    FormsModule,
-    FormBuilder,
-    FormArray
-  ],
-})
+
 export class CrearpesajecompraPage implements OnInit {
   proveedor = "fernanda";
   fechcompra = "03/10/2020";
-  costopesaje= "$350.000";
-  numbulto= 1;
+  costopesaje = "$350.000";
+  numbulto = 1;
+  listaBultos: Array<any> = [];
+  nuevoRegistro: any[] = [];
 
-  CrearpesajecompraForm = this.formBuilder.group
-  ({
-    pesajes: this.formBuilder.array([])
-  });
- 
+  incrementable: any[];
+  id;
   constructor(
-    private formBuilder:FormBuilder) {
+    private route: ActivatedRoute,
+    private FB: FBservicesService
+  ) {
 
-   }
 
-  get pesajes(){
-    return this.CrearpesajecompraForm.get('pesajes') as FormArray;
   }
 
-   ngOnInit() {
-     }
 
-  agregarPesaje(){
-    const pesajeFormGroup  = this.formBuilder.group({
-      Bulto: '',
-      Peso: ''
-    });
-    this.pesajes.push(pesajeFormGroup);
+  ngOnInit() {
+    let id = this.route.snapshot.paramMap.get('id');
+    this.id = id;
+    this.incrementable = this.FB.numBultos;
+  }
+  addRegister() {
+
+    console.log("INDEX: ", this.listaBultos);
+    this.listaBultos.push(this.nuevoRegistro);
+    this.nuevoRegistro = [];
   }
 
-  removerPesaje(indice: number) {
-    this.pesajes.removeAt(indice);
+  removeRegister(index) {
+    this.listaBultos.splice(index, 1);
   }
-
-  refrescar() {
-     
-    this.pesajes.controls.splice(0, this.pesajes.length);
-  }
-
 
 
 }

@@ -23,18 +23,31 @@ export class CardcomprasPage {
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
+<<<<<<< HEAD
   ) { }
+=======
+  ) {
+    this.FB.getCompras();
+   }
+>>>>>>> 4c76f385eceb796e43518d9541ff642472c7f196
 
   irVender() {
     this.router.navigate(["cardcompras"]);
   }
 
+<<<<<<< HEAD
   irPesajeCompra() {
     this.navCtrl.navigateForward(["crearpesajecompra"]);
+=======
+  irPesajeCompra(card) {
+    this.FB.getNumBultos(card.id);
+    this.navCtrl.navigateForward(["crearpesajecompra/",card.id]);
+    console.log("ID:", card.id)
+>>>>>>> 4c76f385eceb796e43518d9541ff642472c7f196
   }
 
   irCompraDetallada() {
-    this.router.navigate(["cardcompradetallada"]);
+    this.navCtrl.navigateForward(["cardcompradetallada"]);
   }
 
   async presentActionSheet() {
