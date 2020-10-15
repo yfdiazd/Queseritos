@@ -24,7 +24,7 @@ export class CardcomprasPage {
     private alertController: AlertController,
     private navCtrl: NavController
   ) {
-    this.FB.getCompras();
+   //this.FB.getCompras();
    }
 
   irVender() {

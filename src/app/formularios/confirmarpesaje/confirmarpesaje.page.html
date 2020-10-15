@@ -2,42 +2,90 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">CONFIRMAR PESAJE</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
-  <ion-text>
-    <p>Confirma el pesaje de: {{proveedor}}"</p>
-    <p> {{idproveedor}}</p>
-    <p>Fecha de la compra: {{fechcompra}}</p>
-  </ion-text>
-  <div>
-  <div>
-  <p>Tipo de queso: {{tipqueso}}"</p> 
-  <p>Total Bultos: {{totalbultos}}"</p>
-  <p>Total Peso Total: {{pesototal}}"</p>
-  <select value = "codigoestado" name="Estado">
-    <option>Borona</option>
-    <option>Debe listar los estados de producto  parametrizados</option>
-   </select>
-  <input type="text" placeholder="Cantidad" />
-  <input type="text" placeholder="Costo Kg" />
+  <div class="div-principal">
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Confirma el pesaje de:</p>
+        <p class="div-v">{{proveedor}}</p>
+      </div>
+    </div>
+    <ion-card id="card1">
+      <div id="title1">Fecha compra: {{fechcompra}}</div>
+      <div class="div-pesoc">
+        <div class="div-stq">Tipo de queso: {{tipqueso}} </div>
+      </div>
+      <div class="div-atributo1">
+        <div>Total Bultos:{{totalbultos}}</div>
+      </div>
+      <div class="div-atributo2">
+        <div>Total Peso: {{pesototal}} Kg</div>
+      </div>
+    </ion-card>
   </div>
-  </div>
-  <ion-text>
-    <p>Costo total {{estadoqueso}}: {{costopesaje}}"</p>
-    <p>Costo total {{estadoqueso1}}: {{costopesaje}}"</p>
+  <div class="div-secundario">
+    <label for=""> {{id}}</label>
+    <ion-button (click)="confirmar()" expand="block" fill="clear" shape="round">
+      Confirmar
+    </ion-button>
+    <table>
+      <thead>
+        <th>Estado</th>
+        <th>Cantidad</th>
+        <th>Valor Kg</th>
+        <th>Costo Total Estado</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lista of listaBultos; let i=index">
+          <td>
+            <ion-select [(ngModel)]="idEstadoProducto" class="select" [interfaceOptions]="customAlertOptions"
+              interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+              <ion-select-option [value]="lista.id" *ngFor="let lista of FB.estadoProductoLista">
+                {{lista.descripcion}}
+              </ion-select-option>
+            </ion-select>
+          </td>
+          <td>
+            <input [(ngModel)]="cantidadEstado">
+          </td>
+          <td>
+            <input [ngModel]="valor" (ngModelChange)="calcular($event)"/>
+          </td>
+          <td>
+            <p>{{total}}</p> 
+          </td>
+          <ion-button (click)="eliminarBulto()" expand="block" fill="clear" shape="round">
+            Borrar
+          </ion-button>
+          <ion-button (click)="editarBulto()" expand="block" fill="clear" shape="round">
+            Editar
+          </ion-button>
+        </tr>
+      </tbody>
+    </table>
 
-  </ion-text>
-  
-  <div>
-    <ion-button (click)="guardar()" expand="full">
+    <div>
+      <ion-button (click)="guardar()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
+  </div>
+  <!-- <div>
+    <ion-button (click)="guardarPesajeConfirmado()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
-  </div>
+    <ion-button (click)="getPp()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      getttt
+    </ion-button> 
+  </div>-->
+ 
 </ion-content>
