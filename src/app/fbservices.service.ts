@@ -59,6 +59,7 @@ export class FBservicesService {
     public conductoresLista: any[];
     //Lista compras
     public pesajeCompraLista: any[];
+    public listaCompras: any[];
     //Lista lotes
     listaLotes: any[] = [];
     ultimoLote: any[];
@@ -197,6 +198,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getPesajeCompra();
+                this.getCompras();
                 //this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -1079,6 +1081,18 @@ export class FBservicesService {
                 costoTotalCompra: pesoUp
             });
     }
-  
 
+    getCompras() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra")
+            .on("value", snapshot => {
+                this.listaCompras = [];
+                snapshot.forEach(element => {
+                    this.listaCompras.push(element.val());
+                });
+                return this.listaCompras;
+            });
+
+    }
 }

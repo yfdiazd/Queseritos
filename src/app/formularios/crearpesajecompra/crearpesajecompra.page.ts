@@ -11,7 +11,18 @@ export class CrearpesajecompraPage implements OnInit {
   proveedor = "fernanda";
   fechcompra = "03/10/2020";
   costopesaje = "$350.000";
+<<<<<<< HEAD
   numbulto = 1;
+=======
+
+  numbulto = 0;
+  peso;
+
+
+  nuevoRegistro: any[] = [];
+
+  incrementable: any[];
+>>>>>>> 746a9908affae26637f82261f70001505aad3d15
   id;
   constructor(
     private route: ActivatedRoute,
@@ -28,38 +39,55 @@ export class CrearpesajecompraPage implements OnInit {
     this.id = id;
     // this.incrementable = this.FB.numBultos;
   }
-  addRegister() {
 
-    console.log("INDEX: ", this.listaBultos);
+  addRegister() {
+    // console.log("INDEX: ", this.listaBultos);
     this.listaBultos.push(this.nuevoRegistro);
     this.nuevoRegistro = [];
   }
 
+<<<<<<< HEAD
+=======
+  removeRegister(index) {
+    this.listaBultos.splice(index, 1);
+  }
+
+>>>>>>> 746a9908affae26637f82261f70001505aad3d15
   agregarBultoLista() {
 
-    this.bultoObj = {
-      bulto: "1",
-      peso: "30"
-    };
-    console.log("Codddddddd" + this.bultoObj.bulto);
-    console.log("pesssssssssssss" + this.bultoObj.peso);
-    this.listaBultos.push(this.bultoObj);
+    if (this.peso != "" || this.peso != null || this.peso != undefined) {
+      console.log("Entro al if");
+      this.bultoObj = {
+        bulto: this.numbulto,
+        peso: this.peso
+      };
+      console.log("Codddddddd" + this.bultoObj.bulto);
+      console.log("pesssssssssssss" + this.bultoObj.peso);
+
+      this.listaBultos.push(this.bultoObj);
+      console.log("lista", this.listaBultos);
+      this.peso = "";
+      this.numbulto = (this.numbulto + 1);
+    }else{
+      console.log("El registro esta vacio");
+    }
   }
-  eliminarBulto(index){
+  eliminarBulto(index) {
     this.listaBultos.splice(index);
   }
 
-  
+
   contarPeso() {
     this.contadorPeso = 0;
     this.listaBultos.forEach(element => {
-      console.log("Peeepepeeeeee" + element.peso);
+      console.log("Peso de i: " + element.peso);
       this.contadorPeso = (this.contadorPeso + parseInt(element.peso));
     });
-    console.log("Ttotal tttttt " + this.contadorPeso);
+    console.log("Total peso: " + this.contadorPeso);
   }
 
-  guardarPesaje(){
+  guardar() {
+    // this.agregarBultoLista();
     this.contarPeso();
     console.log("Arrayyyyyy lennnnn " + this.listaBultos.length);
     console.log("Peso que enviamos es de " + this.contadorPeso)
