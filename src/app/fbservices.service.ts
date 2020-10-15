@@ -183,7 +183,7 @@ export class FBservicesService {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.getUid();
-                //this.offLine();
+                this.offLine();
                 //this.router.navigate(["main-menu"]);
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
@@ -470,6 +470,7 @@ export class FBservicesService {
             firebase
                 .database()
                 .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad/" + this.idCiudad)
+                .onDisconnect()
                 .set({
                     id: this.idCiudad,
                     codigo: codigoCiudad,

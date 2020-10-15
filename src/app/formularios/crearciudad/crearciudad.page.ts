@@ -20,7 +20,7 @@ export class CrearciudadPage implements OnInit {
     private FB: FBservicesService,
     private modalCtrl: ModalController) {
   }
-
+ 
   ngOnInit() { }
 
   guardarCiudad() {
