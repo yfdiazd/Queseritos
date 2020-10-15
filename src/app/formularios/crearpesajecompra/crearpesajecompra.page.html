@@ -22,46 +22,36 @@
         <p class="div-v" id="fech-compra">{{fechcompra}}</p>
       </div>
     </div>
-    <div class="div-secundario">
-      <table class="Pesaje">
-        <thead>
-          <th>Bulto</th>
-          <th>Peso</th>
-        </thead>
-        <tbody>
-          <td> 
-            <button class="btn btn-default" type="button" (click)="addFieldValue()">Add</button> 
-           </td> 
-          <td>
-            <button class="btn btn-default" type="button" (click)="deleteFieldValue(i)">Delete</button>
-          </td>
-          <tr *ngFor="let field of fieldArray; let i=index">
-            <td>
-              <input [(ngModel)]="field.bulto" class="form-control" type="text" name="{{field.bulto}}" />
-            </td>
-            <td>
-              <input [(ngModel)]="field.peso" class="form-control" type="text" name="{{field.peso}}" />
-            </td>
-            
-          </tr>
-          <tr>
-            <td>
-              <input class="form-control" type="text" id="newAttributeBulto" [(ngModel)]="newAttribute.Bulto"
-                name="newAttributeBulto" />
-            </td>
-            <td>
-              <input class="form-control" type="text" id="newAttributePeso" [(ngModel)]="newAttribute.Peso"
-                name="newAttributePeso" />
-            </td>
-            </tr> 
-        </tbody>
-      </table>
-  </div>
-  <div>
-    <ion-button (click)="agregarPesajeCompra()" expand="full">
-      <ion-icon name="save-outline"></ion-icon>
-      Guardar
-    </ion-button>
-  </div>
-  </div>
-</ion-content>
+  </div> 
+
+  <div class="div-secundario"> 
+    <formulario (enviar) = "(enviar)" [formGroup]="CrearpesajecompraForm">
+      <div class="form-group">
+        <a class="btn btn-primary" (click)="agregarPesaje()">Agregar Pesajes</a>
+      </div>
+      <div formArrayName="pesajes" *ngFor="let pesaje of pesajes.controls; let i = index">
+        <div [formGroupName]="i">
+          <div class="form-group row">
+             <label class="col-md-1" [attr.for]="'pesaje' + i">Bulto</label>
+             <div class="col-md-3">
+              <input type="text" [attr.id]="'pesaje' + i" class="form-control" formControlName="pesaje">
+             </div>
+            <label class="col-md-1" [attr.for]="'peso' + i">Peso</label>
+            <div class="col-md-5">
+              <input type="text" [attr.id]="'peso' + i" class="form-control" formControlName="peso">
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-danger" (click)="removerPesaje(i)">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </formulario>
+     </div>
+    <div>
+      <ion-button (click)="agregarPesajeCompra()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
+</ion-content> -->

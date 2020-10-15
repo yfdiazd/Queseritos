@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { AlertController } from '@ionic/angular';
@@ -21,7 +21,8 @@ export class CardcomprasPage {
     public actionSheetController: ActionSheetController,
     private router: Router,
     private FB: FBservicesService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private navCtrl: NavController
   ) { }
 
   irVender() {
@@ -29,7 +30,7 @@ export class CardcomprasPage {
   }
 
   irPesajeCompra() {
-    this.router.navigate(["crearpesajecompra"]);
+    this.navCtrl.navigateForward(["crearpesajecompra"]);
   }
 
   irCompraDetallada() {

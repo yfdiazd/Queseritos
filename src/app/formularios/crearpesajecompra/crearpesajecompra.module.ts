@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormBuilder, FormsModule, ReactiveFormsModule, FormArray} from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,6 +13,8 @@ import { CrearpesajecompraPage } from './crearpesajecompra.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    FormBuilder,
+    ReactiveFormsModule,
     CrearpesajecompraPageRoutingModule
   ],
   declarations: [CrearpesajecompraPage]
