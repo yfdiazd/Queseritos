@@ -1,51 +1,65 @@
-<ion-router-outlet main></ion-router-outlet>
+<ion-router-outlet id="first"></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-menu-button slot="start" (click)="abrirConfiguracion()"></ion-menu-button>
+    <ion-buttons slot="start">
+      <ion-menu-button (click)="lista()"></ion-menu-button>
+      <!-- <ion-menu>
+        <ion-nav [root]="menuList"> </ion-nav>
+      </ion-menu> -->
+    </ion-buttons>
     <ion-title class="titulo"> MENU PRINCIPAL</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-row class="row1">
-    <ion-col class="col1">
+    <div class="col1">
       <ion-card class="card1">
-        <ion-button (click)="irVender()" class="btn-title1">COMPRAS</ion-button>
+        <!-- [href]="'/cardcompras'" routerDirection="forward" --- OR -----  (click)="comprar()"-->
+        <div class="div-label-compras" (click)="comprar()">
+          <p class="label">COMPRAR</p>
+          <img src="../../assets/img/cart.png.png">
+        </div>
+
         <div class="div-boton-lote">
           <ion-button class="boton-n-lote" expand="full">
             <ion-icon name="add"></ion-icon>
-            Nuevo LOTE
+            NUEVO LOTE
           </ion-button>
         </div>
       </ion-card>
-    </ion-col>
-    <ion-col class="col2">
+    </div>
+    <div class="col2">
       <ion-card class="card2">
-        <ion-button class="btn-title2">VENTAS</ion-button>
+        <div class="div-label-ventas" (click)="comprar()">
+          <p class="label">VENDER</p>
+          <img src="../../assets/img/cartLleno.png">
+        </div>
         <div class="div-boton-lote">
-          <ion-button class="boton-v-lote" (click)="guardar()" expand="full">
+          <ion-button class="boton-v-lote" (click)="ventas()" expand="full">
             <ion-icon name="add"></ion-icon>
             VENDER LOTE
           </ion-button>
         </div>
       </ion-card>
-    </ion-col>
+    </div>
   </ion-row>
   <ion-row class="row2">
-    <ion-col class="col3">
+    <div class="col3">
       <ion-card class="card3" (click)="irLotes()">
         <ion-button class="btn-title3">LOTES</ion-button>
       </ion-card>
-    </ion-col>
-    <ion-col class="col4">
+    </div>
+    <div class="col4">
       <ion-card class="card4">
         <ion-button class="btn-title4">ESTADO</ion-button>
       </ion-card>
-    </ion-col>
+    </div>
   </ion-row>
 </ion-content>
-<ion-router-outlet id="myMenu"></ion-router-outlet>
-<ion-menu side="start" menuId="myMenu" contentId="myMenu" class="myMenu">
+
+
+<ion-menu side="start" type="push" menuId="first" contentId="first">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Configurar</ion-title>
@@ -61,11 +75,11 @@
       <ion-item (click)="irTipoAnticipo()">Tipos de Anticipo</ion-item>
       <ion-item (click)="irTipoIdentificacion()">Tipos de Identificación</ion-item>
       <ion-item (click)="irTipoQueso()">Tipos de Queso</ion-item>
-      <ion-item (click)="irTipoTrueque()">Tipos de Trueque</ion-item>
+      <!-- <ion-item (click)="irTipoTrueque()">Tipos de Trueque</ion-item> -->
     </ion-list>
   </ion-content>
   <ion-footer>
-    <ion-button class="cerraSesion" expand="full" (click)="FB.cerrarSesion()">
+    <ion-button class="cerraSesion" expand="full" (click)="cerrarSesion()">
       Cerrar Sesión
     </ion-button>
   </ion-footer>

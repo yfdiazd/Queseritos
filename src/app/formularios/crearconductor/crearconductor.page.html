@@ -1,39 +1,36 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title class="titulo">CONDUCTORES</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button (click)="volver()" color="danger">CERRAR</ion-button>
     </ion-buttons>
+    <ion-title class="titulo">CONDUCTORES</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<div class="div-formulario">
-  <ion-text>
-    <div class="bloque">
-      <p>Completa el formulario para crear un conductor</p>
-    </div>
-  </ion-text>
-</div>
+  <div class="div-formulario">
+    <p>Tipo de identificación<span>*</span></p>
+    <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
 
-<div>
-  <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-    placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacionConductor">
-    <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
-      {{lista.descripcion}}
-    </ion-select-option>
-  </ion-select>
-  <input type="text" placeholder="Número de Identificación" [(ngModel)]="numeroIdentificacionConductor" />
-  <input type="text" placeholder="Nombres" [(ngModel)]="nombreConductor" />
-  <input type="text" placeholder="Apellidos" [(ngModel)]="apelidoConductor" />
-  <input type="text" placeholder="Celular" [(ngModel)]="celularConductor" />
-</div>
-<div>
-  <ion-button (click)="guardarConductor()" expand="full">
-    <ion-icon name="save-outline"></ion-icon>
-    Guardar
-  </ion-button>
-</div>
-
+    <p>Número de Identificación <span>*</span></p>
+    <input maxlength="15" type="text" placeholder="{{numidentificacionEdit}}" [(ngModel)]="numidentificacionEdit" />
+    <p>Nombres <span>*</span></p>
+    <input maxlength="30" type="text" placeholder="{{nombresEdit}}" [(ngModel)]="nombresEdit" />
+    <p>Apellidos</p>
+    <input maxlength="30" type="text" placeholder="{{apellidosEdit}}" [(ngModel)]="apellidosEdit" />
+    <p>Celular <span>*</span></p>
+    <input maxlength="12" type="text" placeholder="{{celularEdit}}" [(ngModel)]="celularEdit" />
+  </div>
+  <div>
+    <ion-button (click)="guardarConductor()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
+  </div>
 </ion-content>

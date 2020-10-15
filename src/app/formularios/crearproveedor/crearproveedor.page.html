@@ -1,36 +1,38 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title class="titulo">PROVEEDORES</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button (click)="volver()" color="ligth">CERRAR</ion-button>
     </ion-buttons>
+    <ion-title class="titulo">PROVEEDORES</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
   <div class="div-formulario">
-    <ion-text>
-      <div class="bloque">
-        <p>Completa el formulario para crear un proveedor</p>
-      </div>
-    </ion-text>
-  </div>
+    <p>Tipo de identificación<span>*</span></p>
+    <ion-select [(ngModel)]="idTipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
+    interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+    <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
+      {{lista.descripcion}}
+    </ion-select-option>
+  </ion-select>
 
-  <div>
-    <ion-select class="select" [interfaceOptions]="customAlertOptions" interface="alert" multiple="false"
-      placeholder="Tipo de identificación" [(ngModel)]="tipoIdentificacionProveedor">
-      <ion-select-option value="{{lista.codigo}}" *ngFor="let lista of FB.tiposIdentificacionLista">
-        {{lista.descripcion}}
-      </ion-select-option>
-    </ion-select>
-    <input type="text" placeholder="Número de Identificación" [(ngModel)]="numIndetificacionProveedor" />
-    <input type="text" placeholder="Nombres" [(ngModel)]="nombreProveedor" />
-    <input type="text" placeholder="Apellidos" [(ngModel)]="apellidoProveedor" />
-    <input type="text" placeholder="Celular" [(ngModel)]="telefonoProveedor" />
-    <input type="text" placeholder="Dirección" [(ngModel)]="direccionProveedor" />
-    <input type="text" placeholder="Correo Electrónico" [(ngModel)]="correoProveedor" />
+
+
+    <p>Número de Identificación <span>*</span></p>
+    <input maxlength="15" type="text" placeholder="{{numIndetificacionEdit}}" [(ngModel)]="numIndetificacionEdit"/>
+    <p>Nombres <span>*</span></p>
+    <input maxlength="30" type="text" placeholder="{{nombreEdit}}" [(ngModel)]="nombreEdit"/>
+    <p>Apellidos</p>
+    <input maxlength="30" type="text" placeholder="{{apellidoEdit}}" [(ngModel)]="apellidoEdit"/>
+    <p>Celular <span>*</span></p>
+    <input maxlength="12" type="text" placeholder="{{telefonoEdit}}" [(ngModel)]="telefonoEdit"/>
+    <p>Dirección</p>
+    <input maxlength="50" type="text" placeholder="{{direccionEdit}}" [(ngModel)]="direccionEdit"/>
+    <p>Correo Electrónico</p>
+    <input maxlength="50" type="text" placeholder="{{correoEdit}}" [(ngModel)]="correoEdit"/>
   </div>
   <div>
     <ion-button (click)="crearProveedor()" expand="full">
@@ -38,5 +40,4 @@
       Guardar
     </ion-button>
   </div>
-
 </ion-content>

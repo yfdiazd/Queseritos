@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
 
 @Component({
@@ -8,20 +8,53 @@ import { FBservicesService } from '../../fbservices.service'
   styleUrls: ['./crearestadoproducto.page.scss'],
 })
 export class CrearestadoproductoPage implements OnInit {
-  //variables para guardar el estado del producto
-  codigoEstado: string;
-  descripcionEstado: string;
+
+
+  @Input() codigoEdit;
+  @Input() descripcionEdit;
+  @Input() id;
+
   constructor(
 
-    private FB: FBservicesService
+    private FB: FBservicesService,
+    private modalCtrl: ModalController,
+    private toastController: ToastController) {
+  }
 
-  ) { }
+  ngOnInit() { }
 
   guardarEstadoProducto() {
-    this.FB.agregarEstadoProducto(this.codigoEstado, this.descripcionEstado);
-  }
-  ngOnInit() {
+    if (this.id == undefined) {
+      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+        this.toastCamposRequeridos();
+      } else {
+        this.FB.agregarEstadoProducto(this.codigoEdit, this.descripcionEdit);
+        this.modalCtrl.dismiss();
+      }
+    } else {
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
+        this.toastCamposRequeridos();
+      } else {
+        this.FB.updateEstadoProducto(this.id, this.codigoEdit, this.descripcionEdit);
+        this.modalCtrl.dismiss();
+      }
+
+    }
   }
 
+  volver() {
+    this.modalCtrl.dismiss();
+  }
+
+  async toastCamposRequeridos() {
+    const toast = await this.toastController.create({
+      message: "Falta diligenciar campos requeridos.",
+      cssClass: "toast",
+      color: 'warning',
+      position: 'top',
+      duration: 5000
+    });
+    toast.present();
+  }
 
 }

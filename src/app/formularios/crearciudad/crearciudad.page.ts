@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FBservicesService } from "../../fbservices.service";
 
 @Component({
@@ -9,40 +9,47 @@ import { FBservicesService } from "../../fbservices.service";
 })
 export class CrearciudadPage implements OnInit {
 
-  codigoCiudad: string;
-  descripcionCiudad: string;
-
   @Input() codigoEdit;
   @Input() descripcionEdit;
   @Input() id;
 
   constructor(
     private FB: FBservicesService,
-    private modalCtrl: ModalController) {
+    private modalCtrl: ModalController,
+    private toastController: ToastController) {
   }
  
   ngOnInit() { }
 
-  guardarCiudad() {
+  guardar() {
     if (this.id == undefined) {
-      if (this.codigoCiudad == undefined) {
-        this.FB.agregarCiudad(this.codigoEdit, this.descripcionCiudad);
-        this.modalCtrl.dismiss();
-      } else if (this.descripcionCiudad == undefined) {
-        this.FB.agregarCiudad(this.codigoCiudad, this.descripcionEdit);
-        this.modalCtrl.dismiss();
-      } else {
-        this.FB.agregarCiudad(this.codigoCiudad, this.descripcionCiudad);
-        this.modalCtrl.dismiss();
+      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+        this.toastCamposRequeridos();
       }
-      console.log("Se debebió crear")
+      this.FB.agregarCiudad(this.codigoEdit, this.descripcionEdit);
+      this.modalCtrl.dismiss();
+
     } else {
-      this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionCiudad);
-      // console.log("Se debe modificar")
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
+        this.toastCamposRequeridos();
+      }
+      this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionEdit);
       this.modalCtrl.dismiss();
     }
   }
+
   volver() {
     this.modalCtrl.dismiss();
+  }
+
+  async toastCamposRequeridos() {
+    const toast = await this.toastController.create({
+      message: "Falta diligenciar campos requeridos.",
+      cssClass: "toast",
+      color: 'warning',
+      position: 'top',
+      duration: 5000
+    });
+    toast.present();
   }
 }

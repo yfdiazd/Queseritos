@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
 @Component({
   selector: 'app-creartiposanticipo',
@@ -7,13 +7,17 @@ import { FBservicesService } from '../../fbservices.service'
   styleUrls: ['./creartiposanticipo.page.scss'],
 })
 export class CreartiposanticipoPage implements OnInit {
-  //variables para guardar el tipo de anticipo
-  codigoTipoAnticipo:string;
-  descripcionTipoAnticipo:string;
+
+
+  @Input() codigoEdit;
+  @Input() descripcionEdit;
+  @Input() id;
 
   constructor( 
 
-    private FB:FBservicesService
+    private FB:FBservicesService,
+    private modalCtrl: ModalController,
+    private toastController: ToastController
 
    ) { }
 
@@ -21,7 +25,38 @@ export class CreartiposanticipoPage implements OnInit {
   }
 
   guardarTipoAnticipo(){
-    this.FB.agregarTipoAnticipo(this.codigoTipoAnticipo, this.descripcionTipoAnticipo);
+
+    if (this.id == undefined) {
+      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+        this.toastCamposRequeridos();
+      } else {
+        this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
+        this.modalCtrl.dismiss();
+
+      }
+
+    } else {
+     
+        this.FB.updateTipoAnticipo(this.id, this.codigoEdit, this.descripcionEdit);
+
+        this.modalCtrl.dismiss();
+      
+    }
+  }
+
+  volver() {
+    this.modalCtrl.dismiss();
+  }
+
+  async toastCamposRequeridos() {
+    const toast = await this.toastController.create({
+      message: "Falta diligenciar campos requeridos.",
+      cssClass: "toast",
+      color: 'warning',
+      position: 'top',
+      duration: 5000
+    });
+    toast.present();
   }
 
 }

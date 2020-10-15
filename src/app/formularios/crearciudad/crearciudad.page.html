@@ -1,8 +1,7 @@
-<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button (click)="volver()">CERRAR</ion-button>
+      <ion-button (click)="volver()" color="danger">CERRAR</ion-button>
     </ion-buttons>
     <ion-title class="titulo">CIUDADES</ion-title>
   </ion-toolbar>
@@ -11,10 +10,12 @@
 <ion-content>
   <div class="div-formulario">
     <p>Codigo</p>
-    <input maxlength="4" type="text" placeholder="{{codigoEdit}}" [(ngModel)]="codigoCiudad"/>
+    <input maxlength="4" type="text" [(ngModel)]="codigoEdit" />
     <p>Descripción</p>
-    <input maxlength="30" type="text" placeholder="{{descripcionEdit}}" [(ngModel)]="descripcionCiudad"/>
-    <ion-button (click)="guardarCiudad()" expand="full">
+    <input maxlength="30" type="text" [(ngModel)]="descripcionEdit" />
+  </div>
+  <div>
+    <ion-button (click)="guardar()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>

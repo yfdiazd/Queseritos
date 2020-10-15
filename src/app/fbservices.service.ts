@@ -59,6 +59,7 @@ export class FBservicesService {
     public conductoresLista: any[];
     //Lista compras
     public pesajeCompraLista: any[];
+    public listaCompras: any[];
     //Lista lotes
     listaLotes: any[] = [];
     ultimoLote: any[];
@@ -197,6 +198,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getPesajeCompra();
+                this.getCompras();
                 //this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -896,25 +898,14 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //  updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
-    //    this.usuarioUid = firebase.auth().currentUser.uid;
-    //   firebase
-    //     .database()
-    //    .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
-    //    .update({
-    //     codigo: codigoTipoAnticipo,
-    //      descripcion: descripcionTipoanticipo
-    //  });
-    // this.toastOperacionExitosa();
-    //}
-    updateTipoTrueque(idTipoTrueque, codigoTipoTrueque, descripcionTipoTrueque) {
+    updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
+            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
             .update({
-                codigo: codigoTipoTrueque,
-                descripcion: descripcionTipoTrueque
+                codigo: codigoTipoAnticipo,
+                descripcion: descripcionTipoanticipo
             });
         this.toastOperacionExitosa();
     }
@@ -928,7 +919,7 @@ export class FBservicesService {
                 descripcion: describcionCiudad
             });
     }
-    updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
+    updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresCliente, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         if (apellidosCliente == null) {
             apellidosCliente = "";
@@ -945,7 +936,7 @@ export class FBservicesService {
             .update({
                 idTipoIdentificacion: tipoIdentificacion,
                 numIndetificacion: numeroIdentificacionCliente,
-                nombres: nombresClietne,
+                nombres: nombresCliente,
                 apellidos: apellidosCliente,
                 empresa: empresaCliente,
                 idCiudad: codigoCiudad,
@@ -1092,4 +1083,17 @@ export class FBservicesService {
             });
     }
 
+    getCompras() {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra")
+            .on("value", snapshot => {
+                this.listaCompras = [];
+                snapshot.forEach(element => {
+                    this.listaCompras.push(element.val());
+                });
+                return this.listaCompras;
+            });
+
+    }
 }
