@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'crearciudad', loadChildren: () => import('./formularios/crearciudad/crearciudad.module').then(m => m.CrearciudadPageModule) },
   { path: 'crearconductor', loadChildren: () => import('./formularios/crearconductor/crearconductor.module').then(m => m.CrearconductorPageModule) },
   { path: 'crearpesajecompra/:id', loadChildren: () => import('./formularios/crearpesajecompra/crearpesajecompra.module').then(m => m.CrearpesajecompraPageModule) },
-  { path: 'crearanticipos', loadChildren: () => import('./formularios/crearanticipos/crearanticipos.module').then(m => m.CrearanticiposPageModule) },
+  { path: 'crearanticipos/:id', loadChildren: () => import('./formularios/crearanticipos/crearanticipos.module').then(m => m.CrearanticiposPageModule) },
   { path: 'creartrueque', loadChildren: () => import('./formularios/creartrueque/creartrueque.module').then(m => m.CreartruequePageModule) },
   { path: 'crearenviocliente', loadChildren: () => import('./formularios/crearenviocliente/crearenviocliente.module').then(m => m.CrearenvioclientePageModule) },
   { path: 'cardcompras', loadChildren: () => import('./cards/cardcompras/cardcompras.module').then(m => m.CardcomprasPageModule) },
@@ -33,7 +33,11 @@ const routes: Routes = [
   { path: 'hometiposidentificacion', loadChildren: () => import('./home/hometiposidentificacion/hometiposidentificacion.module').then(m => m.HometiposidentificacionPageModule) },
   { path: 'homeproveedores', loadChildren: () => import('./home/homeproveedores/homeproveedores.module').then(m => m.HomeproveedoresPageModule) },
   { path: 'homeconductores', loadChildren: () => import('./home/homeconductores/homeconductores.module').then(m => m.HomeconductoresPageModule) },
-  { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) }
+  { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },  {
+    path: 'detallelote',
+    loadChildren: () => import('./formularios/detallelote/detallelote.module').then( m => m.DetallelotePageModule)
+  }
+
 ];
 
 @NgModule({

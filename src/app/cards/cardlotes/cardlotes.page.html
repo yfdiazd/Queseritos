@@ -1,20 +1,70 @@
+<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
+    <ion-title class="titulo">LOTES DE COMPRAS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu"></ion-back-button>
+      <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
     </ion-buttons>
-    <ion-title>LOTES</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="div-formulario">
-    <ion-list>
-      <ion-card>
-        <ion-title>Lote 1</ion-title>
-        <p>Estado: X</p>
-        <p>Saldo: ####</p>
-      </ion-card>
-    </ion-list>
+  <div class="div-principal">
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Proveedor</p>
+        <p class="div-v">{{idproveedor}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="div-secundario">
+  <ion-item-sliding class="slider" *ngFor="let card of FB.listaLotes">
+    <ion-item class="item">
+      <div class="div-card">
+        <ion-button class="add" (click)="irCrearanticipos()" color="success" expand="full">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+        <ion-card class="card" (click)="irCompraDetallada()">
+          <div class="div-title">
+            <ion-title>{{card.id}}</ion-title>
+          </div>
+          <div class="seccion-1">
+            <div class="div-cajita">
+              <p class="div-t">Total Bultos</p>
+              <p class="div-v">{{card.totalBulto}}</p>
+            </div>
+            <div class="div-cajita">
+              <p class="div-t">Débito</p>
+              <p class="div-v" id="saldo-debito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+            </div>
+            <div>
+              <p class="div-t">Crédito</p>
+              <p class="div-v" id="saldo-credito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+            </div>
+          </div>
+          <div class="seccion-2">
+            <div class="div-cajita">
+              <p class="div-t">Peso total comprado</p>
+              <p class="div-v">{{card.pesoBultos}} <span> Kg</span></p>
+            </div>
+            <div class="div-cajita">
+              <p class="div-t">Saldo</p>
+              <p class="div-v" id="saldo-credito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+            </div>
+          </div>
+        </ion-card>
+      </div>
+    </ion-item>
+    <ion-item-options side="end">
+      <ion-item-option color="danger" (click)="eliminar(lista)">Anticipos</ion-item-option>
+    </ion-item-options>
+    <ion-item-options side="start">
+      <ion-item-option color="warning" (click)="editarModal(lista)">Saldar Deuda</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+  <ion-button (click)="saldarDeuda()" expand="full">
+    <ion-icon name="cash-outline"></ion-icon>
+    Saldar Deuda
+  </ion-button>
   </div>
 </ion-content>

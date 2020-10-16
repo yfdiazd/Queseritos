@@ -34,13 +34,8 @@ dinero = 0
     private alertController: AlertController,
     private navCtrl: NavController
   ) {
-<<<<<<< HEAD
-   //this.FB.getCompras();
-   }
-=======
     this.FB.getCompras();
   }
->>>>>>> 746a9908affae26637f82261f70001505aad3d15
 
   irVender() {
     this.router.navigate(["cardcompras"]);
@@ -48,11 +43,7 @@ dinero = 0
 
   irPesajeCompra(card) {
     // this.FB.getNumBultos(card.id);
-<<<<<<< HEAD
-    this.navCtrl.navigateForward(["crearpesajecompra/",card.id]);
-=======
     this.navCtrl.navigateForward(["crearpesajecompra/", card.id]);
->>>>>>> 746a9908affae26637f82261f70001505aad3d15
     console.log("ID:", card.id)
   }
 

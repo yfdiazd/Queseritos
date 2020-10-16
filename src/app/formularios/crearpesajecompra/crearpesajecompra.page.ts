@@ -11,9 +11,6 @@ export class CrearpesajecompraPage implements OnInit {
   proveedor = "fernanda";
   fechcompra = "03/10/2020";
   costopesaje = "$350.000";
-<<<<<<< HEAD
-  numbulto = 1;
-=======
 
   numbulto = 0;
   peso;
@@ -22,7 +19,6 @@ export class CrearpesajecompraPage implements OnInit {
   nuevoRegistro: any[] = [];
 
   incrementable: any[];
->>>>>>> 746a9908affae26637f82261f70001505aad3d15
   id;
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +26,6 @@ export class CrearpesajecompraPage implements OnInit {
   ) { }
   //Variables para los bultos
   listaBultos: any[] = [];
-  nuevoRegistro = [] = [];
   bultoObj: any = null;
   contadorPeso: number;
 
@@ -46,13 +41,10 @@ export class CrearpesajecompraPage implements OnInit {
     this.nuevoRegistro = [];
   }
 
-<<<<<<< HEAD
-=======
   removeRegister(index) {
     this.listaBultos.splice(index, 1);
   }
 
->>>>>>> 746a9908affae26637f82261f70001505aad3d15
   agregarBultoLista() {
 
     if (this.peso != "" || this.peso != null || this.peso != undefined) {
