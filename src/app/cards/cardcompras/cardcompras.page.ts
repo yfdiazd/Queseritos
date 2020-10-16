@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from 'src/app/fbservices.service';
@@ -10,22 +10,17 @@ import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_t
   templateUrl: './cardcompras.page.html',
   styleUrls: ['./cardcompras.page.scss'],
 })
-export class CardcomprasPage {
-  public pesolimite = "500";
-  public pesoacumulado = "300";
-  saldodebitototal = "120000000";
-  saldocreditotal = "160100000";
-  pestotoalcomprado = "300";
-  proveedor;
+export class CardcomprasPage implements OnInit {
 
-dinero = 0
-  total = 0;
-  num = 0;
-  calcular(valor) {
+  pesoacumulado = 200;
+  saldodebitototal = 120000000;
+  saldocreditotal = 140000000;
+  
 
-    console.log("valor:", valor,"num:", this.num)
-    this.total = (valor * this.num);
-  }
+
+  public proveedor;
+  public listaProveedores: any[];
+  public input = { data: [] };
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -35,6 +30,22 @@ dinero = 0
     private navCtrl: NavController
   ) {
     this.FB.getCompras();
+    // this.ngOnInit();
+  }
+  public idProv;
+  public nombres = [];
+
+  ngOnInit() {
+    this.FB.proveedoresLista.forEach(element => {
+      this.nombres = [];
+      if (element.id == this.idProv) {
+        this.nombres.push({
+          nombre: element.nombres,
+          id: element.id
+        });
+      }
+      console.log("id", this.idProv, "nombres:",this.nombres);
+    });
   }
 
   irVender() {
@@ -50,10 +61,6 @@ dinero = 0
   irCompraDetallada() {
     this.navCtrl.navigateForward(["cardcompradetallada"]);
   }
-
-
-  listaProveedores: any[];
-  input = { data: [] };
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -120,7 +127,7 @@ dinero = 0
           text: 'Ok',
           handler: (value) => {
             console.log('Confirm Ok', value);
-            this.FB.agregarPesaje(value, "", 0, 0, 0)
+            this.navCtrl.navigateForward(["crearpesajecompra/", value]);
           }
         }
       ]
