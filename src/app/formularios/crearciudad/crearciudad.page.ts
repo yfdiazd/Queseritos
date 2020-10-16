@@ -18,7 +18,7 @@ export class CrearciudadPage implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController) {
   }
-
+ 
   ngOnInit() { }
 
   guardar() {

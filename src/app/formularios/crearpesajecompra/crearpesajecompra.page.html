@@ -34,9 +34,9 @@
         <th>Peso</th>
       </thead>
       <tbody>
-        <tr *ngFor="let lista of listaBultos; let i=index">
+        <tr *ngFor="let lista of fronLista; let i=index">
           <td>
-            <input [(ngModel)]="numbulto">
+            <input [(ngModel)]="numbulto" [(ngModel)]="cotnador">
           </td>
           <td>
             <input [(ngModel)]="peso">
