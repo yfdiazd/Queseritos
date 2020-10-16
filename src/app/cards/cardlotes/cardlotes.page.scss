@@ -2,27 +2,129 @@ ion-toolbar {
     --background: #1a1446;
 }
 
-.titulo {
+ion-title {
+    font-size: 20px;
+
+}
+.titulo{
     color: white;
 }
 
 ion-content {
-    margin: 0;
     padding: 0;
+    margin: 0;
     --background: #c8f7f3;
+    // text-align: center;
+    --color: black;
 
-    .div-formulario {
-        padding: 0;
-        width: 80%;
+
+    .div-principal {
+        width: 100%;
         margin: auto;
+        position: static;
+        text-align: center;
+        height: 10%;
+        color: white;
+        background-color: #4376ff;
+     
+
+        .div-fila {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+        }
+    
+
+    //--------------Generales------------------
+    .div-f {
+        // border-bottom-style: solid;
+        // border-bottom-left-radius: 40%;
+        // border-bottom-right-radius: 40%;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        text-align: center;
     }
 
-    .card {
-        padding: 5%;
-        background-color: #c8f7f3;
-        color: #1a1446;
+    .div-f p {
+        margin: 0;
+        padding: 0;
+    }
+
+    p>span {
+        font-size: 15px;
+    }
+
+
+    .div-t {
+        text-align: center;
+        color: #ff2f73;
+        padding-top: 5px;
         width: 100%;
-        box-shadow: #1a1446 0px 4px 4px 4px;
-        font-size: 4vw;
+        height: 30%;
+    }
+
+    .div-v {
+        width: 100%;
+        height: 70%;
+        font-size: 20px;
+       }
+    }
+    .div-secundario {
+        height: 75%;
+        margin-top: 20px;
+
+        .div-card{
+            width: 100%;
+            
+        }
+        .card {
+            width: 100%;
+            margin: 20px auto;
+            height: 150px;
+            background-color: white;
+            box-shadow: #1a1446  5px 5px 5px 0px;
+        }
+        .item{
+            --background: transparent;
+            margin-top: 20px;
+            --border-style: none;
+        }
+
+        .div-title {
+            color: #1a1446;
+            width: 100%;
+            height: 20%;
+        }
+
+        .div-title ion-title {
+            width: 80%;
+            height: 100%;
+            text-align: left;
+            display: inline-block;
+        }
+
+        
+        .div-cajita {
+            display: inline-block;
+            width: 50%;
+            height: 40%;
+        }
+
+        .div-cajita p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div-cajita p label {
+            font-size: 15px;
+        }
+
+        .div-cajita .div-v {
+            font-size: 20px;
+        }
+
+
+
     }
 }

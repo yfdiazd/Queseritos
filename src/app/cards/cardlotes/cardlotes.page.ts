@@ -9,8 +9,12 @@ import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_t
   templateUrl: './cardlotes.page.html',
   styleUrls: ['./cardlotes.page.scss'],
 })
-export class CardlotesPage{
-  idproveedor="Fernanda"
+export class CardlotesPage implements OnInit{
+  idproveedor="Fernanda";
+  lote: "15-10-2020 - L1";
+  totalBulto: "10";
+  costoTotalCompra: "$1000.000";
+  pesoBultos: "240"
   constructor(
     private router: Router,
     private FB: FBservicesService,
@@ -20,10 +24,13 @@ export class CardlotesPage{
    // this.FB.listaOrdenLotes()
     
   }
-
-  irCompraDetallada() {
-    this.navCtrl.navigateForward(["cardcompradetallada"]);
+  ngOnInit(){
+    
   }
+
+  // irCompraDetallada() {
+  //   this.navCtrl.navigateForward(["cardcompradetallada"]);
+  // }
 
   listaProveedores: any[];
   input = { data: [] };

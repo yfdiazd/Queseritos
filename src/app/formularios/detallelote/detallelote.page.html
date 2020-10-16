@@ -1,9 +1,48 @@
+<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>detallelote</ion-title>
+    <ion-title class="titulo">DETALLE LOTE</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content>
+  <div class="div-principal">
+    <div class="div-saldo-l">
+      <div class="div-sdt">{{idproveedor}}</div>
+    </div>
+    <div class="div-saldo-a">
+      <div class="div-sdt">Lote No:</div>
+      <div class="div-sdv">{{Lotenum}}</div>
+    </div>
+  </div>
+  <div class="div-secundario">
+    <ion-row class="row1">
+      <ion-col id="col1">
+        <ion-card id="card1">
+          <div id="title1">Tipo de queso: {{tipoqueso}}</div>
+          <div class="div-pesoc">
+            <div class="div-stq">Fecha: {{fechcompra}} </div>
+          </div>
+          <div class="div-atributo1">
+            <div>Bulto:{{idbulto}}</div>
+          </div>
+          <div class="div-atributo2">
+            <div>Peso: {{pesobulto}} Kg</div>
+          </div>
+          <div class="div-atributo1">
+            <div>Bulto:{{idbulto1}}</div>
+          </div>
+          <div class="div-atributo2">
+            <div>Peso: {{pesobulto2}} Kg</div>
+          </div>
+          <p>Anticipos</p>
+          
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>
