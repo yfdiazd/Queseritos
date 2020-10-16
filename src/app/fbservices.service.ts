@@ -63,6 +63,7 @@ export class FBservicesService {
     public pesajeCompraLista: any[];
     public listaCompras: any[];
     public pesajeCompraListaPorProveedor: any[];
+    public anticiposPesajeCompraLista: any[] = [];
     //Lista lotes
     listaLotes: any[] = [];
     ultimoLote: any[];
@@ -1172,6 +1173,7 @@ export class FBservicesService {
         return this.pesajeCompraListaPorProveedor;
     }
 
+    //metodo que permtie registrar un anticipo a la compra
 
     registrarAnticiposApesajeCompra(idprovedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -1191,7 +1193,8 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    public anticiposPesajeCompraLista: any[] = [];
+
+    //metodo que retorna los anticispos de una compra
     getAticiposPesajeCompra(idPesajeComrpa) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
