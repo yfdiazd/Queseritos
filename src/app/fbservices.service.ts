@@ -7,7 +7,8 @@ import { constants } from 'buffer';
 import { setTimeout } from 'timers';
 import { TIMEOUT } from 'dns';
 import { getuid } from 'process';
-
+import { storage, initializeApp } from 'firebase';
+import { Camera, CameraOriginal } from '@ionic-native/camera';
 
 
 
@@ -188,6 +189,7 @@ export class FBservicesService {
                 this.getUid();
                 this.offLine();
                 //this.router.navigate(["main-menu"]);
+
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
                 this.getCiudades();
@@ -1071,9 +1073,9 @@ export class FBservicesService {
                 return this.listaCompras;
             });
 
-        }
-        
-        //Confirmar pesajes
+    }
+
+    //Confirmar pesajes
     agregarConfirmaPesaje(idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idConfirmarPesajeCompra = this.idGenerator();
@@ -1120,41 +1122,102 @@ export class FBservicesService {
         return this.usuarioUid;
     }
 
+    listaloteCompraProvee: any[] = [];
 
-
-    //obtiene el pesaje de compras por ´rpveedor
-    getPesajecompraProveedor(idProveedor){
+    //obtiene el pesaje de compras por proveedor ok
+    getLoteCompraProveedor(idProveedor) {
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
-        .on("value", snapshor =>{
-            this.pesajeCompraListaPorProveedor = [];
-            snapshor.forEach(element =>{
-                if(element.val().idProveedor == idProveedor){
-                    this.pesajeCompraListaPorProveedor.push(element.val());
-                }
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
+            .on("value", snapshot => {
+                this.pesajeCompraListaPorProveedor = [];
+                console.log("1 *-------------------- " + this.ultimoLote);
+                this.ultimoLote.forEach(element => {
+                    console.log("2 *-------------------- " + element);
+                    let sumaB = 0;
+                    let sumaP = 0;
+                    let lotelocal = "";
+                    let obj: any;
+                    snapshot.forEach(element2 => {
+                        if (element2.val().idProveedor == idProveedor && element == element2.val().lote) {
+                            console.log("3 *-------------------- " + element2.val().lote);
+                            sumaB = (sumaB + element2.val().totalBulto);
+                            console.log("sussssssssssssssss", sumaB);
+                            sumaP = (sumaP + element2.val().pesoBultos);
+                            console.log("pesssssssssssssssssss", sumaP);
+                            console.log("?? *-------------------- " + element2.val().lote);
+                            lotelocal = element2.val().lote;
+
+
+                        }
+                    });
+                    obj = ({
+                        sumaBultos: sumaB,
+                        pesoToal: sumaP,
+                        Lote: lotelocal
+                    });
+                    this.pesajeCompraListaPorProveedor.push(obj);
+                });
+
+
             });
-        });
-        
+        console.log("antes terotno ", this.pesajeCompraListaPorProveedor);
+
+        return this.pesajeCompraListaPorProveedor;
     }
+    // this.ultimoLote.forEach(elementUL => {
+    //     let bultos = 0;
+    //     let peso = 0;
+    //     this.pesajeCompraListaPorProveedor.forEach(element => {
+
+    //         if (elementUL = element.lote) {
+    //             console.log("4 *-------------------- " + element.lote);
+    //             console.log("Eleee meee nnn " + element);
+    //             peso = (peso + element.pesoBultos);
+    //             bultos = (bultos + element.totalBulto);
+
+    //         }
+    //     });
+
+    //     this.listaloteCompraProvee.push(peso, bultos, elementUL);
+    // });
 
 
 
-    registrarAnticiposApesajeCompra(idprovedor, idAnticipo, valorAnticipo, archivo){
+    // this.ultimoLote.forEach(elementUL =>{
+    //     let bultos = 0;
+    //     let peso = 0;
+    //     this.pesajeCompraListaPorProveedor.forEach(elementF =>{
+    //         if(elementUL.val().lote == elementF.val().lote){
+    //             bultos = (bultos + parseInt(elementF.val().totalBulto));
+    //             peso = (peso + parseInt(elementF.val().pesoBultos));
+    //         }
+    //     });
+
+    //     this.listaloteCompraProvee.push(bultos, peso), elementUL.val().lote;
+    // });
+    // console.log(this.listaloteCompraProvee);
+
+
+
+
+    registrarAnticiposApesajeCompra(idprovedor, idAnticipo, valorAnticipo, archivo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idAnticipos = this.idGenerator();
         firebase
-        .database()
-        .ref("usuario/" + this.usuarioUid + "/compras/anticipos" + this.idAnticipos)
-        .set({
-            id: this.idAnticipos,
-            fechaAnticipo: this.fechaActual(),
-            idProveedor: idprovedor,
-            idAnticipo: idAnticipo,
-            valorAnticipo: valorAnticipo,
-            archivo: archivo,
-            estado: 1
-        })
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/anticipos" + this.idAnticipos)
+            .set({
+                id: this.idAnticipos,
+                fechaAnticipo: this.fechaActual(),
+                idProveedor: idprovedor,
+                idAnticipo: idAnticipo,
+                valorAnticipo: valorAnticipo,
+                archivo: archivo,
+                estado: 1
+            })
     }
+
+
 
 }
