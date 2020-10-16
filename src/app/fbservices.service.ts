@@ -1034,7 +1034,8 @@ export class FBservicesService {
                 totalBulto: totalBultos,
                 pesoBultos: pesoBultos,
                 costoTotalCompra: 0,
-                bultoLista: bultosTT
+                bultoLista: bultosTT,
+                estado: 1
             });
     }
     getPesajeCompra() {
@@ -1045,7 +1046,10 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.pesajeCompraLista = [];
                 snapshot.forEach(element => {
-                    this.pesajeCompraLista.push(element.val());
+                    if (element.val().estado == 1) {
+
+                        this.pesajeCompraLista.push(element.val());
+                    }
 
                 });
                 console.log("metodo lelelel " + this.pesajeCompraLista.length);
@@ -1068,7 +1072,10 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.listaCompras = [];
                 snapshot.forEach(element => {
-                    this.listaCompras.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.listaCompras.push(element.val());
+
+                    }
                 });
                 return this.listaCompras;
             });
@@ -1131,21 +1138,20 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
             .on("value", snapshot => {
                 this.pesajeCompraListaPorProveedor = [];
-                console.log("1 *-------------------- " + this.ultimoLote);
+
                 this.ultimoLote.forEach(element => {
-                    console.log("2 *-------------------- " + element);
+
                     let sumaB = 0;
                     let sumaP = 0;
                     let lotelocal = "";
                     let obj: any;
                     snapshot.forEach(element2 => {
-                        if (element2.val().idProveedor == idProveedor && element == element2.val().lote) {
-                            console.log("3 *-------------------- " + element2.val().lote);
+                        if (element2.val().idProveedor == idProveedor && element == element2.val().lote && element2.val().estado == 1) {
+
                             sumaB = (sumaB + element2.val().totalBulto);
-                            console.log("sussssssssssssssss", sumaB);
+
                             sumaP = (sumaP + element2.val().pesoBultos);
-                            console.log("pesssssssssssssssssss", sumaP);
-                            console.log("?? *-------------------- " + element2.val().lote);
+
                             lotelocal = element2.val().lote;
 
 
@@ -1165,57 +1171,40 @@ export class FBservicesService {
 
         return this.pesajeCompraListaPorProveedor;
     }
-    // this.ultimoLote.forEach(elementUL => {
-    //     let bultos = 0;
-    //     let peso = 0;
-    //     this.pesajeCompraListaPorProveedor.forEach(element => {
-
-    //         if (elementUL = element.lote) {
-    //             console.log("4 *-------------------- " + element.lote);
-    //             console.log("Eleee meee nnn " + element);
-    //             peso = (peso + element.pesoBultos);
-    //             bultos = (bultos + element.totalBulto);
-
-    //         }
-    //     });
-
-    //     this.listaloteCompraProvee.push(peso, bultos, elementUL);
-    // });
 
 
-
-    // this.ultimoLote.forEach(elementUL =>{
-    //     let bultos = 0;
-    //     let peso = 0;
-    //     this.pesajeCompraListaPorProveedor.forEach(elementF =>{
-    //         if(elementUL.val().lote == elementF.val().lote){
-    //             bultos = (bultos + parseInt(elementF.val().totalBulto));
-    //             peso = (peso + parseInt(elementF.val().pesoBultos));
-    //         }
-    //     });
-
-    //     this.listaloteCompraProvee.push(bultos, peso), elementUL.val().lote;
-    // });
-    // console.log(this.listaloteCompraProvee);
-
-
-
-
-    registrarAnticiposApesajeCompra(idprovedor, idAnticipo, valorAnticipo, archivo) {
+    registrarAnticiposApesajeCompra(idprovedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idAnticipos = this.idGenerator();
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/anticipos" + this.idAnticipos)
+            .ref("usuario/" + this.usuarioUid + "/compras/anticipos/" + this.idAnticipos)
             .set({
                 id: this.idAnticipos,
                 fechaAnticipo: this.fechaActual(),
                 idProveedor: idprovedor,
-                idAnticipo: idAnticipo,
+                idTipoAnticipo: idTipoAnticipo,
                 valorAnticipo: valorAnticipo,
                 archivo: archivo,
+                idPesajeCompra: idPesajeCompra,
                 estado: 1
-            })
+            });
+        this.toastOperacionExitosa();
+    }
+    public anticiposPesajeCompraLista: any[] = [];
+    getAticiposPesajeCompra(idPesajeComrpa) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/anticipos")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (element.val().idPesajeCompra == idPesajeComrpa) {
+                        this.anticiposPesajeCompraLista.push(element.val());
+                    }
+                });
+            });
+        return this.anticiposPesajeCompraLista;
     }
 
 
