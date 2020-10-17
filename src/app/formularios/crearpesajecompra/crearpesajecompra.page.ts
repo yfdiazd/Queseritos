@@ -6,9 +6,9 @@ import { FBservicesService } from "../../fbservices.service";
   templateUrl: "./crearpesajecompra.page.html",
   styleUrls: ["./crearpesajecompra.page.scss"],
 })
-
 export class CrearpesajecompraPage implements OnInit {
   proveedor = "fernanda";
+  idproveedor = "1053790255";
   fechcompra = "03/10/2020";
   costopesaje = "$350.000";
 
@@ -20,17 +20,16 @@ export class CrearpesajecompraPage implements OnInit {
   id;
 
   constructor(private route: ActivatedRoute, private FB: FBservicesService) {
-    // this.nombres = this.FB.proveedoresLista;
-    // console.log("proveedor", this.nombres);
-    // this.nombres.forEach(element => {
-    //   if(element.id == this.id){
-    //     console.log("Si lo encontro", element.nombre)
-    //   }
-    //   console.log("No se encontró")
-    // });
+    this.nombres = this.FB.proveedoresLista;
+    console.log("proveedor", this.nombres);
+    this.nombres.forEach(element => {
+      if(element.id == this.id){
+        console.log("Si lo encontro", element.nombre)
+      }
+      console.log("No se encontró")
+    });
   }
   //Variables para los bultos
-  fronLista: any[] = ["1"];
   listaBultos: any[] = [];
   bultoObj: any = null;
   contadorPeso: number;
@@ -46,7 +45,7 @@ export class CrearpesajecompraPage implements OnInit {
 
 
   addRegister() {
-    console.log("INDEX: ", this.listaBultos);
+    // console.log("INDEX: ", this.listaBultos);
     this.listaBultos.push(this.nuevoRegistro);
     this.nuevoRegistro = [];
   }
@@ -55,11 +54,9 @@ export class CrearpesajecompraPage implements OnInit {
     this.listaBultos.splice(index, 1);
   }
 
-  cotnador = 1;
   agregarBultoLista() {
     if (this.peso != "" || this.peso != null || this.peso != undefined) {
       console.log("Entro al if");
-      
       this.bultoObj = {
         bulto: this.numbulto,
         peso: this.peso,
@@ -74,7 +71,6 @@ export class CrearpesajecompraPage implements OnInit {
     } else {
       console.log("El registro esta vacio");
     }
-    this.cotnador++;
   }
   eliminarBulto(index) {
     this.listaBultos.splice(index);
@@ -90,8 +86,7 @@ export class CrearpesajecompraPage implements OnInit {
   }
 
   guardar() {
-    this.fronLista.pop();
-    this.agregarBultoLista();
+    // this.agregarBultoLista();
     this.contarPeso();
     console.log("Arrayyyyyy lennnnn " + this.listaBultos.length);
     console.log("Peso que enviamos es de " + this.contadorPeso);
