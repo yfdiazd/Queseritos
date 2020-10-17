@@ -2,7 +2,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompras" color="medium"></ion-back-button>
+      <ion-back-button
+        defaultHref="/cardcompras"
+        color="medium"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">PESAJE COMPRA</ion-title>
   </ion-toolbar>
@@ -10,47 +13,41 @@
 
 <ion-content>
   <div class="div-principal">
-    <div class="div-fila">
-      <div class="div-f">
-        <p class="div-t">Regístrale un nuevo pesaje a:</p>
-        <p class="div-v">{{idproveedor}}</p>
-      </div>
+    <p class="p-t">Regístrale un nuevo pesaje a:</p>
+    <p class="p-v">{{id}}</p>
+    <p class="p-t">Fecha Compra</p>
+    <p class="p-v" id="saldo-debito">{{saldodebitototal}}</p>
+
+    <div class="div-table">
+      <ion-button
+        class="btn-add"
+        (click)="agregarBultoLista()"
+        expand="block"
+        fill="clear"
+        shape="round"
+      >
+        <ion-icon slot="start" name="add"></ion-icon>
+      </ion-button>
+      <table class="table">
+        <thead class="thead">
+          <th class="th1">Bulto</th>
+          <th class="th2">Peso</th>
+        </thead>
+        <tbody class="tbody">
+          <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+            <td class="td1">
+              <label>{{numBulto}}</label>
+            </td>
+            <td class="td2">
+              <input type="number" [(ngModel)]="peso" />
+            </td>
+            <ion-button (click)="removeRegister()" expand="block" fill="clear">
+              Quitar
+            </ion-button>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="div-fila">
-      <div class="div-f">
-        <p class="div-t">Fecha Compra</p>
-        <p class="div-v" id="saldo-debito">{{saldodebitototal}}</p>
-      </div>
-      <!--<div class="div-f">
-        <p class="div-t">Saldo Crédito</p>
-        <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
-      </div>-->
-    </div>
-  </div>
-  <div class="div-secundario">
-    <label> PROVEEDOR: {{id}}</label>
-    <ion-button (click)="agregarBultoLista()" expand="block" fill="clear" shape="round">
-      Agregar
-    </ion-button>
-    <table>
-      <thead>
-        <th>Bulto</th>
-        <th>Peso</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let lista of listaBultos; let i=index">
-          <td>
-            <input [(ngModel)]="numbulto">
-          </td>
-          <td>
-            <input [(ngModel)]="peso">
-          </td>
-          <ion-button (click)="removeRegister()" expand="block" fill="clear" shape="round">
-            Borrar
-          </ion-button>
-        </tr>
-      </tbody>
-    </table>
 
     <p>Bulto No: {{numbulto}}"</p>
     <select value="codigoproducto" name="Tipo de Queso">

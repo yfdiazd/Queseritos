@@ -183,8 +183,13 @@ ion-content {
         .card {
             width: 100%;
             margin: auto;
-            height: 100%;
+            height: 150px;
             background-color: white;
+        }
+
+        .btn-options{
+            position: fixed;
+            
         }
 
         .seccion-1 {

@@ -21,6 +21,8 @@ export class CardcomprasPage implements OnInit {
   public proveedor;
   public listaProveedores: any[];
   public input = { data: [] };
+  public idProv;
+  public nombres = [];
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -30,23 +32,17 @@ export class CardcomprasPage implements OnInit {
     private navCtrl: NavController
   ) {
     this.FB.getCompras();
-    // this.ngOnInit();
+    // this.nombres = [];
+    // this.nombres = this.FB.proveedoresLista;
+    // console.log("proveedor",this.nombres)
   }
-  public idProv;
-  public nombres = [];
+ 
 
   ngOnInit() {
-    this.FB.proveedoresLista.forEach(element => {
-      this.nombres = [];
-      if (element.id == this.idProv) {
-        this.nombres.push({
-          nombre: element.nombres,
-          id: element.id
-        });
-      }
-      console.log("id", this.idProv, "nombres:",this.nombres);
-    });
+    
   }
+
+
 
   irVender() {
     this.router.navigate(["cardcompras"]);
