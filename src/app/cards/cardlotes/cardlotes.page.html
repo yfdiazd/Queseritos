@@ -3,52 +3,49 @@
   <ion-toolbar>
     <ion-title class="titulo">LOTES DE COMPRAS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="div-principal">
-    <div class="div-fila">
-      <div class="div-f">
+    <div class="div-col-1">
+      <div>
         <p class="div-t">Proveedor</p>
         <p class="div-v">{{idproveedor}}</p>
       </div>
     </div>
-  </div>
+   </div>
   <div class="div-secundario">
       <ion-item class="item">
       <div class="div-card">
-        <ion-button class="add" color="success" expand="full">
-          <ion-icon name="add-outline"></ion-icon>
-        </ion-button>
-        <ion-card class="card">
+          <ion-card class="card" (click)="irDetalleLote()">
           <div class="div-title">
-            <ion-title>{{lote}}</ion-title>
+            <ion-title>LOTE 1</ion-title>
           </div>
           <div class="seccion-1">
             <div class="div-cajita">
               <p class="div-t">Total Bultos</p>
-              <p class="div-v">{{totalBulto}}</p>
+              <p class="div-v">30</p>
             </div>
-            <div class="div-cajita">
+            <div class="div-cajita-1">
               <p class="div-t">Débito</p>
-              <p class="div-v" id="saldo-debito">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+              <p class="div-db" id="saldo-debito">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
             </div>
             <div>
               <p class="div-t">Crédito</p>
-              <p class="div-v" id="saldo-credito">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+              <p class="div-db" id="saldo-credito">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
             </div>
           </div>
           <div class="seccion-2">
-            <div class="div-cajita">
-              <p class="div-t">Peso total comprado</p>
-              <p class="div-v">{{pesoBultos}} <span> Kg</span></p>
+            <div class="div-cajita-1">
+              <p class="div-q">Peso total comprado</p>
+              <p class="div-r">2000 <span> Kg</span></p>
             </div>
             <div class="div-cajita">
               <p class="div-t">Saldo</p>
-              <p class="div-v" id="saldo-credito2">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+              <p class="div-s" id="saldo-credito2">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
             </div>
           </div>
         </ion-card>

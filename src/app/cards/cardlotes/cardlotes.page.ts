@@ -11,7 +11,7 @@ import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_t
 })
 export class CardlotesPage implements OnInit{
   idproveedor="Fernanda";
-  lote: "15-10-2020 - L1";
+  numlote: "15-10-2020 - L1";
   totalBulto: "10";
   costoTotalCompra: "$1000.000";
   pesoBultos: "240"
@@ -28,12 +28,10 @@ export class CardlotesPage implements OnInit{
     
   }
 
-  // irCompraDetallada() {
-  //   this.navCtrl.navigateForward(["cardcompradetallada"]);
-  // }
 
-  listaProveedores: any[];
-  input = { data: [] };
+irDetalleLote(){
+  this.navCtrl.navigateForward(["detallelote"]);
+}
 
 
 }

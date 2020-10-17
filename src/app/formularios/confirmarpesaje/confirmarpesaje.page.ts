@@ -40,13 +40,14 @@ export class ConfirmarpesajePage implements OnInit {
   confirmar(){
     this.listaBultos.push(""); 
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    this.FB.agregarConfirmaPesaje("1", "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
+    this.FB.agregarConfirmaPesaje("1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
   }
+  
 
   guardar(){
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    this.FB.agregarConfirmaPesaje("1", "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
+    this.FB.agregarConfirmaPesaje( "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
   }
 

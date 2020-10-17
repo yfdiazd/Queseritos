@@ -14,116 +14,165 @@ ion-content {
     padding: 0;
     margin: 0;
     --background: #c8f7f3;
-    // text-align: center;
     --color: black;
 
-
+   
     .div-principal {
         width: 100%;
         margin: auto;
-        position: static;
-        text-align: center;
+        position: fixed;
         height: 10%;
         color: white;
         background-color: #4376ff;
+        z-index: 1;
      
+        p {
+            margin: 0;
+            padding: 0;
+        }
+    
+        p>span {
+            font-size: 15px;
+        }
 
-        .div-fila {
+        .div-col-1 {
             display: inline-block;
             width: 100%;
             height: 100%;
+            text-align: center;
+                     
+
+           .div-t {
+                text-align: center;
+                color: white;
+                font-size: 3vh;
+                width: 100%;
+                height: 50%;
+            }
+        
+            .div-v {
+                text-align: center;
+                width: 100%;
+                height: 50%;
+                font-size: 2.5vh;
+                color: #ff2f73;
+               }
+
         }
+      
     
-
     //--------------Generales------------------
-    .div-f {
-        // border-bottom-style: solid;
-        // border-bottom-left-radius: 40%;
-        // border-bottom-right-radius: 40%;
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-    }
-
-    .div-f p {
-        margin: 0;
-        padding: 0;
-    }
-
-    p>span {
-        font-size: 15px;
-    }
-
-
-    .div-t {
-        text-align: center;
-        color: #ff2f73;
-        padding-top: 5px;
-        width: 100%;
-        height: 30%;
-    }
-
-    .div-v {
-        width: 100%;
-        height: 70%;
-        font-size: 20px;
-       }
+ 
     }
     .div-secundario {
-        height: 75%;
-        margin-top: 20px;
+        height: 80%;
+        width: 100%;
+        padding-top: 5em;
+        position: absolute;
+        z-index: 0;
 
         .div-card{
             width: 100%;
+            border: #1a1446 solid 3px;
+            border-radius: 5px;
             
         }
         .card {
             width: 100%;
-            margin: 20px auto;
-            height: 150px;
-            background-color: white;
-            box-shadow: #1a1446  5px 5px 5px 0px;
-        }
-        .item{
-            --background: transparent;
-            margin-top: 20px;
-            --border-style: none;
-        }
-
-        .div-title {
-            color: #1a1446;
-            width: 100%;
-            height: 20%;
-        }
-
-        .div-title ion-title {
-            width: 80%;
+            margin: auto;
             height: 100%;
-            text-align: left;
-            display: inline-block;
+            background-color: white;
         }
 
-        
-        .div-cajita {
+        .seccion-1 {
             display: inline-block;
             width: 50%;
-            height: 40%;
+            height: 80%;
+            text-align: center;
+
+            .div-t {
+                width: 100%;
+                height: 40%;
+                color: #1a1446;
+                font-weight: bold;
+            }
+
+            .div-cajita {
+                width: 100%;
+                height: 40%;
+
+                .div-v {
+                    color: #000000;
+                    font-size: 25px;
+                    font-weight: bold;
+                    height: 60%;
+                }
+            }
+
+            .div-cajita-1 {
+                width: 100%;
+                height: 60%;
+
+                .div-db {
+                    width: 100%;
+                    height: 60%;
+                }
+
+                #saldo-credito2 {
+                    color: rgb(255, 61, 61);
+                    // text-shadow: #f84f4f 1px 1px 1px;
+                }
+
+                #saldo-debito2 {
+                    color: rgb(42, 158, 42);
+                    // text-shadow: #082702 1px 1px 1px;
+                }
+            }
         }
 
-        .div-cajita p {
-            margin: 0;
-            padding: 0;
-        }
+        .seccion-2 {
+            position: absolute;
+            display: inline-block;
+            width: 50%;
+            height: 80%;
+            text-align: center;
+            
 
-        .div-cajita p label {
-            font-size: 15px;
-        }
+            .div-q{
+                color: #1a1446;
+                font-weight: bold;
+                width: 100%;
+                height: 30%;
+            }
 
-        .div-cajita .div-v {
-            font-size: 20px;
-        }
+            .div-r{
+                width: 100%;
+                color: #000000;
+                font-size: 25px;
+                margin: auto;
+                font-weight: bold;
+            }
 
+            .div-s {
+                width: 100%;
+                height: 60%;
+                margin: auto;
+                color: #0300ca;
+                font-size: 3vh;
+            }
+
+            .div-cajita-1 {
+                width: 100%;
+                height: 50%;
+            }
+
+            .div-cajita-2 {
+                width: 100%;
+                height: 50%;
+
+
+            }
+        }
 
 
     }
