@@ -15,15 +15,15 @@
       <p class="fila1_p_valor">{{pesoacumulado}}<span> Kg</span></p>
     </div>
     <div class="div-fila-2">
-      <div class="fila2_col">
+      <div class="fila2_col1">
         <p class="div-t">Débito</p>
         <p class="div-v" id="saldo-debito">{{saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
         <p class="div-t">Crédito</p>
         <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
       </div>
       <div class="fila2_col2">
-        <p class="div-t-saldo">Saldo</p>
-        <p class="div-v-saldo">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+        <p class="div-t">Saldo</p>
+        <p class="div-v">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
       </div>
     </div>
   </div>
@@ -38,30 +38,32 @@
           </div>
           <ion-card class="card" (click)="irCompraDetallada(card)">
             <div class="div_head_title">
-              <ion-title>{{card.id}}</ion-title>
+              <p>{{card.id}}</p>
             </div>
-            <div class="seccion-1">
-              <div class="div-cajita-1">
-                <p class="seccion1_title">Bultos</p>
-                <p class="seccion1_valor_bulto">{{card.totalBulto}}</p>
+            <div class="div_body_content">
+              <div class="seccion-1">
+                <div class="div-cajita-1">
+                  <p class="seccion_title">Bultos</p>
+                  <p class="seccion_valor_bulto">{{card.totalBulto}}</p>
+                </div>
+                <div class="div-cajita-2">
+                  <p class="seccion_title">Débito</p>
+                  <p class="seccion_valor" id="saldo-debito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}
+                  </p>
+                  <p class="seccion_title">Crédito</p>
+                  <p class="seccion_valor" id="saldo-credito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}
+                  </p>
+                </div>
               </div>
-              <div class="div-cajita">
-                <p class="seccion1_title">Débito</p>
-                <p class="seccion1_valor" id="saldo-debito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}
-                </p>
-                <p class="seccion1_title">Crédito</p>
-                <p class="seccion1_valor" id="saldo-credito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}
-                </p>
-              </div>
-            </div>
-            <div class="seccion-2">
-              <div class="div-cajita-1">
-                <p class="seccion2_title">Peso total</p>
-                <p class="seccion2-valor">{{card.pesoBultos}} <span> Kg</span></p>
-              </div>
-              <div class="div-cajita-2">
-                <p class="seccion2_title">Saldo</p>
-                <p class="seccion2-valor2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+              <div class="seccion-2">
+                <div class="div-cajita-1">
+                  <p class="seccion2_title">Peso total</p>
+                  <p class="seccion2-valor">{{card.pesoBultos}} <span> Kg</span></p>
+                </div>
+                <div class="div-cajita-2">
+                  <p class="seccion2_title">Saldo</p>
+                  <p class="seccion2-valor2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+                </div>
               </div>
             </div>
           </ion-card>

@@ -23,6 +23,11 @@ ion-content {
         font-size: 15px;
     }
 
+    .btn-options {
+        position: fixed;
+
+    }
+
     //-------------Vista del header-----------------
     .div-principal {
         width: 100%;
@@ -59,38 +64,13 @@ ion-content {
             }
         }
 
-
         .div-fila-2 {
-            display: inline-block;
             width: 100%;
             height: 60%;
             text-align: center;
+            display: flex;
 
-            .fila2_col2 {
-                display: inline-block;
-                margin: auto;
-                width: 50%;
-                height: 100%;
-                text-align: center;
-
-                .div-t-saldo {
-                    text-align: center;
-                    // color: #1a1446;
-                    color: white;
-                    font-size: 3vh;
-                    width: 100%;
-                    height: 40%;
-                }
-
-                .div-v-saldo {
-                    width: 100%;
-                    height: 60%;
-                    font-size: 2.5vh;
-                    color: blue;
-                }
-            }
-
-            .fila2_col {
+            .fila2_col1 {
                 display: inline-block;
                 width: 50%;
                 height: 100%;
@@ -119,21 +99,40 @@ ion-content {
                     height: 30%;
                     font-size: 2.5vh;
                 }
-
             }
 
+            .fila2_col2 {
+                display: inline-block;
+                margin: auto;
+                width: 50%;
+                height: 100%;
+                text-align: center;
+
+                .div-t {
+                    text-align: center;
+                    // color: #1a1446;
+                    color: white;
+                    font-size: 3vh;
+                    width: 100%;
+                    height: 40%;
+                }
+
+                .div-v {
+                    width: 100%;
+                    height: 60%;
+                    font-size: 3.1vh;
+                    color: blue;
+                }
+            }
         }
     }
-
-
-
 
     //-----------------------Vista del conenido de las cards o lista de compras
 
     .div-secundario {
         height: 80%;
         width: 100%;
-        padding-top: 8em;
+        padding-top: 8.5em;
         position: absolute;
         z-index: 0;
 
@@ -157,19 +156,10 @@ ion-content {
             --border-style: none;
         }
 
-
-        .div_head_title {
-            color: #1a1446;
-            width: 100%;
-            height: 20%;
-        }
-
         .div-head_button {
             width: 100%;
             height: 100%;
             border-style: none;
-
-
 
             .add {
                 width: 100%;
@@ -187,103 +177,125 @@ ion-content {
             background-color: white;
         }
 
-        .btn-options{
-            position: fixed;
-            
-        }
+        .div_head_title {
+            color: #1a1446;
+            width: 100%;
+            height: 20%;
 
-        .seccion-1 {
-            display: inline-block;
-            width: 50%;
-            height: 80%;
-            text-align: center;
-            // outline-style: solid;
-            // outline-width: 2px;
-            // outline-color: #000000;
 
-            .seccion1_title {
-                width: 100%;
-                height: 40%;
-                color: #1a1446;
-                font-weight: bold;
-            }
-
-            .div-cajita-1 {
-                width: 100%;
-                height: 40%;
-
-                .seccion1_valor_bulto {
-                    color: #000000;
-                    font-size: 25px;
-                    font-weight: bold;
-                    height: 60%;
-                }
-            }
-
-            .div-cajita {
-                width: 100%;
-                height: 60%;
-
-                .seccion1_valor {
-                    width: 100%;
-                    height: 60%;
-                }
-
-                #saldo-credito2 {
-                    color: rgb(255, 61, 61);
-                    // text-shadow: #f84f4f 1px 1px 1px;
-                }
-
-                #saldo-debito2 {
-                    color: rgb(42, 158, 42);
-                    // text-shadow: #082702 1px 1px 1px;
-                }
-            }
-        }
-
-        .seccion-2 {
-            position: absolute;
-            display: inline-block;
-            width: 50%;
-            height: 80%;
-            text-align: center;
-            // outline-style: solid;
-            // outline-width: 2px;
-            // outline-color: #000000;
-
-            .seccion2_title {
-                color: #1a1446;
-                font-weight: bold;
-                width: 100%;
-                height: 30%;
-            }
-
-            .seccion2-valor {
-                width: 100%;
-                color: #000000;
-                font-size: 25px;
-                margin: auto;
-                font-weight: bold;
-            }
-
-            .seccion2-valor2 {
-                width: 100%;
-                height: 60%;
-                margin: auto;
-                color: #0300ca;
+            p {
+                text-align: left;
+                height: 100%;
                 font-size: 3vh;
             }
+        }
 
-            .div-cajita-1 {
-                width: 100%;
-                height: 50%;
+        .div_body_content {
+            width: 100%;
+            height: 80%;
+
+            .seccion-1 {
+                display: inline-block;
+                width: 50%;
+                height: 100%;
+                text-align: center;
+                // outline-style: solid;
+                // outline-width: 2px;
+                // outline-color: #000000;
+
+                .div-cajita-1 {
+                    width: 100%;
+                    height: 40%;
+
+                    .seccion_title {
+                        width: 100%;
+                        height: 30%;
+                        color: #1a1446;
+                        font-weight: bold;
+                    }
+
+                    .seccion_valor_bulto {
+                        color: #000000;
+                        text-align: center;
+                        font-size: 25px;
+                        font-weight: bold;
+                        height: 70%;
+                    }
+                }
+
+                .div-cajita-2 {
+                    width: 100%;
+                    height: 60%;
+
+                    .seccion_title {
+                        width: 100%;
+                        height: 20%;
+                        padding: 0;
+                        color: #1a1446;
+                        font-weight: bold;
+                    }
+
+                    .seccion_valor {
+                        width: 100%;
+                        height: 35%;
+                    }
+
+                    #saldo-credito2 {
+                        color: rgb(255, 61, 61);
+                        // text-shadow: #f84f4f 1px 1px 1px;
+                    }
+
+                    #saldo-debito2 {
+                        color: rgb(42, 158, 42);
+                        // text-shadow: #082702 1px 1px 1px;
+                    }
+                }
             }
 
-            .div-cajita-2 {
-                width: 100%;
-                height: 50%;
+            .seccion-2 {
+                position: absolute;
+                display: inline-block;
+                width: 50%;
+                height: 80%;
+                text-align: center;
+                // outline-style: solid;
+                // outline-width: 2px;
+                // outline-color: #000000;
+
+                .seccion2_title {
+                    color: #1a1446;
+                    font-weight: bold;
+                    width: 100%;
+                    height: 30%;
+                }
+
+                .seccion2-valor {
+                    width: 100%;
+                    color: #000000;
+                    font-size: 25px;
+                    margin: auto;
+                    font-weight: bold;
+                }
+
+                .seccion2-valor2 {
+                    width: 100%;
+                    height: 60%;
+                    margin: auto;
+                    color: #0300ca;
+                    font-size: 3vh;
+                }
+
+                .div-cajita-1 {
+                    width: 100%;
+                    height: 50%;
+                }
+
+                .div-cajita-2 {
+                    width: 100%;
+                    height: 50%;
 
 
+                }
             }
         }
 

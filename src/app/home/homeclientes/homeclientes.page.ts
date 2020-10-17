@@ -88,6 +88,8 @@ export class HomeclientesPage implements OnInit {
   }
 
   async cerrar() {
+    console.log("INtentando cerrar");
+    console.error("Error: ")
     this.navCtrl.navigateForward('main-menu');
   }
 
