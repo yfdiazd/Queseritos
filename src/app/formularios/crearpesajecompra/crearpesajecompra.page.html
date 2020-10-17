@@ -16,7 +16,7 @@
     <p class="p-t">Regístrale un nuevo pesaje a:</p>
     <p class="p-v">{{id}}</p>
     <p class="p-t">Fecha Compra</p>
-    <p class="p-v" id="saldo-debito">{{saldodebitototal}}</p>
+    <p class="p-v" id="saldo-debito">X</p>
 
     <div class="div-table">
       <ion-button
@@ -48,13 +48,14 @@
         </tbody>
       </table>
     </div>
-
-    <p>Bulto No: {{numbulto}}"</p>
-    <select value="codigoproducto" name="Tipo de Queso">
-      <option>Queso Costeño</option>
-    </select>
+    <p>Bulto No: X</p>
+    <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
     <input type="text" placeholder="Peso" />
-
     <div>
       <ion-button (click)="guardar()" expand="full">
         <ion-icon name="save-outline"></ion-icon>
