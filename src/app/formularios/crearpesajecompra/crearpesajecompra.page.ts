@@ -7,12 +7,17 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearpesajecompra.page.scss"],
 })
 export class CrearpesajecompraPage implements OnInit {
+<<<<<<< HEAD
   proveedor = "fernanda";
   idproveedor = "1053790255";
   fechcompra = "03/10/2020";
   costopesaje = "$350.000";
 
   public numbulto = 1;
+=======
+  
+  public numbulto;
+>>>>>>> 78315cec2657c58448b9730f6dac5ac2d2ccf7c4
   peso;
   public nombres = [];
   nuevoRegistro: any[] = [];
@@ -20,14 +25,14 @@ export class CrearpesajecompraPage implements OnInit {
   id;
 
   constructor(private route: ActivatedRoute, private FB: FBservicesService) {
-    this.nombres = this.FB.proveedoresLista;
-    console.log("proveedor", this.nombres);
-    this.nombres.forEach(element => {
-      if(element.id == this.id){
-        console.log("Si lo encontro", element.nombre)
-      }
-      console.log("No se encontró")
-    });
+    // this.nombres = this.FB.proveedoresLista;
+    // console.log("proveedor", this.nombres);
+    // this.nombres.forEach(element => {
+    //   if(element.id == this.id){
+    //     console.log("Si lo encontro", element.nombre)
+    //   }
+    //   console.log("No se encontró")
+    // });
   }
   //Variables para los bultos
   listaBultos: any[] = [];
@@ -38,7 +43,6 @@ export class CrearpesajecompraPage implements OnInit {
     let id = this.route.snapshot.paramMap.get("id");
     this.id = id;
     console.log(" se recibe id: ", this.id);
-    
     // this.incrementable = this.FB.numBultos;
   }
 
@@ -67,11 +71,12 @@ export class CrearpesajecompraPage implements OnInit {
       this.listaBultos.push(this.bultoObj);
       console.log("lista", this.listaBultos);
       this.peso = "";
-      this.numbulto = this.numbulto + 1;
+      // this.numbulto = this.numbulto + 1;
     } else {
       console.log("El registro esta vacio");
     }
   }
+  
   eliminarBulto(index) {
     this.listaBultos.splice(index);
   }
