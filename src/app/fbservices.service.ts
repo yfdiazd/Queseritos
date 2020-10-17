@@ -1022,7 +1022,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/" + this.idProveedor + "/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
