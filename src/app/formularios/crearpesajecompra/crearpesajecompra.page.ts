@@ -7,17 +7,12 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearpesajecompra.page.scss"],
 })
 export class CrearpesajecompraPage implements OnInit {
-<<<<<<< HEAD
   proveedor = "fernanda";
   idproveedor = "1053790255";
   fechcompra = "03/10/2020";
   costopesaje = "$350.000";
 
   public numbulto = 1;
-=======
-  
-  public numbulto;
->>>>>>> 78315cec2657c58448b9730f6dac5ac2d2ccf7c4
   peso;
   public nombres = [];
   nuevoRegistro: any[] = [];
