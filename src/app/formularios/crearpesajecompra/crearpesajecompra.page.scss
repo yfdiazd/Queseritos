@@ -1,113 +1,57 @@
 ion-toolbar {
-    --background: #1a1446;
+  --background: #1a1446;
 }
-ion-title{
-    font-size: medium;
-}
-.titulo{
-    color: white;
+
+ion-title {
+  font-size: 20px;
 }
 
 ion-content {
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    --background: #c8f7f3;
+  padding: 0;
+  margin: 0;
+  --background: #c8f7f3;
+  --color: #1a1446;
 
-
-    .div-principal {
-        width: 100%;
-        margin: auto;
-        position: static;
-        display: inline-block;
-        height: 20%;
-        background-color: #4376ff;
-        
+  .div-principal {
+    max-width: 700px;
+    margin: auto;
+    width: 80%;
+  }
+  .div-table {
+    .btn-add {
+      background-color: darkgreen;
+    }
+    .table {
+      width: 100%;
+    }
+    .tr {
+      margin: 0;
+      padding: 0;
+      height: 15px;
+      background-color: wheat;
+      border-style: solid;
+      border-width: 2px;
+      border-color: #1a1446;
+    }
+    input {
+      height: 100%;
+      border-style: none;
+      width: 100%;
+      background-color: transparent;
     }
 
-    .div-fila {
-        display: inline-block;
-        width: 100%;
-        height: 50%;
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
-    .div-f {
-        display: inline-block;
-        width: 50%;
-        height: 100%;
-        text-align: center;
+    input[type="number"] {
+      -moz-appearance: textfield;
     }
-
-    .div-f p {
-        margin: 0;
-        padding: 0;
+    .td1 {
+      color: black;
+      text-align: center;
     }
-
-    .div-f p label {
-        font-size: 15px;
-    }
-
-    #fech-compra {
-        color: white;
-        text-shadow: #000000 1px 1px 1px;
-    }
-
-    .div-t {
-        color: #1a1446;
-        padding-top: 5px;
-        width: 100%;
-        height: 30%;
-    }
-
-    .div-v {
-        width: 100%;
-        height: 70%;
-        font-size: 25px;
-    }
-
-    .div-secundario {
-        height: 80%;
-        margin-top: 20px;
-
-    @media screen and (max-width: 812px){
-     table {
-                width: 100%;
-               
-           }
-          
-     thead{
-               display:none;
-           }
-
-     tr: nth-of-type (2n){
-         background-color: red;
-     }
-     tr td:first-child{
-         background-color: yellow;
-         font-weight: bold;
-         font-size: 1.3em;
-
-     }
-     tbody td{
-         display: block;
-         text-align: center;
-
-     }
-    
-    }
-
-
-    
-        ion-button {
-            display: inline-block;
-            width: 20%;
-            height: 100%;
-            margin: 0;
-            border-style: none;
-            border-radius: 20%;
-            --box-shadow: none;
-
-
-        }
-    }  
+  }
 }
