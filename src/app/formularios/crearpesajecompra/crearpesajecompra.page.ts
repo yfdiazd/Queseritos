@@ -12,7 +12,7 @@ export class CrearpesajecompraPage implements OnInit {
   fechcompra = "03/10/2020";
   costopesaje = "$350.000";
 
-  public numBulto = 1;
+  public numbulto = 1;
   peso;
   public nombres = [];
   nuevoRegistro: any[] = [];
