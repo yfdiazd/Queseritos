@@ -5,7 +5,8 @@
       <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">PROVEEDORES</ion-title>
-  </ion-toolbar>
+    </ion-toolbar>
+    <ion-searchbar placeholder="Buscar proveedor" (ionChange)="buscar($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>

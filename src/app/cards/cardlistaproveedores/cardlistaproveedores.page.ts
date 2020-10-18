@@ -53,4 +53,15 @@ export class CardlistaproveedoresPage implements OnInit {
     event.detail.complete();
   }
 
+  buscar(ev:any){
+  this.listanombres;
+  const val = ev.target.value;
+  if (val && val.trim !== ''){
+    this.listanombres=this.listanombres.filter((item)=>{
+      return (item.toLowerCase().indexOf(val.toLowerCase())> -1);
+    });
+  }
+
+  }
+
 }
