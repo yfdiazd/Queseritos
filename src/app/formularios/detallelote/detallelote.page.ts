@@ -9,7 +9,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./detallelote.page.scss'],
 })
 export class DetallelotePage implements OnInit {
-  Lotenum="17-10-2020-L1"
+  Lotenum="17-10-2020-L1";
+  proveedor="fernanda";
   constructor(
     private router: Router,
     private FB: FBservicesService,
@@ -18,6 +19,10 @@ export class DetallelotePage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  irCrearTrueque(){
+    this.navCtrl.navigateForward(["creartrueque"]);
   }
 
 }

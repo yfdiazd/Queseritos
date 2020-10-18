@@ -36,6 +36,10 @@ const routes: Routes = [
   { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },  {
     path: 'detallelote',
     loadChildren: () => import('./formularios/detallelote/detallelote.module').then( m => m.DetallelotePageModule)
+  },
+  {
+    path: 'cardlistaproveedores',
+    loadChildren: () => import('./cards/cardlistaproveedores/cardlistaproveedores.module').then( m => m.CardlistaproveedoresPageModule)
   }
 
 ];

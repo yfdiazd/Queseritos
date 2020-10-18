@@ -12,7 +12,8 @@
 <ion-content>
   <div class="div-principal">
     <div class="div-cabecera-1">
-      <div class="div-sdt">{{idproveedor}}</div>
+      <div class="div-sdt">Proveedor:</div>
+      <div class="div-sdv">{{proveedor}}</div>
     </div>
     <div class="div-cabecera-2">
       <div class="div-sdt">Lote No:</div>
@@ -22,7 +23,7 @@
   <div class="div-secundario">
     <ion-row class="row1">
       <ion-col id="col1">
-        <ion-button class="add" color="success" expand="full">
+        <ion-button class="add" (click)="irCrearTrueque()" color="success" expand="full">
           <ion-icon name="add-outline"></ion-icon>
         </ion-button>
         <ion-card id="card1">

@@ -990,6 +990,7 @@ export class FBservicesService {
 
             });
     }
+
     //Obtiene los lotes del mas antiguo al mas nuevo
 
     listaOrdenLotes() {

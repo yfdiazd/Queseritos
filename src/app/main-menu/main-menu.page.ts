@@ -3,6 +3,8 @@ import { MenuController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from '../fbservices.service';
 import { NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+
 // import { HomeciudadesPage } from '../home/homeciudades/homeciudades.page';
 // import { HometipotruequePage } from '../home/hometipotrueque/hometipotrueque.page';
 // import { HometiposquesoPage } from '../home/hometiposqueso/hometiposqueso.page';
@@ -19,23 +21,25 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./main-menu.page.scss'],
 })
 export class MainMenuPage {
-
-
+  public listaProveedores: any[];
+  public input = { data: [] };
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,
     private FB: FBservicesService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private alertController: AlertController,
+    private router: Router
   ) { }
 
   comprar() {
     this.navCtrl.navigateForward('cardcompras');
   }
-  cerrarSesion() {
-    this.FB.cerrarSesion();
+  irCardLotes(){this.navCtrl.navigateForward('cardlistaproveedores');
+    
   }
 
-  lista() {
+    lista() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
   }
