@@ -8,15 +8,22 @@ import { FBservicesService } from "../../fbservices.service";
 })
 export class CrearpesajecompraPage implements OnInit {
 
-  tipoQueso = "COSTEÑO";
-  public numbulto: any[] = ["1"];
-  public peso;
   public id;
+  //Variables para los bultos
+  public incremental;
+  public peso: any;
+  public numbulto: any[] = [1];
+  public listaBultos: any[] = [{
+    bulto: 1,
+    peso: ""
+  }];
+  public bultoObj: any = null;
+  public contadorPeso: number;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private FB: FBservicesService
-    ) {
+  ) {
     // this.nombres = this.FB.proveedoresLista;
     // console.log("proveedor", this.nombres);
     // this.nombres.forEach(element => {
@@ -25,12 +32,8 @@ export class CrearpesajecompraPage implements OnInit {
     //   }
     //   console.log("No se encontró")
     // });
-    
+
   }
-  //Variables para los bultos
-  listaBultos: any[] = [];
-  bultoObj: any = null;
-  contadorPeso: number;
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
@@ -45,19 +48,21 @@ export class CrearpesajecompraPage implements OnInit {
 
   agregarBultoLista() {
     if (this.peso != "" || this.peso != null || this.peso != undefined) {
+      
+      console.log("El campo peso si esta diligenciado")
       console.log("Entro al if");
       this.bultoObj = {
-        bulto: this.numbulto,
+        bulto: this.incremental,
         peso: this.peso,
       };
-      console.log("Bulto" + this.bultoObj.bulto);
-      console.log("Peso" + this.bultoObj.peso);
-
+      console.log("INcremental", this.incremental);
+      console.log("Bulto: " + this.bultoObj.bulto);
+      console.log("Peso: " + this.bultoObj.peso);
       this.listaBultos.push(this.bultoObj);
-      console.log("lista", this.listaBultos);
+      console.log("lista: ", this.listaBultos);
       this.peso = "";
     } else {
-      console.log("El registro esta vacio");
+      console.log("El peso esta vacio");
     }
   }
 
