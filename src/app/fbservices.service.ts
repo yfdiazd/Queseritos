@@ -1047,7 +1047,7 @@ export class FBservicesService {
                     this.pesajeCompraLista.push(element.val());
 
                 });
-                console.log("metodo lelelel " + this.pesajeCompraLista.length);
+                console.log("metodo get pesaje compra: " + this.pesajeCompraLista.length);
                 return this.pesajeCompraLista;
             });
     }
