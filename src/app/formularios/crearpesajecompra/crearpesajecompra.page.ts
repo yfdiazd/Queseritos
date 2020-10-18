@@ -7,15 +7,16 @@ import { FBservicesService } from "../../fbservices.service";
   styleUrls: ["./crearpesajecompra.page.scss"],
 })
 export class CrearpesajecompraPage implements OnInit {
-  
-  public numbulto;
-  peso;
-  public nombres = [];
-  nuevoRegistro: any[] = [];
-  incrementable: any[];
-  id;
 
-  constructor(private route: ActivatedRoute, private FB: FBservicesService) {
+  tipoQueso = "COSTEÑO";
+  public numbulto: any[] = ["1"];
+  public peso;
+  public id;
+
+  constructor(
+    private route: ActivatedRoute, 
+    private FB: FBservicesService
+    ) {
     // this.nombres = this.FB.proveedoresLista;
     // console.log("proveedor", this.nombres);
     // this.nombres.forEach(element => {
@@ -24,6 +25,7 @@ export class CrearpesajecompraPage implements OnInit {
     //   }
     //   console.log("No se encontró")
     // });
+    
   }
   //Variables para los bultos
   listaBultos: any[] = [];
@@ -37,14 +39,6 @@ export class CrearpesajecompraPage implements OnInit {
     // this.incrementable = this.FB.numBultos;
   }
 
-
-
-  addRegister() {
-    // console.log("INDEX: ", this.listaBultos);
-    this.listaBultos.push(this.nuevoRegistro);
-    this.nuevoRegistro = [];
-  }
-
   removeRegister(index) {
     this.listaBultos.splice(index, 1);
   }
@@ -56,18 +50,17 @@ export class CrearpesajecompraPage implements OnInit {
         bulto: this.numbulto,
         peso: this.peso,
       };
-      console.log("Codddddddd" + this.bultoObj.bulto);
-      console.log("pesssssssssssss" + this.bultoObj.peso);
+      console.log("Bulto" + this.bultoObj.bulto);
+      console.log("Peso" + this.bultoObj.peso);
 
       this.listaBultos.push(this.bultoObj);
       console.log("lista", this.listaBultos);
       this.peso = "";
-      // this.numbulto = this.numbulto + 1;
     } else {
       console.log("El registro esta vacio");
     }
   }
-  
+
   eliminarBulto(index) {
     this.listaBultos.splice(index);
   }
@@ -82,6 +75,8 @@ export class CrearpesajecompraPage implements OnInit {
   }
 
   guardar() {
+
+
     // this.agregarBultoLista();
     this.contarPeso();
     console.log("Arrayyyyyy lennnnn " + this.listaBultos.length);
