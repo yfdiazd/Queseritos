@@ -13,28 +13,16 @@ export class CrearpesajecompraPage implements OnInit {
   public incremental;
   public peso: any;
   public numbulto: any[] = [1];
-  public listaBultos: any[] = [{
-    bulto: 1,
-    peso: ""
-  }];
+  public listaBultos: any[] = [];
   public bultoObj: any = null;
   public contadorPeso: number;
+  public fronLista: any[] = ["1"];
+  public nuevoRegistro: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private FB: FBservicesService
-  ) {
-    // this.nombres = this.FB.proveedoresLista;
-    // console.log("proveedor", this.nombres);
-    // this.nombres.forEach(element => {
-    //   if(element.id == this.id){
-    //     console.log("Si lo encontro", element.nombre)
-    //   }
-    //   console.log("No se encontró")
-    // });
-
-  }
-
+  ) { }
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.id = id;
@@ -46,24 +34,28 @@ export class CrearpesajecompraPage implements OnInit {
     this.listaBultos.splice(index, 1);
   }
 
+  contador = 1;
   agregarBultoLista() {
-    if (this.peso != "" || this.peso != null || this.peso != undefined) {
-      
-      console.log("El campo peso si esta diligenciado")
+    this.fronLista.push(this.nuevoRegistro);
+
+    console.log("PEPEPEEPEPEPEPEPEPE " + this.peso);
+    if (this.peso > 0) {
       console.log("Entro al if");
+
       this.bultoObj = {
-        bulto: this.incremental,
-        peso: this.peso,
+        bulto: this.contador,
+        peso: this.peso
       };
       console.log("INcremental", this.incremental);
       console.log("Bulto: " + this.bultoObj.bulto);
       console.log("Peso: " + this.bultoObj.peso);
       this.listaBultos.push(this.bultoObj);
-      console.log("lista: ", this.listaBultos);
-      this.peso = "";
-    } else {
-      console.log("El peso esta vacio");
+      console.log("lista", this.listaBultos);
+      this.peso = 0;
+      // this.numbulto = (this.numbulto + 1);
+
     }
+    this.contador++;
   }
 
   eliminarBulto(index) {
@@ -80,9 +72,8 @@ export class CrearpesajecompraPage implements OnInit {
   }
 
   guardar() {
-
-
-    // this.agregarBultoLista();
+    this.fronLista.pop();
+    this.agregarBultoLista();
     this.contarPeso();
     console.log("Arrayyyyyy lennnnn " + this.listaBultos.length);
     console.log("Peso que enviamos es de " + this.contadorPeso);

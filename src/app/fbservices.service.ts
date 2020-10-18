@@ -7,7 +7,8 @@ import { constants } from 'buffer';
 import { setTimeout } from 'timers';
 import { TIMEOUT } from 'dns';
 import { getuid } from 'process';
-
+import { storage, initializeApp } from 'firebase';
+import { Camera, CameraOriginal } from '@ionic-native/camera';
 
 
 
@@ -40,6 +41,7 @@ export class FBservicesService {
     idCompra: string;
     idPesajeCompra: string;
     idConfirmarPesajeCompra: string;
+    idAnticipos: string;
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para obtener la fecha actual
@@ -60,6 +62,8 @@ export class FBservicesService {
     //Lista compras
     public pesajeCompraLista: any[];
     public listaCompras: any[];
+    public pesajeCompraListaPorProveedor: any[];
+    public anticiposPesajeCompraLista: any[] = [];
     //Lista lotes
     listaLotes: any[] = [];
     ultimoLote: any[];
@@ -184,8 +188,9 @@ export class FBservicesService {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.getUid();
-                //this.offLine();
+                this.offLine();
                 //this.router.navigate(["main-menu"]);
+
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.mostrarNombre();
                 this.getCiudades();
@@ -472,6 +477,7 @@ export class FBservicesService {
             firebase
                 .database()
                 .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad/" + this.idCiudad)
+                .onDisconnect()
                 .set({
                     id: this.idCiudad,
                     codigo: codigoCiudad,
@@ -1010,7 +1016,7 @@ export class FBservicesService {
 
     }
     //Metodos para las comprassssss
-
+    //pesaje Copmpra
     agregarPesaje(idProveedor, codigoProducto, totalBultos, pesoBultos, bultosTT) {
 
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -1029,32 +1035,9 @@ export class FBservicesService {
                 totalBulto: totalBultos,
                 pesoBultos: pesoBultos,
                 costoTotalCompra: 0,
-                bultoLista: bultosTT
+                bultoLista: bultosTT,
+                estado: 1
             });
-    }
-
-    agregarConfirmaPesaje(idPesajeCompra, idProveedor, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idConfirmarPesajeCompra = this.idGenerator();
-        this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
-            .set({
-                id: this.idConfirmarPesajeCompra,
-                codigoLote: this.lastLote.toString(),
-                idPesajeCompra: idPesajeCompra,
-                idProveedor: idProveedor,
-                idEstadoProducto: idEstadoProducto,
-                cantidadEstado: cantidadEstado,
-                costoKilo: costoKilo,
-                costoTotalEstado: costoTotalEstado
-            });
-    }
-    getUid() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        return this.usuarioUid;
     }
     getPesajeCompra() {
         //this.usuarioUid = firebase.auth().currentUser.uid;
@@ -1064,15 +1047,16 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.pesajeCompraLista = [];
                 snapshot.forEach(element => {
-                    this.pesajeCompraLista.push(element.val());
+                    if (element.val().estado == 1) {
+
+                        this.pesajeCompraLista.push(element.val());
+                    }
 
                 });
-                console.log("metodo get pesaje compra: " + this.pesajeCompraLista.length);
+                console.log("metodo lelelel " + this.pesajeCompraLista.length);
                 return this.pesajeCompraLista;
             });
     }
-
-
     updatePesajeCompra(idPesaje, pesoUp) {
         firebase
             .database()
@@ -1089,10 +1073,143 @@ export class FBservicesService {
             .on("value", snapshot => {
                 this.listaCompras = [];
                 snapshot.forEach(element => {
-                    this.listaCompras.push(element.val());
+                    if (element.val().estado == 1) {
+                        this.listaCompras.push(element.val());
+
+                    }
                 });
                 return this.listaCompras;
             });
 
     }
+
+    //Confirmar pesajes
+    agregarConfirmaPesaje(idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        this.idConfirmarPesajeCompra = this.idGenerator();
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .set({
+                id: this.idConfirmarPesajeCompra,
+                codigoLote: this.lastLote.toString(),
+                idPesajeCompra: idPesajeCompra,
+                idEstadoProducto: idEstadoProducto,
+                cantidadEstado: cantidadEstado,
+                costoKilo: costoKilo,
+                costoTotalEstado: costoTotalEstado
+            });
+    }
+    editarConfirmaPesaje(id, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .update({
+                idEstadoProducto: idEstadoProducto,
+                cantidadEstado: cantidadEstado,
+                costoKilo: costoKilo,
+                costoTotalEstado: costoTotalEstado
+            })
+    }
+    eliminarConfirmaPesaje(id) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .remove();
+    }
+
+
+
+    //obtiene el uid del usuario
+    getUid() {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        return this.usuarioUid;
+    }
+
+    listaloteCompraProvee: any[] = [];
+
+    //obtiene el pesaje de compras por proveedor ok
+    getLoteCompraProveedor(idProveedor) {
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
+            .on("value", snapshot => {
+                this.pesajeCompraListaPorProveedor = [];
+
+                this.ultimoLote.forEach(element => {
+
+                    let sumaB = 0;
+                    let sumaP = 0;
+                    let lotelocal = "";
+                    let obj: any;
+                    snapshot.forEach(element2 => {
+                        if (element2.val().idProveedor == idProveedor && element == element2.val().lote && element2.val().estado == 1) {
+
+                            sumaB = (sumaB + element2.val().totalBulto);
+
+                            sumaP = (sumaP + element2.val().pesoBultos);
+
+                            lotelocal = element2.val().lote;
+
+
+                        }
+                    });
+                    obj = ({
+                        sumaBultos: sumaB,
+                        pesoToal: sumaP,
+                        Lote: lotelocal
+                    });
+                    this.pesajeCompraListaPorProveedor.push(obj);
+                });
+                console.log("metodo get pesaje compra: " + this.pesajeCompraLista.length);
+                return this.pesajeCompraLista;
+            });
+        console.log("antes terotno ", this.pesajeCompraListaPorProveedor);
+
+        return this.pesajeCompraListaPorProveedor;
+    }
+
+    //metodo que permtie registrar un anticipo a la compra
+
+    registrarAnticiposApesajeCompra(idprovedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        this.idAnticipos = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/anticipos/" + this.idAnticipos)
+            .set({
+                id: this.idAnticipos,
+                fechaAnticipo: this.fechaActual(),
+                idProveedor: idprovedor,
+                idTipoAnticipo: idTipoAnticipo,
+                valorAnticipo: valorAnticipo,
+                archivo: archivo,
+                idPesajeCompra: idPesajeCompra,
+                estado: 1
+            });
+        this.toastOperacionExitosa();
+    }
+
+    //metodo que retorna los anticispos de una compra
+    getAticiposPesajeCompra(idPesajeComrpa) {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/anticipos")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (element.val().idPesajeCompra == idPesajeComrpa) {
+                        this.anticiposPesajeCompraLista.push(element.val());
+                    }
+                });
+            });
+        return this.anticiposPesajeCompraLista;
+    }
+
+
+
 }

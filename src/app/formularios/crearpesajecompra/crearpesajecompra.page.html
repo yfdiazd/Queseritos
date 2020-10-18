@@ -33,6 +33,7 @@
           <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
             <td class="td1">
               <label [(ngModel)]="incremental">{{numbulto}}</label>
+              <input [(ngModel)]="numbulto" [(ngModel)]="cotnador">
             </td>
             <td class="td2">
               <input type="number" [(ngModel)]="peso"/>
