@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { AlertController } from '@ionic/angular';
 import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-cardcompras',
@@ -15,7 +16,7 @@ export class CardcomprasPage implements OnInit {
   pesoacumulado = 200;
   saldodebitototal = 120000000;
   saldocreditotal = 140000000;
-  
+
 
 
   public proveedor;
@@ -23,6 +24,22 @@ export class CardcomprasPage implements OnInit {
   public input = { data: [] };
   public idProv;
   public nombres = [];
+
+  //Esta lista va a obtener todas las compras existentes
+  listaAllCompras: any[] = [];
+  //Esta lista va a guardar las compras de un mismo proveedor
+  listaProvNoRepetidos: any[] = [];
+  //Lista de idproveedores
+  listaIdProveedores: any[] = [];
+  // Lista de nombres
+  listaNombres: any[] = [];
+  //Datos para mostrar en el card
+  dataCard: any[] = [];
+  //Datos consolidados para la visualización
+  listaCard: any[] = [];
+
+  pesoMostrar = 0;
+  bultosMostrar = 0;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -32,15 +49,87 @@ export class CardcomprasPage implements OnInit {
     private navCtrl: NavController
   ) {
     this.FB.getCompras();
-    // this.nombres = [];
-    // this.nombres = this.FB.proveedoresLista;
-    // console.log("proveedor",this.nombres)
+    this.obtenerProveedoresRepetidos();
   }
- 
+
 
   ngOnInit() {
-    
+
   }
+  obtenerProveedoresRepetidos() {
+    //Esta lista va a guardar las compras de un mismo proveedor
+    this.listaProvNoRepetidos = [];
+    //Lista de idproveedores
+    this.listaIdProveedores = [];
+    // Lista de nombres
+    this.listaNombres = [];
+    //data recopilada en una lista de los proveedores con sus datos
+    this.dataCard = [];
+    //Data que se va a ver en el car
+    this.listaCard = [];
+    this.FB.getCompras();
+
+
+    this.FB.listaCompras.forEach(element => {
+      this.listaIdProveedores.push(element.idProveedor);
+    })
+    console.log("Esto es la lista de IDS: ", this.listaIdProveedores);
+
+
+    //Este coso guiarda en un array "uniqs" provedores sin repetirse.
+    var uniqs = this.listaIdProveedores.filter(function (item, index, array) {
+      return array.indexOf(item) === index;
+    })
+    this.listaProvNoRepetidos = uniqs;
+    console.log("Esto es la lista proveedores sin repetirse: ", this.listaProvNoRepetidos);
+
+
+    //----------------Esto es para traer el nombre del proveedor por ID ------------
+
+    this.FB.proveedoresLista.forEach(element => {
+      this.listaProvNoRepetidos.forEach(element2 => {
+        if (element.id == element2) {
+          this.listaNombres.push({ nombre: element.nombre, id: element2 })
+          console.log("Este es el nombre ", element.nombre, " de el id: ", element2);
+        }
+      })
+    })
+
+    //----------------Esto es para traer el nombre del proveedor por ID ------------
+
+    this.FB.listaCompras.forEach(element => {
+      this.listaProvNoRepetidos.forEach(element2 => {
+        if (element.idProveedor == element2) {
+          this.dataCard.push({
+            id: element2,
+            peso: element.pesoBultos,
+            bultos: element.totalBulto,
+            costo: element.costoTotalCompra
+          })
+        }
+      })
+    })
+    console.log("Esto es lo que se mostrará en la card", this.dataCard);
+    /*------------------------Falata terminar este metodo--- 
+      Lo que hace este es sumar (costo, peso, ° bultos) de cada pesaje y 
+      sumarlo en una variable para mostrarlo en el card del HTML
+    */
+    this.listaProvNoRepetidos.forEach(element => {
+      this.dataCard.forEach(element2 => {
+        if (element == element2.id) {
+          this.pesoMostrar = this.pesoMostrar + element2.peso;
+          this.bultosMostrar = this.bultosMostrar + element2.bultos;
+
+          this.listaCard.push({ id: element2.id, peso: this.pesoMostrar, bultos: this.bultosMostrar, costo: element.costoTotalCompra })
+        }
+      })
+    })
+
+    console.log("Esto es el peso actual", this.pesoMostrar);
+    console.log("Esto es la data final----", this.listaCard);
+
+  }
+
 
 
 
@@ -122,7 +211,7 @@ export class CardcomprasPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (value) => {
-            console.log('Confirm Ok', value);
+            console.log('Se envia el id del proveedor: ', value);
             this.navCtrl.navigateForward(["crearpesajecompra/", value]);
           }
         }
