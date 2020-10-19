@@ -199,7 +199,7 @@ export class FBservicesService {
                 this.listaOrdenLotes();
                 this.getPesajeCompra();
                 this.getCompras();
-                //this.generarLote();
+                // this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -979,7 +979,7 @@ export class FBservicesService {
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/lotes")
             .on("value", snapshot => {
-                console.log("chiliiiiiiiiiiiiiiiii " + snapshot.numChildren());
+                console.log("Se genera lote correctamente" + snapshot.numChildren());
                 firebase
                     .database()
                     .ref("usuario/" + this.usuarioUid + "/configuracion/lotes/" + this.idLote)
@@ -1019,7 +1019,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + this.idProveedor + "/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1029,7 +1029,8 @@ export class FBservicesService {
                 totalBulto: totalBultos,
                 pesoBultos: pesoBultos,
                 costoTotalCompra: 0,
-                bultoLista: bultosTT
+                bultoLista: bultosTT,
+                estado: 1
             });
     }
 
@@ -1085,7 +1086,7 @@ export class FBservicesService {
     getCompras() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra")
+            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
             .on("value", snapshot => {
                 this.listaCompras = [];
                 snapshot.forEach(element => {

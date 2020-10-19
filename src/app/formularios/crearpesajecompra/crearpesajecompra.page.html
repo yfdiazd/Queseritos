@@ -32,10 +32,10 @@
         <tbody class="tbody">
           <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
             <td class="td1">
-              <label [(ngModel)]="incremental">{{numbulto}}</label>
+              <label (ngModel)="numbulto">{{i+1}}</label>
             </td>
             <td class="td2">
-              <input type="number" [(ngModel)]="peso"/>
+              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)"/>
             </td>
             <td class="td3">
               <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
