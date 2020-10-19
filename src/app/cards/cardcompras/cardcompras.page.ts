@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from 'src/app/fbservices.service';
@@ -10,12 +10,19 @@ import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_t
   templateUrl: './cardcompras.page.html',
   styleUrls: ['./cardcompras.page.scss'],
 })
-export class CardcomprasPage {
-  public pesolimite = "500";
-  public pesoacumulado = "300";
-  saldodebitototal = "120000000";
-  saldocreditotal = "160100000";
-  pestotoalcomprado = "300";
+export class CardcomprasPage implements OnInit {
+
+  pesoacumulado = 200;
+  saldodebitototal = 120000000;
+  saldocreditotal = 140000000;
+  
+
+
+  public proveedor;
+  public listaProveedores: any[];
+  public input = { data: [] };
+  public idProv;
+  public nombres = [];
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -25,7 +32,17 @@ export class CardcomprasPage {
     private navCtrl: NavController
   ) {
     this.FB.getCompras();
-   }
+    // this.nombres = [];
+    // this.nombres = this.FB.proveedoresLista;
+    // console.log("proveedor",this.nombres)
+  }
+ 
+
+  ngOnInit() {
+    
+  }
+
+
 
   irVender() {
     this.router.navigate(["cardcompras"]);
@@ -33,7 +50,7 @@ export class CardcomprasPage {
 
   irPesajeCompra(card) {
     // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearpesajecompra/",card.id]);
+    this.navCtrl.navigateForward(["crearpesajecompra/", card.id]);
     console.log("ID:", card.id)
   }
 
@@ -51,8 +68,18 @@ export class CardcomprasPage {
         icon: 'person-add',
         handler: () => {
           // this.presentAlertRadio();
-          var elemento = document.getElementById("select-alert");
-          elemento.click();
+          this.input = { data: [] };
+          this.listaProveedores = [];
+          console.log("this.listaProveedores: ", this.listaProveedores)
+          this.FB.proveedoresLista.forEach(element => {
+            let provee = element;
+            this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
+          });
+          console.log("Se obtuvo esto_:", this.input);
+          this.presentAlertRadio();
+
+          // var elemento = document.getElementById("select-alert");
+          // elemento.click();
         }
       }, {
         text: 'Distribuir pesos',
@@ -79,10 +106,33 @@ export class CardcomprasPage {
     await actionSheet.present();
   }
 
-  customAlertOptions: any = {
-    header: 'Seleccione proveedor',
-    translucent: true,
-  };
+  async presentAlertRadio() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Radio',
+      inputs: this.input.data,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (value) => {
+            console.log('Confirm Ok', value);
+            this.navCtrl.navigateForward(["crearpesajecompra/", value]);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
 
 }
 

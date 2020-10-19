@@ -33,7 +33,16 @@ const routes: Routes = [
   { path: 'hometiposidentificacion', loadChildren: () => import('./home/hometiposidentificacion/hometiposidentificacion.module').then(m => m.HometiposidentificacionPageModule) },
   { path: 'homeproveedores', loadChildren: () => import('./home/homeproveedores/homeproveedores.module').then(m => m.HomeproveedoresPageModule) },
   { path: 'homeconductores', loadChildren: () => import('./home/homeconductores/homeconductores.module').then(m => m.HomeconductoresPageModule) },
-  { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) }
+  { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },
+  {
+    path: 'detallelote',
+    loadChildren: () => import('./formularios/detallelote/detallelote.module').then( m => m.DetallelotePageModule)
+  },
+  {
+    path: 'cardlistaproveedores',
+    loadChildren: () => import('./cards/cardlistaproveedores/cardlistaproveedores.module').then( m => m.CardlistaproveedoresPageModule)
+  }
+
 ];
 
 @NgModule({

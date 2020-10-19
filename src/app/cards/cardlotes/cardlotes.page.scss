@@ -2,27 +2,178 @@ ion-toolbar {
     --background: #1a1446;
 }
 
-.titulo {
+ion-title {
+    font-size: 20px;
+
+}
+.titulo{
     color: white;
 }
 
 ion-content {
-    margin: 0;
     padding: 0;
+    margin: 0;
     --background: #c8f7f3;
+    --color: black;
 
-    .div-formulario {
-        padding: 0;
-        width: 80%;
-        margin: auto;
-    }
-
-    .card {
-        padding: 5%;
-        background-color: #c8f7f3;
-        color: #1a1446;
+   
+    .div-principal {
         width: 100%;
-        box-shadow: #1a1446 0px 4px 4px 4px;
-        font-size: 4vw;
+        margin: auto;
+        position: fixed;
+        height: 10%;
+        color: white;
+        background-color: #4376ff;
+        z-index: 1;
+     
+        p {
+            margin: 0;
+            padding: 0;
+        }
+    
+        p>span {
+            font-size: 15px;
+        }
+
+        .div-col-1 {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+                     
+
+           .div-t {
+                text-align: center;
+                color: white;
+                font-size: 3vh;
+                width: 100%;
+                height: 50%;
+            }
+        
+            .div-v {
+                text-align: center;
+                width: 100%;
+                height: 50%;
+                font-size: 2.5vh;
+                color: #ff2f73;
+               }
+
+        }
+      
+    
+    //--------------Generales------------------
+ 
+    }
+    .div-secundario {
+        height: 80%;
+        width: 100%;
+        padding-top: 5em;
+        position: absolute;
+        z-index: 0;
+
+        .div-card{
+            width: 100%;
+            border: #1a1446 solid 3px;
+            border-radius: 5px;
+            
+        }
+        .card {
+            width: 100%;
+            margin: auto;
+            height: 100%;
+            background-color: white;
+        }
+
+        .seccion-1 {
+            display: inline-block;
+            width: 50%;
+            height: 80%;
+            text-align: center;
+
+            .div-t {
+                width: 100%;
+                height: 40%;
+                color: #1a1446;
+                font-weight: bold;
+            }
+
+            .div-cajita {
+                width: 100%;
+                height: 40%;
+
+                .div-v {
+                    color: #000000;
+                    font-size: 25px;
+                    font-weight: bold;
+                    height: 60%;
+                }
+            }
+
+            .div-cajita-1 {
+                width: 100%;
+                height: 60%;
+
+                .div-db {
+                    width: 100%;
+                    height: 60%;
+                }
+
+                #saldo-credito2 {
+                    color: rgb(255, 61, 61);
+                    // text-shadow: #f84f4f 1px 1px 1px;
+                }
+
+                #saldo-debito2 {
+                    color: rgb(42, 158, 42);
+                    // text-shadow: #082702 1px 1px 1px;
+                }
+            }
+        }
+
+        .seccion-2 {
+            position: absolute;
+            display: inline-block;
+            width: 50%;
+            height: 80%;
+            text-align: center;
+            
+
+            .div-q{
+                color: #1a1446;
+                font-weight: bold;
+                width: 100%;
+                height: 30%;
+            }
+
+            .div-r{
+                width: 100%;
+                color: #000000;
+                font-size: 25px;
+                margin: auto;
+                font-weight: bold;
+            }
+
+            .div-s {
+                width: 100%;
+                height: 60%;
+                margin: auto;
+                color: #0300ca;
+                font-size: 3vh;
+            }
+
+            .div-cajita-1 {
+                width: 100%;
+                height: 50%;
+            }
+
+            .div-cajita-2 {
+                width: 100%;
+                height: 50%;
+
+
+            }
+        }
+
+
     }
 }

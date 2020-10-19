@@ -8,7 +8,7 @@ import { setTimeout } from 'timers';
 import { TIMEOUT } from 'dns';
 import { getuid } from 'process';
 import { storage, initializeApp } from 'firebase';
-import { Camera, CameraOriginal } from '@ionic-native/camera';
+//import { Camera, CameraOriginal } from '@ionic-native/camera';
 
 
 
@@ -322,7 +322,7 @@ export class FBservicesService {
     }
     //-----------------------------Metodos creacion parametrizacion------------------------------------------------------
     //Metodo que permite crear productos
-    crearProdcuto(codigoProducto, descripcionProducto) {
+    crearProdcuto(codigoProducto, descripcionProducto, flagEstado) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "productos");
         if (this.validaCodigos(codigoProducto, this.pathPush) == false) {
@@ -335,6 +335,7 @@ export class FBservicesService {
                     id: this.idProducto,
                     codigo: codigoProducto,
                     descripcion: descripcionProducto,
+                    predetermina: flagEstado, 
                     estado: 1
 
                 });
@@ -843,7 +844,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     //----------------------------------------Metodos para actualizar  registros configuracion-------------------------------
-    updateProdcuto(idProducto, codigoProducto, descripcionProducto) {
+    updateProdcuto(idProducto, codigoProducto, descripcionProducto, flagEstado) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idProducto = this.idGenerator();
         firebase
@@ -851,7 +852,8 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + idProducto)
             .update({
                 codigo: codigoProducto,
-                descripcion: descripcionProducto
+                descripcion: descripcionProducto,
+                predetermina: flagEstado
             });
         this.toastOperacionExitosa();
     }
@@ -996,6 +998,7 @@ export class FBservicesService {
 
             });
     }
+
     //Obtiene los lotes del mas antiguo al mas nuevo
 
     listaOrdenLotes() {
@@ -1025,7 +1028,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/" + this.idProveedor + "/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1043,7 +1046,7 @@ export class FBservicesService {
         //this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
+            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
             .on("value", snapshot => {
                 this.pesajeCompraLista = [];
                 snapshot.forEach(element => {
@@ -1053,7 +1056,7 @@ export class FBservicesService {
                     }
 
                 });
-                console.log("metodo lelelel " + this.pesajeCompraLista.length);
+                console.log("metodo get pesaje compra: " + this.pesajeCompraLista.length);
                 return this.pesajeCompraLista;
             });
     }

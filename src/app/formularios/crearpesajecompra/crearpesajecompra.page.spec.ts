@@ -1,6 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-
+import {
+  FormBuilder,
+  FormsModule, 
+  ReactiveFormsModule, 
+  FormControl, 
+  FormGroup, 
+  Validators, 
+  FormArray} from '@angular/forms';
 import { CrearpesajecompraPage } from './crearpesajecompra.page';
 
 describe('CrearpesajecompraPage', () => {
@@ -10,7 +17,9 @@ describe('CrearpesajecompraPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CrearpesajecompraPage ],
-      imports: [IonicModule.forRoot()]
+      imports:      
+       [IonicModule.forRoot()],
+       
     }).compileComponents();
 
     fixture = TestBed.createComponent(CrearpesajecompraPage);

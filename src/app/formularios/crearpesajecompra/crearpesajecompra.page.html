@@ -10,59 +10,48 @@
 
 <ion-content>
   <div class="div-principal">
-    <div class="div-fila">
-      <div class="div-f">
-        <p class="div-t">Regístrale un nuevo pesaje a:</p>
-        <p class="div-v">{{idproveedor}}</p>
-      </div>
+    <div class="info">
+      <p class="p-title">Proveedor: {{id}}</p>
+      <p class="p-title">Fecha Compra: X</p>
+      <p class="p-title">Tipo de queso:</p>
+      <ion-select [(ngModel)]="tipoQueso" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
+        multiple="false" ok-text="Aceptar" cancel-text="Cancelar" placeholder="Tipo de queso">
+        <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.productosLista">
+          {{lista.descripcion}}
+        </ion-select-option>
+      </ion-select>
     </div>
-    <div class="div-fila">
-      <div class="div-f">
-        <p class="div-t">Fecha Compra</p>
-        <p class="div-v" id="saldo-debito">{{saldodebitototal}}</p>
-      </div>
-      <!--<div class="div-f">
-        <p class="div-t">Saldo Crédito</p>
-        <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
-      </div>-->
-    </div>
-  </div>
-  <div class="div-secundario">
-    <label for=""> {{id}}</label>
-    <ion-button (click)="agregarBultoLista()" expand="block" fill="clear" shape="round">
-      Agregar
-    </ion-button>
-    <table>
-      <thead>
-        <th>Bulto</th>
-        <th>Peso</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let lista of fronLista; let i=index">
-          <td>
-            <input [(ngModel)]="numbulto" [(ngModel)]="cotnador">
-          </td>
-          <td>
-            <input [(ngModel)]="peso">
-          </td>
-          <ion-button (click)="removeRegister()" expand="block" fill="clear" shape="round">
-            Borrar
-          </ion-button>
-        </tr>
-      </tbody>
-    </table>
-
-    <p>Bulto No: {{numbulto}}"</p>
-    <select value="codigoproducto" name="Tipo de Queso">
-      <option>Queso Costeño</option>
-    </select>
-    <input type="text" placeholder="Peso" />
-
-    <div>
-      <ion-button (click)="guardar()" expand="full">
+    <div class="div-table">
+      <p>Lista de bultos</p>
+      <table class="table">
+        <thead class="thead">
+          <th class="th1">Bulto</th>
+          <th class="th2">Peso</th>
+          <th class="th3"></th>
+        </thead>
+        <tbody class="tbody">
+          <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+            <td class="td1">
+              <label>{{numbulto}}</label>
+            </td>
+            <td class="td2">
+              <input type="number" [(ngModel)]="peso" />
+            </td>
+            <td class="td3">
+              <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ion-chip class="btn-add" (click)="agregarBultoLista()">
+        <ion-icon name="add" color="success"></ion-icon>
+        <ion-label color="dark">Agregar</ion-label>
+      </ion-chip>
+      <ion-button (click)="guardar()" expand="full" color="success">
         <ion-icon name="save-outline"></ion-icon>
-        Guardar
+        <ion-label>Guardar</ion-label>
       </ion-button>
     </div>
   </div>
+
 </ion-content>

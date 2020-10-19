@@ -46,16 +46,21 @@
   </ion-row>
   <ion-row class="row2">
     <div class="col3">
-      <ion-card class="card3" (click)="irLotes()">
-        <ion-button class="btn-title3">LOTES</ion-button>
+      <ion-card class="card3">
+        <div class="div-label-prov">
+          <p class="label">ESTADO</p>
+          <img src="../../assets/img/prov.png">
+        </div>
+        <div class="div-boton-prov">
+          <ion-button class="boton-n-prov" (click)="irCardLotes()" expand="full">
+            <ion-icon name="search"></ion-icon>
+            PROVEEDORES
+          </ion-button>
+        </div>
       </ion-card>
     </div>
-    <div class="col4">
-      <ion-card class="card4">
-        <ion-button class="btn-title4">ESTADO</ion-button>
-      </ion-card>
-    </div>
-  </ion-row>
+   
+ </ion-row>
 </ion-content>
 
 
