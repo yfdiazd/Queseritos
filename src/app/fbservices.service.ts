@@ -204,7 +204,7 @@ export class FBservicesService {
                 this.listaOrdenLotes();
                 this.getPesajeCompra();
                 this.getCompras();
-                //this.generarLote();
+                // this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -987,7 +987,7 @@ export class FBservicesService {
             .database()
             .ref("usuario/" + this.usuarioUid + "/configuracion/lotes")
             .on("value", snapshot => {
-                console.log("chiliiiiiiiiiiiiiiiii " + snapshot.numChildren());
+                console.log("Se genera lote correctamente" + snapshot.numChildren());
                 firebase
                     .database()
                     .ref("usuario/" + this.usuarioUid + "/configuracion/lotes/" + this.idLote)
@@ -1028,7 +1028,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + this.idProveedor + "/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1202,7 +1202,7 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/anticipos")
+            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     if (element.val().idPesajeCompra == idPesajeComrpa) {
