@@ -1210,6 +1210,61 @@ export class FBservicesService {
         return this.anticiposPesajeCompraLista;
     }
 
+    
 
+    uploadImage(imageURI) {
+        return new Promise<any>((resolve, reject) => {
+            let storageRef = firebase.storage().ref();
+            let imageRef = storageRef.child('image');
+            this.encodeImageUri(imageURI, function (image64) {
+                imageRef.putString(image64, 'data_url')
+                    .then(snapshot => {
+                        resolve(snapshot.downloadURL)
+                    }, err => {
+                        reject(err);
+                    });
+            });
+        });
+
+    }
+    encodeImageUri(imageUri, callback) {
+        var c = document.createElement('canvas');
+        var ctx = c.getContext("2d");
+        var img = new Image();
+        img.onload = function () {
+          var aux:any = this;
+          c.width = aux.width;
+          c.height = aux.height;
+          ctx.drawImage(img, 0, 0);
+          var dataURL = c.toDataURL("image/jpeg");
+          callback(dataURL);
+        };
+        img.src = imageUri;
+      };
+
+    //   openImagePicker(){
+    //     this.imagePicker.hasReadPermission()
+    //     .then((result) => {
+    //       if(result == false){
+    //         // no callbacks required as this opens a popup which returns
+    //         async
+    //         this.imagePicker.requestReadPermission();
+    //       }
+    //       else if(result == true){
+    //         this.imagePicker.getPictures({
+    //           maximumImagesCount: 1
+    //         })
+    //         .then((results) => {
+    //           for (var i = 0; i < results.length; i++) {
+    //             this.uploadImageToFirebase(results[i]);
+    //           }
+    //         }, (err) => console.log(err));
+    //       }
+    //     }, (err) => {
+    //       console.log(err);
+    //     });
+    //   }
+      
+      
 
 }
