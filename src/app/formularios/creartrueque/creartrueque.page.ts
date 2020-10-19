@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, Input, NgModule, OnInit } from "@angular/core";
+import { ModalController, ToastController } from '@ionic/angular';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FBservicesService } from "../../fbservices.service";
 @Component({
   selector: 'app-creartrueque',
   templateUrl: './creartrueque.page.html',
@@ -7,8 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreartruequePage implements OnInit {
   proveedor = "fernanda";
-  idproveedor = "1053790255";
-  constructor() { }
+  @Input()tipoAnticipoEdit;
+  @Input()valorEdit;
+  constructor(
+    private FB: FBservicesService,
+    private modalCtrl: ModalController,
+    private toastController: ToastController
+  ) { }
 
   ngOnInit() {
   }

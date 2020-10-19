@@ -11,7 +11,7 @@
 
 <ion-content>
 <ion-list class="lista">
-  <ion-reorder-group [disable]="false" (ionItemReorder)="reorder($event)">
+  <ion-reorder-group [disable]="false" (ionItemReorder)="reorder($event)"> 
   <ion-item *ngFor="let input of listanombres">
   <ion-badge slot="start">11</ion-badge>
   <ion-label class="lista" (click)="irCardLote()">{{input}}</ion-label>

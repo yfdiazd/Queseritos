@@ -23,24 +23,32 @@ export class CardlistaproveedoresPage implements OnInit {
     private alertController: AlertController,
     private router: Router
   ) {
-    this.listaprovlote = [];
-    this.listanombres = [];
-    this.FB.pesajeCompraLista.forEach(element => {
-      this.listaprovlote.push({ id: element.idProveedor})
-
-    });
-
-    this.FB.proveedoresLista.forEach(element => {
-      this.listaprovlote.forEach(element2 => {
-        if (element.id == element2.id)
-          this.listanombres.push(element.nombre)
-
-      })
-    })
+    this.listarproveedores();
   }
+
 
   ngOnInit() {
   }
+
+listarproveedores()
+{
+  this.FB.getPesajeCompra();
+  this.listaprovlote = [];
+  this.listanombres = [];
+  this.FB.pesajeCompraLista.forEach(element => {
+    this.listaprovlote.push({ id: element.idProveedor})
+
+  });
+    this.FB.proveedoresLista.forEach(element => {
+    this.listaprovlote.forEach(element2 => {
+      console.log("imprime element2", element2)
+      if (element.id == element2.id)
+        this.listanombres.push(element.nombre)
+
+    })
+  })
+  
+}
 
   irCardLote(){
     this.navCtrl.navigateForward('cardlotes');

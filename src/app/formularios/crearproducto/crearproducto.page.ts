@@ -9,10 +9,12 @@ import { FBservicesService } from "src/app/fbservices.service";
 })
 export class CrearproductoPage {
 
-  
+  predeterminado:boolean= false;
+
 
   @Input() codigoEdit;
   @Input() descripcionEdit;
+  @Input() predeterminada;
   @Input() id;
 
   constructor(
@@ -30,14 +32,14 @@ export class CrearproductoPage {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.crearProdcuto(this.codigoEdit, this.descripcionEdit);
+        this.FB.crearProdcuto(this.codigoEdit, this.descripcionEdit,this.predeterminado);
         this.modalCtrl.dismiss();
-
+      
       }
 
     } else {
      
-        this.FB.updateProdcuto(this.id, this.codigoEdit, this.descripcionEdit);
+        this.FB.updateProdcuto(this.id, this.codigoEdit, this.descripcionEdit, this.predeterminado);
 
         this.modalCtrl.dismiss();
       
@@ -47,6 +49,17 @@ export class CrearproductoPage {
   volver() {
     this.modalCtrl.dismiss();
   }
+
+  change(){
+    console.log("imprime valor de predeterminado", this.predeterminado)
+    if(this.predeterminado==true)
+    {
+      //la proxima vez que se llene el formulario desactive el campo
+    }
+
+  }
+
+ 
 
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({

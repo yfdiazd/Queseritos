@@ -1,41 +1,40 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>Registrar Trueques </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/detallelote" color="success"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="titulo">CREAR ANTICIPOS</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
-  <ion-text>
-    <p>Registrale trueque a: {{proveedor}}"</p>
-    <p> {{idproveedor}}</p>
-  </ion-text>
-  <div>
-    <form>
-      <form>
-        <div>
-          <label for="ttrueque">Fecha Trueque:</label>
-          <input type="date" id="ttrueque" name="ttrueque" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
-          <span class="validity"></span>
-        </div>
-      </form>
-    </form>
-    <select value = "codigomodalidad" name="Concepto del trueque">
-    <option>Mercado</option>
-    <option>Debe listar los tipos de trueque configurados tabla modalidad pago</option>
-   </select>
-   <input type="text" placeholder="Valor" />
-   <option>Adjunta el soporte del trueque realizado</option>
-   <form action="/action_page.php">
-    <input type="file" id="myFile" name="filename">
-    <input type="submit">
-  </form>
+  <div class="div-principal">
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Anticipo A:</p>
+        <p class="div-v">{{proveedor}}</p>
+      </div>
+    </div>
   </div>
-  <div>
-    <ion-button (click)="guardar()" expand="full">
-      <ion-icon name="save-outline"></ion-icon>
-      Guardar
-    </ion-button>
+  <div class="div-secundario">
+    <ion-item>
+      <ion-label>MM DD YY</ion-label>
+      <ion-datetime displayFormat="MM DD YY" placeholder="Select Date"></ion-datetime>
+    </ion-item>
+    <p>Tipo de Anticipo<span>*</span></p>
+    <ion-select [(ngModel)]="tipoAnticipoEdit" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
+      multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tipoAnticipoLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
+    <p>Valor<span>*</span></p>
+    <input type="text" placeholder="{{valorEdit}}" [(ngModel)]="valorEdit" />
+    <div>
+      <p>Suba el soporte del anticipo<span>*</span></p>
+      <input type="file" #fileInput placeholder="Upload file..." />
+      <button type="button" (click)="upload()">Upload</button>
+    </div>
   </div>
 </ion-content>
