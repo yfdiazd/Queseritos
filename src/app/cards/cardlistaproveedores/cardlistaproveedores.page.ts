@@ -47,7 +47,10 @@ listarproveedores()
     })
   })
   
+  
 }
+
+
 
   irCardLote(){
     this.navCtrl.navigateForward('cardlotes');
