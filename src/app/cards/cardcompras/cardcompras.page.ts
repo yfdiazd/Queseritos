@@ -73,8 +73,8 @@ export class CardcomprasPage implements OnInit {
 
   irPesajeCompra(card) {
     // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearpesajecompra/", card.id]);
-    console.log("ID:", card.id)
+    this.navCtrl.navigateForward(["crearpesajecompra"]);
+    
   }
 
   irCompraDetallada() {
@@ -146,7 +146,7 @@ export class CardcomprasPage implements OnInit {
           text: 'Ok',
           handler: (value) => {
             console.log('Se envia el id del proveedor: ', value);
-            this.navCtrl.navigateForward(["crearpesajecompra/", value]);
+            this.navCtrl.navigateForward(["crearpesajecompra"]);
           }
         }
       ]

@@ -41,10 +41,10 @@ export class CrearpesajecompraPage implements OnInit {
   }
   ngOnInit() {
    
-    let id = this.route.snapshot.paramMap.get("id");
+    // let id = this.route.snapshot.paramMap.get("id");
 
-    this.id = id;
-    console.log(" se recibe id: ", this.id);
+    // this.id = id;
+    // console.log(" se recibe id: ", this.id);
   }
 
   removeRegister(index) {
