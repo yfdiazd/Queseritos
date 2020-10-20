@@ -1,6 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { FBservicesService } from "../../fbservices.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { Console } from 'console';
+
+
+import { FBservicesService } from '../../fbservices.service';
+
 @Component({
   selector: "app-crearpesajecompra",
   templateUrl: "./crearpesajecompra.page.html",
@@ -10,24 +15,28 @@ export class CrearpesajecompraPage implements OnInit {
 
   public id;
   //Variables para los bultos
-  public incremental;
-  public peso: any;
-  public numbulto: any[] = [1];
+  public numbulto = 1;
+  public nuevoRegistro: any[] = [];
   public listaBultos: any[] = [];
   public bultoObj: any = null;
   public contadorPeso: number;
-  public fronLista: any[] = ["1"];
-  public nuevoRegistro: any[] = [];
+  public tipoQueso;
+  public lote;
 
   constructor(
+    private alertController: AlertController,
     private route: ActivatedRoute,
     private FB: FBservicesService
-  ) { }
+  ) {
+
+   
+  }
   ngOnInit() {
+   
     let id = this.route.snapshot.paramMap.get("id");
+
     this.id = id;
     console.log(" se recibe id: ", this.id);
-    // this.incrementable = this.FB.numBultos;
   }
 
   removeRegister(index) {
@@ -36,30 +45,63 @@ export class CrearpesajecompraPage implements OnInit {
 
   contador = 1;
   agregarBultoLista() {
-    this.fronLista.push(this.nuevoRegistro);
+    this.presentAlertRadio();
+  }
 
-    console.log("PEPEPEEPEPEPEPEPEPE " + this.peso);
-    if (this.peso > 0) {
-      console.log("Entro al if");
+  async presentAlertRadio() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Crear bulto ' + (this.listaBultos.length + 1),
+      inputs: [
+        {
+          name: 'peso',
+          type: 'tel',
+          value: 0
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (value) => {
+            if (value != 0) {
+              console.log("El campo peso si se modificó")
+              this.bultoObj = {
+                peso: value.peso,
+              };
+              console.log("Bulto: " + this.bultoObj.bulto);
+              console.log("Peso: " + this.bultoObj.peso);
+              this.listaBultos.push(this.bultoObj);
+              console.log("lista: ", this.listaBultos);
+              console.log('Confirm Ok', value);
+            } else {
+              console.log("El peso no fue modificado");
+            }
+          }
+        }
+      ]
+    });
 
-      this.bultoObj = {
-        bulto: this.contador,
-        peso: this.peso
-      };
-      console.log("INcremental", this.incremental);
-      console.log("Bulto: " + this.bultoObj.bulto);
-      console.log("Peso: " + this.bultoObj.peso);
-      this.listaBultos.push(this.bultoObj);
-      console.log("lista", this.listaBultos);
-      this.peso = 0;
-      // this.numbulto = (this.numbulto + 1);
-
-    }
-    this.contador++;
+    await alert.present();
   }
 
   eliminarBulto(index) {
     this.listaBultos.splice(index);
+    this.numbulto--;
+  }
+
+  edit(index) {
+    this.listaBultos.forEach(element => {
+      if (element.index == index) {
+        console.log("Si lo encontro", element.peso)
+      }
+    })
   }
 
   contarPeso() {
@@ -68,22 +110,25 @@ export class CrearpesajecompraPage implements OnInit {
       console.log("Peso de i: " + element.peso);
       this.contadorPeso = this.contadorPeso + parseInt(element.peso);
     });
-    console.log("Total peso: " + this.contadorPeso);
+    console.log("Total peso de los bultos: " + this.contadorPeso);
   }
 
   guardar() {
-    this.fronLista.pop();
-    this.agregarBultoLista();
+    // this.listaBultos.pop();
     this.contarPeso();
-    console.log("Arrayyyyyy lennnnn " + this.listaBultos.length);
+    console.log("El id del tipo de queso es: ", this.tipoQueso)
+    console.log("Bultos enviados " + this.listaBultos.length);
     console.log("Peso que enviamos es de " + this.contadorPeso);
+    console.log("Se envia el id del proveedor: ", this.id)
     this.FB.agregarPesaje(
-      "proveedor",
-      "producto",
+      this.id,
+      this.tipoQueso,
       this.listaBultos.length,
       this.contadorPeso,
       this.listaBultos
     );
     this.listaBultos = [];
   }
+
+
 }
