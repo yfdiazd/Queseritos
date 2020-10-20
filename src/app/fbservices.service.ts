@@ -447,26 +447,7 @@ export class FBservicesService {
             this.toastElementoDuplicado();
         }
     }
-    //Metodo para agregar el tipo de trueque.
-    //agregarTipoTrueque(codigoTipoTrueque, descripcionTipoTrueque) {
-    //  this.usuarioUid = firebase.auth().currentUser.uid;
-    //this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque");
-    //if (this.validaCodigos(codigoTipoTrueque, this.pathPush) == false) {
-    //   this.idTipoTrueque = this.idGenerator();
-    // firebase
-    //   .database()
-    // .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + this.idTipoTrueque)
-    //.set({
-    //  id: this.idTipoTrueque,
-    //codigo: codigoTipoTrueque,
-    //descripcion: descripcionTipoTrueque,
-    //estado: 1
-    // });
-    //this.toastOperacionExitosa();
-
-    //}
-    //this.toastElementoDuplicado();
-    // }
+   
 
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
@@ -699,20 +680,7 @@ export class FBservicesService {
                 return this.tipoAnticipoLista;
             });
     }
-    //  getTipoTrueque() {
-    //    firebase
-    //      .database()
-    //     .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
-    //    .on("value", snaphot => {
-    //      this.tipoTruequeLista = [];
-    //      snaphot.forEach(element => {
-    //        if (element.val().estado == 1) {
-    //           this.tipoTruequeLista.push(element.val());
-    //      }
-    //    });
-    //     return this.tipoTruequeLista;
-    // });
-    //}
+  
     getTiposIdentificacion() {
         firebase
             .database()
@@ -800,17 +768,7 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //  deleteTipoTrueque(idTipoTrueque) {
-    //      this.usuarioUid = firebase.auth().currentUser.uid;
-
-    //   firebase
-    //     .database()
-    //    .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
-    //    .update({
-    //       estado: 0
-    //    });
-    //   this.toastOperacionExitosa();
-    //}
+  
     deleteCiudad(idCiudad) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
@@ -1026,7 +984,6 @@ export class FBservicesService {
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        console.log("lote *- - - - - - - - -", this.lastLote.toString());
         firebase
             .database()
             .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + this.idPesajeCompra)
@@ -1088,14 +1045,14 @@ export class FBservicesService {
     }
 
     //Confirmar pesajes
-    agregarConfirmaPesaje(idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
+    agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idConfirmarPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/"+ this.lastLote.toString() +"/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
                 codigoLote: this.lastLote.toString(),
@@ -1179,16 +1136,18 @@ export class FBservicesService {
 
     //metodo que permtie registrar un anticipo a la compra
 
-    registrarAnticiposApesajeCompra(idprovedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
+    registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idAnticipos = this.idGenerator();
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/anticipos/" + this.idAnticipos)
+            .ref("usuario/" + this.usuarioUid + "/compras/" +idProveedor + "/"+ this.lastLote.toString() + "/anticipos/" + this.idAnticipos)
             .set({
                 id: this.idAnticipos,
                 fechaAnticipo: this.fechaActual(),
-                idProveedor: idprovedor,
+                idProveedor: idProveedor,
                 idTipoAnticipo: idTipoAnticipo,
                 valorAnticipo: valorAnticipo,
                 archivo: archivo,
