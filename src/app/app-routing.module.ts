@@ -18,7 +18,10 @@ const routes: Routes = [
   { path: 'creartiposidentificacion', loadChildren: () => import('./formularios/creartiposidentificacion/creartiposidentificacion.module').then(m => m.CreartiposidentificacionPageModule) },
   { path: 'crearciudad', loadChildren: () => import('./formularios/crearciudad/crearciudad.module').then(m => m.CrearciudadPageModule) },
   { path: 'crearconductor', loadChildren: () => import('./formularios/crearconductor/crearconductor.module').then(m => m.CrearconductorPageModule) },
+<<<<<<< HEAD
   { path: 'crearpesajecompra', loadChildren: () => import('./formularios/crearpesajecompra/crearpesajecompra.module').then(m => m.CrearpesajecompraPageModule) },
+=======
+>>>>>>> 6c56570d1114bde2bb0675b64edb4d0323868c3b
   { path: 'crearanticipos', loadChildren: () => import('./formularios/crearanticipos/crearanticipos.module').then(m => m.CrearanticiposPageModule) },
   { path: 'creartrueque', loadChildren: () => import('./formularios/creartrueque/creartrueque.module').then(m => m.CreartruequePageModule) },
   { path: 'crearenviocliente', loadChildren: () => import('./formularios/crearenviocliente/crearenviocliente.module').then(m => m.CrearenvioclientePageModule) },
@@ -36,12 +39,17 @@ const routes: Routes = [
   { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },
   {
     path: 'detallelote',
-    loadChildren: () => import('./formularios/detallelote/detallelote.module').then( m => m.DetallelotePageModule)
+    loadChildren: () => import('./formularios/detallelote/detallelote.module').then(m => m.DetallelotePageModule)
   },
   {
     path: 'cardlistaproveedores',
-    loadChildren: () => import('./cards/cardlistaproveedores/cardlistaproveedores.module').then( m => m.CardlistaproveedoresPageModule)
+    loadChildren: () => import('./cards/cardlistaproveedores/cardlistaproveedores.module').then(m => m.CardlistaproveedoresPageModule)
+  },
+  {
+    path: 'crearcompra/:id',
+    loadChildren: () => import('./formularios/crearcompra/crearcompra.module').then(m => m.CrearcompraPageModule)
   }
+
 
 ];
 

@@ -53,20 +53,20 @@ export class CardcomprasPage implements OnInit {
   ) {
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
     console.log("LOTE ULTIMO:   ", this.loteActual.toString());
-    console.log("FECHA ACTUAL ----",this.FB.fechaActual())
-    if(this.loteActual.toString().includes(this.FB.fechaActual())){
+    console.log("FECHA ACTUAL ----", this.FB.fechaActual())
+    if (this.loteActual.toString().includes(this.FB.fechaActual())) {
       console.log("Si es el mismo")
-    }else{
+    } else {
       this.presentAlertRadio2();
     }
-   
+
   }
 
 
   ngOnInit() {
 
   }
-  
+
   irVender() {
     this.router.navigate(["cardcompras"]);
   }
@@ -146,7 +146,11 @@ export class CardcomprasPage implements OnInit {
           text: 'Ok',
           handler: (value) => {
             console.log('Se envia el id del proveedor: ', value);
+<<<<<<< HEAD
             this.navCtrl.navigateForward(["crearpesajecompra"]);
+=======
+            this.navCtrl.navigateForward(["crearcompra/", value]);
+>>>>>>> 6c56570d1114bde2bb0675b64edb4d0323868c3b
           }
         }
       ]
