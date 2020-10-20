@@ -202,7 +202,7 @@ export class FBservicesService {
                 this.getTiposIdentificacion();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getPesajeCompra();
+                
                 this.getCompras();
                 // this.generarLote();
                 console.log("usuario:", this.usuarioUid);
@@ -316,7 +316,7 @@ export class FBservicesService {
         this.dd = String(this.today.getDate()).padStart(2, '0');
         this.mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
         this.yyyy = this.today.getFullYear();
-        this.today = this.dd + '/' + this.mm + '/' + this.yyyy;
+        this.today = this.dd + '-' + this.mm + '-' + this.yyyy;
 
         return this.today;
     }
@@ -335,7 +335,7 @@ export class FBservicesService {
                     id: this.idProducto,
                     codigo: codigoProducto,
                     descripcion: descripcionProducto,
-                    predetermina: flagEstado, 
+                    predetermina: flagEstado,
                     estado: 1
 
                 });
@@ -1026,9 +1026,10 @@ export class FBservicesService {
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        console.log("lote *- - - - - - - - -", this.lastLote.toString());
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1040,14 +1041,13 @@ export class FBservicesService {
                 costoTotalCompra: 0,
                 bultoLista: bultosTT,
                 estado: 1
-<<<<<<< HEAD
             });
     }
-    getPesajeCompra() {
+    getPesajeCompra(idProveedor) {
         //this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
             .on("value", snapshot => {
                 this.pesajeCompraLista = [];
                 snapshot.forEach(element => {
@@ -1083,8 +1083,6 @@ export class FBservicesService {
                     }
                 });
                 return this.listaCompras;
-=======
->>>>>>> a9a7bbd8fc9bfbf9feaecd2c5ebf8f988b4c23d2
             });
 
     }
@@ -1205,11 +1203,7 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-<<<<<<< HEAD
             .ref("usuario/" + this.usuarioUid + "/compras/anticipos")
-=======
-            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
->>>>>>> a9a7bbd8fc9bfbf9feaecd2c5ebf8f988b4c23d2
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     if (element.val().idPesajeCompra == idPesajeComrpa) {
@@ -1220,7 +1214,7 @@ export class FBservicesService {
         return this.anticiposPesajeCompraLista;
     }
 
-    
+
 
     uploadImage(imageURI) {
         return new Promise<any>((resolve, reject) => {
@@ -1242,15 +1236,15 @@ export class FBservicesService {
         var ctx = c.getContext("2d");
         var img = new Image();
         img.onload = function () {
-          var aux:any = this;
-          c.width = aux.width;
-          c.height = aux.height;
-          ctx.drawImage(img, 0, 0);
-          var dataURL = c.toDataURL("image/jpeg");
-          callback(dataURL);
+            var aux: any = this;
+            c.width = aux.width;
+            c.height = aux.height;
+            ctx.drawImage(img, 0, 0);
+            var dataURL = c.toDataURL("image/jpeg");
+            callback(dataURL);
         };
         img.src = imageUri;
-      };
+    };
 
     //   openImagePicker(){
     //     this.imagePicker.hasReadPermission()
@@ -1274,7 +1268,7 @@ export class FBservicesService {
     //       console.log(err);
     //     });
     //   }
-      
-      
+
+
 
 }
