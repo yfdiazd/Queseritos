@@ -8,7 +8,7 @@ import { setTimeout } from 'timers';
 import { TIMEOUT } from 'dns';
 import { getuid } from 'process';
 import { storage, initializeApp } from 'firebase';
-import { Camera, CameraOriginal } from '@ionic-native/camera';
+//import { Camera, CameraOriginal } from '@ionic-native/camera';
 
 
 
@@ -61,7 +61,6 @@ export class FBservicesService {
     public conductoresLista: any[];
     //Lista compras
     public pesajeCompraLista: any[];
-    public listaCompras: any[];
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
     //Lista lotes
@@ -202,8 +201,6 @@ export class FBservicesService {
                 this.getTiposIdentificacion();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getPesajeCompra();
-                // this.getCompras();
                 // this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -309,6 +306,12 @@ export class FBservicesService {
         toas.present();
     }
 
+    //obtiene el uid del usuario
+    getUid() {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        return this.usuarioUid;
+    }
+
 
     //-------------Metodo que permite consultar la fecha actual:----------------------------------
     fechaActual() {
@@ -316,13 +319,13 @@ export class FBservicesService {
         this.dd = String(this.today.getDate()).padStart(2, '0');
         this.mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
         this.yyyy = this.today.getFullYear();
-        this.today = this.dd + '/' + this.mm + '/' + this.yyyy;
+        this.today = this.dd + '-' + this.mm + '-' + this.yyyy;
 
         return this.today;
     }
     //-----------------------------Metodos creacion parametrizacion------------------------------------------------------
     //Metodo que permite crear productos
-    crearProdcuto(codigoProducto, descripcionProducto) {
+    crearProdcuto(codigoProducto, descripcionProducto, flagEstado) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "productos");
         if (this.validaCodigos(codigoProducto, this.pathPush) == false) {
@@ -335,6 +338,7 @@ export class FBservicesService {
                     id: this.idProducto,
                     codigo: codigoProducto,
                     descripcion: descripcionProducto,
+                    predetermina: flagEstado,
                     estado: 1
 
                 });
@@ -843,7 +847,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     //----------------------------------------Metodos para actualizar  registros configuracion-------------------------------
-    updateProdcuto(idProducto, codigoProducto, descripcionProducto) {
+    updateProdcuto(idProducto, codigoProducto, descripcionProducto, flagEstado) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idProducto = this.idGenerator();
         firebase
@@ -851,7 +855,8 @@ export class FBservicesService {
             .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + idProducto)
             .update({
                 codigo: codigoProducto,
-                descripcion: descripcionProducto
+                descripcion: descripcionProducto,
+                predetermina: flagEstado
             });
         this.toastOperacionExitosa();
     }
@@ -996,6 +1001,7 @@ export class FBservicesService {
 
             });
     }
+
     //Obtiene los lotes del mas antiguo al mas nuevo
 
     listaOrdenLotes() {
@@ -1023,9 +1029,10 @@ export class FBservicesService {
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        console.log("lote *- - - - - - - - -", this.lastLote.toString());
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1039,178 +1046,9 @@ export class FBservicesService {
                 estado: 1
             });
     }
-    
-    getPesajeCompra() {
-        //this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
-            .on("value", snapshot => {
-                this.pesajeCompraLista = [];
-                snapshot.forEach(element => {
-                    if (element.val().estado == 1) {
-
-                        this.pesajeCompraLista.push(element.val());
-                    }
-
-                });
-                console.log("metodo lelelel " + this.pesajeCompraLista.length);
-                return this.pesajeCompraLista;
-            });
-    }
-    updatePesajeCompra(idPesaje, pesoUp) {
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + idPesaje)
-            .update({
-                costoTotalCompra: pesoUp
-            });
-    }
-
-    getCompras() {
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra")
-            .on("value", snapshot => {
-                this.listaCompras = [];
-                snapshot.forEach(element => {
-                    if (element.val().estado == 1) {
-                        this.listaCompras.push(element.val());
-
-                    }
-                });
-                return this.listaCompras;
-            });
-
-    }
-
+        
     //Confirmar pesajes
-    agregarConfirmaPesaje(idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idConfirmarPesajeCompra = this.idGenerator();
-        this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
-            .set({
-                id: this.idConfirmarPesajeCompra,
-                codigoLote: this.lastLote.toString(),
-                idPesajeCompra: idPesajeCompra,
-                idEstadoProducto: idEstadoProducto,
-                cantidadEstado: cantidadEstado,
-                costoKilo: costoKilo,
-                costoTotalEstado: costoTotalEstado
-            });
-    }
-    editarConfirmaPesaje(id, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
-            .update({
-                idEstadoProducto: idEstadoProducto,
-                cantidadEstado: cantidadEstado,
-                costoKilo: costoKilo,
-                costoTotalEstado: costoTotalEstado
-            })
-    }
-    eliminarConfirmaPesaje(id) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
-            .remove();
-    }
-
-
-
-    //obtiene el uid del usuario
-    getUid() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        return this.usuarioUid;
-    }
-
-    listaloteCompraProvee: any[] = [];
-
-    //obtiene el pesaje de compras por proveedor ok
-    getLoteCompraProveedor(idProveedor) {
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra")
-            .on("value", snapshot => {
-                this.pesajeCompraListaPorProveedor = [];
-
-                this.ultimoLote.forEach(element => {
-
-                    let sumaB = 0;
-                    let sumaP = 0;
-                    let lotelocal = "";
-                    let obj: any;
-                    snapshot.forEach(element2 => {
-                        if (element2.val().idProveedor == idProveedor && element == element2.val().lote && element2.val().estado == 1) {
-
-                            sumaB = (sumaB + element2.val().totalBulto);
-
-                            sumaP = (sumaP + element2.val().pesoBultos);
-
-                            lotelocal = element2.val().lote;
-
-
-                        }
-                    });
-                    obj = ({
-                        sumaBultos: sumaB,
-                        pesoToal: sumaP,
-                        Lote: lotelocal
-                    });
-                    this.pesajeCompraListaPorProveedor.push(obj);
-                });
-                console.log("metodo get pesaje compra: " + this.pesajeCompraLista.length);
-                return this.pesajeCompraLista;
-            });
-        console.log("antes terotno ", this.pesajeCompraListaPorProveedor);
-
-        return this.pesajeCompraListaPorProveedor;
-    }
-
-    //metodo que permtie registrar un anticipo a la compra
-
-    registrarAnticiposApesajeCompra(idprovedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.idAnticipos = this.idGenerator();
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/anticipos/" + this.idAnticipos)
-            .set({
-                id: this.idAnticipos,
-                fechaAnticipo: this.fechaActual(),
-                idProveedor: idprovedor,
-                idTipoAnticipo: idTipoAnticipo,
-                valorAnticipo: valorAnticipo,
-                archivo: archivo,
-                idPesajeCompra: idPesajeCompra,
-                estado: 1
-            });
-        this.toastOperacionExitosa();
-    }
-
-    //metodo que retorna los anticispos de una compra
-    getAticiposPesajeCompra(idPesajeComrpa) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
-            .on("value", snapshot => {
-                snapshot.forEach(element => {
-                    if (element.val().idPesajeCompra == idPesajeComrpa) {
-                        this.anticiposPesajeCompraLista.push(element.val());
-                    }
-                });
-            });
-        return this.anticiposPesajeCompraLista;
-    }
-
+    
 
 
 }

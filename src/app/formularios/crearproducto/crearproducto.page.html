@@ -14,6 +14,10 @@
     <input maxlength="4" type="text" placeholder="{{codigoEdit}}" [(ngModel)]="codigoEdit"/>
     <p>Descripción <span>*</span></p>
     <input maxlength="30" type="text" placeholder="{{descripcionEdit}}" [(ngModel)]="descripcionEdit"/>
+    <ion-toggle [(ngModel)]="predeterminado" (ionChange)="change()"></ion-toggle>
+    
+   
+    
   </div>
   <div>
     <ion-button (click)="agregarProducto()" expand="full">

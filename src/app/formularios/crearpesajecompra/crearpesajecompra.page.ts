@@ -28,6 +28,14 @@ export class CrearpesajecompraPage implements OnInit {
     private route: ActivatedRoute,
     private FB: FBservicesService
   ) {
+    // this.nombres = this.FB.proveedoresLista;
+    // console.log("proveedor", this.nombres);
+    // this.nombres.forEach(element => {
+    //   if(element.id == this.id){
+    //     console.log("Si lo encontro", element.nombre)
+    //   }
+    //   console.log("No se encontró")
+    // });
 
    
   }
@@ -43,7 +51,6 @@ export class CrearpesajecompraPage implements OnInit {
     this.listaBultos.splice(index, 1);
   }
 
-  contador = 1;
   agregarBultoLista() {
     this.presentAlertRadio();
   }
@@ -129,6 +136,4 @@ export class CrearpesajecompraPage implements OnInit {
     );
     this.listaBultos = [];
   }
-
-
 }
