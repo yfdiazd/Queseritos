@@ -40,14 +40,14 @@ export class ConfirmarpesajePage implements OnInit {
   confirmar(){
     this.listaBultos.push(""); 
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    this.FB.agregarConfirmaPesaje("1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
+    // this.FB.agregarConfirmaPesaje("1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
   }
   
 
   guardar(){
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    this.FB.agregarConfirmaPesaje( "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
+    // this.FB.agregarConfirmaPesaje( "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
   }
 
@@ -86,7 +86,7 @@ export class ConfirmarpesajePage implements OnInit {
         console.log("Sumaaaaaa " + this.calculaCostoTotal);
 
         //updateeeeee
-        this.FB.updatePesajeCompra("1602537527210", this.calculaCostoTotal);
+        // this.FB.updatePesajeCompra("1602537527210", this.calculaCostoTotal);
       }
 
     });

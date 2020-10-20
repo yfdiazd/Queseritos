@@ -61,12 +61,11 @@ export class FBservicesService {
     public conductoresLista: any[];
     //Lista compras
     public pesajeCompraLista: any[];
-    public listaCompras: any[];
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
     //Lista lotes
     listaLotes: any[] = [];
-    ultimoLote: any[];
+    public ultimoLote: any[];
     lastLote: any[];
 
     // Variable usuario
@@ -202,8 +201,6 @@ export class FBservicesService {
                 this.getTiposIdentificacion();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getPesajeCompra();
-                this.getCompras();
                 // this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -309,6 +306,12 @@ export class FBservicesService {
         toas.present();
     }
 
+    //obtiene el uid del usuario
+    getUid() {
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        return this.usuarioUid;
+    }
+
 
     //-------------Metodo que permite consultar la fecha actual:----------------------------------
     fechaActual() {
@@ -316,7 +319,7 @@ export class FBservicesService {
         this.dd = String(this.today.getDate()).padStart(2, '0');
         this.mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
         this.yyyy = this.today.getFullYear();
-        this.today = this.dd + '/' + this.mm + '/' + this.yyyy;
+        this.today = this.dd + '-' + this.mm + '-' + this.yyyy;
 
         return this.today;
     }
@@ -335,7 +338,7 @@ export class FBservicesService {
                     id: this.idProducto,
                     codigo: codigoProducto,
                     descripcion: descripcionProducto,
-                    predetermina: flagEstado, 
+                    predetermina: flagEstado,
                     estado: 1
 
                 });
@@ -447,26 +450,7 @@ export class FBservicesService {
             this.toastElementoDuplicado();
         }
     }
-    //Metodo para agregar el tipo de trueque.
-    //agregarTipoTrueque(codigoTipoTrueque, descripcionTipoTrueque) {
-    //  this.usuarioUid = firebase.auth().currentUser.uid;
-    //this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque");
-    //if (this.validaCodigos(codigoTipoTrueque, this.pathPush) == false) {
-    //   this.idTipoTrueque = this.idGenerator();
-    // firebase
-    //   .database()
-    // .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + this.idTipoTrueque)
-    //.set({
-    //  id: this.idTipoTrueque,
-    //codigo: codigoTipoTrueque,
-    //descripcion: descripcionTipoTrueque,
-    //estado: 1
-    // });
-    //this.toastOperacionExitosa();
-
-    //}
-    //this.toastElementoDuplicado();
-    // }
+   
 
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
@@ -699,20 +683,7 @@ export class FBservicesService {
                 return this.tipoAnticipoLista;
             });
     }
-    //  getTipoTrueque() {
-    //    firebase
-    //      .database()
-    //     .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoTrueque")
-    //    .on("value", snaphot => {
-    //      this.tipoTruequeLista = [];
-    //      snaphot.forEach(element => {
-    //        if (element.val().estado == 1) {
-    //           this.tipoTruequeLista.push(element.val());
-    //      }
-    //    });
-    //     return this.tipoTruequeLista;
-    // });
-    //}
+  
     getTiposIdentificacion() {
         firebase
             .database()
@@ -800,17 +771,7 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //  deleteTipoTrueque(idTipoTrueque) {
-    //      this.usuarioUid = firebase.auth().currentUser.uid;
-
-    //   firebase
-    //     .database()
-    //    .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoTrueque/" + idTipoTrueque)
-    //    .update({
-    //       estado: 0
-    //    });
-    //   this.toastOperacionExitosa();
-    //}
+  
     deleteCiudad(idCiudad) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
@@ -1028,7 +989,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1042,59 +1003,16 @@ export class FBservicesService {
                 estado: 1
             });
     }
-    getPesajeCompra() {
-        //this.usuarioUid = firebase.auth().currentUser.uid;
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
-            .on("value", snapshot => {
-                this.pesajeCompraLista = [];
-                snapshot.forEach(element => {
-                    if (element.val().estado == 1) {
-
-                        this.pesajeCompraLista.push(element.val());
-                    }
-
-                });
-                console.log("metodo get pesaje compra: " + this.pesajeCompraLista.length);
-                return this.pesajeCompraLista;
-            });
-    }
-    updatePesajeCompra(idPesaje, pesoUp) {
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/pesajeCompra/" + idPesaje)
-            .update({
-                costoTotalCompra: pesoUp
-            });
-    }
-
-    getCompras() {
-        firebase
-            .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + "/pesajeCompra")
-            .on("value", snapshot => {
-                this.listaCompras = [];
-                snapshot.forEach(element => {
-                    if (element.val().estado == 1) {
-                        this.listaCompras.push(element.val());
-
-                    }
-                });
-                return this.listaCompras;
-            });
-
-    }
-
+        
     //Confirmar pesajes
-    agregarConfirmaPesaje(idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
+    agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idConfirmarPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/"+ this.lastLote.toString() +"/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
                 codigoLote: this.lastLote.toString(),
@@ -1123,15 +1041,7 @@ export class FBservicesService {
             .database()
             .ref("usuario/" + this.usuarioUid + "/compras/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
             .remove();
-    }
-
-
-
-    //obtiene el uid del usuario
-    getUid() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        return this.usuarioUid;
-    }
+    }    
 
     listaloteCompraProvee: any[] = [];
 
@@ -1178,16 +1088,18 @@ export class FBservicesService {
 
     //metodo que permtie registrar un anticipo a la compra
 
-    registrarAnticiposApesajeCompra(idprovedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
+    registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.idAnticipos = this.idGenerator();
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/anticipos/" + this.idAnticipos)
+            .ref("usuario/" + this.usuarioUid + "/compras/" +idProveedor + "/"+ this.lastLote.toString() + "/anticipos/" + this.idAnticipos)
             .set({
                 id: this.idAnticipos,
                 fechaAnticipo: this.fechaActual(),
-                idProveedor: idprovedor,
+                idProveedor: idProveedor,
                 idTipoAnticipo: idTipoAnticipo,
                 valorAnticipo: valorAnticipo,
                 archivo: archivo,
@@ -1202,7 +1114,7 @@ export class FBservicesService {
         this.usuarioUid = firebase.auth().currentUser.uid;
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/"+"/pesajeCompra")
+            .ref("usuario/" + this.usuarioUid + "/compras/anticipos")
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     if (element.val().idPesajeCompra == idPesajeComrpa) {
@@ -1212,6 +1124,61 @@ export class FBservicesService {
             });
         return this.anticiposPesajeCompraLista;
     }
+
+
+
+    uploadImage(imageURI) {
+        return new Promise<any>((resolve, reject) => {
+            let storageRef = firebase.storage().ref();
+            let imageRef = storageRef.child('image');
+            this.encodeImageUri(imageURI, function (image64) {
+                imageRef.putString(image64, 'data_url')
+                    .then(snapshot => {
+                        resolve(snapshot.downloadURL)
+                    }, err => {
+                        reject(err);
+                    });
+            });
+        });
+
+    }
+    encodeImageUri(imageUri, callback) {
+        var c = document.createElement('canvas');
+        var ctx = c.getContext("2d");
+        var img = new Image();
+        img.onload = function () {
+            var aux: any = this;
+            c.width = aux.width;
+            c.height = aux.height;
+            ctx.drawImage(img, 0, 0);
+            var dataURL = c.toDataURL("image/jpeg");
+            callback(dataURL);
+        };
+        img.src = imageUri;
+    };
+
+    //   openImagePicker(){
+    //     this.imagePicker.hasReadPermission()
+    //     .then((result) => {
+    //       if(result == false){
+    //         // no callbacks required as this opens a popup which returns
+    //         async
+    //         this.imagePicker.requestReadPermission();
+    //       }
+    //       else if(result == true){
+    //         this.imagePicker.getPictures({
+    //           maximumImagesCount: 1
+    //         })
+    //         .then((results) => {
+    //           for (var i = 0; i < results.length; i++) {
+    //             this.uploadImageToFirebase(results[i]);
+    //           }
+    //         }, (err) => console.log(err));
+    //       }
+    //     }, (err) => {
+    //       console.log(err);
+    //     });
+    //   }
 
 
 
