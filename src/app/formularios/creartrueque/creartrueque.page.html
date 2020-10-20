@@ -18,10 +18,6 @@
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item>
-      <ion-label>MM DD YY</ion-label>
-      <ion-datetime displayFormat="MM DD YY" placeholder="Select Date"></ion-datetime>
-    </ion-item>
     <p>Tipo de Anticipo<span>*</span></p>
     <ion-select [(ngModel)]="tipoAnticipoEdit" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
       multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
@@ -33,8 +29,12 @@
     <input type="text" placeholder="{{valorEdit}}" [(ngModel)]="valorEdit" />
     <div>
       <p>Suba el soporte del anticipo<span>*</span></p>
-      <input type="file" #fileInput placeholder="Upload file..." />
-      <button type="button" (click)="upload()">Upload</button>
+      <input type="file" #fileInput/>
+      <button type="button" (click)="upload()">Subir</button>
     </div>
+    <ion-button (click)="guardar()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar
+    </ion-button>
   </div>
 </ion-content>
