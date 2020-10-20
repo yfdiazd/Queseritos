@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Console } from 'console';
-
-
-import { FBservicesService } from '../../fbservices.service';
+import { FBservicesService } from 'src/app/fbservices.service';
 
 @Component({
-  selector: "app-crearpesajecompra",
-  templateUrl: "./crearpesajecompra.page.html",
-  styleUrls: ["./crearpesajecompra.page.scss"],
+  selector: 'app-crearcompra',
+  templateUrl: './crearcompra.page.html',
+  styleUrls: ['./crearcompra.page.scss'],
 })
-export class CrearpesajecompraPage implements OnInit {
-
+export class CrearcompraPage implements OnInit {
   public id;
   //Variables para los bultos
   public numbulto = 1;
