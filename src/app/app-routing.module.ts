@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'crearconductor', loadChildren: () => import('./formularios/crearconductor/crearconductor.module').then(m => m.CrearconductorPageModule) },
   { path: 'crearpesajecompra/:id', loadChildren: () => import('./formularios/crearpesajecompra/crearpesajecompra.module').then(m => m.CrearpesajecompraPageModule) },
   { path: 'crearanticipos', loadChildren: () => import('./formularios/crearanticipos/crearanticipos.module').then(m => m.CrearanticiposPageModule) },
-  { path: 'creartrueque', loadChildren: () => import('./formularios/creartrueque/creartrueque.module').then(m => m.CreartruequePageModule) },
+  { path: 'creartrueque/:id', loadChildren: () => import('./formularios/creartrueque/creartrueque.module').then(m => m.CreartruequePageModule) },
   { path: 'crearenviocliente', loadChildren: () => import('./formularios/crearenviocliente/crearenviocliente.module').then(m => m.CrearenvioclientePageModule) },
   { path: 'cardcompras', loadChildren: () => import('./cards/cardcompras/cardcompras.module').then(m => m.CardcomprasPageModule) },
   { path: 'confirmarpesaje', loadChildren: () => import('./formularios/confirmarpesaje/confirmarpesaje.module').then(m => m.ConfirmarpesajePageModule) },
