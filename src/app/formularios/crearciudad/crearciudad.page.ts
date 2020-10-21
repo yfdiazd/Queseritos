@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { FBservicesService } from "../../fbservices.service";
+
+import { FBservicesService } from '../../fbservices.service';
 
 @Component({
   selector: "app-crearciudad",

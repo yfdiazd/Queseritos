@@ -1,10 +1,12 @@
-<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu"></ion-back-button>
-    </ion-buttons>
     <ion-title class="titulo">TIPOS DE TRUEQUE</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end" (click)="crearModal()">
+      <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -20,4 +22,4 @@
       <ion-icon name="hammer"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-</ion-content> 
+</ion-content>
