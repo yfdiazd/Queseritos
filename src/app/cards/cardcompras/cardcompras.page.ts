@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { AlertController } from '@ionic/angular';
 import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
-import { element } from 'protractor';
+import { element, Key } from 'protractor';
 import { Console } from 'console';
 
 @Component({
@@ -50,7 +50,9 @@ export class CardcomprasPage implements OnInit {
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
+    
   ) {
+    
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
     console.log("LOTE ULTIMO:   ", this.loteActual.toString());
     console.log("FECHA ACTUAL ----", this.FB.fechaActual())
@@ -61,11 +63,44 @@ export class CardcomprasPage implements OnInit {
     }
 
   }
-
+test: any [];
 
   ngOnInit() {
-
+    this.FB.getProveedorCompra();
+    this.listaCards();
+    
   }
+  objImp: any;
+  listaCards(){
+    console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
+    this.FB.proveedorCompraLiata.forEach(element =>{
+      let total = 0;
+      let totalCosto = 0;
+      let totalBultos = 0;
+      let keys = Object.keys(element);
+      let lotes = element[keys[0]].idProveedor;
+      keys.forEach(key =>{
+        total += element[key].pesoBultos;
+        totalBultos += element[key].totalBulto;
+        totalCosto += element[key].costoTotalCompra;
+        console.log("Imprimiendo loteeeeeeeeeeeeeee", total);
+        console.log("Imprimiendo peeeeeeeeeeeeeee", totalBultos);
+        console.log("Imprimiendo peeeeeeeeeeeeeee", totalCosto);
+      })
+      
+      this.objImp=({
+        idProvedor: lotes,
+        bultos: totalBultos,
+        costo: totalCosto,
+        peso: total
+      });
+       this.listaCard.push(this.objImp);
+    });
+    console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-",this.listaCard);
+    return this.listaCard;
+    
+  }
+  
 
   irVender() {
     this.router.navigate(["cardcompras"]);

@@ -12,58 +12,38 @@
 </ion-header>
 
 <ion-content>
-  <ion-row class="row1">
-    <div class="col1">
-      <ion-card class="card1">
-        <!-- [href]="'/cardcompras'" routerDirection="forward" --- OR -----  (click)="comprar()"-->
-        <div class="div-label-compras" (click)="comprar()">
-          <p class="label">COMPRAR</p>
-          <img src="../../assets/img/cart.png.png">
-        </div>
-
-        <div class="div-boton-lote">
-          <ion-button class="boton-n-lote" expand="full">
-            <ion-icon name="add"></ion-icon>
-            NUEVO LOTE
-          </ion-button>
-        </div>
-      </ion-card>
-    </div>
-    <div class="col2">
-      <ion-card class="card2">
-        <div class="div-label-ventas" (click)="comprar()">
-          <p class="label">VENDER</p>
-          <img src="../../assets/img/cartLleno.png">
-        </div>
-        <div class="div-boton-lote">
-          <ion-button class="boton-v-lote" (click)="ventas()" expand="full">
-            <ion-icon name="add"></ion-icon>
-            VENDER LOTE
-          </ion-button>
-        </div>
-      </ion-card>
-    </div>
-  </ion-row>
-  <ion-row class="row2">
-    <div class="col3">
-      <ion-card class="card3" (click)="irCardLotes()">
-        <div class="div-label-prov">
-          <p class="label">ESTADO</p>
-          <img src="../../assets/img/prov.png">
-        </div>
-        <div class="div-boton-prov">
-          <ion-button class="boton-n-prov" expand="full">
-            <ion-icon name="search"></ion-icon>
-            PROVEEDORES
-          </ion-button>
-        </div>
-      </ion-card>
-    </div>
-   
- </ion-row>
+  <div class="contenido">
+    <ion-row class="row1">
+      <div class="col1">
+        <ion-card class="card1" (click)="comprar()">
+          <!-- [href]="'/cardcompras'" routerDirection="forward" --- OR -----  (click)="comprar()"-->
+          <div class="div-label-compras" >
+            <p class="label">COMPRAR</p>
+            <img src="../../assets/img/cart.png.png">
+          </div>
+        </ion-card>
+      </div>
+      <div class="col2">
+        <ion-card class="card2">
+          <div class="div-label-ventas" (click)="comprar()">
+            <p class="label">VENDER</p>
+            <img src="../../assets/img/cartLleno.png">
+          </div>
+        </ion-card>
+      </div>
+    </ion-row>
+    <ion-row class="row2">
+      <div class="col3">
+        <ion-card class="card3" (click)="irCardLotes()">
+          <div class="div-label-prov">
+            <p class="label">ESTADO</p>
+            <img src="../../assets/img/prov.png">
+          </div>
+        </ion-card>
+      </div>
+    </ion-row>
+  </div>
 </ion-content>
-
-
 <ion-menu side="start" type="push" menuId="first" contentId="first">
   <ion-header>
     <ion-toolbar color="primary">

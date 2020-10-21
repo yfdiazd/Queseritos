@@ -28,7 +28,7 @@
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let card of this.listaNombres">
+    <ion-item-sliding class="slider" *ngFor="let card of listaCard">
       <ion-item class="item">
         <div class="div-card">
           <div class="div-head_button">
@@ -38,17 +38,17 @@
           </div>
           <ion-card class="card" (click)="irCompraDetallada(card)">
             <div class="div_head_title">
-              <p>{{card.nombre}}</p>
+              <p>{{card.idProvedor}}</p>
             </div>
             <div class="div_body_content">
               <div class="seccion-1">
                 <div class="div-cajita-1">
                   <p class="seccion_title">Bultos</p>
-                  <p class="seccion_valor_bulto">{{card.totalBulto}}</p>
+                  <p class="seccion_valor_bulto">{{card.bultos}}</p>
                 </div>
                 <div class="div-cajita-2">
                   <p class="seccion_title">Débito</p>
-                  <p class="seccion_valor" id="saldo-debito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}
+                  <p class="seccion_valor" id="saldo-debito2">{{card.costo | currency:'USD':true: '2.0-0'}}
                   </p>
                   <p class="seccion_title">Crédito</p>
                   <p class="seccion_valor" id="saldo-credito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}
@@ -58,7 +58,7 @@
               <div class="seccion-2">
                 <div class="div-cajita-1">
                   <p class="seccion2_title">Peso total</p>
-                  <p class="seccion2-valor">{{card.pesoBultos}} <span> Kg</span></p>
+                  <p class="seccion2-valor">{{card.peso}} <span> Kg</span></p>
                 </div>
                 <div class="div-cajita-2">
                   <p class="seccion2_title">Saldo</p>

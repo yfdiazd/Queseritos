@@ -1,12 +1,11 @@
-<ion-router-outlet id="myMenu" main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">TIPOS DE QUESO</ion-title>
-    <ion-buttons slot="start" (click)="cerrar()" color="danger">
-      <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end" (click)="crearModal()">
-      <ion-icon slot="icon-only" name="add" color= "success"></ion-icon>
+      <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -18,6 +17,9 @@
         <ion-card class="card">
           <p><span>Código: </span> {{lista.codigo}}</p>
           <p><span>Descripción: </span> {{lista.descripcion}}</p>
+          <p>Predeterminado </p>
+          <ion-toggle disabled checked="{{lista.predetermina}}"></ion-toggle>
+
         </ion-card>
       </ion-item>
       <ion-item-options side="end">

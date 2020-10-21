@@ -1,7 +1,7 @@
-<ion-router-outlet main></ion-router-outlet>
+
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="end">
+    <ion-buttons slot="start">
       <ion-button (click)="volver()" color="danger">CERRAR</ion-button>
     </ion-buttons>
     <ion-title class="titulo">CONDUCTORES</ion-title>
@@ -11,7 +11,7 @@
 <ion-content>
   <div class="div-formulario">
     <p>Tipo de identificación<span>*</span></p>
-    <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
+    <ion-select [(ngModel)]="idTipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
       interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
       <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
         {{lista.descripcion}}
