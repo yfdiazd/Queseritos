@@ -42,6 +42,7 @@ export class FBservicesService {
     idPesajeCompra: string;
     idConfirmarPesajeCompra: string;
     idAnticipos: string;
+    
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para obtener la fecha actual
@@ -63,6 +64,7 @@ export class FBservicesService {
     public pesajeCompraLista: any[];
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
+    public proveedorCompraLiata: any[];
     //Lista lotes
     listaLotes: any[] = [];
     public ultimoLote: any[];
@@ -191,6 +193,7 @@ export class FBservicesService {
                 //this.router.navigate(["main-menu"]);
 
                 this.usuarioUid = firebase.auth().currentUser.uid;
+                this.listaOrdenLotes();
                 this.mostrarNombre();
                 this.getCiudades();
                 this.getClientes();
@@ -200,7 +203,7 @@ export class FBservicesService {
                 this.getTipoAnticipos();
                 this.getTiposIdentificacion();
                 this.getConductor();
-                this.listaOrdenLotes();
+                
                 // this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -1003,27 +1006,27 @@ export class FBservicesService {
                 estado: 1
             });
     }
-    proceedorCompraLiata: any[];
+    
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
-    getProveedorCompra() {
+    async getProveedorCompra() {
         this.usuarioUid = firebase.auth().currentUser.uid;
         this.lastLote = [];
-        this.proceedorCompraLiata = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        this.proveedorCompraLiata = [];
+        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
                 .ref("usuario/" + this.usuarioUid + "/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
                 .on('value', snapshot => {
                     if (snapshot.exists && snapshot.val() !== null) {
-                        this.proceedorCompraLiata.push(snapshot.val());
+                        this.proveedorCompraLiata.push(snapshot.val());
                     } else {
 
                     }
                 });
 
         });
-        return this.proceedorCompraLiata;
+        return this.proveedorCompraLiata;
 
     }
 

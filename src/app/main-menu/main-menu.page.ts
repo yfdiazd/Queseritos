@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FBservicesService } from '../fbservices.service';
@@ -20,7 +20,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './main-menu.page.html',
   styleUrls: ['./main-menu.page.scss'],
 })
-export class MainMenuPage {
+export class MainMenuPage implements OnInit {
   public listaProveedores: any[];
   public input = { data: [] };
   constructor(
@@ -31,10 +31,13 @@ export class MainMenuPage {
     private alertController: AlertController,
     private router: Router
   ) { }
-
-  comprar() {
-    this.navCtrl.navigateForward('cardcompras');
-  }
+ngOnInit(){
+  
+}
+comprar() {
+  this.FB.getProveedorCompra();
+  this.navCtrl.navigateForward('cardcompras');
+}
   irCardLotes(){this.navCtrl.navigateForward('cardlistaproveedores');
     
   }
