@@ -16,7 +16,7 @@
       <p class="p-title">Tipo de queso:</p>
       <ion-select [(ngModel)]="tipoQueso" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
         multiple="false" ok-text="Aceptar" cancel-text="Cancelar" placeholder="Tipo de queso">
-        <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.productosLista">
+        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.productosLista">
           {{lista.descripcion}}
         </ion-select-option>
       </ion-select>

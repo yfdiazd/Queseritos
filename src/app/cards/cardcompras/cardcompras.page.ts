@@ -146,11 +146,7 @@ export class CardcomprasPage implements OnInit {
           text: 'Ok',
           handler: (value) => {
             console.log('Se envia el id del proveedor: ', value);
-<<<<<<< HEAD
-            this.navCtrl.navigateForward(["crearpesajecompra"]);
-=======
             this.navCtrl.navigateForward(["crearcompra/", value]);
->>>>>>> 6c56570d1114bde2bb0675b64edb4d0323868c3b
           }
         }
       ]
