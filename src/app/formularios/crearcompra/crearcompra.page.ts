@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Console } from 'console';
-
-
-import { FBservicesService } from '../../fbservices.service';
+import { FBservicesService } from 'src/app/fbservices.service';
 
 @Component({
-  selector: "app-crearpesajecompra",
-  templateUrl: "./crearpesajecompra.page.html",
-  styleUrls: ["./crearpesajecompra.page.scss"],
+  selector: 'app-crearcompra',
+  templateUrl: './crearcompra.page.html',
+  styleUrls: ['./crearcompra.page.scss'],
 })
-export class CrearpesajecompraPage implements OnInit {
-
-  public id;
+export class CrearcompraPage implements OnInit {
+  public idProveedor;
   //Variables para los bultos
   public numbulto = 1;
   public nuevoRegistro: any[] = [];
@@ -41,10 +37,10 @@ export class CrearpesajecompraPage implements OnInit {
   }
   ngOnInit() {
    
-    let id = this.route.snapshot.paramMap.get("id");
+     let id = this.route.snapshot.paramMap.get("id");
 
-    this.id = id;
-    console.log(" se recibe id: ", this.id);
+     this.idProveedor = id;
+    // console.log(" se recibe id: ", this.id);
   }
 
   removeRegister(index) {
@@ -126,9 +122,9 @@ export class CrearpesajecompraPage implements OnInit {
     console.log("El id del tipo de queso es: ", this.tipoQueso)
     console.log("Bultos enviados " + this.listaBultos.length);
     console.log("Peso que enviamos es de " + this.contadorPeso);
-    console.log("Se envia el id del proveedor: ", this.id)
+    console.log("Se envia el id del proveedor: ", this.idProveedor)
     this.FB.agregarPesaje(
-      this.id,
+      this.idProveedor,
       this.tipoQueso,
       this.listaBultos.length,
       this.contadorPeso,
