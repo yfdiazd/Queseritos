@@ -44,7 +44,11 @@ const routes: Routes = [
   {
     path: 'crearcompra/:id',
     loadChildren: () => import('./formularios/crearcompra/crearcompra.module').then(m => m.CrearcompraPageModule)
+  },  {
+    path: 'confirmarventa',
+    loadChildren: () => import('./formularios/confirmarventa/confirmarventa.module').then( m => m.ConfirmarventaPageModule)
   }
+
 
 
 ];

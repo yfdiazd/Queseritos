@@ -32,6 +32,8 @@ export class CardlistaproveedoresPage implements OnInit {
 
 listarproveedores()
 {
+
+
   this.listaprovlote = [];
   this.listanombres = [];
   this.FB.pesajeCompraLista.forEach(element => {
