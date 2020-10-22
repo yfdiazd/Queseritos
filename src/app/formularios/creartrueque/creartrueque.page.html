@@ -29,7 +29,7 @@
     <input type="text" placeholder="{{valorEdit}}" [(ngModel)]="valorEdit" />
     <div>
       <p>Suba el soporte del anticipo<span>*</span></p>
-      <input type="file" #fileInput/>
+      <input type="file" (change)="archSelecion($event)"/>
       <button type="button" (click)="upload()">Subir</button>
     </div>
     <ion-button (click)="guardar()" expand="full">

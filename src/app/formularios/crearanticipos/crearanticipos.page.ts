@@ -20,5 +20,14 @@ export class CrearanticiposPage implements OnInit {
     translucent: true
   };
 
+  selectedFile = null;
+  onFil(event) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  upload() {
+
+  }
+
 
 }

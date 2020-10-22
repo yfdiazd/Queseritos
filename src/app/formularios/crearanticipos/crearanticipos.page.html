@@ -22,7 +22,7 @@
       multiple="false" placeholder="Tipo de anticipo">
       <ion-select-option value="bacon" *ngFor="let lista of "> {{item}}</ion-select-option>
     </ion-select>
-
+ 
     <!--<select value="codigoanticipo" name="Concepto del anticipo en efectivo">
       <option>Empleado</option>
       <option>Debe listar los tipos de anticipo de la tabla tipos_anticipo</option>
@@ -34,7 +34,7 @@
     <div class="div-input">
       <ion-item class="item-file">
         <label for=""> subir archivo </label>
-        <input class="file-upload" onchange='cambiar()' type="file" />
+        <input class="file-upload" (change)="onFil($event)" type="file" />
       </ion-item>
     </div>
 
