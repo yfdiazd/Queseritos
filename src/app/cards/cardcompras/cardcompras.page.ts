@@ -50,36 +50,34 @@ export class CardcomprasPage implements OnInit {
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
-    
+
   ) {
-    
+
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
     console.log("LOTE ULTIMO:   ", this.loteActual.toString());
     console.log("FECHA ACTUAL ----", this.FB.fechaActual())
     if (this.loteActual.toString().includes(this.FB.fechaActual())) {
       console.log("Si es el mismo")
     } else {
-      this.presentAlertRadio2();
+      this.alertConfirmarNuevoLote();
     }
 
   }
-test: any [];
 
   ngOnInit() {
     this.FB.getProveedorCompra();
     this.listaCards();
-    
   }
   objImp: any;
-  listaCards(){
+  listaCards() {
     console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
-    this.FB.proveedorCompraLiata.forEach(element =>{
+    this.FB.proveedorCompraLiata.forEach(element => {
       let total = 0;
       let totalCosto = 0;
       let totalBultos = 0;
       let keys = Object.keys(element);
       let lotes = element[keys[0]].idProveedor;
-      keys.forEach(key =>{
+      keys.forEach(key => {
         total += element[key].pesoBultos;
         totalBultos += element[key].totalBulto;
         totalCosto += element[key].costoTotalCompra;
@@ -87,36 +85,35 @@ test: any [];
         console.log("Imprimiendo peeeeeeeeeeeeeee", totalBultos);
         console.log("Imprimiendo peeeeeeeeeeeeeee", totalCosto);
       })
-      
-      this.objImp=({
+
+      this.objImp = ({
         idProvedor: lotes,
         bultos: totalBultos,
         costo: totalCosto,
         peso: total
       });
-       this.listaCard.push(this.objImp);
+      this.listaCard.push(this.objImp);
     });
-    console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-",this.listaCard);
+    console.log("ListaCard: ", this.listaCard);
     return this.listaCard;
-    
+
   }
-  
 
   irVender() {
     this.router.navigate(["cardcompras"]);
   }
 
-  irPesajeCompra(card) {
-    // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearpesajecompra"]);
-    
+  irCompra(card) {
+    this.navCtrl.navigateForward(["crearcompra/", card.idProvedor]);
+
   }
 
-  irCompraDetallada() {
-    this.navCtrl.navigateForward(["cardcompradetallada"]);
+  irCompraDetallada(card) {
+    this.FB.getPesajeCompra(card.idProvedor);
+    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProvedor]);
   }
 
-  async presentActionSheet() {
+  async opciones() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Que deseas hacer?',
       cssClass: 'my-custom-class',
@@ -125,16 +122,13 @@ test: any [];
         text: 'Agregar proveedor',
         icon: 'person-add',
         handler: () => {
-          // this.presentAlertRadio();
           this.input = { data: [] };
           this.listaProveedores = [];
-          console.log("this.listaProveedores: ", this.listaProveedores)
           this.FB.proveedoresLista.forEach(element => {
             let provee = element;
             this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
           });
-          console.log("Se obtuvo esto_:", this.input);
-          this.presentAlertRadio();
+          this.alertProveedores();
 
           // var elemento = document.getElementById("select-alert");
           // elemento.click();
@@ -164,10 +158,10 @@ test: any [];
     await actionSheet.present();
   }
 
-  async presentAlertRadio() {
+  async alertProveedores() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Radio',
+      header: 'Proveedores',
       inputs: this.input.data,
       buttons: [
         {
@@ -190,7 +184,7 @@ test: any [];
     await alert.present();
   }
 
-  async presentAlertRadio2() {
+  async alertConfirmarNuevoLote() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'El ultimo lote no coincide con la fecha actual',
@@ -219,8 +213,5 @@ test: any [];
 
     await alert.present();
   }
-
-
-
 }
 

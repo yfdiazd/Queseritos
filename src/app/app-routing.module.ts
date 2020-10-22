@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'crearenviocliente', loadChildren: () => import('./formularios/crearenviocliente/crearenviocliente.module').then(m => m.CrearenvioclientePageModule) },
   { path: 'cardcompras', loadChildren: () => import('./cards/cardcompras/cardcompras.module').then(m => m.CardcomprasPageModule) },
   { path: 'confirmarpesaje', loadChildren: () => import('./formularios/confirmarpesaje/confirmarpesaje.module').then(m => m.ConfirmarpesajePageModule) },
-  { path: 'cardcompradetallada', loadChildren: () => import('./cards/cardcompradetallada/cardcompradetallada.module').then(m => m.CardcompradetalladaPageModule) },
+  { path: 'cardcompradetallada/:id', loadChildren: () => import('./cards/cardcompradetallada/cardcompradetallada.module').then(m => m.CardcompradetalladaPageModule) },
   { path: 'homeclientes', loadChildren: () => import('./home/homeclientes/homeclientes.module').then(m => m.HomeclientesPageModule) },
   { path: 'hometiposqueso', loadChildren: () => import('./home/hometiposqueso/hometiposqueso.module').then(m => m.HometiposquesoPageModule) },
   { path: 'hometipoanticipo', loadChildren: () => import('./home/hometipoanticipo/hometipoanticipo.module').then(m => m.HometipoanticipoPageModule) },

@@ -10,36 +10,48 @@
 
 <ion-content>
   <div class="div-principal">
-    <div class="div-saldo-l">
-      <div class="div-sdt">{{idproveedor}}</div>
-    </div>
-    <div class="div-saldo-a">
-      <div class="div-sdt">Peso Total:</div>
-      <div class="div-sdv">{{pesototal}} Kg</div>
-    </div>
+    <ion-title>{{nombreProv}}</ion-title>
   </div>
   <div class="div-secundario">
+    <ion-item-sliding class="slider" *ngFor="let card of FB.pesajeCompraLista">
+      <ion-item class="item">
+        <div class="div-card">
+          <ion-card class="card">
+            <div class="div_info">
+              <p>Tipo de queso: {{tipoQueso.descripcion}} </p>
+              <p>Fecha: {{card.fechaCompra}}</p>
+              <p>Peso total: {{card.pesoBultos}}</p>
+            </div>
+            <div class="div_tabla">
+              <p>Lista de bultos [ {{card.totalBulto}} ]</p>
+              <table class="table">
+                <thead class="thead">
+                  <th class="th1">Bulto</th>
+                  <th class="th2">Peso</th>
+                  <th class="th3"></th>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+                    <td class="td1">
+                      <label (ngModel)="numbulto">{{i+1}}</label>
+                    </td>
+                    <td class="td2">
+                      <label (ngModel)="numbulto">{{lista.peso}}</label>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ion-card>
+        </div>
+      </ion-item>
+      <!-- Opción para editar el registro -->
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
     <ion-row class="row1">
       <ion-col id="col1">
-        <ion-card id="card1">
-          <div id="title1">Tipo de queso: {{tipoqueso}}</div>
-          <div class="div-pesoc">
-            <div class="div-stq">Fecha: {{fechcompra}} </div>
-          </div>
-          <div class="div-atributo1">
-            <div>Bulto:{{idbulto}}</div>
-          </div>
-          <div class="div-atributo2">
-            <div>Peso: {{pesobulto}} Kg</div>
-          </div>
-          <div class="div-atributo1">
-            <div>Bulto:{{idbulto1}}</div>
-          </div>
-          <div class="div-atributo2">
-            <div>Peso: {{pesobulto2}} Kg</div>
-          </div>
-
-        </ion-card>
       </ion-col>
     </ion-row>
   </div>
