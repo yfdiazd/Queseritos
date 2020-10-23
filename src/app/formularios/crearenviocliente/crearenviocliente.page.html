@@ -66,10 +66,11 @@
       <p class="p-title">Placa<span>*</span></p>
       <input type="text" placeholder="{{placaEdit}}" [(ngModel)]="placaEdit" />
 
-      <div>
-        <p>Suba el soporte del anticipo<span>*</span></p>
-        <input type="file" #fileInput />
-        <button type="button" (click)="upload()">Subir</button>
+      <div class="div-input">
+        <ion-item class="item-file">
+          <label for=""> Subir archivo </label>
+          <input class="file-upload" onchange='cambiar()' type="file" />
+        </ion-item>
       </div>
 
       <div class="div-table">

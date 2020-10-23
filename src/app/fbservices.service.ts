@@ -42,7 +42,7 @@ export class FBservicesService {
     idPesajeCompra: string;
     idConfirmarPesajeCompra: string;
     idAnticipos: string;
-    
+
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para obtener la fecha actual
@@ -203,7 +203,6 @@ export class FBservicesService {
                 this.getTipoAnticipos();
                 this.getTiposIdentificacion();
                 this.getConductor();
-                
                 // this.generarLote();
                 console.log("usuario:", this.usuarioUid);
             } else {
@@ -1006,7 +1005,7 @@ export class FBservicesService {
                 estado: 1
             });
     }
-    
+
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
     async getProveedorCompra() {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -1073,6 +1072,28 @@ export class FBservicesService {
                 estado: 1
             });
         this.toastOperacionExitosa();
+    }
+
+
+
+    // Traer los pesajes del proveedor seleccionado
+
+    getPesajeCompra(idProveedor) {
+        //this.usuarioUid = firebase.auth().currentUser.uid;
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+            .on("value", snapshot => {
+                this.pesajeCompraLista = [];
+                snapshot.forEach(element => {
+                    this.pesajeCompraLista.push(element.val());
+
+                });
+                console.log("metodo lelelel " + this.pesajeCompraLista.length);
+                return this.pesajeCompraLista;
+            });
     }
 
 

@@ -25,7 +25,7 @@ ion-toolbar {
       .info {
         max-width: 700px;
         position: fixed;
-        height: 20%;
+        height: 10%;
         background-color: #c8f7f3;
         z-index: 1;
         width: 100%;
@@ -55,14 +55,13 @@ ion-toolbar {
         }
   
       }
-      
+    }  
 
     .div-secundario{
 
         max-width: 700px;
-        position: fixed;
-        height: 80%;
-        background-color:red;
+        height: 90%;
+        background-color:#c8f7f3;
         z-index: 1;
         width: 100%;
         padding-top: 5px;
@@ -90,10 +89,32 @@ ion-toolbar {
           --placeholder-color: #1a1446;
           --placeholder-opacity: 1;
   
+        }  
+        .file-upload{
+          position: absolute;
+          padding: 0;
+          text-align: center;
+          --background-color: gray;
+          width: 100%;
+          opacity: 0%;
+          margin: 0;
+          float:center;
         }
-  
-  
-      }
+        .item-file label{
+          text-align: center;
+          width: 100%;
+          //color: black;
+          color: #1a1446;
+        }
+
+        .div-input{
+        text-align: center;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        float: center;
+        background-color: gray;
+        }
   
       .btn-add {
         background-color: darkgreen;

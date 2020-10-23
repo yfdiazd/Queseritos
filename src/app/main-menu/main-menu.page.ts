@@ -39,6 +39,7 @@ export class MainMenuPage implements OnInit {
   comprar() {
     this.navCtrl.navigateForward('cardcompras');
   }
+
   irCardLotes() {
     this.navCtrl.navigateForward('cardlistaproveedores');
   }
@@ -47,6 +48,12 @@ export class MainMenuPage implements OnInit {
     this.menu.enable(true, 'first');
     this.menu.open('first');
   }
+
+  cerrarSesion(){
+    this.FB.cerrarSesion();
+  }
+
+  
 
   //Redireccionamiento a las paginas de configuración
   async irCiudad() {
