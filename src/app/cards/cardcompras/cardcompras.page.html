@@ -2,7 +2,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">COMPRAR A PROVEEDORES</ion-title>
   </ion-toolbar>
@@ -28,7 +28,7 @@
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let card of listaCard">
+    <ion-item-sliding class="slider" *ngFor="let card of listaPaVer"  >
       <ion-item class="item">
         <div class="div-card">
           <div class="div-head_button">
@@ -48,10 +48,10 @@
                 </div>
                 <div class="div-cajita-2">
                   <p class="seccion_title">Débito</p>
-                  <p class="seccion_valor" id="saldo-debito2">{{card.costo | currency:'USD':true: '2.0-0'}}
+                  <p class="seccion_valor" id="saldo-debito2">{{card.debito | currency:'USD':true: '2.0-0'}}
                   </p>
                   <p class="seccion_title">Crédito</p>
-                  <p class="seccion_valor" id="saldo-credito2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}
+                  <p class="seccion_valor" id="saldo-credito2">{{card.costo | currency:'USD':true: '2.0-0'}}
                   </p>
                 </div>
               </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="div-cajita-2">
                   <p class="seccion2_title">Saldo</p>
-                  <p class="seccion2-valor2">{{card.costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
+                  <p class="seccion2-valor2">{{card.costo - card.debito | currency:'USD':true: '2.0-0'}}</p>
                 </div>
               </div>
             </div>

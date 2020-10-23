@@ -31,18 +31,19 @@ export class MainMenuPage implements OnInit {
     private alertController: AlertController,
     private router: Router
   ) { }
-ngOnInit(){
-  
-}
-comprar() {
-  this.FB.getProveedorCompra();
-  this.navCtrl.navigateForward('cardcompras');
-}
-  irCardLotes(){this.navCtrl.navigateForward('cardlistaproveedores');
+
+  ngOnInit(){
     
   }
 
-    lista() {
+  comprar() {
+    this.navCtrl.navigateForward('cardcompras');
+  }
+  irCardLotes() {
+    this.navCtrl.navigateForward('cardlistaproveedores');
+  }
+
+  lista() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
   }
@@ -50,6 +51,8 @@ comprar() {
   //Redireccionamiento a las paginas de configuración
   async irCiudad() {
     this.navCtrl.navigateForward('homeciudades')
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HomeciudadesPage,
     //   cssClass: "my-custom-class"
@@ -59,6 +62,8 @@ comprar() {
   }
   async irCliente() {
     this.navCtrl.navigateForward('homeclientes');
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HomeclientesPage,
     //   cssClass: "my-custom-class"
@@ -67,6 +72,8 @@ comprar() {
   }
   async irConductor() {
     this.navCtrl.navigateForward('homeconductores');
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HomeconductoresPage,
     //   cssClass: "my-custom-class"
@@ -75,6 +82,8 @@ comprar() {
   }
   async irEstadoQueso() {
     this.navCtrl.navigateForward('homeestadoqueso');
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HomeestadoquesoPage,
     //   cssClass: "my-custom-class"
@@ -83,6 +92,8 @@ comprar() {
   }
   async irProveedor() {
     this.navCtrl.navigateForward('homeproveedores');
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HomeproveedoresPage,
     //   cssClass: "my-custom-class"
@@ -92,6 +103,8 @@ comprar() {
   }
   async irTipoAnticipo() {
     this.navCtrl.navigateForward('hometipoanticipo');
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HometipoanticipoPage,
     //   cssClass: "my-custom-class"
@@ -100,6 +113,8 @@ comprar() {
   }
   async irTipoIdentificacion() {
     this.navCtrl.navigateForward('hometiposidentificacion');
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HometiposidentificacionPage,
     //   cssClass: "my-custom-class"
@@ -108,6 +123,8 @@ comprar() {
   }
   async irTipoQueso() {
     this.navCtrl.navigateForward('hometiposqueso');
+    this.menu.enable(true, 'first');
+    this.menu.close('first');
     // const modal = await this.modalCtrl.create({
     //   component: HometiposquesoPage,
     //   cssClass: "my-custom-class"

@@ -1,18 +1,12 @@
-import { Component, Input, NgModule, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { FBservicesService } from "../../fbservices.service";
+
+import { FBservicesService } from '../../fbservices.service';
 
 @Component({
   selector: "app-crearclientes",
   templateUrl: "./crearclientes.page.html",
   styleUrls: ["./crearclientes.page.scss"],
-})
-@NgModule({
-  imports: [
-    // other imports ...
-    ReactiveFormsModule
-  ],
 })
 export class CrearclientesPage implements OnInit {
   //variables para agregar clientes
@@ -41,7 +35,8 @@ export class CrearclientesPage implements OnInit {
   @Input() id;
 
 
-  constructor(private FB: FBservicesService,
+  constructor(
+    private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController) { }
 

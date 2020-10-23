@@ -62,6 +62,7 @@ export class FBservicesService {
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
     public proveedorCompraLiata: any[];
+    public anticipoCompraLista: any [];
     //Lista lotes
     listaLotes: any[] = [];
     public ultimoLote: any[];
@@ -1004,6 +1005,16 @@ export class FBservicesService {
                 estado: 1
             });
     }
+    updatePesajeCompraValor(idProveedor, idPesajeCompra, valor){
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+            .database()
+            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+            .update({
+                costoTotalCompra: valor
+            });
+    }
     
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
     async getProveedorCompra() {
@@ -1073,5 +1084,26 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
+    getAnticipoProveedor(){
+        this.usuarioUid = firebase.auth().currentUser.uid;
+        this.lastLote = [];
+        this.anticipoCompraLista = [];
+        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+        this.proveedoresLista.forEach(element => {
+            firebase
+                .database()
+                .ref("usuario/" + this.usuarioUid + "/compras/" + element.id + "/" + this.lastLote.toString() + "/anticipos")
+                .on('value', snapshot => {
+                    if (snapshot.exists && snapshot.val() !== null) {
+                        this.anticipoCompraLista.push(snapshot.val());
+                    } else {
+
+                    }
+                });
+
+        });
+        return this.anticipoCompraLista;
+       
+    }
 
 }

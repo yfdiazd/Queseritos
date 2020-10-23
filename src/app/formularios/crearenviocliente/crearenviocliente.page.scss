@@ -1,0 +1,159 @@
+ion-toolbar {
+    --background: #1a1446;
+  }
+  
+  ion-title {
+    font-size: 20px;
+  }
+
+  .titulo{
+      color:white;
+      
+  }
+  
+  ion-content {
+    padding: 0;
+    margin: 0;
+    --background: #c8f7f3;
+    --color: #1a1446;
+  
+    .div-principal {
+      max-width: 700px;
+      margin: auto;
+      width: 100%;
+  
+      .info {
+        max-width: 700px;
+        position: fixed;
+        height: 20%;
+        background-color: #c8f7f3;
+        z-index: 1;
+        width: 100%;
+
+    .div-secundario{
+
+        max-width: 700px;
+        position: fixed;
+        height: 80%;
+        background-color: #c8f7f3;
+        z-index: 1;
+        width: 100%;
+
+  
+        .p-title {
+          width: 100%;
+          font-weight: bold;
+          color: #1a1446;
+          font-weight: bold;
+        }
+  
+        .select {
+          background-color: white;
+          color: #1a1446;
+          border-style: solid;
+          border-width: 2px;
+          border-color: #1a1446;
+          font-size: medium;
+          padding-left: 10px;
+          border-radius: 5px;
+          height: 40px;
+          width: 100%;
+          margin-bottom: 20px;
+          --placeholder-color: #1a1446;
+          --placeholder-opacity: 1;
+  
+        }
+  
+  
+      }
+  
+      .btn-add {
+        background-color: darkgreen;
+        float: right;
+        margin-top: 20px;
+        margin-bottom: 30px;
+      }
+  
+      .div-table {
+        max-width: 700px;
+        padding-top: 9em;
+        position: absolute;
+        z-index: 0;
+        width: 100%;
+  
+        p {
+          font-size: 3vh;
+          font-weight: bold;
+          text-align: center;
+          width: 100%;
+  
+        }
+  
+        .table {
+          width: 100%;
+  
+          .thead {
+            border: solid 2px #1a1446;
+            background: #1a1446;
+            color: white;
+  
+            .th1 {
+              width: 20%;
+            }
+  
+            .th2 {
+              width: 70%;
+            }
+  
+            .th3 {
+              width: 10%;
+            }
+          }
+  
+          .tbody {
+            border: solid 2px #1a1446;
+  
+            .td1 {
+              text-align: center;
+            }
+  
+            .td2 {
+  
+              input {
+                border-radius: 10px;
+                background: transparentize($color: #1a1446, $amount: 0.8);
+                text-align: center;
+                margin: 0;
+                height: 100%;
+                border-style: none;
+                width: 100%;
+              }
+  
+              input[type="number"]::-webkit-inner-spin-button,
+              input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+              }
+  
+              input[type="number"] {
+                -moz-appearance: textfield;
+              }
+            }
+  
+            .td3 {
+              text-align: center;
+  
+              .btn-close {
+                padding: 0;
+                width: 100%;
+                margin: 0;
+                background-color: #ffbdbd;
+                float: right;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  }

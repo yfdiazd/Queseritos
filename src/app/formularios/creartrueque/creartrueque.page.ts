@@ -1,5 +1,6 @@
 import { Component, Input, NgModule, OnInit } from "@angular/core";
 import { ModalController, ToastController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FBservicesService } from "../../fbservices.service";
 import { HttpClient } from '@angular/common/http';
@@ -14,6 +15,7 @@ export class CreartruequePage implements OnInit {
 
   @Input()tipoAnticipoEdit;
   @Input()valorEdit;
+  @Input() id1;
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -22,14 +24,52 @@ export class CreartruequePage implements OnInit {
   ) { }
 
   ngOnInit() {
-  }
+    // let id = this.route.snapshot.paramMap.get("id");
 
-  archSelecion(event){
-    this.selectedFile = event.target.files[0];
-  }
-
-  upload(){
+    // this.id = id;
+    // console.log(" se recibe id: ", this.id);
     
   }
 
+  guardar() {
+    if (this.id1 == undefined) {
+      console.log("Entro a crear anticipo")
+      if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
+        this.toastCamposRequeridos();
+      } else {
+        this.FB.registrarAnticiposApesajeCompra("1","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+        this.modalCtrl.dismiss();
+
+      }
+
+    } else {
+      console.log("Entro a MODIFICAR---")
+      if (this.tipoAnticipoEdit == "" || this.valorEdit == "") {
+        this.toastCamposRequeridos();
+        console.log("No modificaste nada")
+      } else {
+        this.FB.registrarAnticiposApesajeCompra("1","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+        this.modalCtrl.dismiss();
+      }
+    }
+  }
+
+
+  volver() {
+    this.modalCtrl.dismiss();
+  }
+
+  async toastCamposRequeridos() {
+    const toast = await this.toastController.create({
+      message: "Falta diligenciar campos requeridos.",
+      cssClass: "toast",
+      color: 'warning',
+      position: 'middle',
+      duration: 5000
+    });
+    toast.present();
+  }
 }
+
+
+
