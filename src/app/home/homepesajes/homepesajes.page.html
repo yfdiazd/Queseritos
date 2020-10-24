@@ -13,21 +13,48 @@
 
 <ion-content>
   <div class="div-principal">
-    <ion-item-sliding class="slider" *ngFor="let lista of FB.conductoresLista">
-      <ion-item class="item">
-        <ion-card class="card">
-          <p><span>Nombres: </span> {{lista.nombres}}</p>
-          <p><span>Apellidos: </span> {{lista.apellidos}}</p>
-          <p><span>Número de Identificación: </span> {{lista.numIndetificacion}}</p>
-          <p><span>Celular: </span> {{lista.celular}}</p>
-        </ion-card>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="eliminar(lista)">Eliminar</ion-item-option>
-      </ion-item-options>
-      <ion-item-options side="start">
-        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+    <div class="info">
+      <p class="p-title">Fecha Compra: "quemado"</p>
+      <p class="p-title">Tipo de Queso: "quemado"</p>
+      <p class="p-title">Total Bultos:</p>
+      <p class="p-title">Total Peso:</p>
+     </div>
+    <div class="div-table">
+      <p>Lista Confirmación</p>
+      <table class="table">
+        <thead class="thead">
+          <th class="th1">Estado</th>
+          <th class="th2">Peso</th>
+          <th class="th3">Valor<span>Kg</span></th>
+          <th class="th4"></th>
+        </thead>
+        <tbody class="tbody">
+          <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+            <td class="td1">
+              <label (ngModel)="numbulto">{{i+1}}</label>
+            </td>
+            <td class="td2">
+              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
+            </td>
+            <td class="td3">
+              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
+            </td>
+            <td class="td4">
+              <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="div_toggle">
+        <ion-chip class="btn-add" (click)="agregarBultoLista()">
+          <ion-icon name="add" color="success"></ion-icon>
+          <ion-label color="dark">Agregar</ion-label>
+        </ion-chip>
+      </div>
+      <ion-button (click)="guardar()" expand="full" color="success">
+        <ion-icon name="save-outline"></ion-icon>
+        <ion-label>Guardar</ion-label>
+      </ion-button>
+    </div>
   </div>
 </ion-content>
