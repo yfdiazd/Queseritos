@@ -12,6 +12,8 @@ ion-content {
     --background: #c8f7f3;
     --color: #1a1446;
 
+    
+
 
 
     .div-principal {
@@ -68,12 +70,25 @@ ion-content {
                 .div_info {
 
                     p {
-                        width: 90%;
+                        padding: 0;
+                        margin: 0;
+                        width: 100%;
                         color: #1a1446;
                     }
 
                     p>span {
                         font-weight: bold;
+                    }
+
+                    .p {
+                        width: 80%;
+                        display: inline-block;
+                    }
+
+                    .btn_popover{
+                        display: inline-block;
+                        position: absolute;
+                        width: 20%;
                     }
                 }
 
