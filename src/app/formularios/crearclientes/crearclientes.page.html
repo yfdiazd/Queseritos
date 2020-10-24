@@ -18,7 +18,7 @@
     </ion-select>
 
     <p>Número de identificación<span>*</span></p>
-    <input type="text" placeholder="{{numeroIdentificacionClienteEdit}}"
+    <input type="tel" maxlenght="15" placeholder="{{numeroIdentificacionClienteEdit}}"
       [(ngModel)]="numeroIdentificacionClienteEdit" />
 
     <p>Nombres<span>*</span></p>
@@ -39,14 +39,15 @@
     </ion-select>
 
     <p>Celular<span>*</span></p>
-    <input type="text" placeholder="{{celularClienteEdit}}" [(ngModel)]="celularClienteEdit" />
+    <input type="number" placeholder="{{celularClienteEdit}}" [(ngModel)]="celularClienteEdit" />
 
     <p>Dirección<span>*</span></p>
     <input type="text" placeholder="{{direccionClienteEdit}}" [(ngModel)]="direccionClienteEdit" />
 
     <p>Correo</p>
-    <input type="text" placeholder="{{correoClienteEdit}}" [(ngModel)]="correoClienteEdit" />
-
+    <input type="email" id="email" pattern=".+@.com" size="30" required placeholder="{{correoClienteEdit}}" [(ngModel)]="correoClienteEdit" />
+    
+    
   </div>
   <div>
     <ion-button (click)="guardar()" expand="full">
