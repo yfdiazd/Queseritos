@@ -32,6 +32,7 @@ const routes: Routes = [
   { path: 'hometiposidentificacion', loadChildren: () => import('./home/hometiposidentificacion/hometiposidentificacion.module').then(m => m.HometiposidentificacionPageModule) },
   { path: 'homeproveedores', loadChildren: () => import('./home/homeproveedores/homeproveedores.module').then(m => m.HomeproveedoresPageModule) },
   { path: 'homeconductores', loadChildren: () => import('./home/homeconductores/homeconductores.module').then(m => m.HomeconductoresPageModule) },
+  { path: 'homepesajes', loadChildren: () => import('./home/homepesajes/homepesajes.module').then(m => m.HomepesajesPageModule) },
   { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },
   {
     path: 'detallelote',

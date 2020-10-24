@@ -7,6 +7,7 @@ import { ConfirmarpesajePage } from 'src/app/formularios/confirmarpesaje/confirm
 import { CrearciudadPage } from 'src/app/formularios/crearciudad/crearciudad.page';
 import { CrearcompraPage } from 'src/app/formularios/crearcompra/crearcompra.page';
 import { HomeciudadesPage } from 'src/app/home/homeciudades/homeciudades.page';
+import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 
 @Component({
   selector: 'app-cardcompradetallada',
@@ -69,7 +70,7 @@ export class CardcompradetalladaPage implements OnInit {
   }
   async presentPopover(ev: any) {
     const popover = await this.popover.create({
-      component: HomeciudadesPage,
+      component: HomepesajesPage,
       cssClass: 'my-custom-class',
       event: ev,
       translucent: true
