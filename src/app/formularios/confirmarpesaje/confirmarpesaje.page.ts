@@ -20,7 +20,7 @@ export class ConfirmarpesajePage implements OnInit {
   listaBultos: any[] = ["1"];
   total = 0;
   valor = 0;
-
+  sumado = 0;
 
   @Input() pesoEdit;
   @Input() valorkgEdit;
