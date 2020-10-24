@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="titulo">DISTRIBUYE TU COMPRA</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/cardcompradetallada" color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end" (click)="crearModal()">
+      <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div class="div-principal">
+    <ion-item-sliding class="slider" *ngFor="let lista of FB.conductoresLista">
+      <ion-item class="item">
+        <ion-card class="card">
+          <p><span>Nombres: </span> {{lista.nombres}}</p>
+          <p><span>Apellidos: </span> {{lista.apellidos}}</p>
+          <p><span>Número de Identificación: </span> {{lista.numIndetificacion}}</p>
+          <p><span>Celular: </span> {{lista.celular}}</p>
+        </ion-card>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminar(lista)">Eliminar</ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </div>
+</ion-content>
