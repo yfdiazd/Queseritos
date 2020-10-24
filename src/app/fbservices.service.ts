@@ -1,13 +1,10 @@
-import { Injectable, ɵConsole } from "@angular/core";
-import { Router } from "@angular/router";
-import * as firebase from "firebase";
-import { ToastController, AlertController } from "@ionic/angular";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
+import * as firebase from 'firebase';
 import { element } from 'protractor';
-import { constants } from 'buffer';
-import { setTimeout } from 'timers';
-import { TIMEOUT } from 'dns';
-import { getuid } from 'process';
-import { storage, initializeApp } from 'firebase';
+
+
 //import { Camera, CameraOriginal } from '@ionic-native/camera';
 
 
@@ -91,6 +88,7 @@ export class FBservicesService {
         private router: Router,
         public toastController: ToastController,
         public alertController: AlertController,
+        
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();

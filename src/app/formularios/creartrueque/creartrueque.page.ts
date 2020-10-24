@@ -3,6 +3,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FBservicesService } from "../../fbservices.service";
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-creartrueque',
   templateUrl: './creartrueque.page.html',
@@ -10,7 +11,8 @@ import { FBservicesService } from "../../fbservices.service";
 })
 export class CreartruequePage implements OnInit {
   proveedor = "fernanda";
-  //public id;
+  selectedFile = null;
+
   @Input()tipoAnticipoEdit;
   @Input()valorEdit;
   @Input() id1;
@@ -18,7 +20,7 @@ export class CreartruequePage implements OnInit {
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController,
-    private route: ActivatedRoute
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -57,6 +59,14 @@ export class CreartruequePage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  archSelecion(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  upload(){
+    
+  }
+
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
       message: "Falta diligenciar campos requeridos.",
@@ -67,6 +77,7 @@ export class CreartruequePage implements OnInit {
     });
     toast.present();
   }
+
 }
 
 

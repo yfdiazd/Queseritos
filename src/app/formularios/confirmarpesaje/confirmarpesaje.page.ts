@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { element } from 'protractor';
 import { ActivatedRoute } from '@angular/router';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
 
 @Component({
@@ -21,14 +22,9 @@ export class ConfirmarpesajePage implements OnInit {
   valor = 0; 
   
 
-  //variables dummy 
-  proveedor = "fernanda";
-  fechcompra = "05-10-2020";
-  estadoqueso = "Borona";
-  estadoqueso1 = "Normal";
-  tipqueso = "Costeño";
-  totalbultos = 30;
-  pesototal = 1000;
+  @Input()pesoEdit;
+  @Input() valorkgEdit;
+  @Input() id;
   constructor(
     private FB: FBservicesService
   ) { }
@@ -47,7 +43,7 @@ export class ConfirmarpesajePage implements OnInit {
 
   guardar(){
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    // this.FB.agregarConfirmaPesaje( "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
+    this.FB.agregarConfirmaPesaje( 1602474514528, 1603329959288, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
   }
 

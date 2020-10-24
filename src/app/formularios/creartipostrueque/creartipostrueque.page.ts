@@ -18,6 +18,11 @@ export class CreartipostruequePage implements OnInit {
   ngOnInit() {
   }
 
+  ss(event){
+    console.log(event);
+  }
+
+
   guardarTipoTrueque() {
    
   }
