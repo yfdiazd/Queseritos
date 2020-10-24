@@ -38,6 +38,7 @@ export class MainMenuPage implements OnInit {
 
   comprar() {
     this.navCtrl.navigateForward('cardcompras');
+
   }
 
   irCardLotes() {

@@ -18,25 +18,32 @@
         <div class="div-card">
           <ion-card class="card">
             <div class="div_info">
-              <p>Tipo de queso: {{tipoQueso.descripcion}} </p>
-              <p>Fecha: {{card.fechaCompra}}</p>
-              <p>Peso total: {{card.pesoBultos}}</p>
+              <ion-button (click)="presentPopover()" expand="block" fill="clear" shape="round">
+                <ion-icon name="bar-chart"></ion-icon>
+                Click me
+              </ion-button>
+              <ion-button (click)="presentPopover()" expand="block" fill="clear" shape="round">
+                <ion-icon name="bar-chart"></ion-icon>
+                Click me
+              </ion-button>
+              <p><span>Tipo de queso:</span> {{tipoQueso.descripcion}} </p>
+              <p><span>Fecha:</span> {{card.fechaCompra}}</p>
+              <p><span>Peso total:</span> {{card.pesoBultos}}</p>
+              <p><span>Lista de bultos:</span> {{card.totalBulto}}</p>
             </div>
             <div class="div_tabla">
-              <p>Lista de bultos [ {{card.totalBulto}} ]</p>
               <table class="table">
                 <thead class="thead">
                   <th class="th1">Bulto</th>
-                  <th class="th2">Peso</th>
-                  <th class="th3"></th>
+                  <th class="th2">Peso (Kg)</th>
                 </thead>
                 <tbody class="tbody">
-                  <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+                  <tr class="tr" *ngFor="let lista of card.bultoLista ,let i=index">
                     <td class="td1">
                       <label (ngModel)="numbulto">{{i+1}}</label>
                     </td>
                     <td class="td2">
-                      <label (ngModel)="numbulto">{{lista.peso}}</label>
+                      <label (ngModel)="peso">{{lista.peso}}</label>
                     </td>
                   </tr>
                 </tbody>
@@ -45,6 +52,10 @@
           </ion-card>
         </div>
       </ion-item>
+      <!-- opción para eliminar registro -->
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="editarModal(lista)">Eliminar</ion-item-option>
+      </ion-item-options>
       <!-- Opción para editar el registro -->
       <ion-item-options side="start">
         <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>

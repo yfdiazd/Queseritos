@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
+import { ActionSheetController, AlertController, NavController, PopoverController } from '@ionic/angular';
+import { Key } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { ConfirmarpesajePage } from 'src/app/formularios/confirmarpesaje/confirmarpesaje.page';
+import { CrearciudadPage } from 'src/app/formularios/crearciudad/crearciudad.page';
+import { CrearcompraPage } from 'src/app/formularios/crearcompra/crearcompra.page';
+import { HomeciudadesPage } from 'src/app/home/homeciudades/homeciudades.page';
 
 @Component({
   selector: 'app-cardcompradetallada',
@@ -13,13 +18,14 @@ export class CardcompradetalladaPage implements OnInit {
     private alertController: AlertController,
     private route: ActivatedRoute,
     private FB: FBservicesService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private popover: PopoverController
   ) {
     // this.FB.getProveedorCompra();
     // this.listaPesajesProveedor();
+    this.FB.getProductos();
     this.traerTipoQueso();
     this.traerNombre();
-    this.traerListaBultos()
   }
 
   //--------------VARIABLES
@@ -41,6 +47,7 @@ export class CardcompradetalladaPage implements OnInit {
 
   traerTipoQueso() {
     this.tipoQueso = [];
+    this.FB.getProductos();
     this.FB.productosLista.forEach(element => {
       this.FB.pesajeCompraLista.forEach(element2 => {
         if (element.id == element2.idProducto) {
@@ -60,46 +67,14 @@ export class CardcompradetalladaPage implements OnInit {
       })
     })
   }
-
-  traerListaBultos() {
-    this.listaBultos = [];
-    this.FB.proveedoresLista.forEach(element => {
-      this.FB.pesajeCompraLista.forEach(element => {
-        this.listaBultos.push(element.bultoLista);
-      })
-    })
-    console.log("esta es la lista de bultos", this.listaBultos);
+  async presentPopover(ev: any) {
+    const popover = await this.popover.create({
+      component: HomeciudadesPage,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
   }
-
-  objImp: any;
-  // listaCards() {
-  //   console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
-  //   this.FB.proveedorCompraLiata.forEach(element => {
-  //     let total = 0;
-  //     let totalCosto = 0;
-  //     let totalBultos = 0;
-  //     let keys = Object.keys(element);
-  //     let lotes = element[keys[0]].idProveedor;
-  //     keys.forEach(key => {
-  //       total += element[key].pesoBultos;
-  //       totalBultos += element[key].totalBulto;
-  //       totalCosto += element[key].costoTotalCompra;
-  //       console.log("Imprimiendo loteeeeeeeeeeeeeee", total);
-  //       console.log("Imprimiendo peeeeeeeeeeeeeee", totalBultos);
-  //       console.log("Imprimiendo peeeeeeeeeeeeeee", totalCosto);
-  //     })
-
-  //     this.objImp = ({
-  //       idProvedor: lotes,
-  //       bultos: totalBultos,
-  //       costo: totalCosto,
-  //       peso: total
-  //     });
-  //     this.listaCard.push(this.objImp);
-  //   });
-  //   console.log("ListaCard: ", this.listaCard);
-  //   return this.listaCard;
-
-  // }
 
 }
