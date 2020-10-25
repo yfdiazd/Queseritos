@@ -86,7 +86,7 @@ export class ConfirmarpesajePage implements OnInit {
         console.log("Sumaaaaaa " + this.calculaCostoTotal);
 
         //updateeeeee
-         this.FB.updatePesajeCompraValor("1602474514528", "1603329959288", this.calculaCostoTotal);
+         //this.FB.updatePesajeCompraValor("1602474514528", "1603329959288", this.calculaCostoTotal);
       }
 
     });

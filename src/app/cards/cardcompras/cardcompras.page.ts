@@ -60,7 +60,7 @@ export class CardcomprasPage implements OnInit {
     if (this.loteActual.toString().includes(this.FB.fechaActual())) {
       console.log("Si es el mismo")
     } else {
-      this.presentAlertRadio2();
+      this.alertConfirmarNuevoLote();
     }
 
   }
@@ -170,11 +170,12 @@ export class CardcomprasPage implements OnInit {
 
   }
 
-  irCompraDetallada() {
-    this.navCtrl.navigateForward(["cardcompradetallada"]);
+  irCompraDetallada(card) {
+    this.FB.getPesajeCompra(card.idProvedor);
+    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProvedor]);
   }
 
-  async presentActionSheet() {
+  async opciones() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Que deseas hacer?',
       cssClass: 'my-custom-class',
@@ -183,16 +184,13 @@ export class CardcomprasPage implements OnInit {
         text: 'Agregar proveedor',
         icon: 'person-add',
         handler: () => {
-          // this.presentAlertRadio();
           this.input = { data: [] };
           this.listaProveedores = [];
-          console.log("this.listaProveedores: ", this.listaProveedores)
           this.FB.proveedoresLista.forEach(element => {
             let provee = element;
             this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
           });
-          console.log("Se obtuvo esto_:", this.input);
-          this.presentAlertRadio();
+          this.alertProveedores();
 
           // var elemento = document.getElementById("select-alert");
           // elemento.click();
@@ -222,10 +220,10 @@ export class CardcomprasPage implements OnInit {
     await actionSheet.present();
   }
 
-  async presentAlertRadio() {
+  async alertProveedores() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Radio',
+      header: 'Proveedores',
       inputs: this.input.data,
       buttons: [
         {
@@ -248,7 +246,7 @@ export class CardcomprasPage implements OnInit {
     await alert.present();
   }
 
-  async presentAlertRadio2() {
+  async alertConfirmarNuevoLote() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'El ultimo lote no coincide con la fecha actual',
@@ -277,8 +275,5 @@ export class CardcomprasPage implements OnInit {
 
     await alert.present();
   }
-
-
-
 }
 

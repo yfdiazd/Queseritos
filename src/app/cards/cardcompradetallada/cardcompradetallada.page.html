@@ -10,36 +10,59 @@
 
 <ion-content>
   <div class="div-principal">
-    <div class="div-saldo-l">
-      <div class="div-sdt">{{idproveedor}}</div>
-    </div>
-    <div class="div-saldo-a">
-      <div class="div-sdt">Peso Total:</div>
-      <div class="div-sdv">{{pesototal}} Kg</div>
-    </div>
+    <ion-title>{{nombreProv}}</ion-title>
   </div>
   <div class="div-secundario">
+    <ion-item-sliding class="slider" *ngFor="let card of FB.pesajeCompraLista">
+      <ion-item class="item">
+        <div class="div-card">
+          <ion-card class="card">
+            <div class="div_info">
+              <ion-button (click)="presentPopover()" expand="block" fill="clear" shape="round">
+                <ion-icon name="bar-chart"></ion-icon>
+                Click me
+              </ion-button>
+              <ion-button (click)="presentPopover()" expand="block" fill="clear" shape="round">
+                <ion-icon name="bar-chart"></ion-icon>
+                Click me
+              </ion-button>
+              <p><span>Tipo de queso:</span> {{tipoQueso.descripcion}} </p>
+              <p><span>Fecha:</span> {{card.fechaCompra}}</p>
+              <p><span>Peso total:</span> {{card.pesoBultos}}</p>
+              <p><span>Lista de bultos:</span> {{card.totalBulto}}</p>
+            </div>
+            <div class="div_tabla">
+              <table class="table">
+                <thead class="thead">
+                  <th class="th1">Bulto</th>
+                  <th class="th2">Peso (Kg)</th>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="tr" *ngFor="let lista of card.bultoLista ,let i=index">
+                    <td class="td1">
+                      <label (ngModel)="numbulto">{{i+1}}</label>
+                    </td>
+                    <td class="td2">
+                      <label (ngModel)="peso">{{lista.peso}}</label>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ion-card>
+        </div>
+      </ion-item>
+      <!-- opción para eliminar registro -->
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="editarModal(lista)">Eliminar</ion-item-option>
+      </ion-item-options>
+      <!-- Opción para editar el registro -->
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
     <ion-row class="row1">
       <ion-col id="col1">
-        <ion-card id="card1">
-          <div id="title1">Tipo de queso: {{tipoqueso}}</div>
-          <div class="div-pesoc">
-            <div class="div-stq">Fecha: {{fechcompra}} </div>
-          </div>
-          <div class="div-atributo1">
-            <div>Bulto:{{idbulto}}</div>
-          </div>
-          <div class="div-atributo2">
-            <div>Peso: {{pesobulto}} Kg</div>
-          </div>
-          <div class="div-atributo1">
-            <div>Bulto:{{idbulto1}}</div>
-          </div>
-          <div class="div-atributo2">
-            <div>Peso: {{pesobulto2}} Kg</div>
-          </div>
-
-        </ion-card>
       </ion-col>
     </ion-row>
   </div>
