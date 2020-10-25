@@ -19,13 +19,13 @@
     </ion-select>
 
     <p>Número de Identificación <span>*</span></p>
-    <input maxlength="15" type="text" placeholder="{{numidentificacionEdit}}" [(ngModel)]="numidentificacionEdit" />
+    <input max=15 type="tel" [(ngModel)]="numidentificacionEdit" />
     <p>Nombres <span>*</span></p>
-    <input maxlength="30" type="text" placeholder="{{nombresEdit}}" [(ngModel)]="nombresEdit" />
+    <input maxlength="30" type="text"  [(ngModel)]="nombresEdit" />
     <p>Apellidos</p>
-    <input maxlength="30" type="text" placeholder="{{apellidosEdit}}" [(ngModel)]="apellidosEdit" />
+    <input maxlength="30" type="text"  [(ngModel)]="apellidosEdit" />
     <p>Celular <span>*</span></p>
-    <input maxlength="12" type="text" placeholder="{{celularEdit}}" [(ngModel)]="celularEdit" />
+    <input maxlength="12" type="tel"  [(ngModel)]="celularEdit" />
   </div>
   <div>
     <ion-button (click)="guardarConductor()" expand="full">
