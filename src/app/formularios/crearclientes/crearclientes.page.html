@@ -24,10 +24,10 @@
     <input maxlenght="30" type="text" [(ngModel)]="nombresClienteEdit" />
 
     <p>Apellidos</p>
-    <input type="text" [(ngModel)]="apellidosClienteEdit" />
+    <input maxlenght="30" type="text" [(ngModel)]="apellidosClienteEdit" />
 
     <p>nombre empresa<span>*</span></p>
-    <input type="text" [(ngModel)]="empresaClienteEdit" />
+    <input maxlenght="30"type="text" [(ngModel)]="empresaClienteEdit" />
 
     <p>Ciudad<span>*</span></p>
     <ion-select [(ngModel)]="codigociudadEdit" class="select" [interfaceOptions]="customAlertOptions2" interface="alert"
@@ -38,13 +38,13 @@
     </ion-select>
 
     <p>Celular<span>*</span></p>
-    <input type="tel" maxlength="10"  [(ngModel)]="celularClienteEdit" />
+    <input maxlenght="12" type="tel" maxlength="10"  [(ngModel)]="celularClienteEdit" />
 
     <p>Dirección<span>*</span></p>
-    <input type="text"  [(ngModel)]="direccionClienteEdit" />
+    <input maxlenght="30" type="text"  [(ngModel)]="direccionClienteEdit" />
 
     <p>Correo</p>
-    <input type="email" [(ngModel)]="correoClienteEdit" />
+    <input maxlenght="50" type="email" [(ngModel)]="correoClienteEdit" />
 
   </div>
   <div>
