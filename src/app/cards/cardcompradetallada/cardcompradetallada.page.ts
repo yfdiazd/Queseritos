@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ActionSheetController, AlertController, NavController, PopoverController } from '@ionic/angular';
-import { Key } from 'protractor';
+import { AlertController, NavController, PopoverController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
-import { ConfirmarpesajePage } from 'src/app/formularios/confirmarpesaje/confirmarpesaje.page';
-import { CrearciudadPage } from 'src/app/formularios/crearciudad/crearciudad.page';
-import { CrearcompraPage } from 'src/app/formularios/crearcompra/crearcompra.page';
-import { HomeciudadesPage } from 'src/app/home/homeciudades/homeciudades.page';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 
 @Component({
@@ -35,6 +30,7 @@ export class CardcompradetalladaPage implements OnInit {
   public tipoQueso: any;
   public nombreProv: any;
   public listaBultos: any;
+  public listaBultosCompra: any;
   //Datos consolidados para la visualización
   listaCard: any[] = [];
 
@@ -68,14 +64,32 @@ export class CardcompradetalladaPage implements OnInit {
       })
     })
   }
-  async presentPopover(ev: any) {
+  async presentPopover(card) {
+    this.traerlistBulto(card.id);
     const popover = await this.popover.create({
       component: HomepesajesPage,
-      cssClass: 'my-custom-class',
-      event: ev,
-      translucent: true
+      cssClass: 'popover_style',
+      translucent: true,
+      componentProps: {
+        idCompra: card.id,
+        idProv: card.idProveedor,
+        listaBultos: this.listaBultosCompra
+      },
     });
+    console.log("CARD_:", card.id)
+    console.log("CARD_:", this.listaBultosCompra)
     return await popover.present();
+  }
+
+  traerlistBulto(id) {
+    console.log("IdCompra_:", id)
+    this.listaBultosCompra = [];
+    this.FB.pesajeCompraLista.forEach(element => {
+      if (element.id == id) {
+        this.listaBultosCompra.push(element.bultoLista);
+        console.log("peso: ", element.bultoLista);
+      }
+    });
   }
 
 }

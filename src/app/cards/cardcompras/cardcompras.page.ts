@@ -38,6 +38,7 @@ export class CardcomprasPage implements OnInit {
   dataCard: any[] = [];
   //Datos consolidados para la visualización
   listaCard: any[] = [];
+  listaAnt: any[] = [];
 
   loteActual: any;
 
@@ -63,14 +64,20 @@ export class CardcomprasPage implements OnInit {
     }
 
   }
+  test: any[];
 
   ngOnInit() {
     this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
+
     this.listaCards();
+
   }
   objImp: any;
+  onbjAnt: any;
   listaCards() {
     console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
+    console.log("Helppppppppp ", this.FB.anticipoCompraLista);
     this.FB.proveedorCompraLiata.forEach(element => {
       let total = 0;
       let totalCosto = 0;
@@ -81,10 +88,8 @@ export class CardcomprasPage implements OnInit {
         total += element[key].pesoBultos;
         totalBultos += element[key].totalBulto;
         totalCosto += element[key].costoTotalCompra;
-        console.log("Imprimiendo loteeeeeeeeeeeeeee", total);
-        console.log("Imprimiendo peeeeeeeeeeeeeee", totalBultos);
-        console.log("Imprimiendo peeeeeeeeeeeeeee", totalCosto);
-      })
+
+      });
 
       this.objImp = ({
         idProvedor: lotes,
@@ -94,8 +99,64 @@ export class CardcomprasPage implements OnInit {
       });
       this.listaCard.push(this.objImp);
     });
-    console.log("ListaCard: ", this.listaCard);
-    return this.listaCard;
+    this.FB.anticipoCompraLista.forEach(element => {
+      let totalAnt: number = 0;
+      let keys = Object.keys(element);
+      let prov = element[keys[0]].idProveedor;
+      keys.forEach(key => {
+        totalAnt += element[key].valorAnticipo;
+      });
+      this.onbjAnt = ({
+        valorAnt: totalAnt,
+        idProvee: prov
+      });
+      this.listaAnt.push(this.onbjAnt);
+    });
+
+
+
+    console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
+    console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
+    this.metodoque();
+    return this.listaCard, this.listaAnt;
+
+  }
+  listaPaVer: any[];
+  obtPa: any;
+  metodoque() {
+    this.listaPaVer = [];
+    this.listaCard.forEach(element => {
+      this.listaAnt.forEach(element2 => {
+        if (element.idProvedor === element2.idProvee) {
+          this.obtPa = ({
+            idProvedor: element.idProvedor,
+            bultos: element.bultos,
+            costo: element.costo,
+            peso: element.peso,
+            debito: element2.valorAnt
+          });
+          this.listaPaVer.push(this.obtPa);
+        } else if (!this.listaPaVer.filter(valor => {
+          return valor.idProvedor === element.idProvedor;
+
+        })) {
+          this.obtPa = ({
+            idProvedor: element.idProvedor,
+            bultos: element.bultos,
+            costo: element.costo,
+            peso: element.peso,
+            debito: 0
+          });
+          this.listaPaVer.push(this.obtPa);
+        }
+      });
+
+    });
+    console.log("*----------------------------- ", this.listaPaVer);
+    return this.listaPaVer;
+  }
+
+  listaAnticipo() {
 
   }
 
@@ -103,8 +164,9 @@ export class CardcomprasPage implements OnInit {
     this.router.navigate(["cardcompras"]);
   }
 
-  irCompra(card) {
-    this.navCtrl.navigateForward(["crearcompra/", card.idProvedor]);
+  irPesajeCompra(card) {
+    // this.FB.getNumBultos(card.id);
+    this.navCtrl.navigateForward(["crearpesajecompra"]);
 
   }
 

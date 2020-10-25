@@ -59,14 +59,6 @@ export class CreartruequePage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  archSelecion(event){
-    this.selectedFile = event.target.files[0];
-  }
-
-  upload(){
-    
-  }
-
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
       message: "Falta diligenciar campos requeridos.",
@@ -77,7 +69,6 @@ export class CreartruequePage implements OnInit {
     });
     toast.present();
   }
-
 }
 
 

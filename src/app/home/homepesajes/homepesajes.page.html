@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">DISTRIBUYE TU COMPRA</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompradetallada" color="danger"></ion-back-button>
-    </ion-buttons>
     <ion-buttons slot="end" (click)="crearModal()">
       <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
     </ion-buttons>
@@ -14,38 +11,40 @@
 <ion-content>
   <div class="div-principal">
     <div class="info">
-      <p class="p-title">Fecha Compra: "quemado"</p>
-      <p class="p-title">Tipo de Queso: "quemado"</p>
-      <p class="p-title">Total Bultos:</p>
-      <p class="p-title">Total Peso:</p>
-     </div>
-    <div class="div-table">
-      <p>Lista Confirmación</p>
-      <table class="table">
-        <thead class="thead">
-          <th class="th1">Estado</th>
-          <th class="th2">Peso</th>
-          <th class="th3">Valor<span>Kg</span></th>
-          <th class="th4"></th>
-        </thead>
-        <tbody class="tbody">
-          <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
-            <td class="td1">
-              <label (ngModel)="numbulto">{{i+1}}</label>
-            </td>
-            <td class="td2">
-              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
-            </td>
-            <td class="td3">
-              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
-            </td>
-            <td class="td4">
+      <p><span>Fecha Compra:</span> "quemado"</p>
+      <p><span>Tipo de Queso:</span> "quemado"</p>
+      <p><span>Total Bultos:</span></p>
+      <p><span>Total Peso:</span></p>
+    </div>
+  </div>
+  <div class="div_tabla">
+    <p>Lista Confirmación</p>
+    <table class="table">
+      <thead class="thead">
+        <th class="th1">Estado</th>
+        <th class="th2">Peso <span>Kg</span></th>
+        <th class="th3">Valor</th>
+      </thead>
+      <tbody class="tbody">
+        <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+          <td class="td1">
+            <label (ngModel)="numbulto">{{i+1}}</label>
+          </td>
+          <td class="td2">
+            <label (ngModel)="peso">{{lista.peso}}</label>
+            <!-- <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" /> -->
+          </td>
+          <td class="td3">
+            <label (ngModel)="numbulto">{{saldo}}</label>
+            <!-- <input type="number" value="{{saldo}}" (ngModelChange)="edit($event)" /> -->
+          </td>
+          <!-- <td class="td4">
               <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="div_toggle">
+            </td> -->
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="div_toggle">
         <ion-chip class="btn-add" (click)="agregarBultoLista()">
           <ion-icon name="add" color="success"></ion-icon>
           <ion-label color="dark">Agregar</ion-label>
@@ -54,7 +53,7 @@
       <ion-button (click)="guardar()" expand="full" color="success">
         <ion-icon name="save-outline"></ion-icon>
         <ion-label>Guardar</ion-label>
-      </ion-button>
-    </div>
+      </ion-button> -->
   </div>
+
 </ion-content>

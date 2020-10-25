@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { element } from 'protractor';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController, PopoverController, ToastController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
 
 @Component({
@@ -19,45 +19,50 @@ export class ConfirmarpesajePage implements OnInit {
   calculaCostoTotal: number = 0;
   listaBultos: any[] = ["1"];
   total = 0;
-  valor = 0; 
-  
+  valor = 0;
+  sumado = 0;
 
-  @Input()pesoEdit;
+  @Input() pesoEdit;
   @Input() valorkgEdit;
   @Input() id;
+
+  @Input() idCompra;
+  @Input() idProv;
   constructor(
-    private FB: FBservicesService
+    private FB: FBservicesService,
+    private popover: PopoverController
   ) { }
 
   ngOnInit() {
     this.FB.verificarsesion();
   }
 
-  confirmar(){
-    this.listaBultos.push(""); 
+  confirmar() {
+    this.listaBultos.push("");
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
     // this.FB.agregarConfirmaPesaje("1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
   }
-  
 
-  guardar(){
+
+  guardar() {
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    this.FB.agregarConfirmaPesaje( 1602474514528, 1603329959288, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
+    this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
+    this.popover.dismiss();
   }
 
-  calcular(valor){
+  calcular(valor) {
     this.total = (valor * this.cantidadEstado);
     console.log("imprime valor", valor, this.total)
   }
 
-  eliminarBulto(){
+  eliminarBulto() {
 
 
   }
 
-  editarBulto(){
+  editarBulto() {
 
   }
   // guardarPesajeConfirmado() {
@@ -73,16 +78,16 @@ export class ConfirmarpesajePage implements OnInit {
   //   //this.FB.agregarConfirmaPesaje(this.idPesajeCompra, this.idproveedor, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
   // }
   sumaCostoTotal() {
-    
+
     console.log("Ejecucion del metttt " + this.FB.pesajeCompraLista.length);
     this.FB.pesajeCompraLista.forEach(element => {
-      if (element.id == "1602537527210") {
+      if (element.id == "1603329959288") {
         console.log("Vallllll " + element.costoTotalCompra);
         this.calculaCostoTotal = (element.costoTotalCompra + this.costoTotalEstado);
         console.log("Sumaaaaaa " + this.calculaCostoTotal);
 
         //updateeeeee
-        // this.FB.updatePesajeCompra("1602537527210", this.calculaCostoTotal);
+         //this.FB.updatePesajeCompraValor("1602474514528", "1603329959288", this.calculaCostoTotal);
       }
 
     });

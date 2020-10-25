@@ -62,6 +62,7 @@ export class FBservicesService {
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
     public proveedorCompraLiata: any[];
+    public anticipoCompraLista: any [];
     //Lista lotes
     listaLotes: any[] = [];
     public ultimoLote: any[];
@@ -88,7 +89,7 @@ export class FBservicesService {
         private router: Router,
         public toastController: ToastController,
         public alertController: AlertController,
-        
+
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
@@ -155,7 +156,7 @@ export class FBservicesService {
 
                     firebase
                         .database()
-                        .ref("usuario/" + this.usuarioUid + "/datosBasicos")
+                        .ref("usuario/datosBasicos")
                         .push({
                             usuario: user,
                             email: email
@@ -186,11 +187,10 @@ export class FBservicesService {
     verificarsesion() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                this.getUid();
-                this.offLine();
+                
                 //this.router.navigate(["main-menu"]);
 
-                this.usuarioUid = firebase.auth().currentUser.uid;
+                
                 this.listaOrdenLotes();
                 this.mostrarNombre();
                 this.getCiudades();
@@ -201,8 +201,7 @@ export class FBservicesService {
                 this.getTipoAnticipos();
                 this.getTiposIdentificacion();
                 this.getConductor();
-                // this.generarLote();
-                console.log("usuario:", this.usuarioUid);
+                
             } else {
                 console.log("No hay sesion, toca loguear");
                 this.router.navigate(["login"]);
@@ -306,11 +305,6 @@ export class FBservicesService {
         toas.present();
     }
 
-    //obtiene el uid del usuario
-    getUid() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        return this.usuarioUid;
-    }
 
 
     //-------------Metodo que permite consultar la fecha actual:----------------------------------
@@ -326,14 +320,14 @@ export class FBservicesService {
     //-----------------------------Metodos creacion parametrizacion------------------------------------------------------
     //Metodo que permite crear productos
     crearProdcuto(codigoProducto, descripcionProducto, flagEstado) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "productos");
+        
+        this.pathPush = ("usuario/configuracion/" + "productos");
         if (this.validaCodigos(codigoProducto, this.pathPush) == false) {
 
             this.idProducto = this.idGenerator();
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + this.idProducto)
+                .ref("usuario/configuracion/" + "productos/" + this.idProducto)
                 .set({
                     id: this.idProducto,
                     codigo: codigoProducto,
@@ -350,7 +344,7 @@ export class FBservicesService {
     }
     //Metodo que permite crear proveedores
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
 
         if (apellidoProveedor == null) {
             apellidoProveedor = "";
@@ -361,12 +355,12 @@ export class FBservicesService {
         if (correoProveedor == null) {
             correoProveedor = "";
         }
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores");
+        this.pathPush = ("usuario/configuracion/" + "proveedores");
         if (this.validaNumDocs(numIndetificacionProveedor, this.pathPush) == false) {
             this.idProveedor = this.idGenerator();
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + this.idProveedor)
+                .ref("usuario/configuracion/" + "proveedores/" + this.idProveedor)
                 .set({
                     id: this.idProveedor,
                     idTipoIdentificacion: tipoIdentificacionProveedor,
@@ -389,13 +383,13 @@ export class FBservicesService {
     }
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion");
+        
+        this.pathPush = ("usuario/configuracion/" + "tiposIdentificacion");
         if (this.validaCodigos(codigoTipoIdentificacion, this.pathPush) == false) {
             this.idTipoIdentificacion = this.idGenerator();
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion/" + this.idTipoIdentificacion)
+                .ref("usuario/configuracion/" + "tiposIdentificacion/" + this.idTipoIdentificacion)
                 .set({
                     id: this.idTipoIdentificacion,
                     codigo: codigoTipoIdentificacion,
@@ -410,13 +404,13 @@ export class FBservicesService {
     }
     //Metodo para agregar estados de producto
     agregarEstadoProducto(codigoEstadoProducto, descripcionEstadoProducto) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos");
+        
+        this.pathPush = ("usuario/configuracion/" + "estadoProductos");
         if (this.validaCodigos(codigoEstadoProducto, this.pathPush) == false) {
             this.idEstadoProducto = this.idGenerator()
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos/" + this.idEstadoProducto)
+                .ref("usuario/configuracion/" + "estadoProductos/" + this.idEstadoProducto)
                 .set({
                     id: this.idEstadoProducto,
                     codigo: codigoEstadoProducto,
@@ -431,13 +425,13 @@ export class FBservicesService {
     }
     //Metodo para agregar el tipo de anticipo
     agregarTipoAnticipo(codigoTipoAnticipo, descripcionTipoanticipo) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo");
+        
+        this.pathPush = ("usuario/configuracion/" + "tipoAnticipo");
         if (this.validaCodigos(codigoTipoAnticipo, this.pathPush) == false) {
             this.idTipoAnticipo = this.idGenerator();
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + this.idTipoAnticipo)
+                .ref("usuario/configuracion/" + "tipoAnticipo/" + this.idTipoAnticipo)
                 .set({
                     id: this.idTipoAnticipo,
                     codigo: codigoTipoAnticipo,
@@ -454,14 +448,14 @@ export class FBservicesService {
 
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+       
         this.pathPush = "";
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad");
+        this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
             this.idCiudad = this.idGenerator();
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion" + "/ciudad/" + this.idCiudad)
+                .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
                 .onDisconnect()
                 .set({
                     id: this.idCiudad,
@@ -498,13 +492,13 @@ export class FBservicesService {
             correoCliente = "";
         }
         this.pathPush = "";
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "cliente");
+        this.pathPush = ("usuario/configuracion/" + "cliente");
         if (this.validaNumDocs(numeroIdentificacionCliente, this.pathPush) == false) {
 
             this.idCliente = this.idGenerator();
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + this.idCliente)
+                .ref("usuario/configuracion/" + "cliente/" + this.idCliente)
                 .set({
                     id: this.idCliente,
                     idTipoIdentificacion: tipoIdentificacion,
@@ -526,17 +520,17 @@ export class FBservicesService {
     }
     //Metodo para agregar conductores
     agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         if (apelidoConductor == null) {
             apelidoConductor = "";
         }
         this.pathPush = "";
-        this.pathPush = ("usuario/" + this.usuarioUid + "/configuracion/" + "conductor");
+        this.pathPush = ("usuario/configuracion/" + "conductor");
         if (this.validaNumDocs(numeroIdentificacionConductor, this.pathPush) == false) {
             this.idConductor = this.idGenerator();
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + this.idConductor)
+                .ref("usuario/configuracion/" + "conductor/" + this.idConductor)
                 .set({
                     id: this.idConductor,
                     idTipoIdentificacion: tipoIdentificacionConductor,
@@ -601,7 +595,7 @@ export class FBservicesService {
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad")
+            .ref("usuario/configuracion/" + "/ciudad")
             .on("value", snapshot => {
                 this.ciudadesLista = [];
                 snapshot.forEach(element => {
@@ -616,7 +610,7 @@ export class FBservicesService {
     getClientes() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/cliente")
+            .ref("usuario/configuracion/" + "/cliente")
             .on("value", snapshot => {
                 this.clientesLista = [];
                 snapshot.forEach(element => {
@@ -630,7 +624,7 @@ export class FBservicesService {
     getEstadoProducto() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/estadoProductos")
+            .ref("usuario/configuracion/" + "/estadoProductos")
             .on("value", snaphot => {
                 this.estadoProductoLista = [];
                 snaphot.forEach(element => {
@@ -644,7 +638,7 @@ export class FBservicesService {
     getProductos() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/productos")
+            .ref("usuario/configuracion/" + "/productos")
             .on("value", snaphot => {
                 this.productosLista = [];
                 snaphot.forEach(element => {
@@ -658,7 +652,7 @@ export class FBservicesService {
     getProveedores() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/proveedores")
+            .ref("usuario/configuracion/" + "/proveedores")
             .on("value", snaphot => {
                 this.proveedoresLista = [];
                 snaphot.forEach(element => {
@@ -672,7 +666,7 @@ export class FBservicesService {
     getTipoAnticipos() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tipoAnticipo")
+            .ref("usuario/configuracion/" + "/tipoAnticipo")
             .on("value", snaphot => {
                 this.tipoAnticipoLista = [];
                 snaphot.forEach(element => {
@@ -687,7 +681,7 @@ export class FBservicesService {
     getTiposIdentificacion() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/tiposIdentificacion")
+            .ref("usuario/configuracion/" + "/tiposIdentificacion")
             .on("value", snaphot => {
                 this.tiposIdentificacionLista = [];
                 snaphot.forEach(element => {
@@ -701,7 +695,7 @@ export class FBservicesService {
     getConductor() {
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor")
+            .ref("usuario/configuracion/" + "conductor")
             .on("value", snaphot => {
                 this.conductoresLista = [];
                 snaphot.forEach(element => {
@@ -716,10 +710,10 @@ export class FBservicesService {
     //----------------------------------Metodos para eliminar estado 0-----------------------------------------
 
     deleteProducto(idProducto) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + idProducto)
+            .ref("usuario/configuracion/" + "productos/" + idProducto)
             .update({
                 estado: 0
 
@@ -727,11 +721,11 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     deleteProveedor(idProveedor) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + idProveedor)
+            .ref("usuario/configuracion/" + "proveedores/" + idProveedor)
             .update({
                 estado: 0
             });
@@ -739,21 +733,21 @@ export class FBservicesService {
     }
     deleteTipoIdentificacion(idTipoIdentificacion) {
 
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion/" + idTipoIdentificacion)
+            .ref("usuario/configuracion/" + "tiposIdentificacion/" + idTipoIdentificacion)
             .update({
                 estado: 0
             });
         this.toastOperacionExitosa();
     }
     deleteEstadoProducto(idEstadoProducto) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos/" + idEstadoProducto)
+            .ref("usuario/configuracion/" + "estadoProductos/" + idEstadoProducto)
             .update({
 
                 estado: 0
@@ -761,11 +755,11 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     deleteTipoAnticipo(idTipoAnticipo) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
+            .ref("usuario/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
             .update({
                 estado: 0
             });
@@ -773,32 +767,32 @@ export class FBservicesService {
     }
 
     deleteCiudad(idCiudad) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/" + idCiudad)
+            .ref("usuario/configuracion/" + "/ciudad/" + idCiudad)
             .update({
                 estado: 0
             }).then()
         this.toastOperacionExitosa();
     }
     deleteCliente(idCliente) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + idCliente)
+            .ref("usuario/configuracion/" + "cliente/" + idCliente)
             .update({
                 estado: 0
             });
         this.toastOperacionExitosa();
     }
     deleteConductor(idConductor) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + idConductor)
+            .ref("usuario/configuracion/" + "conductor/" + idConductor)
             .update({
                 estado: 0
             });
@@ -806,11 +800,11 @@ export class FBservicesService {
     }
     //----------------------------------------Metodos para actualizar  registros configuracion-------------------------------
     updateProdcuto(idProducto, codigoProducto, descripcionProducto, flagEstado) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         this.idProducto = this.idGenerator();
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "productos/" + idProducto)
+            .ref("usuario/configuracion/" + "productos/" + idProducto)
             .update({
                 codigo: codigoProducto,
                 descripcion: descripcionProducto,
@@ -819,7 +813,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateProveedor(idProveedor, tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         if (apellidoProveedor == null) {
             apellidoProveedor = "";
         }
@@ -831,7 +825,7 @@ export class FBservicesService {
         }
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "proveedores/" + idProveedor)
+            .ref("usuario/configuracion/" + "proveedores/" + idProveedor)
             .update({
                 idTipoIdentificacion: tipoIdentificacionProveedor,
                 numIndetificacion: numIndetificacionProveedor,
@@ -845,10 +839,10 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateTipoIdentificacion(idTipoIdentificacion, codigoTipoIdentificacion, descripcionTipoIdentificacion) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tiposIdentificacion/" + idTipoIdentificacion)
+            .ref("usuario/configuracion/" + "tiposIdentificacion/" + idTipoIdentificacion)
             .update({
                 codigo: codigoTipoIdentificacion,
                 descripcion: descripcionTipoIdentificacion
@@ -856,10 +850,10 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateEstadoProducto(idEstadoProducto, codigoEstadoProducto, descripcionEstadoProducto) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "estadoProductos/" + idEstadoProducto)
+            .ref("usuario/configuracion/" + "estadoProductos/" + idEstadoProducto)
             .update({
                 codigo: codigoEstadoProducto,
                 descripcion: descripcionEstadoProducto
@@ -867,10 +861,10 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
+            .ref("usuario/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
             .update({
                 codigo: codigoTipoAnticipo,
                 descripcion: descripcionTipoanticipo
@@ -881,14 +875,14 @@ export class FBservicesService {
 
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "/ciudad/" + idCiudad)
+            .ref("usuario/configuracion/" + "/ciudad/" + idCiudad)
             .update({
                 codigo: codigoCiudad,
                 descripcion: describcionCiudad
             });
     }
     updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresCliente, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         if (apellidosCliente == null) {
             apellidosCliente = "";
         }
@@ -900,7 +894,7 @@ export class FBservicesService {
         }
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "cliente/" + idCliente)
+            .ref("usuario/configuracion/" + "cliente/" + idCliente)
             .update({
                 idTipoIdentificacion: tipoIdentificacion,
                 numIndetificacion: numeroIdentificacionCliente,
@@ -916,13 +910,13 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateConductor(idConductor, tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         if (apelidoConductor == null) {
             apelidoConductor = "";
         }
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/" + "conductor/" + idConductor)
+            .ref("usuario/configuracion/" + "conductor/" + idConductor)
             .set({
                 idTipoIdentificacion: tipoIdentificacionConductor,
                 numIndetificacion: numeroIdentificacionConductor,
@@ -942,16 +936,16 @@ export class FBservicesService {
 
     //Generador de lotes fechaactual+L+consecutivo de lotes 1, 2, 3, ....
     generarLote() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         this.idLote = this.idGenerator();
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/lotes")
+            .ref("usuario/configuracion/lotes")
             .on("value", snapshot => {
                 console.log("Se genera lote correctamente" + snapshot.numChildren());
                 firebase
                     .database()
-                    .ref("usuario/" + this.usuarioUid + "/configuracion/lotes/" + this.idLote)
+                    .ref("usuario/configuracion/lotes/" + this.idLote)
                     .set({
                         id: this.idLote,
                         lote: (this.fechaActual() + "-L" + snapshot.numChildren())
@@ -963,10 +957,10 @@ export class FBservicesService {
     //Obtiene los lotes del mas antiguo al mas nuevo
 
     listaOrdenLotes() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/configuracion/lotes")
+            .ref("usuario/configuracion/lotes")
             .orderByValue()
             .on("value", snapshot => {
                 this.ultimoLote = [];
@@ -983,13 +977,13 @@ export class FBservicesService {
     //pesaje Copmpra
     agregarPesaje(idProveedor, codigoProducto, totalBultos, pesoBultos, bultosTT) {
 
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + this.idPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + this.idPesajeCompra)
             .set({
                 id: this.idPesajeCompra,
                 lote: this.lastLote.toString(),
@@ -1003,17 +997,16 @@ export class FBservicesService {
                 estado: 1
             });
     }
-
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
     async getProveedorCompra() {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         this.lastLote = [];
         this.proveedorCompraLiata = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
-                .ref("usuario/" + this.usuarioUid + "/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
+                .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
                 .on('value', snapshot => {
                     if (snapshot.exists && snapshot.val() !== null) {
                         this.proveedorCompraLiata.push(snapshot.val());
@@ -1030,13 +1023,13 @@ export class FBservicesService {
 
     //Confirmar pesajes
     agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         this.idConfirmarPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
                 codigoLote: this.lastLote.toString(),
@@ -1052,13 +1045,13 @@ export class FBservicesService {
     //metodo que permtie registrar un anticipo a la compra
 
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
-        this.usuarioUid = firebase.auth().currentUser.uid;
+        
         this.idAnticipos = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/anticipos/" + this.idAnticipos)
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/anticipos/" + this.idAnticipos)
             .set({
                 id: this.idAnticipos,
                 fechaAnticipo: this.fechaActual(),
@@ -1072,17 +1065,38 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
+    getAnticipoProveedor(){
+        
+        this.lastLote = [];
+        this.anticipoCompraLista = [];
+        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+        this.proveedoresLista.forEach(element => {
+            firebase
+                .database()
+                .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/anticipos")
+                .on('value', snapshot => {
+                    if (snapshot.exists && snapshot.val() !== null) {
+                        this.anticipoCompraLista.push(snapshot.val());
+                    } else {
+
+                    }
+                });
+
+        });
+        return this.anticipoCompraLista;
+       
+    }
 
 
     // Traer los pesajes del proveedor seleccionado
 
     getPesajeCompra(idProveedor) {
-        //this.usuarioUid = firebase.auth().currentUser.uid;
+        
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/" + this.usuarioUid + "/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
             .on("value", snapshot => {
                 this.pesajeCompraLista = [];
                 snapshot.forEach(element => {

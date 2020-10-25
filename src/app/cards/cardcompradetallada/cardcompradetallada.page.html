@@ -18,18 +18,13 @@
         <div class="div-card">
           <ion-card class="card">
             <div class="div_info">
-              <ion-button (click)="presentPopover()" expand="block" fill="clear" shape="round">
-                <ion-icon name="bar-chart"></ion-icon>
-                Click me
-              </ion-button>
-              <ion-button (click)="presentPopover()" expand="block" fill="clear" shape="round">
-                <ion-icon name="bar-chart"></ion-icon>
-                Click me
-              </ion-button>
               <p><span>Tipo de queso:</span> {{tipoQueso.descripcion}} </p>
               <p><span>Fecha:</span> {{card.fechaCompra}}</p>
-              <p><span>Peso total:</span> {{card.pesoBultos}}</p>
-              <p><span>Lista de bultos:</span> {{card.totalBulto}}</p>
+              <p class="p"><span>Peso total:</span> {{card.pesoBultos}}</p>
+              <ion-button class="btn_popover" (click)="presentPopover(card)" fill="clear" shape="round">
+                <ion-icon name="bar-chart"></ion-icon>
+              </ion-button>
+              <p class="p"><span>Lista de bultos:</span> {{card.totalBulto}}</p>
             </div>
             <div class="div_tabla">
               <table class="table">
