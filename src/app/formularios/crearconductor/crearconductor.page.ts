@@ -43,7 +43,7 @@ export class CrearconductorPage implements OnInit {
       if (this.idTipoIdentificacionEdit == undefined || this.numidentificacionEdit == undefined || this.nombresEdit == undefined || this.celularEdit == undefined ) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit, this.apellidosEdit, this.celularEdit);
+        this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
         this.modalCtrl.dismiss();
       }
 
@@ -53,7 +53,7 @@ export class CrearconductorPage implements OnInit {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {
-        this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit, this.apellidosEdit, this.celularEdit);
+        this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
         this.modalCtrl.dismiss();
       }
     }
