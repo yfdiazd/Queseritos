@@ -11,9 +11,10 @@ import { CrearclientesPage } from './crearclientes.page';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     IonicModule,
     CrearclientesPageRoutingModule
   ],
   declarations: [CrearclientesPage]
 })
-export class CrearclientesPageModule {}
+export class CrearclientesPageModule { }

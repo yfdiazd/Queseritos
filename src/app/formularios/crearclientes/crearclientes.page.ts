@@ -59,7 +59,7 @@ export class CrearclientesPage {
       if (this.tipoIdentificacionEdit == undefined || this.numeroIdentificacionClienteEdit == undefined || this.nombresClienteEdit == undefined || this.codigociudadEdit == undefined || this.celularClienteEdit == undefined || this.direccionClienteEdit == undefined || this.empresaClienteEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.agregarCliente(this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit, this.apellidosClienteEdit, this.empresaClienteEdit, this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit, this.correoClienteEdit);
+        this.FB.agregarCliente(this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
 
@@ -69,7 +69,7 @@ export class CrearclientesPage {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {
-        this.FB.updateCliente(this.id, this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit, this.apellidosClienteEdit, this.empresaClienteEdit, this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit, this.correoClienteEdit);
+        this.FB.updateCliente(this.id, this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
     }
