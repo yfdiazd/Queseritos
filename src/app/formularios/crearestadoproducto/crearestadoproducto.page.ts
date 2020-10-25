@@ -28,14 +28,14 @@ export class CrearestadoproductoPage implements OnInit {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.agregarEstadoProducto(this.codigoEdit, this.descripcionEdit);
+        this.FB.agregarEstadoProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
     } else {
       if (this.codigoEdit == "" || this.descripcionEdit == "") {
         this.toastCamposRequeridos();
       } else {
-        this.FB.updateEstadoProducto(this.id, this.codigoEdit, this.descripcionEdit);
+        this.FB.updateEstadoProducto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
 

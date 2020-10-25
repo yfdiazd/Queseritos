@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
+import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
-import { AlertController } from '@ionic/angular';
-import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
-import { element, Key } from 'protractor';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-cardcompras',
@@ -39,11 +36,13 @@ export class CardcomprasPage implements OnInit {
   //Datos consolidados para la visualización
   listaCard: any[] = [];
   listaAnt: any[] = [];
-
+  //Variable donde se guarda el lote actual en el que se esta comprando
   loteActual: any;
 
-  pesoMostrar = 0;
-  bultosMostrar = 0;
+  objImp: any;
+  onbjAnt: any;
+  listaPaVer: any;
+  obtPa: any;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -53,7 +52,18 @@ export class CardcomprasPage implements OnInit {
     private navCtrl: NavController
 
   ) {
+    this.validacionLote();
+  }
 
+
+  ngOnInit() {
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
+    this.listaCards();
+
+  }
+
+  validacionLote() {
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
     console.log("LOTE ULTIMO:   ", this.loteActual.toString());
     console.log("FECHA ACTUAL ----", this.FB.fechaActual())
@@ -62,19 +72,8 @@ export class CardcomprasPage implements OnInit {
     } else {
       this.alertConfirmarNuevoLote();
     }
-
   }
-  test: any[];
 
-  ngOnInit() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
-
-    this.listaCards();
-
-  }
-  objImp: any;
-  onbjAnt: any;
   listaCards() {
     console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
     console.log("Helppppppppp ", this.FB.anticipoCompraLista);
@@ -116,34 +115,57 @@ export class CardcomprasPage implements OnInit {
       });
       this.listaAnt.push(this.onbjAnt);
     });
-
-
-
     console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
     console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
-    this.metodoque();
+    this.recorreListas();
     return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
 
   }
-  listaPaVer: any[];
-  obtPa: any;
+
   metodoque() {
     this.listaPaVer = [];
     this.listaCard.forEach(element => {
-      if (this.listaAnt.length === 0) {
-        this.obtPa = ({
-          idProvedor: element.idProvedor,
-          bultos: element.bultos,
-          costo: element.costo,
-          peso: element.peso,
-          debito: 0
-        });
-        this.listaPaVer.push(this.obtPa);
-      } else {
+      this.listaAnt.forEach(element2 => {
+        if (element.idProvedor == element2.idProvee) {
+          this.obtPa = ({
+            idProvedor: element.idProvedor,
+            bultos: element.bultos,
+            costo: element.costo,
+            peso: element.peso,
+            debito: element2.valorAnt
+          });
+          this.listaPaVer.push(this.obtPa);
+        } else if (!this.listaPaVer.filter(valor => {
+          return valor.idProvedor == element.idProvedor;
+        })) {
+          console.log("llego vaciooo ");
+          this.obtPa = ({
+            idProvedor: element.idProvedor,
+            bultos: element.bultos,
+            costo: element.costo,
+            peso: element.peso,
+            debito: 0
+          });
+          this.listaPaVer.push(this.obtPa);
+        }
+      });
 
+    });
+    console.log("*----------------------------- ", this.listaPaVer);
+    return this.listaPaVer;
+  }
 
+  listaAnticipo() {
+
+  }
+
+  recorreListas() {
+    this.listaPaVer = [];
+    if (this.listaAnt.length != 0) {
+      console.log("siii diferente a 0000 ", this.listaAnt.length);
+      this.listaCard.forEach(element => {
         this.listaAnt.forEach(element2 => {
-          if (element.idProvedor === element2.idProvee) {
+          if (element.idProvedor == element2.idProvee) {
             this.obtPa = ({
               idProvedor: element.idProvedor,
               bultos: element.bultos,
@@ -152,9 +174,12 @@ export class CardcomprasPage implements OnInit {
               debito: element2.valorAnt
             });
             this.listaPaVer.push(this.obtPa);
-          } else if (!this.listaPaVer.filter(valor => {
-            return valor.idProvedor === element.idProvedor;
-          })) {
+            this.obtPa = null;
+          } else if (this.listaPaVer.filter(valor => {
+            return valor.idProvedor == element.idProvedor;
+          }).length == 0 && this.listaAnt.filter(valorF =>{
+            return valorF.idProvee == element.idProvedor
+          }).length == 0) {
             console.log("llego vaciooo ");
             this.obtPa = ({
               idProvedor: element.idProvedor,
@@ -164,17 +189,27 @@ export class CardcomprasPage implements OnInit {
               debito: 0
             });
             this.listaPaVer.push(this.obtPa);
+            this.obtPa = null;
           }
         });
-      }
-    });
+      });
+    } else {
+      this.listaCard.forEach(elementC => {
+        this.obtPa = ({
+          idProvedor: elementC.idProvedor,
+          bultos: elementC.bultos,
+          costo: elementC.costo,
+          peso: elementC.peso,
+          debito: 0
+        });
+        this.listaPaVer.push(this.obtPa);
+        this.obtPa = null;
+      });
+    }
     console.log("*----------------------------- ", this.listaPaVer);
     return this.listaPaVer;
   }
 
-  listaAnticipo() {
-
-  }
 
   irVender() {
     this.router.navigate(["cardcompras"]);

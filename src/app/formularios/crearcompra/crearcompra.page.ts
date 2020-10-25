@@ -68,10 +68,8 @@ export class CrearcompraPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Crear bulto ' + (this.listaBultos.length + 1),
-
       inputs: [
         {
-
           name: 'peso',
           type: 'text',
           value: ""
