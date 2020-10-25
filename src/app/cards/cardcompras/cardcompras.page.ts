@@ -107,7 +107,7 @@ export class CardcomprasPage implements OnInit {
       let prov = element[keys[0]].idProveedor;
       keys.forEach(key => {
         totalAnt += element[key].valorAnticipo;
-        this.saldodebitototal += (this.saldodebitototal + element[key].valorAnticipo);
+        this.saldodebitototal += element[key].valorAnticipo;
       });
       this.onbjAnt = ({
         valorAnt: totalAnt,
