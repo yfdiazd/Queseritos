@@ -88,7 +88,4 @@ export class HomeconductoresPage implements OnInit {
   async cerrar() {
     this.navCtrl.navigateForward('main-menu');
   }
-
-
-
 }

@@ -923,7 +923,8 @@ export class FBservicesService {
                 numIndetificacion: numeroIdentificacionConductor,
                 nombres: nombreConductor,
                 apellidos: apelidoConductor,
-                celular: celularConductor
+                celular: celularConductor,
+                estado: 1
             });
         this.toastOperacionExitosa();
     }
