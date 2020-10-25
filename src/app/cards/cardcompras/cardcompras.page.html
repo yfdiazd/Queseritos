@@ -23,7 +23,7 @@
       </div>
       <div class="fila2_col2">
         <p class="div-t">Saldo</p>
-        <p class="div-v">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+        <p class="div-v">{{(saldocreditotal - saldodebitototal) | currency:'USD':true: '2.0-0'}}</p>
       </div>
     </div>
   </div>
