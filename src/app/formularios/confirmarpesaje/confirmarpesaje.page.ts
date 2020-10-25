@@ -47,11 +47,7 @@ export class ConfirmarpesajePage implements OnInit {
 
   guardar() {
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-<<<<<<< HEAD
-     this.FB.agregarConfirmaPesaje("123", "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-=======
     this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
->>>>>>> e28a4cd9016843e2dc4ebba63b070f4a951ec2d8
     this.sumaCostoTotal();
     this.popover.dismiss();
   }
