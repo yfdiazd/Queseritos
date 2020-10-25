@@ -452,6 +452,7 @@ export class FBservicesService {
         this.pathPush = "";
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
+            console.log("Prubeasssss ");
             this.idCiudad = this.idGenerator();
             firebase
                 .database()
@@ -595,7 +596,7 @@ export class FBservicesService {
 
         firebase
             .database()
-            .ref("usuario/configuracion/" + "/ciudad")
+            .ref("usuario/configuracion/ciudad")
             .on("value", snapshot => {
                 this.ciudadesLista = [];
                 snapshot.forEach(element => {
@@ -610,7 +611,7 @@ export class FBservicesService {
     getClientes() {
         firebase
             .database()
-            .ref("usuario/configuracion/" + "/cliente")
+            .ref("usuario/configuracion/cliente")
             .on("value", snapshot => {
                 this.clientesLista = [];
                 snapshot.forEach(element => {
@@ -624,7 +625,7 @@ export class FBservicesService {
     getEstadoProducto() {
         firebase
             .database()
-            .ref("usuario/configuracion/" + "/estadoProductos")
+            .ref("usuario/configuracion/estadoProductos")
             .on("value", snaphot => {
                 this.estadoProductoLista = [];
                 snaphot.forEach(element => {
@@ -638,7 +639,7 @@ export class FBservicesService {
     getProductos() {
         firebase
             .database()
-            .ref("usuario/configuracion/" + "/productos")
+            .ref("usuario/configuracion/productos")
             .on("value", snaphot => {
                 this.productosLista = [];
                 snaphot.forEach(element => {
@@ -652,7 +653,7 @@ export class FBservicesService {
     getProveedores() {
         firebase
             .database()
-            .ref("usuario/configuracion/" + "/proveedores")
+            .ref("usuario/configuracion/proveedores")
             .on("value", snaphot => {
                 this.proveedoresLista = [];
                 snaphot.forEach(element => {
@@ -666,7 +667,7 @@ export class FBservicesService {
     getTipoAnticipos() {
         firebase
             .database()
-            .ref("usuario/configuracion/" + "/tipoAnticipo")
+            .ref("usuario/configuracion/tipoAnticipo")
             .on("value", snaphot => {
                 this.tipoAnticipoLista = [];
                 snaphot.forEach(element => {
@@ -681,7 +682,7 @@ export class FBservicesService {
     getTiposIdentificacion() {
         firebase
             .database()
-            .ref("usuario/configuracion/" + "/tiposIdentificacion")
+            .ref("usuario/configuracion/tiposIdentificacion")
             .on("value", snaphot => {
                 this.tiposIdentificacionLista = [];
                 snaphot.forEach(element => {
@@ -695,7 +696,7 @@ export class FBservicesService {
     getConductor() {
         firebase
             .database()
-            .ref("usuario/configuracion/" + "conductor")
+            .ref("usuario/configuracion/conductor")
             .on("value", snaphot => {
                 this.conductoresLista = [];
                 snaphot.forEach(element => {
