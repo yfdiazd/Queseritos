@@ -76,7 +76,7 @@ export class HomeconductoresPage implements OnInit {
           text: "SI",
           handler: () => {
             console.log("Confirm Okay");
-            this.FB.deleteCiudad(lista.id);
+            this.FB.deleteConductor(lista.id);
           },
         },
       ],

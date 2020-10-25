@@ -917,7 +917,7 @@ export class FBservicesService {
         firebase
             .database()
             .ref("usuario/configuracion/" + "conductor/" + idConductor)
-            .set({
+            .update({
                 idTipoIdentificacion: tipoIdentificacionConductor,
                 numIndetificacion: numeroIdentificacionConductor,
                 nombres: nombreConductor,
