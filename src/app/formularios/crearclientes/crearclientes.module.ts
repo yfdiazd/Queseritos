@@ -11,7 +11,6 @@ import { CrearclientesPage } from './crearclientes.page';
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
     IonicModule,
     CrearclientesPageRoutingModule
   ],
