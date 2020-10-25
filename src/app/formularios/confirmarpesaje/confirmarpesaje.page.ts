@@ -81,13 +81,13 @@ export class ConfirmarpesajePage implements OnInit {
 
     console.log("Ejecucion del metttt " + this.FB.pesajeCompraLista.length);
     this.FB.pesajeCompraLista.forEach(element => {
-      if (element.id == "1602537527210") {
+      if (element.id == "1603329959288") {
         console.log("Vallllll " + element.costoTotalCompra);
         this.calculaCostoTotal = (element.costoTotalCompra + this.costoTotalEstado);
         console.log("Sumaaaaaa " + this.calculaCostoTotal);
 
         //updateeeeee
-        // this.FB.updatePesajeCompra("1602537527210", this.calculaCostoTotal);
+         //this.FB.updatePesajeCompraValor("1602474514528", "1603329959288", this.calculaCostoTotal);
       }
 
     });
