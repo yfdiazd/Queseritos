@@ -37,7 +37,7 @@ export class CreartruequePage implements OnInit {
       if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.registrarAnticiposApesajeCompra("1","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+        this.FB.registrarAnticiposApesajeCompra("1602474514528","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
         this.modalCtrl.dismiss();
 
       }
@@ -48,7 +48,7 @@ export class CreartruequePage implements OnInit {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {
-        this.FB.registrarAnticiposApesajeCompra("1","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+        this.FB.registrarAnticiposApesajeCompra("1602474514528","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
         this.modalCtrl.dismiss();
       }
     }
@@ -59,6 +59,17 @@ export class CreartruequePage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+<<<<<<< HEAD
+=======
+  archSelecion(event){
+    this.selectedFile = event.target.files[0];
+  }
+
+  upload(){
+    
+  }
+
+>>>>>>> e28a4cd9016843e2dc4ebba63b070f4a951ec2d8
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
       message: "Falta diligenciar campos requeridos.",
@@ -69,6 +80,10 @@ export class CreartruequePage implements OnInit {
     });
     toast.present();
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> e28a4cd9016843e2dc4ebba63b070f4a951ec2d8
 }
 
 

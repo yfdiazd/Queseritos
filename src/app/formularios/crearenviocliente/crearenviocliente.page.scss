@@ -11,7 +11,7 @@ ion-toolbar {
       
   }
   
-  ion-content {
+ion-content {
     padding: 0;
     margin: 0;
     --background: #c8f7f3;
@@ -21,25 +21,44 @@ ion-toolbar {
       max-width: 700px;
       margin: auto;
       width: 100%;
+      height: 10%;
   
-      .info {
-        max-width: 700px;
-        position: fixed;
-        height: 20%;
-        background-color: #c8f7f3;
-        z-index: 1;
-        width: 100%;
+       .div-fila-1 {
+          display: inline-block;
+          width: 100%;
+          
+          text-align: center;
+
+          .fila1_p_titulo {
+              width: 100%;
+              height: 50%;
+              // color: #1a1446;
+              color: white;
+              text-align: center;
+          }
+
+          .fila1_p_valor {
+              width: 100%;
+              height: 50%;
+              font-size: 5vh;
+              color: yellow;
+              text-align: center;
+          }
+      }
+  
+        
+    }      
 
     .div-secundario{
 
         max-width: 700px;
-        position: fixed;
         height: 80%;
-        background-color: #c8f7f3;
-        z-index: 1;
+        background-color:red;
         width: 100%;
+        padding-top: 5px;
 
-  
+        
+
         .p-title {
           width: 100%;
           font-weight: bold;
@@ -62,10 +81,32 @@ ion-toolbar {
           --placeholder-color: #1a1446;
           --placeholder-opacity: 1;
   
+        }  
+        .file-upload{
+          position: absolute;
+          padding: 0;
+          text-align: center;
+          --background-color: gray;
+          width: 100%;
+          opacity: 0%;
+          margin: 0;
+          float:center;
         }
-  
-  
-      }
+        .item-file label{
+          text-align: center;
+          width: 100%;
+          //color: black;
+          color: #1a1446;
+        }
+
+        .div-input{
+        text-align: center;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        float: center;
+        background-color: gray;
+        }
   
       .btn-add {
         background-color: darkgreen;
@@ -155,5 +196,5 @@ ion-toolbar {
         }
       }
     }
-  }
-  }
+  
+}

@@ -89,7 +89,7 @@ export class FBservicesService {
         private router: Router,
         public toastController: ToastController,
         public alertController: AlertController,
-        
+
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
