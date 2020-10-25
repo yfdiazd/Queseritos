@@ -71,24 +71,6 @@ export class CrearcompraPage implements OnInit {
 
       inputs: [
         {
-          name: 'Hola mundo',
-          type: 'radio',
-        },
-        {
-          name: 'Hola mund2',
-          type: 'radio',
-        },
-        {
-          name: 'Hola mundo3',
-          type: 'radio',
-        },
-        {
-
-          name: 'peso',
-          type: 'text',
-          value: ""
-        },
-        {
 
           name: 'peso',
           type: 'text',

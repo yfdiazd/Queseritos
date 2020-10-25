@@ -14,9 +14,9 @@ import { Console } from 'console';
 })
 export class CardcomprasPage implements OnInit {
 
-  pesoacumulado = 200;
-  saldodebitototal = 120000000;
-  saldocreditotal = 140000000;
+  pesoacumulado = 0;
+  saldodebitototal = 0;
+  saldocreditotal = 0;
 
 
 
@@ -78,6 +78,8 @@ export class CardcomprasPage implements OnInit {
   listaCards() {
     console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
     console.log("Helppppppppp ", this.FB.anticipoCompraLista);
+    this.saldocreditotal = 0;
+    this.pesoacumulado = 0;
     this.FB.proveedorCompraLiata.forEach(element => {
       let total = 0;
       let totalCosto = 0;
@@ -88,7 +90,8 @@ export class CardcomprasPage implements OnInit {
         total += element[key].pesoBultos;
         totalBultos += element[key].totalBulto;
         totalCosto += element[key].costoTotalCompra;
-
+        this.pesoacumulado += element[key].pesoBultos;
+        this.saldocreditotal += element[key].costoTotalCompra;
       });
 
       this.objImp = ({
@@ -105,6 +108,7 @@ export class CardcomprasPage implements OnInit {
       let prov = element[keys[0]].idProveedor;
       keys.forEach(key => {
         totalAnt += element[key].valorAnticipo;
+        this.saldodebitototal += (this.saldodebitototal + element[key].valorAnticipo);
       });
       this.onbjAnt = ({
         valorAnt: totalAnt,
@@ -118,7 +122,7 @@ export class CardcomprasPage implements OnInit {
     console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
     console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
     this.metodoque();
-    return this.listaCard, this.listaAnt;
+    return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
 
   }
   listaPaVer: any[];
@@ -126,31 +130,43 @@ export class CardcomprasPage implements OnInit {
   metodoque() {
     this.listaPaVer = [];
     this.listaCard.forEach(element => {
-      this.listaAnt.forEach(element2 => {
-        if (element.idProvedor === element2.idProvee) {
-          this.obtPa = ({
-            idProvedor: element.idProvedor,
-            bultos: element.bultos,
-            costo: element.costo,
-            peso: element.peso,
-            debito: element2.valorAnt
-          });
-          this.listaPaVer.push(this.obtPa);
-        } else if (!this.listaPaVer.filter(valor => {
-          return valor.idProvedor === element.idProvedor;
+      if (this.listaAnt.length === 0) {
+        this.obtPa = ({
+          idProvedor: element.idProvedor,
+          bultos: element.bultos,
+          costo: element.costo,
+          peso: element.peso,
+          debito: 0
+        });
+        this.listaPaVer.push(this.obtPa);
+      } else {
 
-        })) {
-          this.obtPa = ({
-            idProvedor: element.idProvedor,
-            bultos: element.bultos,
-            costo: element.costo,
-            peso: element.peso,
-            debito: 0
-          });
-          this.listaPaVer.push(this.obtPa);
-        }
-      });
 
+        this.listaAnt.forEach(element2 => {
+          if (element.idProvedor === element2.idProvee) {
+            this.obtPa = ({
+              idProvedor: element.idProvedor,
+              bultos: element.bultos,
+              costo: element.costo,
+              peso: element.peso,
+              debito: element2.valorAnt
+            });
+            this.listaPaVer.push(this.obtPa);
+          } else if (!this.listaPaVer.filter(valor => {
+            return valor.idProvedor === element.idProvedor;
+          })) {
+            console.log("llego vaciooo ");
+            this.obtPa = ({
+              idProvedor: element.idProvedor,
+              bultos: element.bultos,
+              costo: element.costo,
+              peso: element.peso,
+              debito: 0
+            });
+            this.listaPaVer.push(this.obtPa);
+          }
+        });
+      }
     });
     console.log("*----------------------------- ", this.listaPaVer);
     return this.listaPaVer;
@@ -275,5 +291,10 @@ export class CardcomprasPage implements OnInit {
 
     await alert.present();
   }
+
+
+
+
+
 }
 
