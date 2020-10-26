@@ -13,7 +13,7 @@ export class HomeclientesPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private FB: FBservicesService,
-    private modalController: ModalController,
+    private modalCtrl: ModalController,
     private alertController: AlertController
   ) { }
 
@@ -24,7 +24,7 @@ export class HomeclientesPage implements OnInit {
 
     console.log("Esta es la ciudad:", lista.idCiudad)
     console.log("Esta es la identificación:", lista.idTipoIdentificacion)
-    const modal = await this.modalController.create({
+    const modal = await this.modalCtrl.create({
       component: CrearclientesPage,
       cssClass: "my-custom-class",
       componentProps: {
@@ -53,11 +53,12 @@ export class HomeclientesPage implements OnInit {
   }
 
   async crearModal() {
-    const modal = await this.modalController.create({
+    const modal = await this.modalCtrl.create({
       component: CrearclientesPage,
       cssClass: "my-custom-class"
     });
     return await modal.present();
+
   }
 
   async eliminar(lista) {
@@ -88,8 +89,6 @@ export class HomeclientesPage implements OnInit {
   }
 
   async cerrar() {
-    console.log("INtentando cerrar");
-    console.error("Error: ")
     this.navCtrl.navigateForward('main-menu');
   }
 

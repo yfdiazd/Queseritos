@@ -51,9 +51,15 @@ var CardcomprasPage = /** @class */ (function () {
         this.FB = FB;
         this.alertController = alertController;
         this.navCtrl = navCtrl;
+<<<<<<< HEAD
         this.pesoacumulado = 200;
         this.saldodebitototal = 120000000;
         this.saldocreditotal = 140000000;
+=======
+        this.pesoacumulado = 0;
+        this.saldodebitototal = 0;
+        this.saldocreditotal = 0;
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         this.input = { data: [] };
         this.nombres = [];
         //Esta lista va a obtener todas las compras existentes
@@ -68,25 +74,175 @@ var CardcomprasPage = /** @class */ (function () {
         this.dataCard = [];
         //Datos consolidados para la visualización
         this.listaCard = [];
+<<<<<<< HEAD
         this.pesoMostrar = 0;
         this.bultosMostrar = 0;
         this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
+=======
+        this.listaAnt = [];
+    }
+    CardcomprasPage.prototype.ngOnInit = function () {
+        // this.validacionLote();
+        this.listaCards();
+    };
+    CardcomprasPage.prototype.doRefresh = function (event) {
+        console.log('Begin async operation');
+        this.listaCards();
+        this.listaAnt = [];
+        this.listaCard = [];
+        this.objImp = [];
+        this.saldocreditotal = 0;
+        this.pesoacumulado = 0;
+        setTimeout(function () {
+            console.log('Async operation has ended');
+            event.target.complete();
+        }, 1000);
+    };
+    CardcomprasPage.prototype.traerNombre = function () {
+        var _this = this;
+        this.nombreProv = [];
+        this.FB.proveedoresLista.forEach(function (element) {
+            _this.listaPaVer.forEach(function (element2) {
+                if (element.id == element2.idProveedor) {
+                    _this.nombreProv.push({ nombre: element.nombre, idProv: element.id });
+                }
+            });
+        });
+        console.log("Nombres de los proveedores:", this.nombreProv);
+    };
+    CardcomprasPage.prototype.validacionLote = function () {
+        this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
+        console.log("Lote actual", this.loteActual);
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         console.log("LOTE ULTIMO:   ", this.loteActual.toString());
         console.log("FECHA ACTUAL ----", this.FB.fechaActual());
         if (this.loteActual.toString().includes(this.FB.fechaActual())) {
             console.log("Si es el mismo");
         }
         else {
+<<<<<<< HEAD
             this.presentAlertRadio2();
         }
     }
     CardcomprasPage.prototype.ngOnInit = function () {
+=======
+            this.alertConfirmarNuevoLote();
+        }
+    };
+    CardcomprasPage.prototype.listaCards = function () {
+        var _this = this;
+        this.objImp = [];
+        this.onbjAnt = [];
+        this.listaCard = [];
+        this.listaAnt = [];
+        this.saldocreditotal = 0;
+        this.pesoacumulado = 0;
+        this.saldodebitototal = 0;
+        console.log("Lista de provedores con compra", this.FB.proveedorCompraLista);
+        console.log("Lista anticipos ", this.FB.anticipoCompraLista);
+        this.FB.proveedorCompraLista.forEach(function (element) {
+            var total = 0;
+            var totalCosto = 0;
+            var totalBultos = 0;
+            var keys = Object.keys(element);
+            var lotes = element[keys[0]].idProveedor;
+            keys.forEach(function (key) {
+                total += element[key].pesoBultos;
+                totalBultos += element[key].totalBulto;
+                totalCosto += element[key].costoTotalCompra;
+                _this.pesoacumulado += element[key].pesoBultos;
+                _this.saldocreditotal += element[key].costoTotalCompra;
+            });
+            _this.objImp = ({
+                idProvedor: lotes,
+                bultos: totalBultos,
+                costo: totalCosto,
+                peso: total
+            });
+            _this.listaCard.push(_this.objImp);
+        });
+        this.FB.anticipoCompraLista.forEach(function (element) {
+            var totalAnt = 0;
+            var keys = Object.keys(element);
+            var prov = element[keys[0]].idProveedor;
+            keys.forEach(function (key) {
+                totalAnt += element[key].valorAnticipo;
+                _this.saldodebitototal += element[key].valorAnticipo;
+            });
+            _this.onbjAnt = ({
+                valorAnt: totalAnt,
+                idProvee: prov
+            });
+            _this.listaAnt.push(_this.onbjAnt);
+        });
+        console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
+        console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
+        this.recorreListas();
+        return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
+    };
+    CardcomprasPage.prototype.recorreListas = function () {
+        var _this = this;
+        this.listaPaVer = [];
+        if (this.listaAnt.length != 0) {
+            console.log("siii diferente a 0000 ", this.listaAnt.length);
+            this.listaCard.forEach(function (element) {
+                _this.listaAnt.forEach(function (element2) {
+                    if (element.idProvedor == element2.idProvee) {
+                        _this.obtPa = ({
+                            idProvedor: element.idProvedor,
+                            bultos: element.bultos,
+                            costo: element.costo,
+                            peso: element.peso,
+                            debito: element2.valorAnt
+                        });
+                        _this.listaPaVer.push(_this.obtPa);
+                        _this.obtPa = null;
+                    }
+                    else if (_this.listaPaVer.filter(function (valor) {
+                        return valor.idProvedor == element.idProvedor;
+                    }).length == 0 && _this.listaAnt.filter(function (valorF) {
+                        return valorF.idProvee == element.idProvedor;
+                    }).length == 0) {
+                        console.log("llego vaciooo ");
+                        _this.obtPa = ({
+                            idProvedor: element.idProvedor,
+                            bultos: element.bultos,
+                            costo: element.costo,
+                            peso: element.peso,
+                            debito: 0
+                        });
+                        _this.listaPaVer.push(_this.obtPa);
+                        _this.obtPa = null;
+                    }
+                });
+            });
+        }
+        else {
+            this.listaCard.forEach(function (elementC) {
+                _this.obtPa = ({
+                    idProvedor: elementC.idProvedor,
+                    bultos: elementC.bultos,
+                    costo: elementC.costo,
+                    peso: elementC.peso,
+                    debito: 0
+                });
+                _this.listaPaVer.push(_this.obtPa);
+                _this.obtPa = null;
+            });
+        }
+        console.log("*----------------------------- ", this.listaPaVer);
+        return this.listaPaVer;
+    };
+    CardcomprasPage.prototype.irCompra = function (card) {
+        this.navCtrl.navigateForward(["crearcompra"]);
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
     };
     CardcomprasPage.prototype.irVender = function () {
         this.router.navigate(["cardcompras"]);
     };
     CardcomprasPage.prototype.irPesajeCompra = function (card) {
         // this.FB.getNumBultos(card.id);
+<<<<<<< HEAD
         this.navCtrl.navigateForward(["crearpesajecompra/", card.id]);
         console.log("ID:", card.id);
     };
@@ -94,6 +250,15 @@ var CardcomprasPage = /** @class */ (function () {
         this.navCtrl.navigateForward(["cardcompradetallada"]);
     };
     CardcomprasPage.prototype.presentActionSheet = function () {
+=======
+        this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
+    };
+    CardcomprasPage.prototype.irCompraDetallada = function (card) {
+        this.FB.getPesajeCompra(card.idProvedor);
+        this.navCtrl.navigateForward(["cardcompradetallada/", card.idProvedor]);
+    };
+    CardcomprasPage.prototype.opciones = function () {
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var actionSheet;
             var _this = this;
@@ -107,6 +272,7 @@ var CardcomprasPage = /** @class */ (function () {
                                     text: 'Agregar proveedor',
                                     icon: 'person-add',
                                     handler: function () {
+<<<<<<< HEAD
                                         // this.presentAlertRadio();
                                         _this.input = { data: [] };
                                         _this.listaProveedores = [];
@@ -116,6 +282,15 @@ var CardcomprasPage = /** @class */ (function () {
                                         });
                                         console.log("Se obtuvo esto_:", _this.input);
                                         _this.presentAlertRadio();
+=======
+                                        _this.input = { data: [] };
+                                        _this.listaProveedores = [];
+                                        _this.FB.proveedoresLista.forEach(function (element) {
+                                            var provee = element;
+                                            _this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
+                                        });
+                                        _this.alertProveedores();
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                                         // var elemento = document.getElementById("select-alert");
                                         // elemento.click();
                                     }
@@ -151,7 +326,11 @@ var CardcomprasPage = /** @class */ (function () {
             });
         });
     };
+<<<<<<< HEAD
     CardcomprasPage.prototype.presentAlertRadio = function () {
+=======
+    CardcomprasPage.prototype.alertProveedores = function () {
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
@@ -159,7 +338,11 @@ var CardcomprasPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
+<<<<<<< HEAD
                             header: 'Radio',
+=======
+                            header: 'Proveedores',
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                             inputs: this.input.data,
                             buttons: [
                                 {
@@ -173,9 +356,13 @@ var CardcomprasPage = /** @class */ (function () {
                                     text: 'Ok',
                                     handler: function (value) {
                                         console.log('Se envia el id del proveedor: ', value);
+<<<<<<< HEAD
                                         _this.navCtrl.navigateForward("crearpesajecompra");
                                         _this.input = { data: [] };
                                         _this.listaProveedores = [];
+=======
+                                        _this.navCtrl.navigateForward(["crearcompra/", value]);
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                                     }
                                 }
                             ]
@@ -190,7 +377,11 @@ var CardcomprasPage = /** @class */ (function () {
             });
         });
     };
+<<<<<<< HEAD
     CardcomprasPage.prototype.presentAlertRadio2 = function () {
+=======
+    CardcomprasPage.prototype.alertConfirmarNuevoLote = function () {
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;

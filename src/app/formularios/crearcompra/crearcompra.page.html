@@ -2,7 +2,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompras" color="medium"></ion-back-button>
+<ion-back-button defaultHref="/cardcompras" color="danger"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">PESAJE COMPRA</ion-title>
   </ion-toolbar>
@@ -10,13 +10,13 @@
 
 <ion-content>
   <div class="div-principal">
-    <div class="info">
-      <p class="p-title">Proveedor: {{id}}</p>
-      <p class="p-title">Fecha Compra: X</p>
+<div class="info">
+      <p class="p-title">Proveedor: {{idProveedor}}</p>
+      <p class="p-title">Fecha Compra: {{fecha}}</p>
       <p class="p-title">Tipo de queso:</p>
-      <ion-select [(ngModel)]="tipoQueso" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
+      <ion-select [(ngModel)]="productoDefault" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
         multiple="false" ok-text="Aceptar" cancel-text="Cancelar" placeholder="Tipo de queso">
-        <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.productosLista">
+        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.productosLista">
           {{lista.descripcion}}
         </ion-select-option>
       </ion-select>
@@ -35,7 +35,7 @@
               <label (ngModel)="numbulto">{{i+1}}</label>
             </td>
             <td class="td2">
-              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)"/>
+              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
             </td>
             <td class="td3">
               <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
@@ -43,10 +43,12 @@
           </tr>
         </tbody>
       </table>
-      <ion-chip class="btn-add" (click)="agregarBultoLista()">
-        <ion-icon name="add" color="success"></ion-icon>
-        <ion-label color="dark">Agregar</ion-label>
-      </ion-chip>
+      <div class="div_toggle">
+        <ion-chip class="btn-add" (click)="agregarBultoLista()">
+          <ion-icon name="add" color="success"></ion-icon>
+          <ion-label color="dark">Agregar</ion-label>
+        </ion-chip>
+      </div>
       <ion-button (click)="guardar()" expand="full" color="success">
         <ion-icon name="save-outline"></ion-icon>
         <ion-label>Guardar</ion-label>

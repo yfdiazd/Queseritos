@@ -1,30 +1,36 @@
-import { Component, Input, NgModule, OnInit } from "@angular/core";
+import { Component, Input } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { FBservicesService } from "../../fbservices.service";
+
+import { FBservicesService } from '../../fbservices.service';
+
 
 @Component({
   selector: "app-crearclientes",
   templateUrl: "./crearclientes.page.html",
   styleUrls: ["./crearclientes.page.scss"],
 })
-@NgModule({
-  imports: [
-    // other imports ...
-    ReactiveFormsModule
-  ],
-})
-export class CrearclientesPage implements OnInit {
+
+
+export class CrearclientesPage {
+  constructor(
+    private FB: FBservicesService,
+    private modalCtrl: ModalController,
+    private toastController: ToastController
+  ) {
+
+  }
+
   //variables para agregar clientes
   tipoIdentificacion: string;
-  numeroIdentificacionCliente: string;
+  numeroIdentificacionCliente: number;
   nombresCliente: string;
   apellidosCliente: string;
   empresaCliente: string;
   codigoCiudad: string;
-  celularCliente: string;
+  celularCliente: number;
   direccionCliente: string;
   correoCliente: string;
+
   //estos dos son para mostrar data
   @Input() nombreIdentificacionEdit;
   @Input() nombreCiudadEdit;
@@ -41,12 +47,6 @@ export class CrearclientesPage implements OnInit {
   @Input() id;
 
 
-  constructor(private FB: FBservicesService,
-    private modalCtrl: ModalController,
-    private toastController: ToastController) { }
-
-  ngOnInit() { }
-
 
   customAlertOptions: any = {
     header: "Seleccione uno",
@@ -59,7 +59,7 @@ export class CrearclientesPage implements OnInit {
       if (this.tipoIdentificacionEdit == undefined || this.numeroIdentificacionClienteEdit == undefined || this.nombresClienteEdit == undefined || this.codigociudadEdit == undefined || this.celularClienteEdit == undefined || this.direccionClienteEdit == undefined || this.empresaClienteEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.agregarCliente(this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit, this.apellidosClienteEdit, this.empresaClienteEdit, this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit, this.correoClienteEdit);
+        this.FB.agregarCliente(this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
 
@@ -69,7 +69,7 @@ export class CrearclientesPage implements OnInit {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {
-        this.FB.updateCliente(this.id, this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit, this.apellidosClienteEdit, this.empresaClienteEdit, this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit, this.correoClienteEdit);
+        this.FB.updateCliente(this.id, this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
     }

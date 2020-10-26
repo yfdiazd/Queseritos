@@ -1,9 +1,8 @@
-<ion-router-outlet id="myMenu" main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">CIUDADES DE ENVÍO</ion-title>
-    <ion-buttons slot="start" (click)="cerrar()" color="danger">
-      <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end" (click)="crearModal()">
       <ion-icon slot="icon-only" name="add" color="success"></ion-icon>

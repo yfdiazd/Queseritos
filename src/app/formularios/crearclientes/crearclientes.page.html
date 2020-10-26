@@ -1,10 +1,9 @@
-<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="end">
+    <ion-buttons slot="start">
       <ion-button (click)="volver()" color="danger">CERRAR</ion-button>
     </ion-buttons>
-    <ion-title>CLIENTES</ion-title>
+    <ion-title class="titulo">CLIENTES</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,24 +11,23 @@
   <div class="div-formulario">
     <p>Tipo de identificación<span>*</span></p>
     <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
-      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar" required>
       <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
         {{lista.descripcion}}
       </ion-select-option>
     </ion-select>
 
     <p>Número de identificación<span>*</span></p>
-    <input type="text" placeholder="{{numeroIdentificacionClienteEdit}}"
-      [(ngModel)]="numeroIdentificacionClienteEdit" />
+    <input maxlenght="15" type="tel"  [(ngModel)]="numeroIdentificacionClienteEdit" />
 
     <p>Nombres<span>*</span></p>
-    <input type="text" placeholder="{{nombresClienteEdit}}" [(ngModel)]="nombresClienteEdit" />
+    <input maxlenght="30" type="text" [(ngModel)]="nombresClienteEdit" />
 
     <p>Apellidos</p>
-    <input type="text" placeholder="{{apellidosClienteEdit}}" [(ngModel)]="apellidosClienteEdit" />
+    <input maxlenght="30" type="text" [(ngModel)]="apellidosClienteEdit" />
 
     <p>nombre empresa<span>*</span></p>
-    <input type="text" placeholder="{{empresaClienteEdit}}" [(ngModel)]="empresaClienteEdit" />
+    <input maxlenght="50"type="text" [(ngModel)]="empresaClienteEdit" />
 
     <p>Ciudad<span>*</span></p>
     <ion-select [(ngModel)]="codigociudadEdit" class="select" [interfaceOptions]="customAlertOptions2" interface="alert"
@@ -40,13 +38,13 @@
     </ion-select>
 
     <p>Celular<span>*</span></p>
-    <input type="text" placeholder="{{celularClienteEdit}}" [(ngModel)]="celularClienteEdit" />
+    <input maxlenght="12" type="tel" maxlength="10"  [(ngModel)]="celularClienteEdit" />
 
     <p>Dirección<span>*</span></p>
-    <input type="text" placeholder="{{direccionClienteEdit}}" [(ngModel)]="direccionClienteEdit" />
+    <input maxlenght="30" type="text"  [(ngModel)]="direccionClienteEdit" />
 
     <p>Correo</p>
-    <input type="text" placeholder="{{correoClienteEdit}}" [(ngModel)]="correoClienteEdit" />
+    <input maxlenght="50" type="email" [(ngModel)]="correoClienteEdit" />
 
   </div>
   <div>

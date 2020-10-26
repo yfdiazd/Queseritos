@@ -1,33 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { Console } from 'console';
-
-
-import { FBservicesService } from '../../fbservices.service';
+import { AlertController, NavController } from '@ionic/angular';
+import { FBservicesService } from 'src/app/fbservices.service';
 
 @Component({
-  selector: "app-crearpesajecompra",
-  templateUrl: "./crearpesajecompra.page.html",
-  styleUrls: ["./crearpesajecompra.page.scss"],
+  selector: 'app-crearcompra',
+  templateUrl: './crearcompra.page.html',
+  styleUrls: ['./crearcompra.page.scss'],
 })
-export class CrearpesajecompraPage implements OnInit {
+export class CrearcompraPage implements OnInit {
 
-  public id;
+  public idProveedor;
+  public fecha;
+  productoDefault: any;
   //Variables para los bultos
   public numbulto = 1;
   public nuevoRegistro: any[] = [];
   public listaBultos: any[] = [];
   public bultoObj: any = null;
   public contadorPeso: number;
-  public tipoQueso;
   public lote;
 
   constructor(
     private alertController: AlertController,
     private route: ActivatedRoute,
-    private FB: FBservicesService
+    private FB: FBservicesService,
+    private navCtrl: NavController
   ) {
+
     // this.nombres = this.FB.proveedoresLista;
     // console.log("proveedor", this.nombres);
     // this.nombres.forEach(element => {
@@ -35,16 +35,25 @@ export class CrearpesajecompraPage implements OnInit {
     //     console.log("Si lo encontro", element.nombre)
     //   }
     //   console.log("No se encontró")
-    // });
-
-   
+    // })sasdasdaadasdcfsdaadas
   }
-  ngOnInit() {
-   
-    let id = this.route.snapshot.paramMap.get("id");
 
-    this.id = id;
-    console.log(" se recibe id: ", this.id);
+  ngOnInit() {
+    let id = this.route.snapshot.paramMap.get("id");
+    this.idProveedor = id;
+    this.fecha = this.FB.fechaActual();
+    this.traerTipoQuesoDefault();
+    // console.log(" se recibe id: ", this.id);
+  }
+
+  traerTipoQuesoDefault() {
+    this.FB.productosLista.forEach(element => {
+      if (element.estado == 1 && element.predetermina == true) {
+        this.productoDefault = null;
+        this.productoDefault = element.id;
+      }
+      console.log("No hay predeterminado");
+    })
   }
 
   removeRegister(index) {
@@ -62,8 +71,8 @@ export class CrearpesajecompraPage implements OnInit {
       inputs: [
         {
           name: 'peso',
-          type: 'tel',
-          value: 0
+          type: 'text',
+          value: ""
         }
       ],
       buttons: [
@@ -123,17 +132,19 @@ export class CrearpesajecompraPage implements OnInit {
   guardar() {
     // this.listaBultos.pop();
     this.contarPeso();
-    console.log("El id del tipo de queso es: ", this.tipoQueso)
+    console.log("El id del tipo de queso es: ", this.productoDefault)
     console.log("Bultos enviados " + this.listaBultos.length);
     console.log("Peso que enviamos es de " + this.contadorPeso);
-    console.log("Se envia el id del proveedor: ", this.id)
+    console.log("Se envia el id del proveedor: ", this.idProveedor)
     this.FB.agregarPesaje(
-      this.id,
-      this.tipoQueso,
+      this.idProveedor,
+      this.productoDefault,
       this.listaBultos.length,
       this.contadorPeso,
       this.listaBultos
     );
     this.listaBultos = [];
+    this.FB.getPesajeCompra(this.idProveedor);
+    this.navCtrl.navigateForward(["cardcompradetallada/", this.idProveedor]);
   }
 }

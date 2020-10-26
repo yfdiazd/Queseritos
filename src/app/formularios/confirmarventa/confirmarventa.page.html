@@ -1,0 +1,80 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="titulo">CONFIRMAR VENTA</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div-principal">
+    <div class="div-fila">
+      <div class="div-f">
+        <p class="div-t">Confirma precios de venta a:</p>
+        <p class="div-v">{{proveedor}}</p>
+      </div>
+    </div>
+    <ion-card id="card1">
+      <div id="title1">Fecha Venta: {{fechventa}}</div>
+      <div class="div-pesoc">
+        <div class="div-stq">Tipo de queso: {{tipqueso}} </div>
+      </div>
+      <div class="div-atributo1">
+        <div>Total Pesadas:{{totalPeso}}</div>
+      </div>
+      <div class="div-atributo2">
+        <div>Total Peso: {{pesototal}} Kg</div>
+      </div>
+    </ion-card>
+  </div>
+  <div class="div-secundario">
+    <label for=""> {{id}}</label>
+    <ion-button (click)="confirmar()" expand="block" fill="clear" shape="round">
+      Confirmar
+    </ion-button>
+    <table>
+      <thead>
+        <th>Estado</th>
+        <th>Cantidad</th>
+        <th>Valor Kg</th>
+        <th>Costo Total Estado</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lista of listaPesadas; let i=index">
+          <td>
+            <ion-select [(ngModel)]="idEstadoProducto" class="select" [interfaceOptions]="customAlertOptions"
+              interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+              <ion-select-option [value]="lista.id" *ngFor="let lista of FB.estadoProductoLista">
+                {{lista.descripcion}}
+              </ion-select-option>
+            </ion-select>
+          </td>
+          <td>
+            <input [(ngModel)]="cantidadEstado">
+          </td>
+          <td>
+            <input [ngModel]="valor" (ngModelChange)="calcular($event)"/>
+          </td>
+          <td>
+            <p>{{total}}</p> 
+          </td>
+          <ion-button (click)="eliminarPesada()" expand="block" fill="clear" shape="round">
+            Borrar
+          </ion-button>
+          <ion-button (click)="editarPesada()" expand="block" fill="clear" shape="round">
+            Editar
+          </ion-button>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <ion-button (click)="guardar()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

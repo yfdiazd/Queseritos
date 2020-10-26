@@ -1,20 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { FBservicesService } from "src/app/fbservices.service";
+import { element } from 'protractor';
+import { FBservicesService } from 'src/app/fbservices.service';
 
 @Component({
   selector: 'app-crearproducto',
   templateUrl: './crearproducto.page.html',
-  styleUrls: ['./crearproducto.page.scss'],
+  styleUrls: ['./crearproducto.page.scss']
 })
 export class CrearproductoPage {
 
-  predeterminado:boolean= false;
-
-
   @Input() codigoEdit;
   @Input() descripcionEdit;
-  @Input() predeterminada;
+  @Input() defaultEdit = false;
   @Input() id;
 
   constructor(
@@ -22,45 +20,54 @@ export class CrearproductoPage {
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController
-  ) {}
-  ngOnInit() {}
+  ) {
+    console.log("Estos son los valores",
+      this.codigoEdit,
+      this.descripcionEdit,
+      this.defaultEdit
+    )
+  }
+  ngOnInit() { }
 
-  
-  agregarProducto(){
-   
+
+  agregarProducto() {
+
     if (this.id == undefined) {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.crearProdcuto(this.codigoEdit, this.descripcionEdit,this.predeterminado);
-        this.modalCtrl.dismiss();
-      
+        if (this.defaultEdit == true) {
+          this.FB.productosLista.forEach(element => {
+            if (element.predetermina == true) {
+              this.FB.updateProdcuto(element.id, element.codigo, element.descripcion, false);
+            }
+          });
+          this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
+          this.modalCtrl.dismiss();
+        } else {
+          this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
+          this.modalCtrl.dismiss();
+        }
       }
-
     } else {
-     
-        this.FB.updateProdcuto(this.id, this.codigoEdit, this.descripcionEdit, this.predeterminado);
-
+      if (this.defaultEdit == true) {
+        this.FB.productosLista.forEach(element => {
+          if (element.predetermina == true) {
+            this.FB.updateProdcuto(element.id, element.codigo, element.descripcion, false);
+          }
+        });
+        this.FB.updateProdcuto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
         this.modalCtrl.dismiss();
-      
+      } else {
+        this.FB.updateProdcuto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
+        this.modalCtrl.dismiss();
+      }
     }
   }
 
   volver() {
     this.modalCtrl.dismiss();
   }
-
-  change(){
-    console.log("imprime valor de predeterminado", this.predeterminado)
-    if(this.predeterminado==true)
-    {
-      //la proxima vez que se llene el formulario desactive el campo
-    }
-
-  }
-
- 
-
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
       message: "Falta diligenciar campos requeridos.",
@@ -71,5 +78,5 @@ export class CrearproductoPage {
     });
     toast.present();
   }
-   
+
 }

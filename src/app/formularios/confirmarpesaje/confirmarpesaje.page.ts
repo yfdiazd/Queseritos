@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { element } from 'protractor';
-import { ActivatedRoute } from '@angular/router';
-import { FBservicesService } from '../../fbservices.service'
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { FBservicesService } from '../../fbservices.service';
+import { HomepesajesPage } from '../../home/homepesajes/homepesajes.page';
+
 
 @Component({
   selector: 'app-confirmarpesaje',
@@ -18,78 +19,52 @@ export class ConfirmarpesajePage implements OnInit {
   calculaCostoTotal: number = 0;
   listaBultos: any[] = ["1"];
   total = 0;
-  valor = 0; 
-  
+  valor = 0;
+  sumado = 0;
+  objCompreDetallada: any = [];
 
-  //variables dummy 
-  proveedor = "fernanda";
-  fechcompra = "05-10-2020";
-  estadoqueso = "Borona";
-  estadoqueso1 = "Normal";
-  tipqueso = "Costeño";
-  totalbultos = 30;
-  pesototal = 1000;
+  pesoEdit;
+  valorkgEdit;
+  @Input() id;
+
+  @Input() idCompra;
+  @Input() idProv;
   constructor(
-    private FB: FBservicesService
+    
+    private FB: FBservicesService,
+    private HP: HomepesajesPage,
+    private popover: PopoverController
   ) { }
 
   ngOnInit() {
-    this.FB.verificarsesion();
   }
 
-  confirmar(){
-    this.listaBultos.push(""); 
+
+  guardar() {
+
+
+    this.objCompreDetallada = null;
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    // this.FB.agregarConfirmaPesaje("1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-    this.sumaCostoTotal();
-  }
-  
 
-  guardar(){
-    this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    // this.FB.agregarConfirmaPesaje( "1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-    this.sumaCostoTotal();
+    this.objCompreDetallada = ({
+      idProv: this.idProv,
+      idCompra: this.idCompra,
+      idEstProd: this.idEstadoProducto,
+      peso: this.cantidadEstado,
+      costKilo: this.costoKilo,
+      costTotal: this.costoTotalEstado
+
+    });
+
+
+    console.log("lista tiene  ", this.objCompreDetallada);
+    this.popover.dismiss(this.objCompreDetallada, "pesajeConfirmado");
   }
 
-  calcular(valor){
+  calcular(valor) {
     this.total = (valor * this.cantidadEstado);
     console.log("imprime valor", valor, this.total)
   }
 
-  eliminarBulto(){
-
-
-  }
-
-  editarBulto(){
-
-  }
-  // guardarPesajeConfirmado() {
-  //   this.FB.getPesajeCompra();
-  //   this.idPesajeCompra = "1602531822105";
-  //   this.idEstadoProducto = "1602459210154";
-  //   this.cantidadEstado = "50";
-  //   this.costoKilo = "6500";
-  //   this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-  //   console.log("Compramossss " + this.costoTotalEstado);
-  //   this.sumaCostoTotal();
-
-  //   //this.FB.agregarConfirmaPesaje(this.idPesajeCompra, this.idproveedor, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-  // }
-  sumaCostoTotal() {
-    
-    console.log("Ejecucion del metttt " + this.FB.pesajeCompraLista.length);
-    this.FB.pesajeCompraLista.forEach(element => {
-      if (element.id == "1602537527210") {
-        console.log("Vallllll " + element.costoTotalCompra);
-        this.calculaCostoTotal = (element.costoTotalCompra + this.costoTotalEstado);
-        console.log("Sumaaaaaa " + this.calculaCostoTotal);
-
-        //updateeeeee
-        // this.FB.updatePesajeCompra("1602537527210", this.calculaCostoTotal);
-      }
-
-    });
-  }
 
 }

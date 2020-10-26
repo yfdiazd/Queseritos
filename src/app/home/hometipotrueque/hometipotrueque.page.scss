@@ -15,6 +15,13 @@ ion-content {
         margin: auto;
     }
 
+    .slider {
+        width: 100%;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+    }
     input {
         background-color: grey;
         //background-color: transparentize($color: grey, $amount: 0.5);

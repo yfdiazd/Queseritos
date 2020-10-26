@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="titulo">DISTRIBUYE TU COMPRA</ion-title>
+    <ion-buttons slot="end" (click)="crearModal()">
+      <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" color="danger">X</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div class="div-principal">
+    <div class="info">
+      <p><span>Total Peso:</span></p>
+    </div>
+  </div>
+  <div class="div_tabla">
+    <p>Lista Confirmación</p>
+    <table class="table">
+      <thead class="thead">
+        <th class="th1">Estado</th>
+        <th class="th2">Peso <span>Kg</span></th>
+        <th class="th3">Valor Kg</th>
+        <th class="th4">Valor Total</th>
+      </thead>
+      <tbody class="tbody">
+        <tr class="tr" *ngFor="let lista of listaCompraDetallada; let i=index">
+          <td class="td1">
+            <label (ngModel)="numbulto">{{lista.idEstProd}}</label>
+          </td>
+          <td class="td2">
+            <label (ngModel)="peso">{{lista.peso}}</label>
+          </td>
+          <td class="td3">
+            <label (ngModel)="numbulto">{{lista.costKilo}}</label>
+          </td>
+          <td class="td4">
+            <label (ngModel)="numbulto">{{lista.costTotal}}</label>
+          </td>
+          <!-- <td class="td4">
+              <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
+            </td> -->
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="div_toggle">
+        <ion-chip class="btn-add" (click)="agregarBultoLista()">
+          <ion-icon name="add" color="success"></ion-icon>
+          <ion-label color="dark">Agregar</ion-label>
+        </ion-chip>
+      </div>
+      <ion-button (click)="guardar()" expand="full" color="success">
+        <ion-icon name="save-outline"></ion-icon>
+        <ion-label>Guardar</ion-label>
+      </ion-button> -->
+    <ion-button (click)="guardar()" expand="full" color="success">
+      <ion-icon name="save-outline"></ion-icon>
+      <ion-label>Guardar</ion-label>
+    </ion-button>
+  </div>
+
+</ion-content>

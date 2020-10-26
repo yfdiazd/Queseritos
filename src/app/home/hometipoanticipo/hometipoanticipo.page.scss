@@ -15,8 +15,15 @@ ion-toolbar {
       color: #1a1446;
       width: 100%;
       box-shadow: #1a1446 0px 4px 4px 4px;
-      font-size: 4vw;
+      font-size: 2.5vh;
     }
+    .slider {
+      width: 100%;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0;
+  }
     .card p {
       padding: 0;
       margin: 0;

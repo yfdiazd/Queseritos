@@ -1,8 +1,7 @@
-<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button (click)="volver()" color="ligth">CERRAR</ion-button>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" color="danger">CERRAR</ion-button>
     </ion-buttons>
     <ion-title class="titulo">TIPOS DE ANTICIPO</ion-title>
   </ion-toolbar>
@@ -11,14 +10,14 @@
 <ion-content>
   <div class="div-formulario">
     <p>Código <span>*</span></p>
-    <input maxlength="4" type="text" placeholder="{{codigoEdit}}" [(ngModel)]="codigoEdit"/>
+    <input maxlength="4" type="text" [(ngModel)]="codigoEdit" />
     <p>Descripción <span>*</span></p>
-    <input maxlength="30" type="text" placeholder="{{descripcionEdit}}" [(ngModel)]="descripcionEdit"/>
+    <input maxlength="30" type="text" [(ngModel)]="descripcionEdit" />
   </div>
   <div>
     <ion-button (click)="guardarTipoAnticipo()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
-  </div>  
+  </div>
 </ion-content>

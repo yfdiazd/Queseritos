@@ -1,8 +1,16 @@
 <ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="titulo">RECUPERAR CONTRASEÑA</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login" color="success"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
   <div class="div-formulario">
 
-    <h1>Recuperar contraseña</h1>
     <p>Esta vista esta pensada para recuperar la contraseña de su usuario registrado.</p>
     <p>Por favor ingrese el correo electronico de la cuenta a recuperar.</p>
     <ion-input aria-required="true" type="email" placeholder="Ingrese el correo electronico"

@@ -1,0 +1,22 @@
+ion-toolbar {
+    --background: #1a1446;
+}
+
+ion-title {
+    font-size: 20px;
+
+}
+.titulo{
+    color: white;
+}
+
+ion-content {
+    padding: 0;
+    margin: 0;
+    --background: #c8f7f3;
+    --color: black;
+
+}
+.lista{
+    --background-activated: red;
+}

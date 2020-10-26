@@ -1,6 +1,9 @@
 ion-toolbar {
     --background: #1a1446;
 }
+.titulo{
+    color: white;
+}
 ion-content {
     margin: 0;
     padding: 0;
@@ -25,6 +28,7 @@ ion-content {
         height: 40px;
         width: 100%;
         margin-bottom: 20px;
+        text-transform:uppercase;
     }
 
     p {

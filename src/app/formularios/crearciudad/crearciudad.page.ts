@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { FBservicesService } from "../../fbservices.service";
+
+import { FBservicesService } from '../../fbservices.service';
 
 @Component({
   selector: "app-crearciudad",
@@ -26,14 +27,14 @@ export class CrearciudadPage implements OnInit {
       if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
         this.toastCamposRequeridos();
       }
-      this.FB.agregarCiudad(this.codigoEdit, this.descripcionEdit);
+      this.FB.agregarCiudad(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
       this.modalCtrl.dismiss();
 
     } else {
       if (this.codigoEdit == "" || this.descripcionEdit == "") {
         this.toastCamposRequeridos();
       }
-      this.FB.updateCiudad(this.id, this.codigoEdit, this.descripcionEdit);
+      this.FB.updateCiudad(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
       this.modalCtrl.dismiss();
     }
   }

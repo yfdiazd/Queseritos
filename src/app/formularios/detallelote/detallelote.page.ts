@@ -21,8 +21,14 @@ export class DetallelotePage implements OnInit {
   ngOnInit() {
   }
 
-  irCrearTrueque(){
+  // irCrearTrueque(card){
+  //   this.navCtrl.navigateForward(["creartrueque/", card.id]);
+  //   console.log("ID:", card.id)
+  // 
+
+   irCrearTrueque(){
     this.navCtrl.navigateForward(["creartrueque"]);
-  }
+    
+   }
 
 }
