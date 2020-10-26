@@ -1,27 +1,34 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Injectable, Input, OnInit } from '@angular/core';
 import { ModalController, NavController, PopoverController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { ConfirmarpesajePage } from 'src/app/formularios/confirmarpesaje/confirmarpesaje.page';
 
+
+@Injectable({
+  providedIn: "root"
+})
 @Component({
   selector: 'app-homepesajes',
   templateUrl: './homepesajes.page.html',
   styleUrls: ['./homepesajes.page.scss'],
 })
 export class HomepesajesPage implements OnInit {
-
+  public listaCompraDetallada: any[] = [];
   constructor(
     private FB: FBservicesService,
     public PopoverController: PopoverController,
     private navCtrl: NavController,
-    public modalController: ModalController
-  ) { }
+    public modalController: ModalController,
+
+  ) {
+
+  }
 
   @Input() idCompra;
   @Input() idProv;
   @Input() listaBultos;
-  saldo = 20000;
+
 
   ngOnInit() {
   }
@@ -31,8 +38,8 @@ export class HomepesajesPage implements OnInit {
     this.presentPopover(this.idCompra, this.idProv);
   }
 
-  async presentPopover(idCompra,idProv) {
-    const popover = await this.PopoverController.create({
+  async presentPopover(idCompra, idProv) {
+    const popover = await this.PopoverController.create({ 
       component: ConfirmarpesajePage,
       cssClass: 'popover_style',
       translucent: true,
@@ -41,8 +48,14 @@ export class HomepesajesPage implements OnInit {
         idProv: idProv
       },
     });
-    console.log("Este es el id enviado:", idCompra, idProv)
-    return await popover.present();
-  }
+    await popover.present();
+    const { data } = await popover.onDidDismiss();
+    console.log("Esto trajo:", data);
+    this.listaCompraDetallada.push(data);
+    console.log("La lista es deeeeeeeeeeeeeeeeee ", this.listaCompraDetallada)
+  };
 
+  guardar(){
+    // this.FB.agregarConfirmaPesaje
+  }
 }

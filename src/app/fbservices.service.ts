@@ -1066,7 +1066,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
-    getAnticipoProveedor(){
+     getAnticipoProveedor(){
         
         this.lastLote = [];
         this.anticipoCompraLista = [];

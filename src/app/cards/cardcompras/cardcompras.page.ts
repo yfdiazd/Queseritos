@@ -122,39 +122,6 @@ export class CardcomprasPage implements OnInit {
 
   }
 
-  metodoque() {
-    this.listaPaVer = [];
-    this.listaCard.forEach(element => {
-      this.listaAnt.forEach(element2 => {
-        if (element.idProvedor == element2.idProvee) {
-          this.obtPa = ({
-            idProvedor: element.idProvedor,
-            bultos: element.bultos,
-            costo: element.costo,
-            peso: element.peso,
-            debito: element2.valorAnt
-          });
-          this.listaPaVer.push(this.obtPa);
-        } else if (!this.listaPaVer.filter(valor => {
-          return valor.idProvedor == element.idProvedor;
-        })) {
-          console.log("llego vaciooo ");
-          this.obtPa = ({
-            idProvedor: element.idProvedor,
-            bultos: element.bultos,
-            costo: element.costo,
-            peso: element.peso,
-            debito: 0
-          });
-          this.listaPaVer.push(this.obtPa);
-        }
-      });
-
-    });
-    console.log("*----------------------------- ", this.listaPaVer);
-    return this.listaPaVer;
-  }
-
   listaAnticipo() {
 
   }
