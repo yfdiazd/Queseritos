@@ -22,17 +22,17 @@
 
 
     <p>Número de Identificación <span>*</span></p>
-    <input maxlength="15" type="tel" placeholder="{{numIndetificacionEdit}}" [(ngModel)]="numIndetificacionEdit"/>
+    <input maxlength="15" type="tel" [(ngModel)]="numIndetificacionEdit"/>
     <p>Nombres <span>*</span></p>
-    <input maxlength="30" type="text" placeholder="{{nombreEdit}}" [(ngModel)]="nombreEdit"/>
+    <input maxlength="30" type="text" [(ngModel)]="nombreEdit"/>
     <p>Apellidos</p>
-    <input maxlength="30" type="text" placeholder="{{apellidoEdit}}" [(ngModel)]="apellidoEdit"/>
+    <input maxlength="30" type="text" [(ngModel)]="apellidoEdit"/>
     <p>Celular <span>*</span></p>
-    <input maxlength="12" type="tel" placeholder="{{telefonoEdit}}" [(ngModel)]="telefonoEdit"/>
+    <input maxlength="12" type="tel"  [(ngModel)]="telefonoEdit"/>
     <p>Dirección</p>
-    <input maxlength="50" type="text" placeholder="{{direccionEdit}}" [(ngModel)]="direccionEdit"/>
+    <input maxlength="50" type="text" [(ngModel)]="direccionEdit"/>
     <p>Correo Electrónico</p>
-    <input maxlength="50" type="email" placeholder="{{correoEdit}}" [(ngModel)]="correoEdit"/>
+    <input maxlength="50" type="email" [(ngModel)]="correoEdit"/>
   </div>
   <div>
     <ion-button (click)="crearProveedor()" expand="full">

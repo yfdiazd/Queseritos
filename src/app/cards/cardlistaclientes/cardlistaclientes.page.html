@@ -1,0 +1,23 @@
+<ion-router-outlet main> </ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="titulo">CLIENTES</ion-title>
+  </ion-toolbar>
+  <ion-searchbar placeholder="Buscar cliente" (ionChange)="buscar($event)"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="lista">
+    <ion-reorder-group [disable]="false" (ionItemReorder)="reorder($event)">
+      <ion-item *ngFor="let input of listanombres">
+        <ion-badge slot="start">11</ion-badge>
+        <ion-label class="lista" (click)="irCardListaClientes(input)">{{input}}</ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
+  </ion-list>
+
+</ion-content>

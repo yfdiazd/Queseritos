@@ -67,5 +67,4 @@ export class ConfirmarpesajePage implements OnInit {
   }
 
 
-
 }

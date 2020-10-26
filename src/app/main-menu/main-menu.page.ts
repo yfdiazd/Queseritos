@@ -42,6 +42,9 @@ export class MainMenuPage {
   irCardLotes() {
     this.navCtrl.navigateForward('cardlistaproveedores');
   }
+  irCardListaClientes(){
+    this.navCtrl.navigateForward('cardlistaclientes');
+  }
 
   lista() {
     this.menu.enable(true, 'first');

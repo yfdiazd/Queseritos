@@ -18,36 +18,52 @@ ion-content {
     --color: #1a1446;
   
     .div-principal {
-      max-width: 700px;
-      margin: auto;
       width: 100%;
+      margin: auto;
+      position: fixed;
       height: 10%;
-  
-       .div-fila-1 {
+      background-color: #4346ff;
+      z-index: 1;
+         
+
+      .div-fila-1 {
           display: inline-block;
-          width: 100%;
-          
+          width: 50%;
+          height: 100%;
           text-align: center;
 
           .fila1_p_titulo {
               width: 100%;
               height: 50%;
-              // color: #1a1446;
               color: white;
-              text-align: center;
           }
+         
+        }
 
-          .fila1_p_valor {
-              width: 100%;
-              height: 50%;
-              font-size: 5vh;
-              color: yellow;
+       .div-fila-2 {
+              display: inline-block;
+              margin: auto;
+              width: 50%;
+              height: 100%;
               text-align: center;
+          
+              .fila2_p_titulo {
+                  text-align: center;
+                  color: white;
+                  width: 100%;
+                  height: 50%;
+              }
+
+              .fila2_p_valor {
+                  width: 100%;
+                  height: 50%;
+                  font-size: 3.1vh;
+                  color: blue;
+              }
           }
       }
   
-        
-    }      
+
 
     .div-secundario{
 
@@ -55,11 +71,10 @@ ion-content {
         height: 80%;
         background-color:red;
         width: 100%;
-        padding-top: 5px;
-
-        
-
-        .p-title {
+        padding-top: 45px;
+       
+   
+         .p-title {
           width: 100%;
           font-weight: bold;
           color: #1a1446;

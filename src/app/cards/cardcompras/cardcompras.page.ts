@@ -124,7 +124,7 @@ export class CardcomprasPage implements OnInit {
       });
 
       this.objImp = ({
-        idProvedor: lotes,
+        idProveedor: lotes,
         bultos: totalBultos,
         costo: totalCosto,
         peso: total
@@ -158,9 +158,9 @@ export class CardcomprasPage implements OnInit {
       console.log("siii diferente a 0000 ", this.listaAnt.length);
       this.listaCard.forEach(element => {
         this.listaAnt.forEach(element2 => {
-          if (element.idProvedor == element2.idProvee) {
+          if (element.idProveedor == element2.idProvee) {
             this.obtPa = ({
-              idProvedor: element.idProvedor,
+              idProveedor: element.idProveedor,
               bultos: element.bultos,
               costo: element.costo,
               peso: element.peso,
@@ -169,13 +169,13 @@ export class CardcomprasPage implements OnInit {
             this.listaPaVer.push(this.obtPa);
             this.obtPa = null;
           } else if (this.listaPaVer.filter(valor => {
-            return valor.idProvedor == element.idProvedor;
+            return valor.idProveedor == element.idProveedor;
           }).length == 0 && this.listaAnt.filter(valorF => {
-            return valorF.idProvee == element.idProvedor
+            return valorF.idProvee == element.idProveedor
           }).length == 0) {
             console.log("llego vaciooo ");
             this.obtPa = ({
-              idProvedor: element.idProvedor,
+              idProveedor: element.idProveedor,
               bultos: element.bultos,
               costo: element.costo,
               peso: element.peso,
@@ -189,7 +189,7 @@ export class CardcomprasPage implements OnInit {
     } else {
       this.listaCard.forEach(elementC => {
         this.obtPa = ({
-          idProveedor: elementC.idProvedor,
+          idProveedor: elementC.idProveedor,
           bultos: elementC.bultos,
           costo: elementC.costo,
           peso: elementC.peso,
@@ -219,8 +219,8 @@ export class CardcomprasPage implements OnInit {
   }
 
   irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProvedor);
-    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProvedor]);
+    this.FB.getPesajeCompra(card.idProveedor);
+    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProveedor]);
   }
 
   async opciones() {

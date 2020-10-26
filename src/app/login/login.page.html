@@ -1,7 +1,7 @@
 <ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
-    <ion-title>Iniciar sesion
+    <ion-title class="titulo">INICIAR SESION
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,9 +11,9 @@
     <ion-img class="img-logo" src="assets/img/LOGO.png"></ion-img>
   </div>
   <div class="div-formulario">
-    <input type="text" placeholder="Ingrese su usuario" [(ngModel)]="email"> 
-    <input type="password" placeholder="Insrese su contraseña" [(ngModel)]="password" >
-    <ion-button id="button-login" color="success" (click)="irPaginaHome()">
+    <input type="text" placeholder="Ingresa tu usuario" [(ngModel)]="email"> 
+    <input type="password" placeholder="Ingresa tu contraseña" [(ngModel)]="password" >
+    <ion-button id="button-login" color="tertiary" (click)="irPaginaHome()">
       <ion-icon color="dark" slot="start" name="log-in"></ion-icon>Entrar
     </ion-button>
   </div>

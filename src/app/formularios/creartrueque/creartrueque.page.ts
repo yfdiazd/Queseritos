@@ -3,6 +3,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FBservicesService } from "../../fbservices.service";
+import { Pipe, PipeTransform } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-creartrueque',
@@ -16,6 +17,11 @@ export class CreartruequePage implements OnInit {
   @Input()tipoAnticipoEdit;
   @Input()valorEdit;
   @Input() id1;
+  
+
+  public transform(value: any) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
+}
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -24,6 +30,7 @@ export class CreartruequePage implements OnInit {
   ) { }
 
   ngOnInit() {
+  
     // let id = this.route.snapshot.paramMap.get("id");
 
     // this.id = id;

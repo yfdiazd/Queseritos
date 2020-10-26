@@ -18,23 +18,16 @@
     </ion-select>
 
     <p>Número de identificación<span>*</span></p>
-<<<<<<< HEAD
-    <input type="tel" maxlength="15" [(ngModel)]="numeroIdentificacionClienteEdit" />
-
-    <p>Nombres<span>*</span></p>
-    <input type="text" [(ngModel)]="nombresClienteEdit" />
-=======
     <input maxlenght="15" type="tel"  [(ngModel)]="numeroIdentificacionClienteEdit" />
 
     <p>Nombres<span>*</span></p>
     <input maxlenght="30" type="text" [(ngModel)]="nombresClienteEdit" />
->>>>>>> e7fd045e4b49d55155b9c15cb4dc8c1122e7a7c9
 
     <p>Apellidos</p>
-    <input type="text" [(ngModel)]="apellidosClienteEdit" />
+    <input maxlenght="30" type="text" [(ngModel)]="apellidosClienteEdit" />
 
     <p>nombre empresa<span>*</span></p>
-    <input type="text" [(ngModel)]="empresaClienteEdit" />
+    <input maxlenght="50"type="text" [(ngModel)]="empresaClienteEdit" />
 
     <p>Ciudad<span>*</span></p>
     <ion-select [(ngModel)]="codigociudadEdit" class="select" [interfaceOptions]="customAlertOptions2" interface="alert"
@@ -45,25 +38,14 @@
     </ion-select>
 
     <p>Celular<span>*</span></p>
-<<<<<<< HEAD
-    <input type="tel" maxlength="10" [(ngModel)]="celularClienteEdit" />
+    <input maxlenght="12" type="tel" maxlength="10"  [(ngModel)]="celularClienteEdit" />
 
     <p>Dirección<span>*</span></p>
-    <input type="text" [(ngModel)]="direccionClienteEdit" />
+    <input maxlenght="30" type="text"  [(ngModel)]="direccionClienteEdit" />
 
     <p>Correo</p>
-    <input type="email" [(ngModel)]="correoClienteEdit"/>
-    
-=======
-    <input type="tel" maxlength="10"  [(ngModel)]="celularClienteEdit" />
+    <input maxlenght="50" type="email" [(ngModel)]="correoClienteEdit" />
 
-    <p>Dirección<span>*</span></p>
-    <input type="text"  [(ngModel)]="direccionClienteEdit" />
-
-    <p>Correo</p>
-    <input type="email" [(ngModel)]="correoClienteEdit" />
-
->>>>>>> e7fd045e4b49d55155b9c15cb4dc8c1122e7a7c9
   </div>
   <div>
     <ion-button (click)="guardar()" expand="full">

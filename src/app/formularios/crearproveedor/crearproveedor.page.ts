@@ -43,7 +43,7 @@ export class CrearproveedorPage {
       if (this.idTipoIdentificacionEdit == undefined || this.numIndetificacionEdit == undefined || this.nombreEdit == undefined || this.telefonoEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
+        this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit.toUpperCase(), this.apellidoEdit.toUpperCase(), this.telefonoEdit, this.direccionEdit.toUpperCase(), this.correoEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
 
@@ -53,7 +53,7 @@ export class CrearproveedorPage {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {
-        this.FB.updateProveedor(this.id, this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
+        this.FB.updateProveedor(this.id, this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit.toUpperCase(), this.apellidoEdit.toUpperCase(), this.telefonoEdit, this.direccionEdit.toUpperCase(), this.correoEdit.toUpperCase());
         this.modalCtrl.dismiss();
       }
     }

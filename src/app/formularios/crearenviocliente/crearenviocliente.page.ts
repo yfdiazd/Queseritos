@@ -18,15 +18,22 @@ export class CrearenvioclientePage implements OnInit {
   public contadorPeso: number;
   public tipoQueso;
   public lote;
+  idcliente;
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private alertController: AlertController,
     private toastController: ToastController,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    let id = this.route.snapshot.paramMap.get("id");
+    this.idcliente=id;
+    console.log("se recibe id listacliente", this.idcliente);
+    console.log("se recibe id solito", id );
+   }
 
   ngOnInit() {
+   
   }
 
   removeRegister(index) {
