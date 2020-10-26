@@ -12,7 +12,7 @@ import { element } from 'protractor';
   styleUrls: ['./cardlistaclientes.page.scss'],
 })
 export class CardlistaclientesPage implements OnInit {
-  
+  listanombres: any[] = [];
   cont:number =0;
   constructor(
     private modalCtrl: ModalController,
@@ -29,6 +29,14 @@ export class CardlistaclientesPage implements OnInit {
   ngOnInit() {
     
   }
+
+  listarnombresclientes(){
+    this.listanombres = [];
+    this.FB.clientesLista.forEach(element=>{
+      this.listanombres.push({nombres:element.nombres})
+    })
+  }
+  
 
   irCardListaClientes(input){
 

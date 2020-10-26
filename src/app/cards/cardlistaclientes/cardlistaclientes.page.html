@@ -12,9 +12,9 @@
 <ion-content>
   <ion-list class="lista">
     <ion-reorder-group [disable]="false" (ionItemReorder)="reorder($event)">
-      <ion-item *ngFor="let input of FB.clientesLista">
+      <ion-item *ngFor="let input of listanombres">
         <ion-badge slot="start">11</ion-badge>
-        <ion-label class="lista" (click)="irCardListaClientes(input)">{{input.nombres}}</ion-label>
+        <ion-label class="lista" (click)="irCardListaClientes(input)">{{input}}</ion-label>
         <ion-reorder slot="end"></ion-reorder>
       </ion-item>
     </ion-reorder-group>
