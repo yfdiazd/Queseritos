@@ -44,6 +44,9 @@ export class MainMenuPage implements OnInit {
   irCardLotes() {
     this.navCtrl.navigateForward('cardlistaproveedores');
   }
+  irCardListaClientes(){
+    this.navCtrl.navigateForward('cardlistaclientes');
+  }
 
   lista() {
     this.menu.enable(true, 'first');

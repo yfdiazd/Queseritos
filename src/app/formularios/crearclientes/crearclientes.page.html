@@ -11,7 +11,7 @@
   <div class="div-formulario">
     <p>Tipo de identificación<span>*</span></p>
     <ion-select [(ngModel)]="tipoIdentificacionEdit" class="select" [interfaceOptions]="customAlertOptions"
-      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar" required>
       <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tiposIdentificacionLista">
         {{lista.descripcion}}
       </ion-select-option>
@@ -27,7 +27,7 @@
     <input maxlenght="30" type="text" [(ngModel)]="apellidosClienteEdit" />
 
     <p>nombre empresa<span>*</span></p>
-    <input maxlenght="30"type="text" [(ngModel)]="empresaClienteEdit" />
+    <input maxlenght="50"type="text" [(ngModel)]="empresaClienteEdit" />
 
     <p>Ciudad<span>*</span></p>
     <ion-select [(ngModel)]="codigociudadEdit" class="select" [interfaceOptions]="customAlertOptions2" interface="alert"

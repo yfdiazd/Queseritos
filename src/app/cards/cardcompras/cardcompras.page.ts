@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
+import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
-import { AlertController } from '@ionic/angular';
-import { htmlAstToRender3Ast } from '@angular/compiler/src/render3/r3_template_transform';
-import { element, Key } from 'protractor';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-cardcompras',
@@ -39,11 +36,13 @@ export class CardcomprasPage implements OnInit {
   //Datos consolidados para la visualización
   listaCard: any[] = [];
   listaAnt: any[] = [];
-
+  //Variable donde se guarda el lote actual en el que se esta comprando
   loteActual: any;
 
-  pesoMostrar = 0;
-  bultosMostrar = 0;
+  objImp: any;
+  onbjAnt: any;
+  listaPaVer: any;
+  obtPa: any;
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -53,7 +52,18 @@ export class CardcomprasPage implements OnInit {
     private navCtrl: NavController
 
   ) {
+    this.validacionLote();
+  }
 
+
+  ngOnInit() {
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
+    this.listaCards();
+
+  }
+
+  validacionLote() {
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
     console.log("LOTE ULTIMO:   ", this.loteActual.toString());
     console.log("FECHA ACTUAL ----", this.FB.fechaActual())
@@ -62,19 +72,8 @@ export class CardcomprasPage implements OnInit {
     } else {
       this.alertConfirmarNuevoLote();
     }
-
   }
-  test: any[];
-
-  ngOnInit() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
-
-    this.listaCards();
-
-  }
-  objImp: any;
-  onbjAnt: any;
+  
   listaCards() {
     console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
     console.log("Helppppppppp ", this.FB.anticipoCompraLista);
@@ -116,17 +115,13 @@ export class CardcomprasPage implements OnInit {
       });
       this.listaAnt.push(this.onbjAnt);
     });
-
-
-
     console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
     console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
     this.metodoque();
     return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
 
   }
-  listaPaVer: any[];
-  obtPa: any;
+ 
   metodoque() {
     this.listaPaVer = [];
     this.listaCard.forEach(element => {

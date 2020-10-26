@@ -43,7 +43,7 @@ export class ConfirmarpesajePage implements OnInit {
     // this.FB.agregarConfirmaPesaje("1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
     this.sumaCostoTotal();
   }
-
+  
 
   guardar() {
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
@@ -51,6 +51,8 @@ export class ConfirmarpesajePage implements OnInit {
     this.sumaCostoTotal();
     this.popover.dismiss();
   }
+
+
 
   calcular(valor) {
     this.total = (valor * this.cantidadEstado);
@@ -92,5 +94,6 @@ export class ConfirmarpesajePage implements OnInit {
 
     });
   }
+
 
 }

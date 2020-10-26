@@ -26,9 +26,7 @@ export class CrearconductorPage implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController
 
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
   }
@@ -37,10 +35,10 @@ export class CrearconductorPage implements OnInit {
     translucent: true,
   };
   guardarConductor() {
-
+    console.log("Entro a guardar--->", this.id)
     if (this.id == undefined) {
       console.log("Entro a crear")
-      if (this.idTipoIdentificacionEdit == undefined || this.numidentificacionEdit == undefined || this.nombresEdit == undefined || this.celularEdit == undefined ) {
+      if (this.idTipoIdentificacionEdit == undefined || this.numidentificacionEdit == undefined || this.nombresEdit == undefined || this.celularEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
@@ -48,8 +46,8 @@ export class CrearconductorPage implements OnInit {
       }
 
     } else {
-      console.log("Entro a MODIFICAR---")
-      if (this.idTipoIdentificacionEdit == "" || this.numidentificacionEdit == "" || this.nombresEdit == "" ||  this.celularEdit == "") {
+      console.log("Entro a MODIFICAR--->", this.id)
+      if (this.idTipoIdentificacionEdit == "" || this.numidentificacionEdit == "" || this.nombresEdit == "" || this.celularEdit == "") {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {

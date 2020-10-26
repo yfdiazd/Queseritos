@@ -62,20 +62,19 @@ export class HomeconductoresPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
       header: "Espera",
-      message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
+      message: "¿Esta seguro de eliminar " + lista.nombres + "?",
       buttons: [
         {
           text: "CANCELAR",
           role: "cancel",
           cssClass: "secondary",
           handler: (blah) => {
-            console.log("Confirm Cancel: blah");
+            console.log("Confirm Cancel");
           },
         },
         {
           text: "SI",
           handler: () => {
-            console.log("Confirm Okay");
             this.FB.deleteConductor(lista.id);
           },
         },
@@ -88,7 +87,4 @@ export class HomeconductoresPage implements OnInit {
   async cerrar() {
     this.navCtrl.navigateForward('main-menu');
   }
-
-
-
 }

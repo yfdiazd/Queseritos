@@ -1,15 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+
 import { FBservicesService } from '../../fbservices.service';
-import { from } from 'rxjs';
+
 
 @Component({
   selector: "app-crearclientes",
   templateUrl: "./crearclientes.page.html",
   styleUrls: ["./crearclientes.page.scss"],
 })
-export class CrearclientesPage implements OnInit {
+
+
+export class CrearclientesPage {
+  constructor(
+    private FB: FBservicesService,
+    private modalCtrl: ModalController,
+    private toastController: ToastController
+  ) {
+
+  }
+
   //variables para agregar clientes
   tipoIdentificacion: string;
   numeroIdentificacionCliente: number;
@@ -20,7 +30,7 @@ export class CrearclientesPage implements OnInit {
   celularCliente: number;
   direccionCliente: string;
   correoCliente: string;
-  //form: FormGroup; 
+
   //estos dos son para mostrar data
   @Input() nombreIdentificacionEdit;
   @Input() nombreCiudadEdit;
@@ -36,14 +46,6 @@ export class CrearclientesPage implements OnInit {
   @Input() correoClienteEdit;
   @Input() id;
 
-
-  constructor(
-    private FB: FBservicesService,
-    private modalCtrl: ModalController,
-    private toastController: ToastController
-    ) { }
-
-  ngOnInit() { }
 
 
   customAlertOptions: any = {
@@ -87,10 +89,4 @@ export class CrearclientesPage implements OnInit {
     });
     toast.present();
   }
-
-  // private buildForm(){
-  // this.form= this.formBuilder.group({
-  //   numeroIdentificacionClienteEdit: [0, Validators.max(15)]
-  // })
-  // }
 }

@@ -17,4 +17,4 @@ import { CrearclientesPage } from './crearclientes.page';
   ],
   declarations: [CrearclientesPage]
 })
-export class CrearclientesPageModule {}
+export class CrearclientesPageModule { }
