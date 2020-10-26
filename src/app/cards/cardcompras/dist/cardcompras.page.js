@@ -162,8 +162,6 @@ var CardcomprasPage = /** @class */ (function () {
         this.recorreListas();
         return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
     };
-    CardcomprasPage.prototype.listaAnticipo = function () {
-    };
     CardcomprasPage.prototype.recorreListas = function () {
         var _this = this;
         this.listaPaVer = [];
@@ -216,6 +214,9 @@ var CardcomprasPage = /** @class */ (function () {
         }
         console.log("*----------------------------- ", this.listaPaVer);
         return this.listaPaVer;
+    };
+    CardcomprasPage.prototype.irCompra = function (card) {
+        this.navCtrl.navigateForward(["crearcompra"]);
     };
     CardcomprasPage.prototype.irVender = function () {
         this.router.navigate(["cardcompras"]);

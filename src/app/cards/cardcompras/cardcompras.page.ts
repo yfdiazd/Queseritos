@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
@@ -151,10 +152,6 @@ export class CardcomprasPage implements OnInit {
 
   }
 
-  listaAnticipo() {
-
-  }
-
   recorreListas() {
     this.listaPaVer = [];
     if (this.listaAnt.length != 0) {
@@ -173,7 +170,7 @@ export class CardcomprasPage implements OnInit {
             this.obtPa = null;
           } else if (this.listaPaVer.filter(valor => {
             return valor.idProvedor == element.idProvedor;
-          }).length == 0 && this.listaAnt.filter(valorF =>{
+          }).length == 0 && this.listaAnt.filter(valorF => {
             return valorF.idProvee == element.idProvedor
           }).length == 0) {
             console.log("llego vaciooo ");
@@ -192,7 +189,7 @@ export class CardcomprasPage implements OnInit {
     } else {
       this.listaCard.forEach(elementC => {
         this.obtPa = ({
-          idProvedor: elementC.idProvedor,
+          idProveedor: elementC.idProvedor,
           bultos: elementC.bultos,
           costo: elementC.costo,
           peso: elementC.peso,
@@ -206,6 +203,10 @@ export class CardcomprasPage implements OnInit {
     return this.listaPaVer;
   }
 
+  irCompra(card){
+    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
+    console.log("card.idProveedor", card.idProveedor)
+  }
 
   irVender() {
     this.router.navigate(["cardcompras"]);
