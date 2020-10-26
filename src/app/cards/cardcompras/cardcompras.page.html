@@ -23,7 +23,7 @@
       </div>
       <div class="fila2_col2">
         <p class="div-t">Saldo</p>
-        <p class="div-v">{{(saldocreditotal - saldodebitototal) | currency:'USD':true: '2.0-0'}}</p>
+        <p class="div-v">{{(saldodebitototal - saldocreditotal) | currency:'USD':true: '2.0-0'}}</p>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="div-cajita-2">
                   <p class="seccion2_title">Saldo</p>
-                  <p class="seccion2-valor2">{{card.costo - card.debito | currency:'USD':true: '2.0-0'}}</p>
+                  <p class="seccion2-valor2">{{card.debito - card.costo | currency:'USD':true: '2.0-0'}}</p>
                 </div>
               </div>
             </div>

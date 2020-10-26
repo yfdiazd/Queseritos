@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, NavController, PopoverController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 
@@ -11,11 +11,9 @@ import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 })
 export class CardcompradetalladaPage implements OnInit {
   constructor(
-    private alertController: AlertController,
     private route: ActivatedRoute,
     private FB: FBservicesService,
-    private navCtrl: NavController,
-    private popover: PopoverController
+    private modalController: ModalController
   ) {
     // this.FB.getProveedorCompra();
     // this.listaPesajesProveedor();
@@ -64,32 +62,16 @@ export class CardcompradetalladaPage implements OnInit {
       })
     })
   }
+
   async presentPopover(card) {
-    this.traerlistBulto(card.id);
-    const popover = await this.popover.create({
+    const modal = await this.modalController.create({
       component: HomepesajesPage,
-      cssClass: 'popover_style',
-      translucent: true,
+      cssClass: 'my-custom-class',
       componentProps: {
         idCompra: card.id,
-        idProv: card.idProveedor,
-        listaBultos: this.listaBultosCompra
+        idProv: card.idProveedor
       },
     });
-    console.log("CARD_:", card.id)
-    console.log("CARD_:", this.listaBultosCompra)
-    return await popover.present();
+    return await modal.present();
   }
-
-  traerlistBulto(id) {
-    console.log("IdCompra_:", id)
-    this.listaBultosCompra = [];
-    this.FB.pesajeCompraLista.forEach(element => {
-      if (element.id == id) {
-        this.listaBultosCompra.push(element.bultoLista);
-        console.log("peso: ", element.bultoLista);
-      }
-    });
-  }
-
 }
