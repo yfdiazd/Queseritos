@@ -9,8 +9,9 @@ exports.__esModule = true;
 exports.ConfirmarpesajePage = void 0;
 var core_1 = require("@angular/core");
 var ConfirmarpesajePage = /** @class */ (function () {
-    function ConfirmarpesajePage(FB, popover) {
+    function ConfirmarpesajePage(FB, HP, popover) {
         this.FB = FB;
+        this.HP = HP;
         this.popover = popover;
         this.cantidadEstado = 0;
         this.costoKilo = 0;
@@ -19,20 +20,27 @@ var ConfirmarpesajePage = /** @class */ (function () {
         this.total = 0;
         this.valor = 0;
         this.sumado = 0;
+        this.objCompreDetallada = [];
     }
     ConfirmarpesajePage.prototype.ngOnInit = function () {
     };
     ConfirmarpesajePage.prototype.guardar = function () {
+        this.objCompreDetallada = null;
         this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-        this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-        this.popover.dismiss(this.valorkgEdit, "valorkgEdit");
+        this.objCompreDetallada = ({
+            idProv: this.idProv,
+            idCompra: this.idCompra,
+            idEstProd: this.idEstadoProducto,
+            peso: this.cantidadEstado,
+            costKilo: this.costoKilo,
+            costTotal: this.costoTotalEstado
+        });
+        console.log("lista tiene  ", this.objCompreDetallada);
+        this.popover.dismiss(this.objCompreDetallada, "pesajeConfirmado");
     };
     ConfirmarpesajePage.prototype.calcular = function (valor) {
         this.total = (valor * this.cantidadEstado);
         console.log("imprime valor", valor, this.total);
-    };
-    ConfirmarpesajePage.prototype.volver = function () {
-        this.popover.dismiss();
     };
     __decorate([
         core_1.Input()

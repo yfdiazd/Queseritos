@@ -63,7 +63,6 @@ export class CardcomprasPage implements OnInit {
   doRefresh(event) {
     console.log('Begin async operation');
     this.listaCards();
-    this.metodoque();
     this.listaAnt = [];
     this.listaCard = [];
     this.objImp = [];
@@ -137,7 +136,7 @@ export class CardcomprasPage implements OnInit {
       let prov = element[keys[0]].idProveedor;
       keys.forEach(key => {
         totalAnt += element[key].valorAnticipo;
-        this.saldodebitototal += (this.saldodebitototal + element[key].valorAnticipo);
+        this.saldodebitototal += element[key].valorAnticipo;
       });
       this.onbjAnt = ({
         valorAnt: totalAnt,
@@ -145,29 +144,22 @@ export class CardcomprasPage implements OnInit {
       });
       this.listaAnt.push(this.onbjAnt);
     });
-    console.log("ListaCOMPRASporPROVEEDOR: ", this.listaCard);
-    console.log("ListaANTICIPOS, this.listaAnt");
-    this.metodoque();
+    console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
+    console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
+    this.recorreListas();
     return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
 
   }
 
-  metodoque() {
+  listaAnticipo() {
+
+  }
+
+  recorreListas() {
     this.listaPaVer = [];
-    this.obtPa = [];
-    this.listaCard.forEach(element => {
-      if (this.listaAnt.length == 0) {
-        this.obtPa = ({
-          idProvedor: element.idProvedor,
-          bultos: element.bultos,
-          costo: element.costo,
-          peso: element.peso,
-          debito: 0
-        });
-        this.listaPaVer.push(this.obtPa);
-      } else {
-
-
+    if (this.listaAnt.length != 0) {
+      console.log("siii diferente a 0000 ", this.listaAnt.length);
+      this.listaCard.forEach(element => {
         this.listaAnt.forEach(element2 => {
           if (element.idProvedor == element2.idProvee) {
             this.obtPa = ({
@@ -178,9 +170,12 @@ export class CardcomprasPage implements OnInit {
               debito: element2.valorAnt
             });
             this.listaPaVer.push(this.obtPa);
-          } else if (!this.listaPaVer.filter(valor => {
+            this.obtPa = null;
+          } else if (this.listaPaVer.filter(valor => {
             return valor.idProvedor == element.idProvedor;
-          })) {
+          }).length == 0 && this.listaAnt.filter(valorF =>{
+            return valorF.idProvee == element.idProvedor
+          }).length == 0) {
             console.log("llego vaciooo ");
             this.obtPa = ({
               idProvedor: element.idProvedor,
@@ -190,13 +185,27 @@ export class CardcomprasPage implements OnInit {
               debito: 0
             });
             this.listaPaVer.push(this.obtPa);
+            this.obtPa = null;
           }
         });
-      }
-    });
-    console.log("Lista para ver ", this.listaPaVer);
+      });
+    } else {
+      this.listaCard.forEach(elementC => {
+        this.obtPa = ({
+          idProvedor: elementC.idProvedor,
+          bultos: elementC.bultos,
+          costo: elementC.costo,
+          peso: elementC.peso,
+          debito: 0
+        });
+        this.listaPaVer.push(this.obtPa);
+        this.obtPa = null;
+      });
+    }
+    console.log("*----------------------------- ", this.listaPaVer);
     return this.listaPaVer;
   }
+
 
   irVender() {
     this.router.navigate(["cardcompras"]);

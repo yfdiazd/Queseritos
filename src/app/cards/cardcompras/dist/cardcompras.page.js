@@ -77,7 +77,6 @@ var CardcomprasPage = /** @class */ (function () {
     CardcomprasPage.prototype.doRefresh = function (event) {
         console.log('Begin async operation');
         this.listaCards();
-        this.metodoque();
         this.listaAnt = [];
         this.listaCard = [];
         this.objImp = [];
@@ -150,7 +149,7 @@ var CardcomprasPage = /** @class */ (function () {
             var prov = element[keys[0]].idProveedor;
             keys.forEach(function (key) {
                 totalAnt += element[key].valorAnticipo;
-                _this.saldodebitototal += (_this.saldodebitototal + element[key].valorAnticipo);
+                _this.saldodebitototal += element[key].valorAnticipo;
             });
             _this.onbjAnt = ({
                 valorAnt: totalAnt,
@@ -158,27 +157,19 @@ var CardcomprasPage = /** @class */ (function () {
             });
             _this.listaAnt.push(_this.onbjAnt);
         });
-        console.log("ListaCOMPRASporPROVEEDOR: ", this.listaCard);
-        console.log("ListaANTICIPOS, this.listaAnt");
-        this.metodoque();
+        console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
+        console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
+        this.recorreListas();
         return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
     };
-    CardcomprasPage.prototype.metodoque = function () {
+    CardcomprasPage.prototype.listaAnticipo = function () {
+    };
+    CardcomprasPage.prototype.recorreListas = function () {
         var _this = this;
         this.listaPaVer = [];
-        this.obtPa = [];
-        this.listaCard.forEach(function (element) {
-            if (_this.listaAnt.length == 0) {
-                _this.obtPa = ({
-                    idProvedor: element.idProvedor,
-                    bultos: element.bultos,
-                    costo: element.costo,
-                    peso: element.peso,
-                    debito: 0
-                });
-                _this.listaPaVer.push(_this.obtPa);
-            }
-            else {
+        if (this.listaAnt.length != 0) {
+            console.log("siii diferente a 0000 ", this.listaAnt.length);
+            this.listaCard.forEach(function (element) {
                 _this.listaAnt.forEach(function (element2) {
                     if (element.idProvedor == element2.idProvee) {
                         _this.obtPa = ({
@@ -189,10 +180,13 @@ var CardcomprasPage = /** @class */ (function () {
                             debito: element2.valorAnt
                         });
                         _this.listaPaVer.push(_this.obtPa);
+                        _this.obtPa = null;
                     }
-                    else if (!_this.listaPaVer.filter(function (valor) {
+                    else if (_this.listaPaVer.filter(function (valor) {
                         return valor.idProvedor == element.idProvedor;
-                    })) {
+                    }).length == 0 && _this.listaAnt.filter(function (valorF) {
+                        return valorF.idProvee == element.idProvedor;
+                    }).length == 0) {
                         console.log("llego vaciooo ");
                         _this.obtPa = ({
                             idProvedor: element.idProvedor,
@@ -202,11 +196,25 @@ var CardcomprasPage = /** @class */ (function () {
                             debito: 0
                         });
                         _this.listaPaVer.push(_this.obtPa);
+                        _this.obtPa = null;
                     }
                 });
-            }
-        });
-        console.log("Lista para ver ", this.listaPaVer);
+            });
+        }
+        else {
+            this.listaCard.forEach(function (elementC) {
+                _this.obtPa = ({
+                    idProvedor: elementC.idProvedor,
+                    bultos: elementC.bultos,
+                    costo: elementC.costo,
+                    peso: elementC.peso,
+                    debito: 0
+                });
+                _this.listaPaVer.push(_this.obtPa);
+                _this.obtPa = null;
+            });
+        }
+        console.log("*----------------------------- ", this.listaPaVer);
         return this.listaPaVer;
     };
     CardcomprasPage.prototype.irVender = function () {

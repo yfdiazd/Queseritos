@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { element } from 'protractor';
-import { ActivatedRoute } from '@angular/router';
-import { ModalController, PopoverController, ToastController } from '@ionic/angular';
-import { FBservicesService } from '../../fbservices.service'
+import { ModalController, PopoverController } from '@ionic/angular';
+import { FBservicesService } from '../../fbservices.service';
+import { HomepesajesPage } from '../../home/homepesajes/homepesajes.page';
+
 
 @Component({
   selector: 'app-confirmarpesaje',
@@ -21,6 +21,7 @@ export class ConfirmarpesajePage implements OnInit {
   total = 0;
   valor = 0;
   sumado = 0;
+  objCompreDetallada: any = [];
 
   pesoEdit;
   valorkgEdit;
@@ -29,27 +30,42 @@ export class ConfirmarpesajePage implements OnInit {
   @Input() idCompra;
   @Input() idProv;
   constructor(
+    
     private FB: FBservicesService,
+    private HP: HomepesajesPage,
     private popover: PopoverController
   ) { }
 
   ngOnInit() {
-
   }
 
-  guardar() {
-    this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
 
-    this.popover.dismiss(this.valorkgEdit, "valorkgEdit");
+  guardar() {
+
+
+    this.objCompreDetallada = null;
+    this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
+
+    this.objCompreDetallada = ({
+      idProv: this.idProv,
+      idCompra: this.idCompra,
+      idEstProd: this.idEstadoProducto,
+      peso: this.cantidadEstado,
+      costKilo: this.costoKilo,
+      costTotal: this.costoTotalEstado
+
+    });
+
+
+    console.log("lista tiene  ", this.objCompreDetallada);
+    this.popover.dismiss(this.objCompreDetallada, "pesajeConfirmado");
   }
 
   calcular(valor) {
     this.total = (valor * this.cantidadEstado);
     console.log("imprime valor", valor, this.total)
   }
-  volver(){
-    this.popover.dismiss();
-  }
+
+
 
 }

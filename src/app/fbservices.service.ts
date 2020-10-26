@@ -1061,9 +1061,9 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //Trae los anticipos por proveedor
-    async getAnticipoProveedor() {
-        // console.log("Lista de proveedores desde getAnticipoProveedor", this.proveedoresLista);
+
+     getAnticipoProveedor(){
+        
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         this.anticipoCompraLista = [];

@@ -50,7 +50,7 @@ var HomepesajesPage = /** @class */ (function () {
         this.FB = FB;
         this.PopoverController = PopoverController;
         this.modalController = modalController;
-        this.saldo = 20000;
+        this.listaCompraDetallada = [];
     }
     HomepesajesPage.prototype.ngOnInit = function () {
     };
@@ -81,6 +81,8 @@ var HomepesajesPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         console.log("Esto trajo:", data);
+                        this.listaCompraDetallada.push(data);
+                        console.log("La lista es deeeeeeeeeeeeeeeeee ", this.listaCompraDetallada);
                         return [2 /*return*/];
                 }
             });
@@ -100,6 +102,9 @@ var HomepesajesPage = /** @class */ (function () {
         core_1.Input()
     ], HomepesajesPage.prototype, "listaBultos");
     HomepesajesPage = __decorate([
+        core_1.Injectable({
+            providedIn: "root"
+        }),
         core_1.Component({
             selector: 'app-homepesajes',
             templateUrl: './homepesajes.page.html',

@@ -14,9 +14,6 @@
 <ion-content>
   <div class="div-principal">
     <div class="info">
-      <p><span>Fecha Compra:</span> "quemado"</p>
-      <p><span>Tipo de Queso:</span> "quemado"</p>
-      <p><span>Total Bultos:</span></p>
       <p><span>Total Peso:</span></p>
     </div>
   </div>
@@ -26,20 +23,26 @@
       <thead class="thead">
         <th class="th1">Estado</th>
         <th class="th2">Peso <span>Kg</span></th>
-        <th class="th3">Valor</th>
+        <th class="th3">Valor Kg</th>
+        <th class="th4">Valor Total</th>
       </thead>
       <tbody class="tbody">
+<<<<<<< HEAD
         <tr class="tr" *ngFor="let lista of listaBultosConfirmados; let i=index">
+=======
+        <tr class="tr" *ngFor="let lista of listaCompraDetallada; let i=index">
+>>>>>>> 2aee15a391afa08f3fc73c0642c98bd8ffe1381a
           <td class="td1">
-            <label (ngModel)="numbulto">{{i+1}}</label>
+            <label (ngModel)="numbulto">{{lista.idEstProd}}</label>
           </td>
           <td class="td2">
             <label (ngModel)="peso">{{lista.peso}}</label>
-            <!-- <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" /> -->
           </td>
           <td class="td3">
-            <label (ngModel)="numbulto">{{saldo}}</label>
-            <!-- <input type="number" value="{{saldo}}" (ngModelChange)="edit($event)" /> -->
+            <label (ngModel)="numbulto">{{lista.costKilo}}</label>
+          </td>
+          <td class="td4">
+            <label (ngModel)="numbulto">{{lista.costTotal}}</label>
           </td>
           <!-- <td class="td4">
               <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
@@ -57,6 +60,10 @@
         <ion-icon name="save-outline"></ion-icon>
         <ion-label>Guardar</ion-label>
       </ion-button> -->
+    <ion-button (click)="guardar()" expand="full" color="success">
+      <ion-icon name="save-outline"></ion-icon>
+      <ion-label>Guardar</ion-label>
+    </ion-button>
   </div>
 
 </ion-content>

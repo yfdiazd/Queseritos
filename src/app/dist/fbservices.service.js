@@ -1106,30 +1106,24 @@ var FBservicesService = /** @class */ (function () {
         });
         this.toastOperacionExitosa();
     };
-    //Trae los anticipos por proveedor
     FBservicesService.prototype.getAnticipoProveedor = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                // console.log("Lista de proveedores desde getAnticipoProveedor", this.proveedoresLista);
-                this.lastLote = [];
-                this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
-                this.anticipoCompraLista = [];
-                this.proveedoresLista.forEach(function (element) {
-                    firebase
-                        .database()
-                        .ref("usuario/compras/" + element.id + "/" + _this.lastLote.toString() + "/anticipos")
-                        .on('value', function (snapshot) {
-                        if (snapshot.exists && snapshot.val() !== null) {
-                            _this.anticipoCompraLista.push(snapshot.val());
-                        }
-                        else {
-                        }
-                    });
-                });
-                return [2 /*return*/, this.anticipoCompraLista];
+        var _this = this;
+        this.lastLote = [];
+        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+        this.anticipoCompraLista = [];
+        this.proveedoresLista.forEach(function (element) {
+            firebase
+                .database()
+                .ref("usuario/compras/" + element.id + "/" + _this.lastLote.toString() + "/anticipos")
+                .on('value', function (snapshot) {
+                if (snapshot.exists && snapshot.val() !== null) {
+                    _this.anticipoCompraLista.push(snapshot.val());
+                }
+                else {
+                }
             });
         });
+        return this.anticipoCompraLista;
     };
     FBservicesService = __decorate([
         core_1.Injectable({
