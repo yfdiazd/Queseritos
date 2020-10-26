@@ -11,9 +11,9 @@ import { FBservicesService } from 'src/app/fbservices.service';
 })
 export class CardcomprasPage implements OnInit {
 
-  pesoacumulado = 200;
-  saldodebitototal = 120000000;
-  saldocreditotal = 140000000;
+  pesoacumulado = 0;
+  saldodebitototal = 0;
+  saldocreditotal = 0;
 
 
 
@@ -38,6 +38,8 @@ export class CardcomprasPage implements OnInit {
   listaAnt: any[] = [];
   //Variable donde se guarda el lote actual en el que se esta comprando
   loteActual: any;
+  //Lista de nombres a mostrar
+  public nombreProv: any;
 
   objImp: any;
   onbjAnt: any;
@@ -51,20 +53,43 @@ export class CardcomprasPage implements OnInit {
     private alertController: AlertController,
     private navCtrl: NavController
 
-  ) {
-    this.validacionLote();
-  }
-
+  ) { }
 
   ngOnInit() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    // this.validacionLote();
     this.listaCards();
+  }
 
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.listaCards();
+    this.metodoque();
+    this.listaAnt = [];
+    this.listaCard = [];
+    this.objImp = [];
+    this.saldocreditotal = 0;
+    this.pesoacumulado = 0;
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 1000);
+  }
+
+  traerNombre() {
+    this.nombreProv = [];
+    this.FB.proveedoresLista.forEach(element => {
+      this.listaPaVer.forEach(element2 => {
+        if (element.id == element2.idProveedor) {
+          this.nombreProv.push({ nombre: element.nombre, idProv: element.id });
+        }
+      })
+    })
+    console.log("Nombres de los proveedores:", this.nombreProv);
   }
 
   validacionLote() {
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
+    console.log("Lote actual", this.loteActual)
     console.log("LOTE ULTIMO:   ", this.loteActual.toString());
     console.log("FECHA ACTUAL ----", this.FB.fechaActual())
     if (this.loteActual.toString().includes(this.FB.fechaActual())) {
@@ -73,11 +98,18 @@ export class CardcomprasPage implements OnInit {
       this.alertConfirmarNuevoLote();
     }
   }
-  
+
   listaCards() {
-    console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
-    console.log("Helppppppppp ", this.FB.anticipoCompraLista);
-    this.FB.proveedorCompraLiata.forEach(element => {
+    this.objImp = [];
+    this.onbjAnt = [];
+    this.listaCard = [];
+    this.listaAnt = [];
+    this.saldocreditotal = 0;
+    this.pesoacumulado = 0;
+    this.saldodebitototal = 0;
+    console.log("Lista de provedores con compra", this.FB.proveedorCompraLista);
+    console.log("Lista anticipos ", this.FB.anticipoCompraLista);
+    this.FB.proveedorCompraLista.forEach(element => {
       let total = 0;
       let totalCosto = 0;
       let totalBultos = 0;
@@ -87,7 +119,8 @@ export class CardcomprasPage implements OnInit {
         total += element[key].pesoBultos;
         totalBultos += element[key].totalBulto;
         totalCosto += element[key].costoTotalCompra;
-
+        this.pesoacumulado += element[key].pesoBultos;
+        this.saldocreditotal += element[key].costoTotalCompra;
       });
 
       this.objImp = ({
@@ -104,6 +137,7 @@ export class CardcomprasPage implements OnInit {
       let prov = element[keys[0]].idProveedor;
       keys.forEach(key => {
         totalAnt += element[key].valorAnticipo;
+        this.saldodebitototal += (this.saldodebitototal + element[key].valorAnticipo);
       });
       this.onbjAnt = ({
         valorAnt: totalAnt,
@@ -111,48 +145,57 @@ export class CardcomprasPage implements OnInit {
       });
       this.listaAnt.push(this.onbjAnt);
     });
-    console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
-    console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
+    console.log("ListaCOMPRASporPROVEEDOR: ", this.listaCard);
+    console.log("ListaANTICIPOS, this.listaAnt");
     this.metodoque();
-    return this.listaCard, this.listaAnt;
+    return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
 
   }
- 
+
   metodoque() {
     this.listaPaVer = [];
+    this.obtPa = [];
     this.listaCard.forEach(element => {
-      this.listaAnt.forEach(element2 => {
-        if (element.idProvedor === element2.idProvee) {
-          this.obtPa = ({
-            idProvedor: element.idProvedor,
-            bultos: element.bultos,
-            costo: element.costo,
-            peso: element.peso,
-            debito: element2.valorAnt
-          });
-          this.listaPaVer.push(this.obtPa);
-        } else if (!this.listaPaVer.filter(valor => {
-          return valor.idProvedor === element.idProvedor;
+      if (this.listaAnt.length == 0) {
+        this.obtPa = ({
+          idProvedor: element.idProvedor,
+          bultos: element.bultos,
+          costo: element.costo,
+          peso: element.peso,
+          debito: 0
+        });
+        this.listaPaVer.push(this.obtPa);
+      } else {
 
-        })) {
-          this.obtPa = ({
-            idProvedor: element.idProvedor,
-            bultos: element.bultos,
-            costo: element.costo,
-            peso: element.peso,
-            debito: 0
-          });
-          this.listaPaVer.push(this.obtPa);
-        }
-      });
 
+        this.listaAnt.forEach(element2 => {
+          if (element.idProvedor == element2.idProvee) {
+            this.obtPa = ({
+              idProvedor: element.idProvedor,
+              bultos: element.bultos,
+              costo: element.costo,
+              peso: element.peso,
+              debito: element2.valorAnt
+            });
+            this.listaPaVer.push(this.obtPa);
+          } else if (!this.listaPaVer.filter(valor => {
+            return valor.idProvedor == element.idProvedor;
+          })) {
+            console.log("llego vaciooo ");
+            this.obtPa = ({
+              idProvedor: element.idProvedor,
+              bultos: element.bultos,
+              costo: element.costo,
+              peso: element.peso,
+              debito: 0
+            });
+            this.listaPaVer.push(this.obtPa);
+          }
+        });
+      }
     });
-    console.log("*----------------------------- ", this.listaPaVer);
+    console.log("Lista para ver ", this.listaPaVer);
     return this.listaPaVer;
-  }
-
-  listaAnticipo() {
-
   }
 
   irVender() {
@@ -161,7 +204,7 @@ export class CardcomprasPage implements OnInit {
 
   irPesajeCompra(card) {
     // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearpesajecompra"]);
+    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
 
   }
 
@@ -270,5 +313,10 @@ export class CardcomprasPage implements OnInit {
 
     await alert.present();
   }
+
+
+
+
+
 }
 

@@ -1,4 +1,4 @@
-<ion-router-outlet main></ion-router-outlet>
+
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -9,6 +9,12 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content style="background-color: transparent;" pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div class="div-principal">
     <div class="div-fila-1">
       <p class="fila1_p_titulo">Peso Actual</p>
@@ -23,12 +29,12 @@
       </div>
       <div class="fila2_col2">
         <p class="div-t">Saldo</p>
-        <p class="div-v">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+        <p class="div-v">{{(saldocreditotal - saldodebitototal) | currency:'USD':true: '2.0-0'}}</p>
       </div>
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let card of listaPaVer"  >
+    <ion-item-sliding class="slider" *ngFor="let card of listaPaVer">
       <ion-item class="item">
         <div class="div-card">
           <div class="div-head_button">
@@ -81,4 +87,5 @@
     </ion-fab>
 
   </div>
+
 </ion-content>

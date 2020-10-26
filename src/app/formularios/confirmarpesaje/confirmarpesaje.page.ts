@@ -22,8 +22,8 @@ export class ConfirmarpesajePage implements OnInit {
   valor = 0;
   sumado = 0;
 
-  @Input() pesoEdit;
-  @Input() valorkgEdit;
+  pesoEdit;
+  valorkgEdit;
   @Input() id;
 
   @Input() idCompra;
@@ -34,63 +34,22 @@ export class ConfirmarpesajePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.FB.verificarsesion();
-  }
 
-  confirmar() {
-    this.listaBultos.push("");
-    this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-    // this.FB.agregarConfirmaPesaje("1234", this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-    this.sumaCostoTotal();
   }
-
 
   guardar() {
     this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
     this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-    this.sumaCostoTotal();
-    this.popover.dismiss();
+
+    this.popover.dismiss(this.valorkgEdit, "valorkgEdit");
   }
 
   calcular(valor) {
     this.total = (valor * this.cantidadEstado);
     console.log("imprime valor", valor, this.total)
   }
-
-  eliminarBulto() {
-
-
-  }
-
-  editarBulto() {
-
-  }
-  // guardarPesajeConfirmado() {
-  //   this.FB.getPesajeCompra();
-  //   this.idPesajeCompra = "1602531822105";
-  //   this.idEstadoProducto = "1602459210154";
-  //   this.cantidadEstado = "50";
-  //   this.costoKilo = "6500";
-  //   this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-  //   console.log("Compramossss " + this.costoTotalEstado);
-  //   this.sumaCostoTotal();
-
-  //   //this.FB.agregarConfirmaPesaje(this.idPesajeCompra, this.idproveedor, this.idEstadoProducto, this.cantidadEstado, this.costoKilo, this.costoTotalEstado);
-  // }
-  sumaCostoTotal() {
-
-    console.log("Ejecucion del metttt " + this.FB.pesajeCompraLista.length);
-    this.FB.pesajeCompraLista.forEach(element => {
-      if (element.id == "1603329959288") {
-        console.log("Vallllll " + element.costoTotalCompra);
-        this.calculaCostoTotal = (element.costoTotalCompra + this.costoTotalEstado);
-        console.log("Sumaaaaaa " + this.calculaCostoTotal);
-
-        //updateeeeee
-         //this.FB.updatePesajeCompraValor("1602474514528", "1603329959288", this.calculaCostoTotal);
-      }
-
-    });
+  volver(){
+    this.popover.dismiss();
   }
 
 }

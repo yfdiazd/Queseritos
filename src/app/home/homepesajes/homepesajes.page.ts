@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, NavController, PopoverController } from '@ionic/angular';
-import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { ConfirmarpesajePage } from 'src/app/formularios/confirmarpesaje/confirmarpesaje.page';
 
@@ -14,7 +13,6 @@ export class HomepesajesPage implements OnInit {
   constructor(
     private FB: FBservicesService,
     public PopoverController: PopoverController,
-    private navCtrl: NavController,
     public modalController: ModalController
   ) { }
 
@@ -31,7 +29,7 @@ export class HomepesajesPage implements OnInit {
     this.presentPopover(this.idCompra, this.idProv);
   }
 
-  async presentPopover(idCompra,idProv) {
+  async presentPopover(idCompra, idProv) {
     const popover = await this.PopoverController.create({
       component: ConfirmarpesajePage,
       cssClass: 'popover_style',
@@ -41,8 +39,13 @@ export class HomepesajesPage implements OnInit {
         idProv: idProv
       },
     });
-    console.log("Este es el id enviado:", idCompra, idProv)
-    return await popover.present();
-  }
+    await popover.present();
+    const { data } = await popover.onDidDismiss();
+    console.log("Esto trajo:", data);
+  };
 
+  volver(){
+    this.modalController.dismiss();
+  }
 }
+

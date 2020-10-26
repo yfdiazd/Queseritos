@@ -4,6 +4,9 @@
     <ion-buttons slot="end" (click)="crearModal()">
       <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
     </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" color="danger">X</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -26,7 +29,7 @@
         <th class="th3">Valor</th>
       </thead>
       <tbody class="tbody">
-        <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+        <tr class="tr" *ngFor="let lista of listaBultosConfirmados; let i=index">
           <td class="td1">
             <label (ngModel)="numbulto">{{i+1}}</label>
           </td>
