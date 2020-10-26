@@ -62,7 +62,7 @@ export class FBservicesService {
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
     public proveedorCompraLiata: any[];
-    public anticipoCompraLista: any [];
+    public anticipoCompraLista: any[];
     //Lista lotes
     listaLotes: any[] = [];
     public ultimoLote: any[];
@@ -187,10 +187,10 @@ export class FBservicesService {
     verificarsesion() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                
+
                 //this.router.navigate(["main-menu"]);
 
-                
+
                 this.listaOrdenLotes();
                 this.mostrarNombre();
                 this.getCiudades();
@@ -201,7 +201,7 @@ export class FBservicesService {
                 this.getTipoAnticipos();
                 this.getTiposIdentificacion();
                 this.getConductor();
-                
+
             } else {
                 console.log("No hay sesion, toca loguear");
                 this.router.navigate(["login"]);
@@ -320,7 +320,7 @@ export class FBservicesService {
     //-----------------------------Metodos creacion parametrizacion------------------------------------------------------
     //Metodo que permite crear productos
     crearProdcuto(codigoProducto, descripcionProducto, flagEstado) {
-        
+
         this.pathPush = ("usuario/configuracion/" + "productos");
         if (this.validaCodigos(codigoProducto, this.pathPush) == false) {
 
@@ -344,7 +344,7 @@ export class FBservicesService {
     }
     //Metodo que permite crear proveedores
     crearProveedor(tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
-        
+
 
         if (apellidoProveedor == null) {
             apellidoProveedor = "";
@@ -383,7 +383,7 @@ export class FBservicesService {
     }
     //Metodo que permite crear los tipos de identificacion
     agregarTipoIdentificacion(codigoTipoIdentificacion, descripcionTipoIdentificacion) {
-        
+
         this.pathPush = ("usuario/configuracion/" + "tiposIdentificacion");
         if (this.validaCodigos(codigoTipoIdentificacion, this.pathPush) == false) {
             this.idTipoIdentificacion = this.idGenerator();
@@ -404,7 +404,7 @@ export class FBservicesService {
     }
     //Metodo para agregar estados de producto
     agregarEstadoProducto(codigoEstadoProducto, descripcionEstadoProducto) {
-        
+
         this.pathPush = ("usuario/configuracion/" + "estadoProductos");
         if (this.validaCodigos(codigoEstadoProducto, this.pathPush) == false) {
             this.idEstadoProducto = this.idGenerator()
@@ -425,7 +425,7 @@ export class FBservicesService {
     }
     //Metodo para agregar el tipo de anticipo
     agregarTipoAnticipo(codigoTipoAnticipo, descripcionTipoanticipo) {
-        
+
         this.pathPush = ("usuario/configuracion/" + "tipoAnticipo");
         if (this.validaCodigos(codigoTipoAnticipo, this.pathPush) == false) {
             this.idTipoAnticipo = this.idGenerator();
@@ -448,7 +448,7 @@ export class FBservicesService {
 
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
-       
+
         this.pathPush = "";
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
@@ -521,7 +521,7 @@ export class FBservicesService {
     }
     //Metodo para agregar conductores
     agregarConductor(tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
-        
+
         if (apelidoConductor == null) {
             apelidoConductor = "";
         }
@@ -711,7 +711,7 @@ export class FBservicesService {
     //----------------------------------Metodos para eliminar estado 0-----------------------------------------
 
     deleteProducto(idProducto) {
-        
+
         firebase
             .database()
             .ref("usuario/configuracion/" + "productos/" + idProducto)
@@ -722,7 +722,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     deleteProveedor(idProveedor) {
-        
+
 
         firebase
             .database()
@@ -734,7 +734,7 @@ export class FBservicesService {
     }
     deleteTipoIdentificacion(idTipoIdentificacion) {
 
-        
+
         firebase
             .database()
             .ref("usuario/configuracion/" + "tiposIdentificacion/" + idTipoIdentificacion)
@@ -744,7 +744,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     deleteEstadoProducto(idEstadoProducto) {
-        
+
 
         firebase
             .database()
@@ -756,7 +756,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     deleteTipoAnticipo(idTipoAnticipo) {
-        
+
 
         firebase
             .database()
@@ -768,7 +768,7 @@ export class FBservicesService {
     }
 
     deleteCiudad(idCiudad) {
-        
+
         firebase
             .database()
             .ref("usuario/configuracion/" + "/ciudad/" + idCiudad)
@@ -778,7 +778,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     deleteCliente(idCliente) {
-        
+
 
         firebase
             .database()
@@ -789,7 +789,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     deleteConductor(idConductor) {
-        
+
 
         firebase
             .database()
@@ -801,7 +801,7 @@ export class FBservicesService {
     }
     //----------------------------------------Metodos para actualizar  registros configuracion-------------------------------
     updateProdcuto(idProducto, codigoProducto, descripcionProducto, flagEstado) {
-        
+
         this.idProducto = this.idGenerator();
         firebase
             .database()
@@ -814,7 +814,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateProveedor(idProveedor, tipoIdentificacionProveedor, numIndetificacionProveedor, nombreProveedor, apellidoProveedor, telefonoProveedor, direccionProveedor, correoProveedor) {
-        
+
         if (apellidoProveedor == null) {
             apellidoProveedor = "";
         }
@@ -840,7 +840,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateTipoIdentificacion(idTipoIdentificacion, codigoTipoIdentificacion, descripcionTipoIdentificacion) {
-        
+
         firebase
             .database()
             .ref("usuario/configuracion/" + "tiposIdentificacion/" + idTipoIdentificacion)
@@ -851,7 +851,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateEstadoProducto(idEstadoProducto, codigoEstadoProducto, descripcionEstadoProducto) {
-        
+
         firebase
             .database()
             .ref("usuario/configuracion/" + "estadoProductos/" + idEstadoProducto)
@@ -862,7 +862,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateTipoAnticipo(idTipoAnticipo, codigoTipoAnticipo, descripcionTipoanticipo) {
-        
+
         firebase
             .database()
             .ref("usuario/configuracion/" + "tipoAnticipo/" + idTipoAnticipo)
@@ -883,7 +883,7 @@ export class FBservicesService {
             });
     }
     updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresCliente, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
-        
+
         if (apellidosCliente == null) {
             apellidosCliente = "";
         }
@@ -911,7 +911,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
     updateConductor(idConductor, tipoIdentificacionConductor, numeroIdentificacionConductor, nombreConductor, apelidoConductor, celularConductor) {
-        
+
         if (apelidoConductor == null) {
             apelidoConductor = "";
         }
@@ -937,7 +937,7 @@ export class FBservicesService {
 
     //Generador de lotes fechaactual+L+consecutivo de lotes 1, 2, 3, ....
     generarLote() {
-        
+
         this.idLote = this.idGenerator();
         firebase
             .database()
@@ -958,7 +958,7 @@ export class FBservicesService {
     //Obtiene los lotes del mas antiguo al mas nuevo
 
     listaOrdenLotes() {
-        
+
         firebase
             .database()
             .ref("usuario/configuracion/lotes")
@@ -978,7 +978,7 @@ export class FBservicesService {
     //pesaje Copmpra
     agregarPesaje(idProveedor, codigoProducto, totalBultos, pesoBultos, bultosTT) {
 
-        
+
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
@@ -1000,7 +1000,7 @@ export class FBservicesService {
     }
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
     async getProveedorCompra() {
-        
+
         this.lastLote = [];
         this.proveedorCompraLiata = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
@@ -1021,10 +1021,22 @@ export class FBservicesService {
 
     }
 
+    updateCostoCompra(idProveedor, idPesajeCompra, totalCompra) {
+        console.log("Datosss de upppppp1 ", idProveedor)
+        console.log("Datosss de upppppp2 ", idPesajeCompra)
+        console.log("Datosss de upppppp3 ", totalCompra)
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+            .update({
+                costoTotalCompra: totalCompra
+            });
+    }
+
 
     //Confirmar pesajes
     agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
-        
+
         this.idConfirmarPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
@@ -1040,13 +1052,14 @@ export class FBservicesService {
                 costoKilo: costoKilo,
                 costoTotalEstado: costoTotalEstado
             });
+        this.toastOperacionExitosa();
     }
 
 
     //metodo que permtie registrar un anticipo a la compra
 
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
-        
+
         this.idAnticipos = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
@@ -1066,8 +1079,8 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
-     getAnticipoProveedor(){
-        
+    getAnticipoProveedor() {
+
         this.lastLote = [];
         this.anticipoCompraLista = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
@@ -1085,14 +1098,14 @@ export class FBservicesService {
 
         });
         return this.anticipoCompraLista;
-       
+
     }
 
 
     // Traer los pesajes del proveedor seleccionado
 
     getPesajeCompra(idProveedor) {
-        
+
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase

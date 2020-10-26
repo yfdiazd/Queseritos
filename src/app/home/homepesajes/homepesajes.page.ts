@@ -56,6 +56,18 @@ export class HomepesajesPage implements OnInit {
   };
 
   guardar(){
-    // this.FB.agregarConfirmaPesaje
+    let sumaCosto = 0;
+    let idProv: any;
+    let idComp: any;
+    this.listaCompraDetallada.forEach(element =>{
+      sumaCosto += element.costTotal;
+      this.FB.agregarConfirmaPesaje(element.idProv, element.idCompra, element.idEstProd, element.peso, element.costKilo, element.costTotal);
+      idProv = element.idProv;
+      idComp = element.idCompra;
+    });
+
+    this.FB.updateCostoCompra(idProv, idComp, sumaCosto);
+
   }
 }
+
