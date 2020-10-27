@@ -88,7 +88,7 @@ listarproveedores()
             this.navCtrl.navigateForward('creartrueque/', input.id);
             console.log("imprimiendo input.id", input.id)
 
-            console.log('Confirmó entonces se va a creartrueque');
+            console.log('Confirmó entonces se va a creartrueque', input);
           }
         }
       ]
