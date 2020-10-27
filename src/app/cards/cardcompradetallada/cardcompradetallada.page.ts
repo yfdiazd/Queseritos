@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
@@ -39,6 +38,8 @@ export class CardcompradetalladaPage implements OnInit {
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedor = id;
+    this.FB.getProductos();
+    this.FB.getPesajeCompra(this.idProveedor);
     console.log("Se recibe el proveedor: ", this.idProveedor);
     // this.listaCards();
     console.log("pesajeCompraLista", this.FB.pesajeCompraLista)
@@ -86,6 +87,7 @@ export class CardcompradetalladaPage implements OnInit {
   }
 
   async modalConfirmarPesaje(card) {
+    this.FB.getInfoComra(this.idProveedor, card.id)
     const modal = await this.modalController.create({
       component: HomepesajesPage,
       cssClass: 'my-custom-class',
@@ -94,7 +96,7 @@ export class CardcompradetalladaPage implements OnInit {
         idProv: this.idProveedor
       },
     });
-    console.log("se ele envia el proveedor y el id de compra", card.id,this.idProveedor)
+    console.log("se ele envia el proveedor y el id de compra", card.id, this.idProveedor)
     return await modal.present();
   }
 }

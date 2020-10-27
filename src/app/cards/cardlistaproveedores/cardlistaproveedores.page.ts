@@ -14,7 +14,7 @@ import { element } from 'protractor';
 export class CardlistaproveedoresPage implements OnInit {
   listaprovlote: any[] = [];
   listanombres: any[] = [];
-  cont:number =0;
+  cont: number = 0;
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,
@@ -24,33 +24,32 @@ export class CardlistaproveedoresPage implements OnInit {
     private router: Router
   ) {
     // this.listarproveedores();
-    console.log("HISTORY PROVEEDORES: ", this.FB.listaProveedoresConCompras);
+
   }
 
 
   ngOnInit() {
   }
 
-listarproveedores()
-{
-  this.listaprovlote = [];
-  this.listanombres = [];
- 
-    this.FB.proveedoresLista.forEach(element => {
-    this.FB.listaProveedoresConCompras.forEach(element2 => {
-      console.log("imprime element2", element2)
-      if (element.id == element2.id)
-        this.listanombres.push(element.nombre)
+  // listarproveedores() {
+  //   this.listaprovlote = [];
+  //   this.listanombres = [];
 
-    })
-  })
-  
-  
-}
+  //   this.FB.proveedoresLista.forEach(element => {
+  //     this.FB.listaProveedoresConCompras.forEach(element2 => {
+  //       console.log("imprime element2", element2)
+  //       if (element.id == element2.id)
+  //         this.listanombres.push(element.nombre)
+
+  //     })
+  //   })
 
 
+  // }
 
-  irCardLote(){
+
+
+  irCardLote() {
     this.navCtrl.navigateForward('cardlotes');
   }
 
@@ -61,14 +60,14 @@ listarproveedores()
     event.detail.complete();
   }
 
-  buscar(ev:any){
-  this.listanombres;
-  const val = ev.target.value;
-  if (val && val.trim !== ''){
-    this.listanombres=this.listanombres.filter((item)=>{
-      return (item.toLowerCase().indexOf(val.toLowerCase())> -1);
-    });
-  }
+  buscar(ev: any) {
+    this.listanombres;
+    const val = ev.target.value;
+    if (val && val.trim !== '') {
+      this.listanombres = this.listanombres.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      });
+    }
 
   }
 

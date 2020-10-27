@@ -19,16 +19,14 @@ export class HomepesajesPage implements OnInit {
     public PopoverController: PopoverController,
     public modalController: ModalController,
 
-  ) {
-
-  }
+  ) { }
 
   @Input() idCompra;
   @Input() idProv;
 
-
   ngOnInit() {
     console.log("Se reciben datos_: ", this.idCompra, this.idProv)
+    console.log("Esto trae como info de la compra:", this.FB.infoCompraUnica);
   }
 
   crearModal() {
@@ -37,7 +35,7 @@ export class HomepesajesPage implements OnInit {
   }
 
   async presentPopover(idCompra, idProv) {
-    const popover = await this.PopoverController.create({ 
+    const popover = await this.PopoverController.create({
       component: ConfirmarpesajePage,
       cssClass: 'popover_style',
       translucent: true,
@@ -47,11 +45,11 @@ export class HomepesajesPage implements OnInit {
       },
     });
     await popover.present();
-    const { data } = await popover.onDidDismiss();    
-    this.listaCompraDetallada.push(data);   
+    const { data } = await popover.onDidDismiss();
+    this.listaCompraDetallada.push(data);
   };
 
-  volver(){
+  volver() {
     this.modalController.dismiss();
   }
 }

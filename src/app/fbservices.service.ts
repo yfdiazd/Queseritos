@@ -56,7 +56,7 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
-    public listaProveedoresConCompras: any[];
+    public infoCompraUnica: any[];
     //Lista compras
     public pesajeCompraLista: any[];
     public pesajeCompraListaPorProveedor: any[];
@@ -197,7 +197,6 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getProveedoresLote();
 
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -1014,7 +1013,7 @@ export class FBservicesService {
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     this.pesajeCompraLista.push(element.val());
-                });                
+                });
                 return this.pesajeCompraLista;
             });
     }
@@ -1084,23 +1083,25 @@ export class FBservicesService {
 
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
     //Metodo para traer todos los funcionarios
-    getProveedoresLote() {
-        this.listaProveedoresConCompras = [];
+    getInfoComra(idProveedor, idCompra) {
+
+        this.lastLote = [];
+        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
             .database()
-            .ref("usuario/compras")
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idCompra)
             .on("value", snapshot => {
+                this.infoCompraUnica = [];
                 snapshot.forEach(element => {
-                    console.log("ELEMENT get Proveedoresconcompras:: ", element.val())
-                    this.listaProveedoresConCompras.push(element.val());
+                    if (element.val().estado == 1) {
+                        console.log("data de la lista por id compra", element.val())
+                        this.infoCompraUnica.push(element.val());
+                    }
+                    console.log("No entro al")
+
                 });
-                console.log("Estos son los proveedores hasta ahora" + this.listaProveedoresConCompras);
-                return this.listaProveedoresConCompras;
+                console.log("Estos son los proveedores hasta ahora" + this.infoCompraUnica);
+                return this.infoCompraUnica;
             });
     }
-
-
-
-
-
 }

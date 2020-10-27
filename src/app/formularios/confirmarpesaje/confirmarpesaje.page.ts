@@ -65,6 +65,9 @@ export class ConfirmarpesajePage implements OnInit {
     this.total = (valor * this.cantidadEstado);
     console.log("imprime valor", valor, this.total)
   }
+  volver(){
+    this.popover.dismiss();
+  }
 
 
 }
