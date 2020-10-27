@@ -216,6 +216,7 @@ export class CardcomprasPage implements OnInit {
     this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
 
   }
+  
 
   irCompraDetallada(card) {
     this.FB.getPesajeCompra(card.idProveedor);

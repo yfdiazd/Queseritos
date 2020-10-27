@@ -44,7 +44,7 @@ export class CreartruequePage implements OnInit {
       if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
         this.toastCamposRequeridos();
       } else {
-        this.FB.registrarAnticiposApesajeCompra("1603591110731","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+        this.FB.registrarAnticiposApesajeCompra("1603763143063","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
         this.modalCtrl.dismiss();
 
       }
@@ -55,7 +55,7 @@ export class CreartruequePage implements OnInit {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {
-        this.FB.registrarAnticiposApesajeCompra("1603591110731","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+        this.FB.registrarAnticiposApesajeCompra("1603763143063","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
         this.modalCtrl.dismiss();
       }
     }
