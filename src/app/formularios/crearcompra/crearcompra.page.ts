@@ -35,7 +35,7 @@ export class CrearcompraPage implements OnInit {
     //     console.log("Si lo encontro", element.nombre)
     //   }
     //   console.log("No se encontró")
-    // });
+    // })sasdasdaadasdcfsdaadas
   }
 
   ngOnInit() {

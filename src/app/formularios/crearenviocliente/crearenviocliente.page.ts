@@ -26,13 +26,14 @@ export class CrearenvioclientePage implements OnInit {
     private toastController: ToastController,
     private route: ActivatedRoute
   ) {
+  
+   }
+
+  ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idcliente=id;
     console.log("se recibe id listacliente", this.idcliente);
     console.log("se recibe id solito", id );
-   }
-
-  ngOnInit() {
    
   }
 

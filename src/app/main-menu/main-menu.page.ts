@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuController, ModalController } from '@ionic/angular';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController, MenuController, ModalController, NavController } from '@ionic/angular';
+
 import { FBservicesService } from '../fbservices.service';
-import { NavController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
 
 // import { HomeciudadesPage } from '../home/homeciudades/homeciudades.page';
 // import { HometipotruequePage } from '../home/hometipotrueque/hometipotrueque.page';
@@ -20,7 +19,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './main-menu.page.html',
   styleUrls: ['./main-menu.page.scss'],
 })
-export class MainMenuPage implements OnInit {
+export class MainMenuPage {
   public listaProveedores: any[];
   public input = { data: [] };
   constructor(
@@ -30,15 +29,14 @@ export class MainMenuPage implements OnInit {
     private navCtrl: NavController,
     private alertController: AlertController,
     private router: Router
-  ) { }
-
-  ngOnInit(){
+  ) {
     
   }
 
   comprar() {
     this.navCtrl.navigateForward('cardcompras');
-
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
   }
 
   irCardLotes() {
@@ -53,14 +51,12 @@ export class MainMenuPage implements OnInit {
     this.menu.open('first');
   }
 
-  cerrarSesion(){
+  cerrarSesion() {
     this.FB.cerrarSesion();
   }
 
-  
-
   //Redireccionamiento a las paginas de configuración
-  async irCiudad() {
+  irCiudad() {
     this.navCtrl.navigateForward('homeciudades')
     this.menu.enable(true, 'first');
     this.menu.close('first');
@@ -71,7 +67,7 @@ export class MainMenuPage implements OnInit {
     // this.modalCtrl.dismiss();
     // return await modal.present();
   }
-  async irCliente() {
+  irCliente() {
     this.navCtrl.navigateForward('homeclientes');
     this.menu.enable(true, 'first');
     this.menu.close('first');
@@ -81,7 +77,7 @@ export class MainMenuPage implements OnInit {
     // });
     // return await modal.present();
   }
-  async irConductor() {
+  irConductor() {
     this.navCtrl.navigateForward('homeconductores');
     this.menu.enable(true, 'first');
     this.menu.close('first');
@@ -91,7 +87,7 @@ export class MainMenuPage implements OnInit {
     // });
     // return await modal.present();
   }
-  async irEstadoQueso() {
+  irEstadoQueso() {
     this.navCtrl.navigateForward('homeestadoqueso');
     this.menu.enable(true, 'first');
     this.menu.close('first');
@@ -101,7 +97,7 @@ export class MainMenuPage implements OnInit {
     // });
     // return await modal.present();
   }
-  async irProveedor() {
+  irProveedor() {
     this.navCtrl.navigateForward('homeproveedores');
     this.menu.enable(true, 'first');
     this.menu.close('first');
@@ -112,7 +108,7 @@ export class MainMenuPage implements OnInit {
     // this.menu.close('first');
     // return await modal.present();
   }
-  async irTipoAnticipo() {
+  irTipoAnticipo() {
     this.navCtrl.navigateForward('hometipoanticipo');
     this.menu.enable(true, 'first');
     this.menu.close('first');
@@ -122,7 +118,7 @@ export class MainMenuPage implements OnInit {
     // });
     // return await modal.present();
   }
-  async irTipoIdentificacion() {
+  irTipoIdentificacion() {
     this.navCtrl.navigateForward('hometiposidentificacion');
     this.menu.enable(true, 'first');
     this.menu.close('first');
@@ -132,7 +128,7 @@ export class MainMenuPage implements OnInit {
     // });
     // return await modal.present();
   }
-  async irTipoQueso() {
+  irTipoQueso() {
     this.navCtrl.navigateForward('hometiposqueso');
     this.menu.enable(true, 'first');
     this.menu.close('first');

@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
@@ -38,6 +39,8 @@ export class CardcomprasPage implements OnInit {
   listaAnt: any[] = [];
   //Variable donde se guarda el lote actual en el que se esta comprando
   loteActual: any;
+  //Lista de nombres a mostrar
+  public nombreProv: any;
 
   objImp: any;
   onbjAnt: any;
@@ -51,20 +54,42 @@ export class CardcomprasPage implements OnInit {
     private alertController: AlertController,
     private navCtrl: NavController
 
-  ) {
-    this.validacionLote();
-  }
-
+  ) { }
 
   ngOnInit() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    // this.validacionLote();
     this.listaCards();
+  }
 
+  doRefresh(event) {
+    console.log('Begin async operation');
+    this.listaCards();
+    this.listaAnt = [];
+    this.listaCard = [];
+    this.objImp = [];
+    this.saldocreditotal = 0;
+    this.pesoacumulado = 0;
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 1000);
+  }
+
+  traerNombre() {
+    this.nombreProv = [];
+    this.FB.proveedoresLista.forEach(element => {
+      this.listaPaVer.forEach(element2 => {
+        if (element.id == element2.idProveedor) {
+          this.nombreProv.push({ nombre: element.nombre, idProv: element.id });
+        }
+      })
+    })
+    console.log("Nombres de los proveedores:", this.nombreProv);
   }
 
   validacionLote() {
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
+    console.log("Lote actual", this.loteActual)
     console.log("LOTE ULTIMO:   ", this.loteActual.toString());
     console.log("FECHA ACTUAL ----", this.FB.fechaActual())
     if (this.loteActual.toString().includes(this.FB.fechaActual())) {
@@ -75,11 +100,16 @@ export class CardcomprasPage implements OnInit {
   }
 
   listaCards() {
-    console.log("asdasdasdasdasd ", this.FB.proveedorCompraLiata);
-    console.log("Helppppppppp ", this.FB.anticipoCompraLista);
+    this.objImp = [];
+    this.onbjAnt = [];
+    this.listaCard = [];
+    this.listaAnt = [];
     this.saldocreditotal = 0;
     this.pesoacumulado = 0;
-    this.FB.proveedorCompraLiata.forEach(element => {
+    this.saldodebitototal = 0;
+    console.log("Lista de provedores con compra", this.FB.proveedorCompraLista);
+    console.log("Lista anticipos ", this.FB.anticipoCompraLista);
+    this.FB.proveedorCompraLista.forEach(element => {
       let total = 0;
       let totalCosto = 0;
       let totalBultos = 0;
@@ -122,10 +152,6 @@ export class CardcomprasPage implements OnInit {
 
   }
 
-  listaAnticipo() {
-
-  }
-
   recorreListas() {
     this.listaPaVer = [];
     if (this.listaAnt.length != 0) {
@@ -144,7 +170,7 @@ export class CardcomprasPage implements OnInit {
             this.obtPa = null;
           } else if (this.listaPaVer.filter(valor => {
             return valor.idProvedor == element.idProvedor;
-          }).length == 0 && this.listaAnt.filter(valorF =>{
+          }).length == 0 && this.listaAnt.filter(valorF => {
             return valorF.idProvee == element.idProvedor
           }).length == 0) {
             console.log("llego vaciooo ");
@@ -163,7 +189,7 @@ export class CardcomprasPage implements OnInit {
     } else {
       this.listaCard.forEach(elementC => {
         this.obtPa = ({
-          idProvedor: elementC.idProvedor,
+          idProveedor: elementC.idProvedor,
           bultos: elementC.bultos,
           costo: elementC.costo,
           peso: elementC.peso,
@@ -177,6 +203,10 @@ export class CardcomprasPage implements OnInit {
     return this.listaPaVer;
   }
 
+  irCompra(card){
+    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
+    console.log("card.idProveedor", card.idProveedor)
+  }
 
   irVender() {
     this.router.navigate(["cardcompras"]);
@@ -184,13 +214,14 @@ export class CardcomprasPage implements OnInit {
 
   irPesajeCompra(card) {
     // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearpesajecompra"]);
+    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
 
   }
 
   irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProvedor);
-    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProvedor]);
+    this.FB.getPesajeCompra(card.idProveedor);
+    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProveedor]);
+    console.log("imprimiendo caridproveedor", card.idProveedor)
   }
 
   async opciones() {

@@ -1,6 +1,5 @@
 import { Component, Injectable, Input, OnInit } from '@angular/core';
 import { ModalController, NavController, PopoverController } from '@ionic/angular';
-import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { ConfirmarpesajePage } from 'src/app/formularios/confirmarpesaje/confirmarpesaje.page';
 
@@ -18,7 +17,6 @@ export class HomepesajesPage implements OnInit {
   constructor(
     private FB: FBservicesService,
     public PopoverController: PopoverController,
-    private navCtrl: NavController,
     public modalController: ModalController,
 
   ) {
@@ -67,7 +65,9 @@ export class HomepesajesPage implements OnInit {
     });
 
     this.FB.updateCostoCompra(idProv, idComp, sumaCosto);
-
+  }
+  volver(){
+    this.modalController.dismiss();
   }
 }
 

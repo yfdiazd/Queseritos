@@ -60,8 +60,8 @@ listarproveedores()
 
   reorder(event) {
     console.log(event);
-    const itemMover = this.listaprovlote.splice(event.detail.from, 1)[0];
-    this.listaprovlote.splice(event.detail.to, 0, itemMover);
+    const itemMover = this.listanombres.splice(event.detail.from, 1)[0];
+    this.listanombres.splice(event.detail.to, 0, itemMover);
     event.detail.complete();
   }
 

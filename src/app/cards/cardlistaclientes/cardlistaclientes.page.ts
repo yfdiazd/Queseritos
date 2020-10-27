@@ -13,6 +13,7 @@ import { element } from 'protractor';
 })
 export class CardlistaclientesPage implements OnInit {
   listanombres: any[] = [];
+  nombres:string;
   cont:number =0;
   constructor(
     private modalCtrl: ModalController,
@@ -22,8 +23,7 @@ export class CardlistaclientesPage implements OnInit {
     private alertController: AlertController,
     private route : ActivatedRoute
   ) { 
-    this.FB.clientesLista;
-    console.log("nombres de clientes", this.FB.clientesLista)
+    this.listarnombresclientes();
   }
 
   ngOnInit() {
@@ -33,7 +33,8 @@ export class CardlistaclientesPage implements OnInit {
   listarnombresclientes(){
     this.listanombres = [];
     this.FB.clientesLista.forEach(element=>{
-      this.listanombres.push({nombres:element.nombres})
+      this.listanombres.push({id: element.nombres})
+      //console.log("imprimiendo nombres", element)
     })
   }
   
