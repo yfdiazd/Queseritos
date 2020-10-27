@@ -63,6 +63,7 @@ export class FBservicesService {
     public anticiposPesajeCompraLista: any[] = [];
     public proveedorCompraLista: any[] = [];
     public anticipoCompraLista: any[] = [];
+    public loteProveedorLista: any;
     //Lista lotes
     listaLotes: any[] = [];
     public ultimoLote: any[];
@@ -206,6 +207,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getProveedoresCompra();
+                this.getLoteProveedor();
 
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -1129,5 +1131,120 @@ export class FBservicesService {
         return this.proveedoresCompraLista;
     }
 
+
+    objImp: any;
+    onbjAnt: any;
+    listaCard: any;
+    public listaAnt: any;
+    public pesoacumulado = 0;
+    public saldocreditotal = 0;
+    public saldodebitototal = 0;
+    getLoteProveedor() {
+        this.objImp = [];
+        this.onbjAnt = [];
+        this.listaCard = [];
+        this.listaAnt = [];
+        this.pesoacumulado = 0;
+        this.saldocreditotal = 0;
+        this.saldodebitototal = 0;
+
+        console.log("Lista de provedores con compra", this.proveedorCompraLista);
+        console.log("Lista anticipos ", this.anticipoCompraLista);
+        this.proveedorCompraLista.forEach(element => {
+            let total = 0;
+            let totalCosto = 0;
+            let totalBultos = 0;
+            let keys = Object.keys(element);
+            let lotes = element[keys[0]].idProveedor;
+            keys.forEach(key => {
+                total += element[key].pesoBultos;
+                totalBultos += element[key].totalBulto;
+                totalCosto += element[key].costoTotalCompra;
+                this.pesoacumulado += element[key].pesoBultos;
+                this.saldocreditotal += element[key].costoTotalCompra;
+            });
+
+            this.objImp = ({
+                idProvedor: lotes,
+                bultos: totalBultos,
+                costo: totalCosto,
+                peso: total
+            });
+            this.listaCard.push(this.objImp);
+        });
+        this.anticipoCompraLista.forEach(element => {
+            let totalAnt: number = 0;
+            let keys = Object.keys(element);
+            let prov = element[keys[0]].idProveedor;
+            keys.forEach(key => {
+                totalAnt += element[key].valorAnticipo;
+                this.saldodebitototal += element[key].valorAnticipo;
+            });
+            this.onbjAnt = ({
+                valorAnt: totalAnt,
+                idProvee: prov
+            });
+            this.listaAnt.push(this.onbjAnt);
+        });
+        console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
+        console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
+        this.recorreListas();
+        return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
+
+
+    }
+
+    public listaPaVer: any[];
+    obtPa: any;
+    recorreListas() {
+        this.listaPaVer = [];
+        if (this.listaAnt.length != 0) {
+            console.log("siii diferente a 0000 ", this.listaAnt.length);
+            this.listaCard.forEach(element => {
+                this.listaAnt.forEach(element2 => {
+                    if (element.idProvedor == element2.idProvee) {
+                        this.obtPa = ({
+                            idProvedor: element.idProvedor,
+                            bultos: element.bultos,
+                            costo: element.costo,
+                            peso: element.peso,
+                            debito: element2.valorAnt
+                        });
+                        this.listaPaVer.push(this.obtPa);
+                        this.obtPa = null;
+                    } else if (this.listaPaVer.filter(valor => {
+                        return valor.idProvedor == element.idProvedor;
+                    }).length == 0 && this.listaAnt.filter(valorF => {
+                        return valorF.idProvee == element.idProvedor
+                    }).length == 0) {
+                        console.log("llego vaciooo ");
+                        this.obtPa = ({
+                            idProvedor: element.idProvedor,
+                            bultos: element.bultos,
+                            costo: element.costo,
+                            peso: element.peso,
+                            debito: 0
+                        });
+                        this.listaPaVer.push(this.obtPa);
+                        this.obtPa = null;
+                    }
+                });
+            });
+        } else {
+            this.listaCard.forEach(elementC => {
+                this.obtPa = ({
+                    idProvedor: elementC.idProvedor,
+                    bultos: elementC.bultos,
+                    costo: elementC.costo,
+                    peso: elementC.peso,
+                    debito: 0
+                });
+                this.listaPaVer.push(this.obtPa);
+                this.obtPa = null;
+            });
+        }
+        console.log("*----------------------------- ", this.listaPaVer);
+        return this.listaPaVer;
+    }
 
 }

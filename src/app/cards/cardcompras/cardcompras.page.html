@@ -18,23 +18,23 @@
   <div class="div-principal">
     <div class="div-fila-1">
       <p class="fila1_p_titulo">Peso Actual</p>
-      <p class="fila1_p_valor">{{pesoacumulado}}<span> Kg</span></p>
+      <p class="fila1_p_valor">{{FB.pesoacumulado}}<span> Kg</span></p>
     </div>
     <div class="div-fila-2">
       <div class="fila2_col1">
         <p class="div-t">Débito</p>
-        <p class="div-v" id="saldo-debito">{{saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
+        <p class="div-v" id="saldo-debito">{{FB.saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
         <p class="div-t">Crédito</p>
-        <p class="div-v" id="saldo-credito">{{saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+        <p class="div-v" id="saldo-credito">{{FB.saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
       </div>
       <div class="fila2_col2">
         <p class="div-t">Saldo</p>
-        <p class="div-v">{{(saldodebitototal - saldocreditotal) | currency:'USD':true: '2.0-0'}}</p>
+        <p class="div-v">{{(FB.saldodebitototal - FB.saldocreditotal) | currency:'USD':true: '2.0-0'}}</p>
       </div>
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let card of listaPaVer">
+    <ion-item-sliding class="slider" *ngFor="let card of FB.listaPaVer">
       <ion-item class="item">
         <div class="div-card">
           <div class="div-head_button">

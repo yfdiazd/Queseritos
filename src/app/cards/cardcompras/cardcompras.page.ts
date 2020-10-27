@@ -57,12 +57,14 @@ export class CardcomprasPage implements OnInit {
 
   ngOnInit() {
     // this.validacionLote();
-    this.listaCards();
+    //this.listaCards();
+    this.FB.getLoteProveedor();
   }
 
   doRefresh(event) {
     console.log('Begin async operation');
     this.listaCards();
+    this.FB.getLoteProveedor();
     this.listaAnt = [];
     this.listaCard = [];
     this.objImp = [];
@@ -104,7 +106,10 @@ export class CardcomprasPage implements OnInit {
     this.onbjAnt = [];
     this.listaCard = [];
     this.listaAnt = [];
-    
+    this.pesoacumulado = 0;
+    this.saldocreditotal = 0;
+    this.saldodebitototal = 0;
+
     console.log("Lista de provedores con compra", this.FB.proveedorCompraLista);
     console.log("Lista anticipos ", this.FB.anticipoCompraLista);
     this.FB.proveedorCompraLista.forEach(element => {
@@ -172,7 +177,7 @@ export class CardcomprasPage implements OnInit {
             this.obtPa = null;
           } else if (this.listaPaVer.filter(valor => {
             return valor.idProvedor == element.idProvedor;
-          }).length == 0 && this.listaAnt.filter(valorF =>{
+          }).length == 0 && this.listaAnt.filter(valorF => {
             return valorF.idProvee == element.idProvedor
           }).length == 0) {
             console.log("llego vaciooo ");
