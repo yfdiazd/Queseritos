@@ -205,7 +205,7 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getLotesProveedor()
+                this.getProveedoresCompra();
 
             } else {
                 console.log("No hay sesion, toca loguear");
