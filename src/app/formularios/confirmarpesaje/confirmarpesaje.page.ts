@@ -23,8 +23,8 @@ export class ConfirmarpesajePage implements OnInit {
   sumado = 0;
   objCompreDetallada: any = [];
 
-  @Input() pesoEdit;
-  @Input() valorkgEdit;
+  pesoEdit;
+  valorkgEdit;
   @Input() id;
 
   @Input() idCompra;
@@ -38,7 +38,6 @@ export class ConfirmarpesajePage implements OnInit {
 
   ngOnInit() {
   }
-
 
 
   guardar() {

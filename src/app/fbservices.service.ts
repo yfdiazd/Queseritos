@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import * as firebase from 'firebase';
 import { element } from 'protractor';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 
 //import { Camera, CameraOriginal } from '@ionic-native/camera';
@@ -11,7 +12,6 @@ import { element } from 'protractor';
 
 @Injectable({
     providedIn: "root"
-
 })
 export class FBservicesService {
 
@@ -61,8 +61,8 @@ export class FBservicesService {
     public pesajeCompraLista: any[];
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
-    public proveedorCompraLiata: any[];
-    public anticipoCompraLista: any[];
+    public proveedorCompraLista: any[] = [];
+    public anticipoCompraLista: any[] = [];
     //Lista lotes
     listaLotes: any[] = [];
     public ultimoLote: any[];
@@ -83,18 +83,24 @@ export class FBservicesService {
         messagingSenderId: "589566808528"
     };
 
-
-
     constructor(
         private router: Router,
         public toastController: ToastController,
         public alertController: AlertController,
+        private navCtrl: NavController,
+        private camera: Camera,
 
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
-
     }
+    options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+    }
+
 
     //offline
     offLine() {
@@ -129,10 +135,9 @@ export class FBservicesService {
             .signInWithEmailAndPassword(email, password)
             .then(() => {
                 console.log("Se inicio correctamente");
-                console.log("suario:", firebase.auth().currentUser);
-                console.log("token ususuario:", firebase.auth().currentUser.uid);
-                this.router.navigate(["main-menu"]);
+                console.log("token usuario:", firebase.auth().currentUser.uid);
                 this.usuarioUid = firebase.auth().currentUser.uid;
+                this.navCtrl.navigateForward(["main-menu"]);
             })
             .catch(error => {
                 this.toastErrorAutenticacion();
@@ -187,28 +192,29 @@ export class FBservicesService {
     verificarsesion() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-
+                console.log("Si hay usuario logueado: ", firebase.auth().currentUser.uid)
+                this.navCtrl.navigateForward("main-menu");
                 //this.router.navigate(["main-menu"]);
-
-
-                this.listaOrdenLotes();
-                this.mostrarNombre();
+                // this.mostrarNombre();
                 this.getCiudades();
-                this.getClientes();
                 this.getEstadoProducto();
                 this.getProductos();
-                this.getProveedores();
                 this.getTipoAnticipos();
                 this.getTiposIdentificacion();
+                this.getProveedores();
+                this.getClientes();
                 this.getConductor();
+                this.listaOrdenLotes();
+                this.getLotesProveedor()
 
             } else {
                 console.log("No hay sesion, toca loguear");
-                this.router.navigate(["login"]);
+                this.navCtrl.navigateBack(["login"]);
             }
         });
         return this.usuarioUid;
     }
+
     // TODOS LOS TOAS o mensajes emergentes
     //toast
     async toastContras() {
@@ -305,8 +311,51 @@ export class FBservicesService {
         toas.present();
     }
 
-
-
+    //METODOS GENERALES:::::::::::::::::::::::::::::::::::
+    sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+            currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+    }
+    //Metodos de validaciones
+    validaCodigos(codigo, path) {
+        this.flag = false;
+        firebase
+            .database()
+            .ref(path)
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (codigo == element.val().codigo && element.val().estado == 1 && element.val().codigo != null) {
+                        return this.flag = true;
+                    } else {
+                        this.flag = false;
+                    }
+                });
+            });
+        codigo = "";
+        path = "";
+        return this.flag;
+    }
+    validaNumDocs(numIdentifica, path) {
+        this.pathPush = false;
+        firebase
+            .database()
+            .ref(path)
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (numIdentifica == element.val().numIndetificacion && element.val().estado == 1 && element.val() != null) {
+                        return this.flag = true;
+                    } else {
+                        this.flag = false;
+                    }
+                });
+            });
+        numIdentifica = "";
+        path = "";
+        return this.flag;
+    }
     //-------------Metodo que permite consultar la fecha actual:----------------------------------
     fechaActual() {
         this.today = new Date();
@@ -317,9 +366,11 @@ export class FBservicesService {
 
         return this.today;
     }
+
+
     //-----------------------------Metodos creacion parametrizacion------------------------------------------------------
     //Metodo que permite crear productos
-    crearProdcuto(codigoProducto, descripcionProducto, flagEstado) {
+    crearProducto(codigoProducto, descripcionProducto, flagEstado) {
 
         this.pathPush = ("usuario/configuracion/" + "productos");
         if (this.validaCodigos(codigoProducto, this.pathPush) == false) {
@@ -444,8 +495,6 @@ export class FBservicesService {
             this.toastElementoDuplicado();
         }
     }
-
-
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
 
@@ -471,15 +520,6 @@ export class FBservicesService {
             this.toastElementoDuplicado();
         }
     }
-    sleep(milliseconds) {
-        const date = Date.now();
-        let currentDate = null;
-        do {
-            currentDate = Date.now();
-        } while (currentDate - date < milliseconds);
-    }
-
-
     //Metodo que permite agregar clientes
     agregarCliente(tipoIdentificacion, numeroIdentificacionCliente, nombresClietne, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
         this.usuarioUid = firebase.auth().currentUser.uid;
@@ -549,48 +589,7 @@ export class FBservicesService {
 
     }
 
-
-    //Metodos de validaciones
-    validaCodigos(codigo, path) {
-        this.flag = false;
-        firebase
-            .database()
-            .ref(path)
-            .on("value", snapshot => {
-                snapshot.forEach(element => {
-                    if (codigo == element.val().codigo && element.val().estado == 1 && element.val().codigo != null) {
-                        return this.flag = true;
-                    } else {
-                        this.flag = false;
-                    }
-                });
-            });
-        codigo = "";
-        path = "";
-        return this.flag;
-    }
-
-    validaNumDocs(numIdentifica, path) {
-        this.pathPush = false;
-        firebase
-            .database()
-            .ref(path)
-            .on("value", snapshot => {
-                snapshot.forEach(element => {
-                    if (numIdentifica == element.val().numIndetificacion && element.val().estado == 1 && element.val() != null) {
-                        return this.flag = true;
-                    } else {
-                        this.flag = false;
-                    }
-                });
-            });
-        numIdentifica = "";
-        path = "";
-        return this.flag;
-    }
-
-
-
+    //-----GETS-------------------------------------------------------
     //-----------------------Obtener listas des configuraciones------------------------------------------------
     getCiudades() {
 
@@ -678,7 +677,6 @@ export class FBservicesService {
                 return this.tipoAnticipoLista;
             });
     }
-
     getTiposIdentificacion() {
         firebase
             .database()
@@ -708,8 +706,8 @@ export class FBservicesService {
             });
     }
 
-    //----------------------------------Metodos para eliminar estado 0-----------------------------------------
 
+    //----------------------------------Metodos para eliminar estado 0-----------------------------------------
     deleteProducto(idProducto) {
 
         firebase
@@ -766,7 +764,6 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-
     deleteCiudad(idCiudad) {
 
         firebase
@@ -927,14 +924,13 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    //---------------------------------- Metodo que genera los id unicos
+    //Metodo que genera los id unicos
     idGenerator() {
         this.varIdGenerator = new Date();
         this.time = String(this.varIdGenerator.getTime());
         this.varIdGenerator = this.time;
         return this.varIdGenerator;
     }
-
     //Generador de lotes fechaactual+L+consecutivo de lotes 1, 2, 3, ....
     generarLote() {
 
@@ -954,19 +950,15 @@ export class FBservicesService {
 
             });
     }
-
     //Obtiene los lotes del mas antiguo al mas nuevo
-
     listaOrdenLotes() {
-
+        this.ultimoLote = [];
         firebase
             .database()
             .ref("usuario/configuracion/lotes")
             .orderByValue()
             .on("value", snapshot => {
-                this.ultimoLote = [];
                 snapshot.forEach(element => {
-
                     this.ultimoLote.push(element.val().lote);
 
                 });
@@ -974,7 +966,8 @@ export class FBservicesService {
         return this.ultimoLote;
 
     }
-    //Metodos para las comprassssss
+
+    //Metodos para las::::::::::::::::::COMPRAS
     //pesaje Copmpra
     agregarPesaje(idProveedor, codigoProducto, totalBultos, pesoBultos, bultosTT) {
 
@@ -1001,24 +994,40 @@ export class FBservicesService {
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
     async getProveedorCompra() {
 
+        this.proveedorCompraLista = [];
         this.lastLote = [];
-        this.proveedorCompraLiata = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+        console.log("Lsita proveedores a recorrer", this.proveedoresLista)
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
-                .on('value', snapshot => {
+                .on("value", snapshot => {
                     if (snapshot.exists && snapshot.val() !== null) {
-                        this.proveedorCompraLiata.push(snapshot.val());
-                    } else {
-
+                        console.log("Esto es snapshot", snapshot.val())
+                        this.proveedorCompraLista.push(snapshot.val());
                     }
                 });
+        })
+        return this.proveedorCompraLista;
+    }
 
-        });
-        return this.proveedorCompraLiata;
 
+    // Traer los pesajes del proveedor seleccionado
+    getPesajeCompra(idProveedor) {
+        this.pesajeCompraLista = [];
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    this.pesajeCompraLista.push(element.val());
+                });
+                console.log("metodo getPesajeCompra" + this.pesajeCompraLista.length);
+                return this.pesajeCompraLista;
+            });
     }
 
     updateCostoCompra(idProveedor, idPesajeCompra, totalCompra) {
@@ -1054,10 +1063,7 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-
-
-    //metodo que permtie registrar un anticipo a la compra
-
+    //metodo que permite registrar un anticipo a la compra
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
 
         this.idAnticipos = this.idGenerator();
@@ -1082,8 +1088,8 @@ export class FBservicesService {
     getAnticipoProveedor() {
 
         this.lastLote = [];
-        this.anticipoCompraLista = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+        this.anticipoCompraLista = [];
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
@@ -1092,7 +1098,6 @@ export class FBservicesService {
                     if (snapshot.exists && snapshot.val() !== null) {
                         this.anticipoCompraLista.push(snapshot.val());
                     } else {
-
                     }
                 });
 
@@ -1101,25 +1106,27 @@ export class FBservicesService {
 
     }
 
+    takePhoto() {
+        this.camera.getPicture(this.options).then((imageData) => {
+            // imageData is either a base64 encoded string or a file URI
+            // If it's base64 (DATA_URL):
+            let base64Image = 'data:image/jpeg;base64,' + imageData;
+        }, (err) => {
+            console.log(err);
+        });
 
-    // Traer los pesajes del proveedor seleccionado
+    }
 
-    getPesajeCompra(idProveedor) {
-
-        this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+    proveedoresCompraLista: any;
+    getProveedoresCompra() {
+        this.proveedoresCompraLista = [];
+        firebase.database().ref("usuario/compras/")
             .on("value", snapshot => {
-                this.pesajeCompraLista = [];
                 snapshot.forEach(element => {
-                    this.pesajeCompraLista.push(element.val());
-
+                    this.proveedoresCompraLista.push(element.key);
                 });
-                console.log("metodo lelelel " + this.pesajeCompraLista.length);
-                return this.pesajeCompraLista;
             });
+        return this.proveedoresCompraLista;
     }
 
 

@@ -24,10 +24,6 @@ export class CreartruequePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // let id = this.route.snapshot.paramMap.get("id");
-
-    // this.id = id;
-    // console.log(" se recibe id: ", this.id);
     
   }
 

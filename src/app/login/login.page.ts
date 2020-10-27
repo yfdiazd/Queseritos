@@ -22,10 +22,10 @@ export class LoginPage {
   ) { }
 
   irPaginaRegistro() {
-    this.router.navigate(["register"]);
+    this.navCtrl.navigateForward(["register"]);
   }
-  irRecuperar(){
-    this.router.navigate(["recuperar"]);
+  irRecuperar() {
+    this.navCtrl.navigateForward(["recuperar"]);
   }
 
   //Metodo que inicia sesion

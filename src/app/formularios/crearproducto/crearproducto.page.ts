@@ -42,10 +42,10 @@ export class CrearproductoPage {
               this.FB.updateProdcuto(element.id, element.codigo, element.descripcion, false);
             }
           });
-          this.FB.crearProdcuto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
+          this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
           this.modalCtrl.dismiss();
         } else {
-          this.FB.crearProdcuto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
+          this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
           this.modalCtrl.dismiss();
         }
       }
