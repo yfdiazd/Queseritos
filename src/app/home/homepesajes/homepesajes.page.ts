@@ -66,6 +66,7 @@ export class HomepesajesPage implements OnInit {
 
     this.FB.updateCostoCompra(idProv, idComp, sumaCosto);
   }
+  
   volver(){
     this.modalController.dismiss();
   }

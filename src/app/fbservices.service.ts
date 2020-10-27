@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import * as firebase from 'firebase';
 import { element } from 'protractor';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 
 //import { Camera, CameraOriginal } from '@ionic-native/camera';
@@ -86,12 +87,20 @@ export class FBservicesService {
         private router: Router,
         public toastController: ToastController,
         public alertController: AlertController,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private camera: Camera,
 
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
     }
+    options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+    }
+
 
     //offline
     offLine() {
@@ -196,6 +205,7 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+                this.getProveedoresCompra();
 
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -1096,8 +1106,28 @@ export class FBservicesService {
 
     }
 
+    takePhoto() {
+        this.camera.getPicture(this.options).then((imageData) => {
+            // imageData is either a base64 encoded string or a file URI
+            // If it's base64 (DATA_URL):
+            let base64Image = 'data:image/jpeg;base64,' + imageData;
+        }, (err) => {
+            console.log(err);
+        });
 
+    }
 
+    proveedoresCompraLista: any;
+    getProveedoresCompra() {
+        this.proveedoresCompraLista = [];
+        firebase.database().ref("usuario/compras/")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    this.proveedoresCompraLista.push(element.key);
+                });
+            });
+        return this.proveedoresCompraLista;
+    }
 
 
 }

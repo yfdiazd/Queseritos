@@ -53,4 +53,8 @@ export class CrearciudadPage implements OnInit {
     });
     toast.present();
   }
+
+  fofo(){
+    this.FB.takePhoto();
+  }
 }

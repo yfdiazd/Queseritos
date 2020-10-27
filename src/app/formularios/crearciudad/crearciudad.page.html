@@ -9,7 +9,7 @@
 
 <ion-content>
   <div class="div-formulario">
-    <p>Codigo<span>*</span></p>
+    <p>Codigo<span>*</span></p> 
     <input maxlength="4" type="text" [(ngModel)]="codigoEdit" />
     <p>Descripción <span>*</span></p>
     <input maxlength="30" type="text" [(ngModel)]="descripcionEdit" />
@@ -19,5 +19,11 @@
       <ion-icon name="save-outline"></ion-icon>
       Guardar
     </ion-button>
+    <ion-button (click)="fofo()" expand="full">
+      <ion-icon name="save-outline"></ion-icon>
+      Guardar FFF
+    </ion-button>
   </div>
+  
+
 </ion-content>

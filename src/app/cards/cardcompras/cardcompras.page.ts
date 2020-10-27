@@ -69,6 +69,7 @@ export class CardcomprasPage implements OnInit {
     this.objImp = [];
     this.saldocreditotal = 0;
     this.pesoacumulado = 0;
+    this.saldodebitototal = 0;
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
@@ -104,9 +105,7 @@ export class CardcomprasPage implements OnInit {
     this.onbjAnt = [];
     this.listaCard = [];
     this.listaAnt = [];
-    this.saldocreditotal = 0;
-    this.pesoacumulado = 0;
-    this.saldodebitototal = 0;
+    
     console.log("Lista de provedores con compra", this.FB.proveedorCompraLista);
     console.log("Lista anticipos ", this.FB.anticipoCompraLista);
     this.FB.proveedorCompraLista.forEach(element => {
