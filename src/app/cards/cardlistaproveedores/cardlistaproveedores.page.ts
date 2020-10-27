@@ -23,7 +23,8 @@ export class CardlistaproveedoresPage implements OnInit {
     private alertController: AlertController,
     private router: Router
   ) {
-    this.listarproveedores();
+    // this.listarproveedores();
+    console.log("HISTORY PROVEEDORES: ", this.FB.listaProveedoresConCompras);
   }
 
 
@@ -32,16 +33,11 @@ export class CardlistaproveedoresPage implements OnInit {
 
 listarproveedores()
 {
-
-
   this.listaprovlote = [];
   this.listanombres = [];
-  this.FB.pesajeCompraLista.forEach(element => {
-    this.listaprovlote.push({ id: element.idProveedor})
-
-  });
+ 
     this.FB.proveedoresLista.forEach(element => {
-    this.listaprovlote.forEach(element2 => {
+    this.FB.listaProveedoresConCompras.forEach(element2 => {
       console.log("imprime element2", element2)
       if (element.id == element2.id)
         this.listanombres.push(element.nombre)

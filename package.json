@@ -33,8 +33,7 @@
     "firebase": "^7.22.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
-    "zone.js": "~0.10.3",
-    "cordova-android": "~4.1.1"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1002.0",
@@ -51,6 +50,7 @@
     "codelyzer": "^6.0.0",
     "cordova-android": "^9.0.0",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-inappbrowser": "^4.0.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -78,7 +78,8 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "android"

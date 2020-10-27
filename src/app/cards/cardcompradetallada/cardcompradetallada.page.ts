@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
@@ -31,6 +32,8 @@ export class CardcompradetalladaPage implements OnInit {
   public listaBultosCompra: any;
   //Datos consolidados para la visualización
   listaCard: any[] = [];
+  //lista de la compra que se recorre en el HTML
+  public listaCompras: any[] = [];
 
 
   ngOnInit() {
@@ -38,6 +41,7 @@ export class CardcompradetalladaPage implements OnInit {
     this.idProveedor = id;
     console.log("Se recibe el proveedor: ", this.idProveedor);
     // this.listaCards();
+    console.log("pesajeCompraLista", this.FB.pesajeCompraLista)
   }
 
   traerTipoQueso() {
@@ -61,17 +65,36 @@ export class CardcompradetalladaPage implements OnInit {
         }
       })
     })
+    this.FB.pesajeCompraLista.forEach(pesaje => {
+      this.FB.productosLista.forEach(producto => {
+        if (pesaje.idProducto == producto.id) {
+          this.listaCompras.push({
+            bultoLista: pesaje.bultoLista,
+            costoTotalCompra: pesaje.costoTotalCompra,
+            fechaCompra: pesaje.fechaCompra,
+            id: pesaje.id,
+            idProducto: pesaje.idProducto,
+            idProveedor: pesaje.idProveedor,
+            lote: pesaje.lote,
+            pesoBultos: pesaje.pesoBultos,
+            totalBulto: pesaje.totalBulto,
+            nompreProducto: producto.descripcion
+          })
+        }
+      })
+    })
   }
 
-  async presentPopover(card) {
+  async modalConfirmarPesaje(card) {
     const modal = await this.modalController.create({
       component: HomepesajesPage,
       cssClass: 'my-custom-class',
       componentProps: {
         idCompra: card.id,
-        idProv: card.idProveedor
+        idProv: this.idProveedor
       },
     });
+    console.log("se ele envia el proveedor y el id de compra", card.id,this.idProveedor)
     return await modal.present();
   }
 }

@@ -25,10 +25,10 @@ export class HomepesajesPage implements OnInit {
 
   @Input() idCompra;
   @Input() idProv;
-  @Input() listaBultos;
 
 
   ngOnInit() {
+    console.log("Se reciben datos_: ", this.idCompra, this.idProv)
   }
 
   crearModal() {
@@ -47,10 +47,8 @@ export class HomepesajesPage implements OnInit {
       },
     });
     await popover.present();
-    const { data } = await popover.onDidDismiss();
-    console.log("Esto trajo:", data);
-    this.listaCompraDetallada.push(data);
-    console.log("La lista es deeeeeeeeeeeeeeeeee ", this.listaCompraDetallada)
+    const { data } = await popover.onDidDismiss();    
+    this.listaCompraDetallada.push(data);   
   };
 
   volver(){

@@ -1,4 +1,4 @@
-
+<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -34,7 +34,7 @@
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let card of listaPaVer">
+    <ion-item-sliding class="slider" *ngFor="let card of nombreProv">
       <ion-item class="item">
         <div class="div-card">
           <div class="div-head_button">
@@ -44,7 +44,7 @@
           </div>
           <ion-card class="card" (click)="irCompraDetallada(card)">
             <div class="div_head_title">
-              <p>{{card.idProvedor}}</p>
+              <p>{{card.nombre}}</p>
             </div>
             <div class="div_body_content">
               <div class="seccion-1">

@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
@@ -50,6 +50,7 @@ export class CardcomprasPage implements OnInit {
   constructor(
     public actionSheetController: ActionSheetController,
     private router: Router,
+    private route: ActivatedRoute,
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
@@ -57,18 +58,15 @@ export class CardcomprasPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.validacionLote();
+    this.validacionLote();
     this.listaCards();
+    this.traerNombre();
   }
 
   doRefresh(event) {
-    console.log('Begin async operation');
+    console.log('Begin async operation', this.listaPaVer);
     this.listaCards();
-    this.listaAnt = [];
-    this.listaCard = [];
-    this.objImp = [];
-    this.saldocreditotal = 0;
-    this.pesoacumulado = 0;
+    this.traerNombre();
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
@@ -80,8 +78,15 @@ export class CardcomprasPage implements OnInit {
     this.FB.proveedoresLista.forEach(element => {
       this.listaPaVer.forEach(element2 => {
         if (element.id == element2.idProveedor) {
-          this.nombreProv.push({ nombre: element.nombre, idProv: element.id });
+          this.nombreProv.push({ 
+            nombre: element.nombre, 
+            idProv: element.id, 
+            bultos: element2.bultos, 
+            costo: element2.costo, 
+            peso: element2.peso, 
+            debito: element2.debito });
         }
+        console.log("Estos son los nombres", this.nombreProv)
       })
     })
     console.log("Nombres de los proveedores:", this.nombreProv);
@@ -203,24 +208,14 @@ export class CardcomprasPage implements OnInit {
     return this.listaPaVer;
   }
 
-  irCompra(card){
-    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
-    console.log("card.idProveedor", card.idProveedor)
-  }
-
-  irVender() {
-    this.router.navigate(["cardcompras"]);
-  }
-
-  irPesajeCompra(card) {
-    // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
-
+  irCompra(card) {
+    console.log("card.idProveedor", card.idProv)
+    this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
   }
 
   irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProveedor);
-    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProveedor]);
+    this.FB.getPesajeCompra(card.idProv);
+    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
   }
 
   async opciones() {
@@ -243,13 +238,15 @@ export class CardcomprasPage implements OnInit {
           // var elemento = document.getElementById("select-alert");
           // elemento.click();
         }
-      }, {
-        text: 'Distribuir pesos',
-        icon: 'podium',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, {
+      }, 
+      // {
+      //   text: 'Distribuir pesos',
+      //   icon: 'podium',
+      //   handler: () => {
+      //     console.log('Share clicked');
+      //   }
+      // },
+       {
         text: 'Quitar compra',
         role: 'destructive',
         icon: 'trash',

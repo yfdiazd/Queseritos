@@ -56,6 +56,7 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
+    public listaProveedoresConCompras: any[];
     //Lista compras
     public pesajeCompraLista: any[];
     public pesajeCompraListaPorProveedor: any[];
@@ -196,6 +197,7 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+                this.getProveedoresLote();
 
             } else {
                 console.log("No hay sesion, toca loguear");
@@ -1001,8 +1003,6 @@ export class FBservicesService {
         })
         return this.proveedorCompraLista;
     }
-
-
     // Traer los pesajes del proveedor seleccionado
     getPesajeCompra(idProveedor) {
         this.pesajeCompraLista = [];
@@ -1014,8 +1014,7 @@ export class FBservicesService {
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     this.pesajeCompraLista.push(element.val());
-                });
-                console.log("metodo getPesajeCompra" + this.pesajeCompraLista.length);
+                });                
                 return this.pesajeCompraLista;
             });
     }
@@ -1062,8 +1061,8 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
-     getAnticipoProveedor(){
-        
+    getAnticipoProveedor() {
+
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         this.anticipoCompraLista = [];
@@ -1081,6 +1080,23 @@ export class FBservicesService {
         });
         return this.anticipoCompraLista;
 
+    }
+
+    //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
+    //Metodo para traer todos los funcionarios
+    getProveedoresLote() {
+        this.listaProveedoresConCompras = [];
+        firebase
+            .database()
+            .ref("usuario/compras")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    console.log("ELEMENT get Proveedoresconcompras:: ", element.val())
+                    this.listaProveedoresConCompras.push(element.val());
+                });
+                console.log("Estos son los proveedores hasta ahora" + this.listaProveedoresConCompras);
+                return this.listaProveedoresConCompras;
+            });
     }
 
 

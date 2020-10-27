@@ -3,28 +3,36 @@
   <ion-toolbar>
     <ion-title class="titulo">PESAJES DETALLADOS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
+      <ion-back-button defaultHref="/cardcompras" color="danger"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> 
+<ion-content>
   <div class="div-principal">
-    <ion-title>{{nombreProv}}</ion-title>
+    <ion-title class="title">{{nombreProv}}</ion-title>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let card of FB.pesajeCompraLista">
+    <ion-item-sliding class="slider" *ngFor="let card of listaCompras">
       <ion-item class="item">
         <div class="div-card">
           <ion-card class="card">
             <div class="div_info">
-              <p><span>Tipo de queso:</span> {{tipoQueso.descripcion}} </p>
-              <p><span>Fecha:</span> {{card.fechaCompra}}</p>
-              <p class="p"><span>Peso total:</span> {{card.pesoBultos}}</p>
-              <ion-button class="btn_popover" (click)="presentPopover(card)" fill="clear" shape="round">
-                <ion-icon name="bar-chart"></ion-icon>
-              </ion-button>
-              <p class="p"><span>Lista de bultos:</span> {{card.totalBulto}}</p>
+              <div class="div_fila_1">
+                <p><span>Tipo de queso: </span><span class="tipo_queso">{{card.nompreProducto}}</span></p>
+                <p><span>Fecha:</span> {{card.fechaCompra}}</p>
+              </div>
+              <div class="div_fila_2">
+                <div class="div_fila_2_part_left">
+                  <p class="p"><span>Peso total:</span> {{card.pesoBultos}} </p>
+                  <p class="p"><span>Lista de bultos:</span> {{card.totalBulto}}</p>
+                </div>
+                <div class="div_fila_2_part_right">
+                  <ion-button class="btn_modal" (click)="modalConfirmarPesaje(card)" fill="outline" expand="full" shape="round">
+                    <ion-icon name="bar-chart" color="tertiary"></ion-icon><br>
+                  </ion-button>
+                </div>
+              </div>
             </div>
             <div class="div_tabla">
               <table class="table">
@@ -56,10 +64,6 @@
         <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
-    <ion-row class="row1">
-      <ion-col id="col1">
-      </ion-col>
-    </ion-row>
   </div>
 
   <ion-fab (click)="presentActionSheet()" class="btn-options" vertical="bottom" horizontal="end" slot="fixed">
