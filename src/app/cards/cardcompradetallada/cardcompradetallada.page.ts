@@ -87,13 +87,14 @@ export class CardcompradetalladaPage implements OnInit {
   }
 
   async modalConfirmarPesaje(card) {
-    this.FB.getInfoComra(this.idProveedor, card.id)
+    this.FB.getInfoCompra(this.idProveedor, card.id)
     const modal = await this.modalController.create({
       component: HomepesajesPage,
       cssClass: 'my-custom-class',
       componentProps: {
         idCompra: card.id,
         idProv: this.idProveedor
+
       },
     });
     console.log("se ele envia el proveedor y el id de compra", card.id, this.idProveedor)

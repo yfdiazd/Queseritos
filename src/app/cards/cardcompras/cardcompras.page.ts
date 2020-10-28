@@ -1,9 +1,8 @@
-
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
+
 
 @Component({
   selector: 'app-cardcompras',
@@ -12,45 +11,19 @@ import { FBservicesService } from 'src/app/fbservices.service';
 })
 export class CardcomprasPage implements OnInit {
 
-  pesoacumulado = 0;
-  saldodebitototal = 0;
-  saldocreditotal = 0;
-
-
-
-  public proveedor;
   public listaProveedores: any[];
   public input = { data: [] };
   public idProv;
-  public nombres = [];
 
-  //Esta lista va a obtener todas las compras existentes
-  listaAllCompras: any[] = [];
-  //Esta lista va a guardar las compras de un mismo proveedor
-  listaProvNoRepetidos: any[] = [];
-  //Lista de idproveedores
-  listaIdProveedores: any[] = [];
-  // Lista de nombres
-  listaNombres: any[] = [];
-  //Datos para mostrar en el card
-  dataCard: any[] = [];
-  //Datos consolidados para la visualización
-  listaCard: any[] = [];
-  listaAnt: any[] = [];
   //Variable donde se guarda el lote actual en el que se esta comprando
   loteActual: any;
   //Lista de nombres a mostrar
-  public nombreProv: any;
+  public listaDatos: any = [];
+  public objProv: any;
 
-  objImp: any;
-  onbjAnt: any;
-  listaPaVer: any;
-  obtPa: any;
 
   constructor(
     public actionSheetController: ActionSheetController,
-    private router: Router,
-    private route: ActivatedRoute,
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
@@ -59,157 +32,50 @@ export class CardcomprasPage implements OnInit {
 
   ngOnInit() {
     this.validacionLote();
-    this.listaCards();
+    this.FB.getLoteProveedor();
     this.traerNombre();
   }
 
   doRefresh(event) {
-    console.log('Begin async operation', this.listaPaVer);
-    this.listaCards();
+    this.FB.getLoteProveedor();
+    this.validacionLote();
     this.traerNombre();
     setTimeout(() => {
-      console.log('Async operation has ended');
       event.target.complete();
     }, 1000);
   }
 
   traerNombre() {
-    this.nombreProv = [];
+    this.listaDatos = [];
+    this.objProv = null;
     this.FB.proveedoresLista.forEach(element => {
-      this.listaPaVer.forEach(element2 => {
-        if (element.id == element2.idProveedor) {
-          this.nombreProv.push({ 
-            nombre: element.nombre, 
-            idProv: element.id, 
-            bultos: element2.bultos, 
-            costo: element2.costo, 
-            peso: element2.peso, 
-            debito: element2.debito });
+      this.FB.listaPaVer.forEach(element2 => {
+        if (element.id == element2.idProvedor) {
+          this.objProv = ({
+            nombre: element.nombre,
+            idProv: element.id,
+            bultos: element2.bultos,
+            costo: element2.costo,
+            peso: element2.peso,
+            debito: element2.debito
+          });
+          this.listaDatos.push(this.objProv);
         }
-        console.log("Estos son los nombres", this.nombreProv)
       })
     })
-    console.log("Nombres de los proveedores:", this.nombreProv);
+    return this.listaDatos;
   }
 
+  //Validación del ultimo lote con el día en que ingresa a cardcompras: Muestra el alert
   validacionLote() {
     this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
-    console.log("Lote actual", this.loteActual)
-    console.log("LOTE ULTIMO:   ", this.loteActual.toString());
-    console.log("FECHA ACTUAL ----", this.FB.fechaActual())
     if (this.loteActual.toString().includes(this.FB.fechaActual())) {
-      console.log("Si es el mismo")
     } else {
       this.alertConfirmarNuevoLote();
     }
   }
 
-  listaCards() {
-    this.objImp = [];
-    this.onbjAnt = [];
-    this.listaCard = [];
-    this.listaAnt = [];
-    this.saldocreditotal = 0;
-    this.pesoacumulado = 0;
-    this.saldodebitototal = 0;
-    console.log("Lista de provedores con compra", this.FB.proveedorCompraLista);
-    console.log("Lista anticipos ", this.FB.anticipoCompraLista);
-    this.FB.proveedorCompraLista.forEach(element => {
-      let total = 0;
-      let totalCosto = 0;
-      let totalBultos = 0;
-      let keys = Object.keys(element);
-      let lotes = element[keys[0]].idProveedor;
-      keys.forEach(key => {
-        total += element[key].pesoBultos;
-        totalBultos += element[key].totalBulto;
-        totalCosto += element[key].costoTotalCompra;
-        this.pesoacumulado += element[key].pesoBultos;
-        this.saldocreditotal += element[key].costoTotalCompra;
-      });
-
-      this.objImp = ({
-        idProveedor: lotes,
-        bultos: totalBultos,
-        costo: totalCosto,
-        peso: total
-      });
-      this.listaCard.push(this.objImp);
-    });
-    this.FB.anticipoCompraLista.forEach(element => {
-      let totalAnt: number = 0;
-      let keys = Object.keys(element);
-      let prov = element[keys[0]].idProveedor;
-      keys.forEach(key => {
-        totalAnt += element[key].valorAnticipo;
-        this.saldodebitototal += element[key].valorAnticipo;
-      });
-      this.onbjAnt = ({
-        valorAnt: totalAnt,
-        idProvee: prov
-      });
-      this.listaAnt.push(this.onbjAnt);
-    });
-    console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
-    console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
-    this.recorreListas();
-    return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
-
-  }
-
-  recorreListas() {
-    this.listaPaVer = [];
-    if (this.listaAnt.length != 0) {
-      console.log("siii diferente a 0000 ", this.listaAnt.length);
-      this.listaCard.forEach(element => {
-        this.listaAnt.forEach(element2 => {
-          if (element.idProveedor == element2.idProvee) {
-            this.obtPa = ({
-              idProveedor: element.idProveedor,
-              bultos: element.bultos,
-              costo: element.costo,
-              peso: element.peso,
-              debito: element2.valorAnt
-            });
-            this.listaPaVer.push(this.obtPa);
-            this.obtPa = null;
-          } else if (this.listaPaVer.filter(valor => {
-            return valor.idProveedor == element.idProveedor;
-          }).length == 0 && this.listaAnt.filter(valorF => {
-            return valorF.idProvee == element.idProveedor
-          }).length == 0) {
-            console.log("llego vaciooo ");
-            this.obtPa = ({
-              idProveedor: element.idProveedor,
-              bultos: element.bultos,
-              costo: element.costo,
-              peso: element.peso,
-              debito: 0
-            });
-            this.listaPaVer.push(this.obtPa);
-            this.obtPa = null;
-          }
-        });
-      });
-    } else {
-      this.listaCard.forEach(elementC => {
-        this.obtPa = ({
-          idProveedor: elementC.idProveedor,
-          bultos: elementC.bultos,
-          costo: elementC.costo,
-          peso: elementC.peso,
-          debito: 0
-        });
-        this.listaPaVer.push(this.obtPa);
-        this.obtPa = null;
-      });
-    }
-    console.log("*----------------------------- ", this.listaPaVer);
-    return this.listaPaVer;
-  }
-
   irCompra(card) {
-    console.log("card.idProveedor", card.idProv)
     this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
   }
 
@@ -238,27 +104,24 @@ export class CardcomprasPage implements OnInit {
           // var elemento = document.getElementById("select-alert");
           // elemento.click();
         }
-      }, 
+      },
       // {
       //   text: 'Distribuir pesos',
       //   icon: 'podium',
       //   handler: () => {
-      //     console.log('Share clicked');
-      //   }
+      //           //   }
       // },
-       {
+      {
         text: 'Quitar compra',
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          console.log('Delete clicked');
         }
       }, {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });
@@ -276,12 +139,10 @@ export class CardcomprasPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
           }
         }, {
           text: 'Ok',
           handler: (value) => {
-            console.log('Se envia el id del proveedor: ', value);
             this.navCtrl.navigateForward(["crearcompra/", value]);
           }
         }
@@ -294,7 +155,8 @@ export class CardcomprasPage implements OnInit {
   async alertConfirmarNuevoLote() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'El ultimo lote no coincide con la fecha actual',
+      header: "El ultimo lote no coincide con la fecha actual",
+      subHeader: this.loteActual,
       message: '¿Desea crear un nuevo lote?',
       buttons: [
         {
@@ -302,7 +164,6 @@ export class CardcomprasPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Mantiene el lote actual', this.loteActual.toString());
 
           }
         }, {
@@ -310,9 +171,6 @@ export class CardcomprasPage implements OnInit {
           handler: (value) => {
             this.FB.generarLote();
             this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
-
-            console.log("El nuevo lote ha sido creado", this.loteActual.toString());
-
           }
         }
       ]
@@ -320,10 +178,5 @@ export class CardcomprasPage implements OnInit {
 
     await alert.present();
   }
-
-
-
-
-
 }
 

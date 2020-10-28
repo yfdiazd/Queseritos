@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import * as firebase from 'firebase';
 import { element } from 'protractor';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 
 //import { Camera, CameraOriginal } from '@ionic-native/camera';
@@ -63,6 +64,7 @@ export class FBservicesService {
     public anticiposPesajeCompraLista: any[] = [];
     public proveedorCompraLista: any[] = [];
     public anticipoCompraLista: any[] = [];
+    public loteProveedorLista: any;
     //Lista lotes
     listaLotes: any[] = [];
     public ultimoLote: any[];
@@ -87,12 +89,20 @@ export class FBservicesService {
         private router: Router,
         public toastController: ToastController,
         public alertController: AlertController,
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private camera: Camera,
 
     ) {
         firebase.initializeApp(this.config);
         this.verificarsesion();
     }
+    options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+    }
+
 
     //offline
     offLine() {
@@ -117,8 +127,8 @@ export class FBservicesService {
             .ref("usuarios/" + this.usuarioUid + "/datosBasicos")
             .on("value", snapshot => {
                 this.usuario = snapshot.val();
-                console.log(this.usuario);
-                console.log(this.usuarioUid);
+
+
             });
     }
     iniciarSesion(email, password) {
@@ -126,14 +136,14 @@ export class FBservicesService {
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
-                console.log("Se inicio correctamente");
-                console.log("token usuario:", firebase.auth().currentUser.uid);
+
+
                 this.usuarioUid = firebase.auth().currentUser.uid;
                 this.navCtrl.navigateForward(["main-menu"]);
             })
             .catch(error => {
                 this.toastErrorAutenticacion();
-                console.log(error);
+                console.error(error);
             });
         return this.usuarioUid;
     }
@@ -148,8 +158,8 @@ export class FBservicesService {
                 .createUserWithEmailAndPassword(email, password)
                 .then(() => {
                     this.usuarioUid = firebase.auth().currentUser.uid;
-                    console.log("Se creo correctamente");
-                    console.log(firebase.auth().currentUser.uid);
+
+
 
                     firebase
                         .database()
@@ -158,10 +168,10 @@ export class FBservicesService {
                             usuario: user,
                             email: email
                         });
-                    console.log('bres me registre');
+
                 });
             this.toastRegistroCorrecto().catch(error => {
-                console.log(error);
+                console.error(error);
             });
         } else {
             this.toastContras();
@@ -178,15 +188,15 @@ export class FBservicesService {
             })
             .catch(error => {
                 this.toastRecuperacionFail();
-                console.log("correo no enviado validar correo", error);
+
             });
     }
     verificarsesion() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                console.log("Si hay usuario logueado: ", firebase.auth().currentUser.uid)
-                this.navCtrl.navigateForward("main-menu");
-                //this.router.navigate(["main-menu"]);
+
+                // this.navCtrl.navigateForward("main-menu");
+                this.router.navigate(["main-menu"]);
                 // this.mostrarNombre();
                 this.getCiudades();
                 this.getEstadoProducto();
@@ -197,9 +207,12 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+                this.getProveedoresCompra();
+                this.getLoteProveedor();
+                this.recorreListas();
 
             } else {
-                console.log("No hay sesion, toca loguear");
+
                 this.navCtrl.navigateBack(["login"]);
             }
         });
@@ -492,7 +505,7 @@ export class FBservicesService {
         this.pathPush = "";
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
-            console.log("Prubeasssss ");
+
             this.idCiudad = this.idGenerator();
             firebase
                 .database()
@@ -696,7 +709,6 @@ export class FBservicesService {
                 return this.conductoresLista;
             });
     }
-
 
     //----------------------------------Metodos para eliminar estado 0-----------------------------------------
     deleteProducto(idProducto) {
@@ -930,7 +942,7 @@ export class FBservicesService {
             .database()
             .ref("usuario/configuracion/lotes")
             .on("value", snapshot => {
-                console.log("Se genera lote correctamente" + snapshot.numChildren());
+
                 firebase
                     .database()
                     .ref("usuario/configuracion/lotes/" + this.idLote)
@@ -988,14 +1000,14 @@ export class FBservicesService {
         this.proveedorCompraLista = [];
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
-        console.log("Lsita proveedores a recorrer", this.proveedoresLista)
+
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
                 .on("value", snapshot => {
                     if (snapshot.exists && snapshot.val() !== null) {
-                        console.log("Esto es snapshot", snapshot.val())
+
                         this.proveedorCompraLista.push(snapshot.val());
                     }
                 });
@@ -1018,7 +1030,18 @@ export class FBservicesService {
             });
     }
 
-    //Metodos para los::::::::::::::::::::::ANTICIPOS
+    updateCostoCompra(idProveedor, idPesajeCompra, totalCompra) {
+
+
+
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+            .update({
+                costoTotalCompra: totalCompra
+            });
+    }
+
     //Confirmar pesajes
     agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
 
@@ -1027,7 +1050,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString() + "/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
                 codigoLote: this.lastLote.toString(),
@@ -1037,6 +1060,7 @@ export class FBservicesService {
                 costoKilo: costoKilo,
                 costoTotalEstado: costoTotalEstado
             });
+        this.toastOperacionExitosa();
     }
     //metodo que permite registrar un anticipo a la compra
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
@@ -1083,7 +1107,7 @@ export class FBservicesService {
 
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
     //Metodo para traer todos los funcionarios
-    getInfoComra(idProveedor, idCompra) {
+    getInfoCompra(idProveedor, idCompra) {
 
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
@@ -1092,16 +1116,151 @@ export class FBservicesService {
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idCompra)
             .on("value", snapshot => {
                 this.infoCompraUnica = [];
-                snapshot.forEach(element => {
-                    if (element.val().estado == 1) {
-                        console.log("data de la lista por id compra", element.val())
-                        this.infoCompraUnica.push(element.val());
-                    }
-                    console.log("No entro al")
-
-                });
-                console.log("Estos son los proveedores hasta ahora" + this.infoCompraUnica);
+                if (snapshot.val().estado == 1) {
+                    this.infoCompraUnica.push(snapshot.val());
+                }
+                console.log("infoGuardada: ", this.infoCompraUnica)
                 return this.infoCompraUnica;
             });
     }
+
+    takePhoto() {
+        this.camera.getPicture(this.options).then((imageData) => {
+            // imageData is either a base64 encoded string or a file URI
+            // If it's base64 (DATA_URL):
+            let base64Image = 'data:image/jpeg;base64,' + imageData;
+        }, (err) => {
+
+        });
+
+    }
+
+    proveedoresCompraLista: any;
+    getProveedoresCompra() {
+        this.proveedoresCompraLista = [];
+        firebase.database().ref("usuario/compras/")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    this.proveedoresCompraLista.push(element.key);
+                });
+            });
+        return this.proveedoresCompraLista;
+    }
+
+
+    objImp: any;
+    onbjAnt: any;
+    listaCard: any;
+    public listaAnt: any;
+    public pesoacumulado = 0;
+    public saldocreditotal = 0;
+    public saldodebitototal = 0;
+    getLoteProveedor() {
+        this.objImp = [];
+        this.onbjAnt = [];
+        this.listaCard = [];
+        this.listaAnt = [];
+        this.pesoacumulado = 0;
+        this.saldocreditotal = 0;
+        this.saldodebitototal = 0;
+
+
+
+        this.proveedorCompraLista.forEach(element => {
+            let total = 0;
+            let totalCosto = 0;
+            let totalBultos = 0;
+            let keys = Object.keys(element);
+            let lotes = element[keys[0]].idProveedor;
+            keys.forEach(key => {
+                total += element[key].pesoBultos;
+                totalBultos += element[key].totalBulto;
+                totalCosto += element[key].costoTotalCompra;
+                this.pesoacumulado += element[key].pesoBultos;
+                this.saldocreditotal += element[key].costoTotalCompra;
+            });
+
+            this.objImp = ({
+                idProvedor: lotes,
+                bultos: totalBultos,
+                costo: totalCosto,
+                peso: total
+            });
+            this.listaCard.push(this.objImp);
+        });
+        this.anticipoCompraLista.forEach(element => {
+            let totalAnt: number = 0;
+            let keys = Object.keys(element);
+            let prov = element[keys[0]].idProveedor;
+            keys.forEach(key => {
+                totalAnt += element[key].valorAnticipo;
+                this.saldodebitototal += element[key].valorAnticipo;
+            });
+            this.onbjAnt = ({
+                valorAnt: totalAnt,
+                idProvee: prov
+            });
+            this.listaAnt.push(this.onbjAnt);
+        });
+
+
+        this.recorreListas();
+        return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
+
+
+    }
+
+    public listaPaVer: any[];
+    obtPa: any;
+    recorreListas() {
+        this.listaPaVer = [];
+        if (this.listaAnt.length != 0) {
+
+            this.listaCard.forEach(element => {
+                this.listaAnt.forEach(element2 => {
+                    if (element.idProvedor == element2.idProvee) {
+                        this.obtPa = ({
+                            idProvedor: element.idProvedor,
+                            bultos: element.bultos,
+                            costo: element.costo,
+                            peso: element.peso,
+                            debito: element2.valorAnt
+                        });
+                        this.listaPaVer.push(this.obtPa);
+                        this.obtPa = null;
+                    } else if (this.listaPaVer.filter(valor => {
+                        return valor.idProvedor == element.idProvedor;
+                    }).length == 0 && this.listaAnt.filter(valorF => {
+                        return valorF.idProvee == element.idProvedor
+                    }).length == 0) {
+
+                        this.obtPa = ({
+                            idProvedor: element.idProvedor,
+                            bultos: element.bultos,
+                            costo: element.costo,
+                            peso: element.peso,
+                            debito: 0
+                        });
+                        this.listaPaVer.push(this.obtPa);
+                        this.obtPa = null;
+                    }
+                });
+            });
+        } else {
+            this.listaCard.forEach(elementC => {
+                this.obtPa = ({
+                    idProvedor: elementC.idProvedor,
+                    bultos: elementC.bultos,
+                    costo: elementC.costo,
+                    peso: elementC.peso,
+                    debito: 0
+                });
+                this.listaPaVer.push(this.obtPa);
+                this.obtPa = null;
+            });
+        }
+
+        return this.listaPaVer;
+    }
+
 }

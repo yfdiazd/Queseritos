@@ -14,11 +14,12 @@
 <ion-content>
   <div class="div-principal">
     <div class="info">
-      <p><span>Total Peso:</span></p>
+      <p><span>Total Peso: </span></p>
     </div>
   </div>
-  <div class="div_tabla">
-    <p>Lista Confirmación</p>
+  <div class="div_tabla" *ngIf="listaCompraDetallada; else nover">
+    <p #siver>Lista Confirmación</p>
+    <p #nover>No hay confirmaciones</p>
     <table class="table">
       <thead class="thead">
         <th class="th1">Estado</th>
@@ -27,7 +28,7 @@
         <th class="th4">Valor Total</th>
       </thead>
       <tbody class="tbody">
-        <tr class="tr" *ngFor="let lista of listaCompraDetallada; let i=index">
+        <tr class="tr" *ngFor="let lista of listaCompraDetallada">
           <td class="td1">
             <label (ngModel)="numbulto">{{lista.idEstProd}}</label>
           </td>
