@@ -9,7 +9,7 @@ import { CrearclientesPage } from 'src/app/formularios/crearclientes/crearclient
   styleUrls: ['./homeclientes.page.scss'],
 })
 export class HomeclientesPage implements OnInit {
-
+  
   constructor(
     private navCtrl: NavController,
     private FB: FBservicesService,
@@ -91,6 +91,17 @@ export class HomeclientesPage implements OnInit {
   async cerrar() {
     this.navCtrl.navigateForward('main-menu');
   }
+
+  buscar(ev:any){
+    this.FB.clientesLista;
+    const val = ev.target.value;
+    if (val && val.trim !== ''){
+      this.FB.clientesLista= this.FB.clientesLista.filter((item)=>{
+        return (item.toLowerCase().indexOf(val.toLowerCase())> -1);
+      });
+    }
+  
+    }
 
 
 }

@@ -31,6 +31,7 @@ export class MainMenuPage {
     private router: Router
   ) {
     
+    
   }
 
   comprar() {
@@ -40,10 +41,13 @@ export class MainMenuPage {
   }
 
   irCardLotes() {
-    this.navCtrl.navigateForward('cardlistaproveedores');
+    this.navCtrl.navigateForward(["cardlistaproveedores"]);
   }
   irCardListaClientes(){
-    this.navCtrl.navigateForward('cardlistaclientes');
+    this.navCtrl.navigateForward(["cardlistaclientes"]);
+  }
+  irCardListaProveedores(){
+    this.navCtrl.navigateForward(["cardlistaproveedores"]);
   }
 
   lista() {

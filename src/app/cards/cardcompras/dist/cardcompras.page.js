@@ -51,9 +51,15 @@ var CardcomprasPage = /** @class */ (function () {
         this.FB = FB;
         this.alertController = alertController;
         this.navCtrl = navCtrl;
+<<<<<<< HEAD
+        this.pesoacumulado = 200;
+        this.saldodebitototal = 120000000;
+        this.saldocreditotal = 140000000;
+=======
         this.pesoacumulado = 0;
         this.saldodebitototal = 0;
         this.saldocreditotal = 0;
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         this.input = { data: [] };
         this.nombres = [];
         //Esta lista va a obtener todas las compras existentes
@@ -68,6 +74,11 @@ var CardcomprasPage = /** @class */ (function () {
         this.dataCard = [];
         //Datos consolidados para la visualización
         this.listaCard = [];
+<<<<<<< HEAD
+        this.pesoMostrar = 0;
+        this.bultosMostrar = 0;
+        this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
+=======
         this.listaAnt = [];
     }
     CardcomprasPage.prototype.ngOnInit = function () {
@@ -102,12 +113,19 @@ var CardcomprasPage = /** @class */ (function () {
     CardcomprasPage.prototype.validacionLote = function () {
         this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
         console.log("Lote actual", this.loteActual);
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         console.log("LOTE ULTIMO:   ", this.loteActual.toString());
         console.log("FECHA ACTUAL ----", this.FB.fechaActual());
         if (this.loteActual.toString().includes(this.FB.fechaActual())) {
             console.log("Si es el mismo");
         }
         else {
+<<<<<<< HEAD
+            this.presentAlertRadio2();
+        }
+    }
+    CardcomprasPage.prototype.ngOnInit = function () {
+=======
             this.alertConfirmarNuevoLote();
         }
     };
@@ -217,12 +235,22 @@ var CardcomprasPage = /** @class */ (function () {
     };
     CardcomprasPage.prototype.irCompra = function (card) {
         this.navCtrl.navigateForward(["crearcompra"]);
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
     };
     CardcomprasPage.prototype.irVender = function () {
         this.router.navigate(["cardcompras"]);
     };
     CardcomprasPage.prototype.irPesajeCompra = function (card) {
         // this.FB.getNumBultos(card.id);
+<<<<<<< HEAD
+        this.navCtrl.navigateForward(["crearpesajecompra/", card.id]);
+        console.log("ID:", card.id);
+    };
+    CardcomprasPage.prototype.irCompraDetallada = function () {
+        this.navCtrl.navigateForward(["cardcompradetallada"]);
+    };
+    CardcomprasPage.prototype.presentActionSheet = function () {
+=======
         this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
     };
     CardcomprasPage.prototype.irCompraDetallada = function (card) {
@@ -230,6 +258,7 @@ var CardcomprasPage = /** @class */ (function () {
         this.navCtrl.navigateForward(["cardcompradetallada/", card.idProvedor]);
     };
     CardcomprasPage.prototype.opciones = function () {
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var actionSheet;
             var _this = this;
@@ -243,6 +272,17 @@ var CardcomprasPage = /** @class */ (function () {
                                     text: 'Agregar proveedor',
                                     icon: 'person-add',
                                     handler: function () {
+<<<<<<< HEAD
+                                        // this.presentAlertRadio();
+                                        _this.input = { data: [] };
+                                        _this.listaProveedores = [];
+                                        console.log("this.listaProveedores: ", _this.listaProveedores);
+                                        _this.FB.proveedoresLista.forEach(function (element) {
+                                            _this.input.data.push({ name: element.nombre, type: 'radio', label: element.nombre, value: element.id });
+                                        });
+                                        console.log("Se obtuvo esto_:", _this.input);
+                                        _this.presentAlertRadio();
+=======
                                         _this.input = { data: [] };
                                         _this.listaProveedores = [];
                                         _this.FB.proveedoresLista.forEach(function (element) {
@@ -250,6 +290,7 @@ var CardcomprasPage = /** @class */ (function () {
                                             _this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
                                         });
                                         _this.alertProveedores();
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                                         // var elemento = document.getElementById("select-alert");
                                         // elemento.click();
                                     }
@@ -285,7 +326,11 @@ var CardcomprasPage = /** @class */ (function () {
             });
         });
     };
+<<<<<<< HEAD
+    CardcomprasPage.prototype.presentAlertRadio = function () {
+=======
     CardcomprasPage.prototype.alertProveedores = function () {
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
@@ -293,7 +338,11 @@ var CardcomprasPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
+<<<<<<< HEAD
+                            header: 'Radio',
+=======
                             header: 'Proveedores',
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                             inputs: this.input.data,
                             buttons: [
                                 {
@@ -307,7 +356,13 @@ var CardcomprasPage = /** @class */ (function () {
                                     text: 'Ok',
                                     handler: function (value) {
                                         console.log('Se envia el id del proveedor: ', value);
+<<<<<<< HEAD
+                                        _this.navCtrl.navigateForward("crearpesajecompra");
+                                        _this.input = { data: [] };
+                                        _this.listaProveedores = [];
+=======
                                         _this.navCtrl.navigateForward(["crearcompra/", value]);
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                                     }
                                 }
                             ]
@@ -322,7 +377,11 @@ var CardcomprasPage = /** @class */ (function () {
             });
         });
     };
+<<<<<<< HEAD
+    CardcomprasPage.prototype.presentAlertRadio2 = function () {
+=======
     CardcomprasPage.prototype.alertConfirmarNuevoLote = function () {
+>>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;

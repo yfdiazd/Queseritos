@@ -57,6 +57,7 @@ export class FBservicesService {
     public tipoTruequeLista: any[];
     public tiposIdentificacionLista: any[];
     public conductoresLista: any[];
+    public listaProveedoresConCompras: any[];
     //Lista compras
     public pesajeCompraLista: any[];
     public pesajeCompraListaPorProveedor: any[];
@@ -1011,8 +1012,6 @@ export class FBservicesService {
         })
         return this.proveedorCompraLista;
     }
-
-
     // Traer los pesajes del proveedor seleccionado
     getPesajeCompra(idProveedor) {
         this.pesajeCompraLista = [];
@@ -1024,8 +1023,7 @@ export class FBservicesService {
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     this.pesajeCompraLista.push(element.val());
-                });
-                console.log("metodo getPesajeCompra" + this.pesajeCompraLista.length);
+                });                
                 return this.pesajeCompraLista;
             });
     }
@@ -1114,7 +1112,7 @@ export class FBservicesService {
         }, (err) => {
             console.log(err);
         });
-
+   
     }
 
     proveedoresCompraLista: any;

@@ -11,6 +11,7 @@
 </ion-header>
 <ion-content>
   <div class="div-principal">
+    <ion-searchbar placeholder="Buscar proveedor" (ionChange)="buscar($event)"></ion-searchbar>
     <ion-item-sliding class="slider" *ngFor="let lista of FB.clientesLista">
       <ion-item class="item">
         <ion-card class="card">

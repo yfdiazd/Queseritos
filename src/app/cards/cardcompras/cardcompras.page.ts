@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
@@ -50,6 +50,7 @@ export class CardcomprasPage implements OnInit {
   constructor(
     public actionSheetController: ActionSheetController,
     private router: Router,
+    private route: ActivatedRoute,
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
@@ -57,19 +58,15 @@ export class CardcomprasPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.validacionLote();
+    this.validacionLote();
     this.listaCards();
+    this.traerNombre();
   }
 
   doRefresh(event) {
-    console.log('Begin async operation');
+    console.log('Begin async operation', this.listaPaVer);
     this.listaCards();
-    this.listaAnt = [];
-    this.listaCard = [];
-    this.objImp = [];
-    this.saldocreditotal = 0;
-    this.pesoacumulado = 0;
-    this.saldodebitototal = 0;
+    this.traerNombre();
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
@@ -81,8 +78,15 @@ export class CardcomprasPage implements OnInit {
     this.FB.proveedoresLista.forEach(element => {
       this.listaPaVer.forEach(element2 => {
         if (element.id == element2.idProveedor) {
-          this.nombreProv.push({ nombre: element.nombre, idProv: element.id });
+          this.nombreProv.push({ 
+            nombre: element.nombre, 
+            idProv: element.id, 
+            bultos: element2.bultos, 
+            costo: element2.costo, 
+            peso: element2.peso, 
+            debito: element2.debito });
         }
+        console.log("Estos son los nombres", this.nombreProv)
       })
     })
     console.log("Nombres de los proveedores:", this.nombreProv);
@@ -123,7 +127,7 @@ export class CardcomprasPage implements OnInit {
       });
 
       this.objImp = ({
-        idProvedor: lotes,
+        idProveedor: lotes,
         bultos: totalBultos,
         costo: totalCosto,
         peso: total
@@ -157,9 +161,9 @@ export class CardcomprasPage implements OnInit {
       console.log("siii diferente a 0000 ", this.listaAnt.length);
       this.listaCard.forEach(element => {
         this.listaAnt.forEach(element2 => {
-          if (element.idProvedor == element2.idProvee) {
+          if (element.idProveedor == element2.idProvee) {
             this.obtPa = ({
-              idProvedor: element.idProvedor,
+              idProveedor: element.idProveedor,
               bultos: element.bultos,
               costo: element.costo,
               peso: element.peso,
@@ -168,13 +172,13 @@ export class CardcomprasPage implements OnInit {
             this.listaPaVer.push(this.obtPa);
             this.obtPa = null;
           } else if (this.listaPaVer.filter(valor => {
-            return valor.idProvedor == element.idProvedor;
+            return valor.idProveedor == element.idProveedor;
           }).length == 0 && this.listaAnt.filter(valorF => {
-            return valorF.idProvee == element.idProvedor
+            return valorF.idProvee == element.idProveedor
           }).length == 0) {
             console.log("llego vaciooo ");
             this.obtPa = ({
-              idProvedor: element.idProvedor,
+              idProveedor: element.idProveedor,
               bultos: element.bultos,
               costo: element.costo,
               peso: element.peso,
@@ -188,7 +192,7 @@ export class CardcomprasPage implements OnInit {
     } else {
       this.listaCard.forEach(elementC => {
         this.obtPa = ({
-          idProveedor: elementC.idProvedor,
+          idProveedor: elementC.idProveedor,
           bultos: elementC.bultos,
           costo: elementC.costo,
           peso: elementC.peso,
@@ -202,26 +206,15 @@ export class CardcomprasPage implements OnInit {
     return this.listaPaVer;
   }
 
-  irCompra(card){
-    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
-    console.log("card.idProveedor", card.idProveedor)
-  }
-
-  irVender() {
-    this.router.navigate(["cardcompras"]);
-  }
-
-  irPesajeCompra(card) {
-    // this.FB.getNumBultos(card.id);
-    this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
-
+  irCompra(card) {
+    console.log("card.idProveedor", card.idProv)
+    this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
   }
   
 
   irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProveedor);
-    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProveedor]);
-    console.log("imprimiendo caridproveedor", card.idProveedor)
+    this.FB.getPesajeCompra(card.idProv);
+    this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
   }
 
   async opciones() {
@@ -244,13 +237,15 @@ export class CardcomprasPage implements OnInit {
           // var elemento = document.getElementById("select-alert");
           // elemento.click();
         }
-      }, {
-        text: 'Distribuir pesos',
-        icon: 'podium',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, {
+      }, 
+      // {
+      //   text: 'Distribuir pesos',
+      //   icon: 'podium',
+      //   handler: () => {
+      //     console.log('Share clicked');
+      //   }
+      // },
+       {
         text: 'Quitar compra',
         role: 'destructive',
         icon: 'trash',
