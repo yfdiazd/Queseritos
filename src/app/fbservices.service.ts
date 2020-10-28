@@ -1053,7 +1053,7 @@ export class FBservicesService {
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString() + "/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
                 codigoLote: this.lastLote.toString(),
@@ -1065,6 +1065,27 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
+    pesajeConfirmadoLista: any = [];
+    getPesajeConfirmado(idProveedor, idPesajeCompra) {
+        this.pesajeConfirmadoLista = [];
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString())
+            .on("value", snapshot => {
+                if (snapshot.exists) {
+                    snapshot.forEach(element => {
+                        console.log("Elemente de lista pesaje cof ", element);
+                        this.pesajeConfirmadoLista.push(element);
+                    });
+                }
+            });
+            return this.pesajeConfirmadoLista;
+    }
+
+
+
     //metodo que permite registrar un anticipo a la compra
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
 
