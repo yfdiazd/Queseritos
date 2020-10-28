@@ -1065,7 +1065,7 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    pesajeConfirmadoLista: any = [];
+   public pesajeConfirmadoLista: any = [];
     getPesajeConfirmado(idProveedor, idPesajeCompra) {
         this.pesajeConfirmadoLista = [];
         this.lastLote = [];
