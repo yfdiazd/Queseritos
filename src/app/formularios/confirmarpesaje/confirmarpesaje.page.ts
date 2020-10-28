@@ -28,6 +28,7 @@ export class ConfirmarpesajePage implements OnInit {
 
   @Input() idCompra;
   @Input() idProv;
+  @Input() pesoDisponible;
 
   idEstadoProducto: string;
   peso = "";
@@ -45,15 +46,15 @@ export class ConfirmarpesajePage implements OnInit {
 
 
   guardar() {
-    this.costoTotalEstado = ( parseInt(this.peso) * parseInt(this.costoKilo));
+    this.costoTotalEstado = (parseInt(this.peso) * parseInt(this.costoKilo));
     this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado);
-
     this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado);
     this.popover.dismiss();
+    this.FB.getPesajeConfirmado(this.idProv, this.idCompra);
   }
 
   calcular(valor) {
-    this.sumado = ( parseInt(this.peso) * parseInt(this.costoKilo));
+    this.sumado = (parseInt(this.peso) * parseInt(this.costoKilo));
     console.log("imprime valor", valor, this.sumado)
   }
 
@@ -61,9 +62,9 @@ export class ConfirmarpesajePage implements OnInit {
     this.popover.dismiss();
   }
 
- 
 
-  
+
+
 
 
 

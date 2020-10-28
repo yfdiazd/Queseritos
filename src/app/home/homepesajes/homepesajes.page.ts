@@ -21,25 +21,50 @@ export class HomepesajesPage implements OnInit {
     public modalController: ModalController,
 
   ) { }
-  
+
   @Input() idCompra;
   @Input() idProv;
 
   idCompraLocal: any;
   idProveedorLocal: any;
 
+  pesoTotal = 0;
+
+  isEnabled = true;
+
   ngOnInit() {
     localStorage.setItem("idCompraLocal", this.idCompra);
     localStorage.setItem("idProveedorLocal", this.idProv);
     this.idCompraLocal = this.idCompra;
-    this.idProveedorLocal = this.idProv;    
+    this.idProveedorLocal = this.idProv;
+    this.traerPeso();
+    this.sumarPesos();
+
   }
+  async traerPeso() {
+    this.FB.infoCompraUnica.forEach(info => {
+      this.pesoTotal = info.pesoBultos;
+    })
+  }
+  sumaPeso = 0;
+  async sumarPesos() {
+    this.sumaPeso = 0;
+    this.FB.pesajeConfirmadoLista.forEach(info => {
+      console.log("info.pesosDel Pesaje", info.cantidadEstado)
+      this.sumaPeso = this.sumaPeso + parseInt(info.cantidadEstado);
+      console.log("la suma es", this.sumaPeso)
+    })
+    if(this.sumaPeso == this.pesoTotal){
+      this.isEnabled = false;
+    }
+  }
+
 
   crearModal() {
     var idCompra = localStorage.getItem("idCompraLocal");
     var idProv = localStorage.getItem("idProveedorLocal");
     // this.navCtrl.navigateForward('confirmarpesaje');
-    this.presentPopover(idCompra,idProv);
+    this.presentPopover(idCompra, idProv);
   }
 
   async presentPopover(idCompra, idProv) {
@@ -49,33 +74,18 @@ export class HomepesajesPage implements OnInit {
       translucent: true,
       componentProps: {
         idCompra: idCompra,
-        idProv: idProv
+        idProv: idProv,
+        pesoDisponible: (this.pesoTotal - this.sumaPeso) 
       },
     });
     await popover.present();
-    const { data } = await popover.onDidDismiss();
-    if(data !== "" || data !== null || data !== undefined){
-      this.listaCompraDetallada.push(data);
-    }
-
   };
 
-  guardar(){
-    let sumaCosto = 0;
-    let idProv: any;
-    let idComp: any;
-    this.listaCompraDetallada.forEach(element =>{
-      sumaCosto += element.costTotal;
-      console.log("COMPRAAAAA:" , element.idCompra," - ", this.idCompraLocal)
-      this.FB.agregarConfirmaPesaje(element.idProv, element.idCompra, element.idEstProd, element.peso, element.costKilo, element.costTotal);
-      idProv = element.idProv;
-      idComp = element.idCompra;
-    });
+  guardar() {
 
-    this.FB.updateCostoCompra(idProv, idComp, sumaCosto);
   }
-  
-  volver(){
+
+  volver() {
     this.modalController.dismiss();
   }
 }

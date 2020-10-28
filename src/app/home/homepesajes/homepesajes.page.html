@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">DISTRIBUYE TU COMPRA</ion-title>
-    <ion-buttons slot="end" (click)="crearModal()">
+    <ion-buttons  [disabled]="isEnabled" slot="end" (click)="crearModal()">
       <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
     </ion-buttons>
     <ion-buttons slot="start">
@@ -14,12 +14,11 @@
 <ion-content>
   <div class="div-principal">
     <div class="info">
-      <p><span>Total Peso: </span></p>
+      <p><span>peso confirmado [</span> {{sumaPeso}} <span>] de </span> {{pesoTotal}}</p>
     </div>
   </div>
-  <div class="div_tabla" *ngIf="listaCompraDetallada; else nover">
+  <div class="div_tabla">
     <p #siver>Lista Confirmación</p>
-    <p #nover>No hay confirmaciones</p>
     <table class="table">
       <thead class="thead">
         <th class="th1">Estado</th>
@@ -28,18 +27,18 @@
         <th class="th4">Valor Total</th>
       </thead>
       <tbody class="tbody">
-        <tr class="tr" *ngFor="let lista of listaCompraDetallada">
+        <tr class="tr" *ngFor="let lista of FB.pesajeConfirmadoLista" >
           <td class="td1">
-            <label (ngModel)="numbulto">{{lista.idEstProd}}</label>
+            <label (ngModel)="numbulto">{{lista.nombreEstadoQueso}}</label>
           </td>
           <td class="td2">
-            <label (ngModel)="peso">{{lista.peso}}</label>
+            <label (ngModel)="peso">{{lista.cantidadEstado}}</label>
           </td>
           <td class="td3">
-            <label (ngModel)="numbulto">{{lista.costKilo}}</label>
+            <label (ngModel)="numbulto">{{lista.costoKilo | currency:'USD':true: '2.0-0'}}</label>
           </td>
           <td class="td4">
-            <label (ngModel)="numbulto">{{lista.costTotal}}</label>
+            <label (ngModel)="numbulto">{{lista.costoTotalEstado | currency:'USD':true: '2.0-0'}}</label>
           </td>
           <!-- <td class="td4">
               <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>

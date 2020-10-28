@@ -9,6 +9,7 @@
 
 <ion-content>
   <div class="div-formulario">
+    <p>Peso disponible {{pesoDisponible}}</p>
     <p class="p-title">Estado de queso:</p>
     <ion-select [(ngModel)]="idEstadoProducto" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
       multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
@@ -16,16 +17,16 @@
         {{lista.descripcion}}
       </ion-select-option>
     </ion-select>
-    <!-- <p>Peso</p> -->
-    <ion-item>
+    <p>Peso</p>
+    <input type="number" min="1" max="2"  [(ngModel)]="peso" (ngModelChange)="calcular($event)" />
+    <!-- <ion-item>
+      <ion-label position="floating">Peso</ion-label>
+    </ion-item> -->
+    <p>Valor Kilo</p>
+    <input type="number" [(ngModel)]="costoKilo" (ngModelChange)="calcular($event)" />
+    <!-- <ion-item>
       <ion-label position="floating">Valor Kilo</ion-label>
-      <input maxlength="99999" type="number" [(ngModel)]="peso" (ngModelChange)="calcular($event)" />
-    </ion-item>
-    <!-- <p>Valor Kilo</p> -->
-    <ion-item>
-      <ion-label position="floating">Valor Kilo</ion-label>
-      <input maxlength="99999999" type="number" [(ngModel)]="costoKilo" (ngModelChange)="calcular($event)" />
-    </ion-item>
+    </ion-item> -->
     <h1 style="color: black;">{{sumado | currency:'USD':true: '2.0-0'}}</h1>
   </div>
   <div>

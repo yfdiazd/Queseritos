@@ -45,7 +45,7 @@ export class CrearciudadPage implements OnInit {
 
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
-      message: "Falta diligenciar campos requeridos.",
+      message: "Falta diligenciar campos requeridos.", 
       cssClass: "toast",
       color: 'warning',
       position: 'top',

@@ -1062,6 +1062,47 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
+
+    public pesajeConfirmadoLista: any = [];
+    public objPesajeConfirmado: any;
+    getPesajeConfirmado(idProveedor, idPesajeCompra) {
+        this.pesajeConfirmadoLista = [];
+        this.objPesajeConfirmado = [];
+        this.lastLote = [];
+        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString())
+            .on("value", snapshot => {
+                if (snapshot.exists) {
+                    snapshot.forEach(element => {
+                        console.log("Snapshot: ", element.val())
+                        this.estadoProductoLista.forEach(estadoPro => {
+                            if (estadoPro.id == element.val().idEstadoProducto) {
+                                this.objPesajeConfirmado = ({
+                                    nombreEstadoQueso: estadoPro.descripcion,
+                                    cantidadEstado: element.val().cantidadEstado,
+                                    codigoLote: element.val().codigoLote,
+                                    costoKilo: element.val().costoKilo,
+                                    costoTotalEstado: element.val().costoTotalEstado,
+                                    id: element.val().id,
+                                    idEstadoProducto: element.val().idEstadoProducto,
+                                    idPesajeCompra: element.val().idPesajeCompra
+                                });
+                                this.pesajeConfirmadoLista.push(this.objPesajeConfirmado);
+                                this.objPesajeConfirmado = [];
+                            }
+                        })
+                        
+                    });
+                    return this.pesajeConfirmadoLista;
+                }
+            });
+
+    }
+
+
+
     //metodo que permite registrar un anticipo a la compra
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
 
