@@ -17,7 +17,7 @@ import { element } from 'protractor';
 export class CardlistaproveedoresPage implements OnInit {
 
   listanombres: any[] = [];
-  cont:number =0;
+  cont: number = 0;
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,

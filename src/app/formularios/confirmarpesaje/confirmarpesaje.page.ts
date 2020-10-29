@@ -1,3 +1,4 @@
+import { formatCurrency, getCurrencySymbol } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service';
@@ -12,16 +13,14 @@ import { HomepesajesPage } from '../../home/homepesajes/homepesajes.page';
 export class ConfirmarpesajePage implements OnInit {
   //variables para el metodo de confirmar el pesaje
   idPesajeCompra: string;
-  idEstadoProducto: string;
-  cantidadEstado = 0;
-  costoKilo: number = 0;
+
+
   costoTotalEstado: number;
+  //variable auto costo del peso y costo
   calculaCostoTotal: number = 0;
-  listaBultos: any[] = ["1"];
-  total = 0;
-  valor = 0;
+
+  //variables para operaciones
   sumado = 0;
-  objCompreDetallada: any = [];
 
   pesoEdit;
   valorkgEdit;
@@ -29,8 +28,14 @@ export class ConfirmarpesajePage implements OnInit {
 
   @Input() idCompra;
   @Input() idProv;
+  @Input() pesoDisponible;
+
+  idEstadoProducto: string;
+  peso = "";
+  costoKilo = "";
+
   constructor(
-    
+
     private FB: FBservicesService,
     private HP: HomepesajesPage,
     private popover: PopoverController
@@ -41,30 +46,26 @@ export class ConfirmarpesajePage implements OnInit {
 
 
   guardar() {
-
-
-    this.objCompreDetallada = null;
-    this.costoTotalEstado = ((this.cantidadEstado) * (this.costoKilo));
-
-    this.objCompreDetallada = ({
-      idProv: this.idProv,
-      idCompra: this.idCompra,
-      idEstProd: this.idEstadoProducto,
-      peso: this.cantidadEstado,
-      costKilo: this.costoKilo,
-      costTotal: this.costoTotalEstado
-
-    });
-
-
-    console.log("lista tiene  ", this.objCompreDetallada);
-    this.popover.dismiss(this.objCompreDetallada, "pesajeConfirmado");
+    this.costoTotalEstado = (parseInt(this.peso) * parseInt(this.costoKilo));
+    this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado);
+    this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado);
+    this.popover.dismiss();
+    this.FB.getPesajeConfirmado(this.idProv, this.idCompra);
   }
 
   calcular(valor) {
-    this.total = (valor * this.cantidadEstado);
-    console.log("imprime valor", valor, this.total)
+    this.sumado = (parseInt(this.peso) * parseInt(this.costoKilo));
+    console.log("imprime valor", valor, this.sumado)
   }
+
+  volver() {
+    this.popover.dismiss();
+  }
+
+
+
+
+
 
 
 }
