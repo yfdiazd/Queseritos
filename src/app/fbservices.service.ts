@@ -1339,7 +1339,7 @@ export class FBservicesService {
                 if (snaptshot.exists) {
                     snaptshot.forEach(element => {
                         console.log("antssssssssssssssss s s ", element.val())
-                        this.anticiposLoteProveedorLista.push(element.val);
+                        this.anticiposLoteProveedorLista.push(element.val());
                     });
                 }
             });

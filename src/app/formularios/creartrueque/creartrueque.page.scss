@@ -1,53 +1,25 @@
 ion-toolbar {
     --background: #1a1446;
-}
-.titulo {
-    color: white;
+
+    .titulo {
+        color: white;
+    }
 }
 
 ion-content {
     padding: 0;
     margin: 0;
+    --background: #c8f7f3;
 
 
     .div-principal {
-        display: inline-block;
-        width: 100%;
-        height: 10%;
-        background-color: #4376ff;
-        
-    }
-   .div-f{
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-    }
-  
-    .div-t{
-        padding-top: 10px;
-        text-align: center;
-        width: 100%;
-        height: 30%;
-        color: white;
-    }
-    .div-v{
-        padding-top: 5px;
-        font-size: 3uvh;
-        text-align: center;
-        position: relative;
-        width: 100%;
-        height: 70%;
-        color: #ff2f73;
-    }
-  
-    .div-secundario {
-        height: 90%;
-        width: 100%;
-        background-color: #c8f7f3;
 
-        input,
-        .select {
+        height: 100%;
+        width: 90%;
+        margin: auto;
+
+
+        .camposForm {
             background-color: white;
             color: #1a1446;
             border-style: solid;
@@ -60,42 +32,72 @@ ion-content {
             width: 100%;
             margin-bottom: 20px;
         }
-    
-        p {
+
+        .subtitulo,
+        .subtituloR {
             font-weight: bold;
             margin: 0 auto;
             color: #1a1446;
         }
-        p > span{
+
+        .subtituloR::after {
+            content: '*';
             color: red;
         }
 
-        .file-upload{
-            position: absolute;
-            padding: 0;
-            text-align: center;
-            --background-color: gray;
-            width: 100%;
-            opacity: 0%;
-            margin: 0;
-            float:center;
-        }
-        .item-file label{
-            text-align: center;
-            width: 100%;
-            //color: black;
-            color: #1a1446;
-                }
 
-        .div-input{
-        text-align: center;
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        float: center;
-        background-color: gray;
+        .nombre {
+            font-weight: bold;
+            margin: 0 auto 20px;
+            color: #ff2f73;
         }
-        
+
+
+
+        .div-file {
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 auto 30px;
+            min-height: 15px;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+            width: 100%;
+            height: 40px;
+
+
+            label {
+                align-items: center;
+                text-align: center;
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                margin: 0;
+                display: block;
+                border-radius: 10px;
+                line-height: 40px;
+                color: #1a1446;
+                position: absolute;
+                background-color: #ff2f73;
+
+            }
+
+            .file-upload {
+                border: 10000px solid transparent;
+                cursor: pointer;
+                font-size: 10000px;
+                margin: 0;
+                opacity: 0;
+                outline: 0 none;
+                padding: 0;
+                position: absolute;
+                right: -1000px;
+                top: -1000px;
+
+            }
+        }
+
         ion-button {
             --background: #1a1446;
             font-size: 20px;
@@ -104,5 +106,5 @@ ion-content {
             color: white;
         }
 
-    } 
+    }
 }

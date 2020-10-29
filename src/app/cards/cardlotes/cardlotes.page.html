@@ -13,44 +13,16 @@
     <div class="div-col-1">
       <div>
         <p class="div-t">Proveedor</p>
-        <p class="div-v">{{idproveedor}}</p>
+        <p class="div-v">{{nombreProv}}</p>
       </div>
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item class="item" *ngFor="let item of FB.listaLotesDelProveedor">
-      <div class="div-card">
-        <ion-card class="card" (click)="irDetalleLote(item)">
-          <h1>LOTE: {{item}}</h1>
-          <!-- <div class="div-title">
-            <ion-title>LOTE 1</ion-title>
-          </div>
-          <div class="seccion-1">
-            <div class="div-cajita">
-              <p class="div-t">Total Bultos</p>
-              <p class="div-v">30</p>
-            </div>
-            <div class="div-cajita-1">
-              <p class="div-t">Débito</p>
-              <p class="div-db" id="saldo-debito">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
-            </div>
-            <div>
-              <p class="div-t">Crédito</p>
-              <p class="div-db" id="saldo-credito">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
-            </div>
-          </div>
-          <div class="seccion-2">
-            <div class="div-cajita-1">
-              <p class="div-q">Peso total comprado</p>
-              <p class="div-r">2000 <span> Kg</span></p>
-            </div>
-            <div class="div-cajita">
-              <p class="div-t">Saldo</p>
-              <p class="div-s" id="saldo-credito2">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
-            </div>
-          </div> -->
-        </ion-card>
-      </div>
+    <ion-item class="item" *ngFor="let item of FB.listaLotesDelProveedor" (click)="irDetalleLote(item)">
+      <ion-icon slot="start" name="chevron-forward">
+      </ion-icon>
+      <ion-label>{{item}}</ion-label>
+      <ion-badge slot="end">42</ion-badge>
     </ion-item>
 
   </div>

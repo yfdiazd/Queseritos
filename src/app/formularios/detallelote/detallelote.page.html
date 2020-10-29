@@ -11,17 +11,66 @@
 
 <ion-content>
   <div class="div-principal">
-    <div class="div-cabecera-1">
-      <div class="div-sdt">Proveedor:</div>
-      <div class="div-sdv">{{proveedor}}</div>
+    <div class="col_1">
+      <h2 class="h2">Proveedor</h2>
+      <h1 class="h1">{{nombreProv}}</h1>
     </div>
-    <div class="div-cabecera-2">
-      <div class="div-sdt">Lote No:</div>
-      <div class="div-sdv">{{Lotenum}}</div>
+    <div class="col_2">
+      <h2 class="h2">Lote No:</h2>
+      <h1 class="h1">{{loteRecibido}}</h1>
     </div>
   </div>
   <div class="div-secundario">
-    <ion-row class="row1">
+    <ion-item-sliding class="slider" *ngFor="let item of listaFront">
+      <ion-item class="item">
+        <div class="div-card">
+          <ion-card class="card" >
+            <!-- <ion-card> -->
+            <p>Pesaje: Costo total: {{item.id}}</p>
+            <ion-button (click)="crearModal(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
+              <ion-icon slot="end" name="cash" color="success"></ion-icon>+
+            </ion-button>
+            <div class="div_tabla">
+              <table class="table">
+                <thead class="thead">
+                  <th class="th1">Tipo anticipo</th>
+                  <th class="th2">valor</th>
+                  <th class="th3">Concepto</th>
+                  <th class="th4">Fecha</th>
+                </thead>
+                <tbody class="tbody">
+                  <!-- <tr class="tr" *ngFor="let lista of item.pesajes"> -->
+                  <tr class="tr">
+
+                    <td class="td1">
+                      <label (ngModel)="tipoAnt">Adelanto</label>
+                    </td>
+                    <td class="td2">
+                      <label (ngModel)="valor">$150.000</label>
+                    </td>
+                    <td class="td3">
+                      <label (ngModel)="concepto">ninguno</label>
+                    </td>
+                    <td class="td4">
+                      <label (ngModel)="fecha">29/10/2020</label>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ion-card>
+        </div>
+      </ion-item>
+      <!-- opción para eliminar registro -->
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="editarModal(lista)">Eliminar</ion-item-option>
+      </ion-item-options>
+      <!-- Opción para editar el registro -->
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    <!-- <ion-row class="row1">
       <ion-col id="col1">
         <ion-button class="add" (click)="irCrearTrueque()" color="success" expand="full">
           <ion-icon name="add-outline"></ion-icon>
@@ -63,6 +112,6 @@
           </div>      
         </ion-card>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
   </div>
 </ion-content>

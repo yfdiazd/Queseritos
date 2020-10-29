@@ -35,20 +35,19 @@ export class CardlistaproveedoresPage implements OnInit {
 
   listarproveedores() {
     this.listanombres = [];
-    this.FB.proveedoresCompraLista.forEach(lotesExistentes => {
-      console.log("Este es el proveedor que tiene lote", lotesExistentes);
-      this.FB.proveedoresLista.forEach(proveedor => {
-        // this.FB.getLotesDelProveedor(proveedor.id);
-        console.log("Este es el proveedor a recorrer", proveedor.nombre, " - ", proveedor.id);
-
-        if (lotesExistentes == proveedor.id) {
-          console.log("Si tiene lote", proveedor.nombre);
-          // this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: lotesExistentes.length })
-        } else {
-          console.log("No tiene lote", proveedor.nombre);
-        }
-        this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: 0 });
-      })
+    this.FB.proveedoresLista.forEach(proveedor => {
+      //   console.log("Este es el proveedor a recorrer", proveedor.nombre, " - ", proveedor.id);
+      //   // this.FB.proveedoresCompraLista.forEach(lotesExistentes => {
+      //   //   console.log("Este es el proveedor que tiene lote", lotesExistentes);
+      //   //   // this.FB.getLotesDelProveedor(proveedor.id);
+      //   if (this.FB.proveedoresCompraLista.includes(proveedor.id)) {
+      //     console.log("Si tiene lote", proveedor.nombre);
+      //     this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: lotesExistentes.length })
+      //   } else {
+      //     console.log("No tiene lote", proveedor.nombre);
+      //   }
+      // })
+      this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: 0 });
     })
   }
 

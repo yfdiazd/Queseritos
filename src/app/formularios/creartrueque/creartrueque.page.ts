@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 
@@ -16,48 +15,62 @@ export class CreartruequePage implements OnInit {
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController,
-    private http: HttpClient,
     private route: ActivatedRoute
   ) { }
   // ----------------VARIABLES-------------
-  proveedor = "fernanda";
-  selectedFile = null;
-  public idProveedorRecibido: any;
+  tipoAnticipoEdit: any;
+  valor: any;
+  selectedFile: File;
+  public idCompraRecibida: any;
+  public nombreProv: any;
 
   //--------------------------------------
+  @Input() datos;
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
-    this.idProveedorRecibido = id;
-    console.log("ME enviarón este proveedor", this.idProveedorRecibido)
+    this.idCompraRecibida = id;
+    console.log("ME enviarón este proveedor", this.idCompraRecibida)
+    this.traerNombre();
   }
-  public transform(value: any) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
-  }
-
-
-  // guardar() {
-  //   if (this.id1 == undefined) {
-  //     console.log("Entro a crear anticipo")
-  //     if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
-  //       this.toastCamposRequeridos();
-  //     } else {
-  //       this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
-  //       this.modalCtrl.dismiss();
-
-  //     }
-
-  //   } else {
-  //     console.log("Entro a MODIFICAR---")
-  //     if (this.tipoAnticipoEdit == "" || this.valorEdit == "") {
-  //       this.toastCamposRequeridos();
-  //       console.log("No modificaste nada")
-  //     } else {
-  //       this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
-  //       this.modalCtrl.dismiss();
-  //     }
-  //   }
+  // public transform(value: any) {
+  //   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
   // }
+
+  traerNombre() {
+    this.nombreProv = [];
+    console.log("Nombre prov", this.datos.idProveedor);
+
+    this.FB.proveedoresLista.forEach(element => {
+      if (element.id == this.datos.idProveedor) {
+        this.nombreProv = element.nombre;
+      }
+    })
+  }
+
+
+  guardar() {
+    // if (this.id1 == undefined) {
+    //   console.log("Entro a crear anticipo")
+    //   if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
+    //     this.toastCamposRequeridos();
+    //   } else {
+    //     this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+    //     this.modalCtrl.dismiss();
+
+    //   }
+
+    // } else {
+    //   console.log("Entro a MODIFICAR---")
+    //   if (this.tipoAnticipoEdit == "" || this.valorEdit == "") {
+    //     this.toastCamposRequeridos();
+    //     console.log("No modificaste nada")
+    //   } else {
+    //     this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+    //     this.modalCtrl.dismiss();
+    //   }
+    // }
+  }
 
   volver() {
     this.modalCtrl.dismiss();

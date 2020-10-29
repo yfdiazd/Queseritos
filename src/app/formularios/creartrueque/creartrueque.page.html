@@ -1,36 +1,33 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="volver()" color="danger">CERRAR</ion-button>
+      <ion-button (click)="volver()" color="danger">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title class="titulo">CREAR ANTICIPOS</ion-title>
+    <ion-title class="titulo">CREAR ANTICIPO</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="div-principal">
-    <div class="div-fila">
-      <div class="div-f">
-        <p class="div-t">Anticipo A:</p>
-        <p class="div-v">{{proveedor}}</p>
-      </div>
-    </div>
-  </div>
-  <div class="div-secundario">
-    <p>Tipo de Anticipo<span>*</span></p>
-    <ion-select [(ngModel)]="tipoAnticipoEdit" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
-      multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+    <p class="subtitulo">Creando anticipo a:</p>
+    <p class="nombre">{{nombreProv}}</p>
+    <p class="subtituloR">Tipo de Anticipo</p>
+    <ion-select class="camposForm" [(ngModel)]="tipoAnticipoEdit" [interfaceOptions]="customAlertOptions"
+      interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
       <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tipoAnticipoLista">
         {{lista.descripcion}}
       </ion-select-option>
     </ion-select>
-    <p>Valor<span>*</span></p>
-    <input  type="number" [(ngModel)]="valorEdit"/>
-    <div class="div-input">
-      <ion-item class="item-file">
-        <label for=""> Subir archivo </label>
-        <input class="file-upload" onchange='cambiar()' type="file" />
-      </ion-item>
+    <p class="subtituloR">Valor</p>
+    <input class="camposForm" type="number" [(ngModel)]="valor" />
+
+    <div class="div-file">
+
+        <label> Subir archivo </label>
+        <input class="file-upload" id="file-upload" type="file" (change)="cambiar()" />
+
     </div>
     <ion-button (click)="guardar()" expand="full">
       <ion-icon name="save-outline"></ion-icon>
