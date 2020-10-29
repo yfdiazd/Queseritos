@@ -216,6 +216,9 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+                this.getLoteProveedor();
+                this.getPesajeLoteProveedor("1603763143063", "25-10-2020-L1");
+                this.getAnticiposLoteProveedor("1603763143063", "25-10-2020-L1");
 
             } else {
 
@@ -1324,5 +1327,40 @@ export class FBservicesService {
                 return this.infoCompraUnica;
             });
     }
+
+    public anticiposLoteProveedorLista: any[];
+    getAnticiposLoteProveedor(idProveedor, lote) {
+        this.anticiposLoteProveedorLista = [];
+        firebase
+            .database()
+            .ref()
+            .child("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
+            .on("value", snaptshot => {
+                if (snaptshot.exists) {
+                    snaptshot.forEach(element => {
+                        console.log("antssssssssssssssss s s ", element.val())
+                        this.anticiposLoteProveedorLista.push(element.val);
+                    });
+                }
+            });
+        return this.anticiposLoteProveedorLista;
+    }
+    public pesajeLoteProveedorLista: any[];
+    getPesajeLoteProveedor(idProveedor, lote) {
+        this.pesajeLoteProveedorLista = [];
+        firebase
+            .database()
+            .ref()
+            .child("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
+            .on("value", snapshot => {
+                if (snapshot.exists) {
+                    snapshot.forEach(element => {
+                        console.log("copppppspspsps ", element.val());
+                        this.pesajeLoteProveedorLista.push(element.val());
+                    });
+                }
+            });
+    }
+
 
 }
