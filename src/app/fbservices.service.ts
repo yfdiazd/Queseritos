@@ -40,6 +40,15 @@ export class FBservicesService {
     idConfirmarPesajeCompra: string;
     idAnticipos: string;
 
+    // data de recorrerlista proveedores con compras
+    objImp: any;
+    onbjAnt: any;
+    listaCard: any;
+    public listaAnt: any;
+    public pesoacumulado = 0;
+    public saldocreditotal = 0;
+    public saldodebitototal = 0;
+
     //variable que guarda u obtiene el UID del usuario
     usuarioUid: string;
     //Variables para obtener la fecha actual
@@ -1168,13 +1177,7 @@ export class FBservicesService {
     }
 
 
-    objImp: any;
-    onbjAnt: any;
-    listaCard: any;
-    public listaAnt: any;
-    public pesoacumulado = 0;
-    public saldocreditotal = 0;
-    public saldodebitototal = 0;
+   
     getLoteProveedor() {
         this.objImp = [];
         this.onbjAnt = [];

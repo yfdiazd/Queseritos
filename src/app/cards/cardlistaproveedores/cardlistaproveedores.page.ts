@@ -25,51 +25,41 @@ export class CardlistaproveedoresPage implements OnInit {
     private navCtrl: NavController,
     private alertController: AlertController,
     private router: Router,
-    
+
   ) {
     this.listarproveedores();
     this.listanombres;
-    
   }
-
 
   ngOnInit() {
   }
 
-listarproveedores()
-{
+  listarproveedores() {
+    this.listanombres = [];
+    this.FB.proveedoresLista.forEach(element => {
+      this.listanombres.push({ id: element.nombre })
+      console.log("imprime element2", this.listanombres)
+    });
+  }
 
 
-  
-  this.listanombres = [];
-  this.FB.proveedoresLista.forEach(element => {
-    this.listanombres.push({ id: element.nombre})
-    console.log("imprime element2", this.listanombres)
+  validarlote: any[];
+  irCardLote(input) {
+    console.log("Esto es el ID del proveedor", input)
+    if (this.validarlote == undefined || this.validarlote == null) {
 
-  });
-     
-   
-  
-}
-
-
-  validarlote:any [];
-  irCardLote(input){
-    if(this.validarlote==undefined || this.validarlote == null)
-    {
-    
-      this.presentAlertConfirm();
+      this.presentAlertConfirm(input.id);
       //console.log("va a mostrar el pop up", input);
     }
-    else 
-    {
-      
+    else {
+
       this.navCtrl.navigateForward('cardlotes')
       //console.log("va ir a cardlote",  input);
     }
   }
 
-  async presentAlertConfirm() {
+  async presentAlertConfirm(idProveedor) {
+    console.log("Esto me envia el proveedor seleccionado", idProveedor)
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirm!',
@@ -84,10 +74,9 @@ listarproveedores()
           }
         }, {
           text: 'Ok',
-          handler: (value) => {
-                  //console.log('Confirmó entonces se va a creartrueque', input);
-            this.navCtrl.navigateForward(["creartrueque/", value.id]);
-      
+          handler: () => {
+            this.navCtrl.navigateForward(["creartrueque/", idProveedor]);
+            this.alertController.dismiss();
           }
         }
       ]
@@ -96,20 +85,18 @@ listarproveedores()
     await alert.present();
   }
 
-
-
-  buscar(ev:any){
+  buscar(ev: any) {
     console.log("mostrando evento", ev)
-  this.listanombres;
-  console.log ("entro a buscar", this.listanombres)
-  const val = ev.target.value;
-  console.log("mostrando evento", val)
-  if (val && val.trim !== ''){
-    this.listanombres=this.listanombres.filter((item)=>{
-      console.log("mostrando item", item)
-      return (item.toLowerCase().indexOf(val.toLowerCase()) > -1); 
-    });
-  }
+    this.listanombres;
+    console.log("entro a buscar", this.listanombres)
+    const val = ev.target.value;
+    console.log("mostrando evento", val)
+    if (val && val.trim !== '') {
+      this.listanombres = this.listanombres.filter((item) => {
+        console.log("mostrando item", item)
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      });
+    }
 
   }
 

@@ -11,17 +11,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./creartrueque.page.scss'],
 })
 export class CreartruequePage implements OnInit {
-  proveedor = "fernanda";
-  selectedFile = null;
-  public input; 
-  @Input()tipoAnticipoEdit;
-  @Input()valorEdit;
-  @Input() id1;
-  
 
-  public transform(value: any) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
-}
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -29,36 +19,45 @@ export class CreartruequePage implements OnInit {
     private http: HttpClient,
     private route: ActivatedRoute
   ) { }
+  // ----------------VARIABLES-------------
+  proveedor = "fernanda";
+  selectedFile = null;
+  public idProveedorRecibido: any;
+
+  //--------------------------------------
+
+  public transform(value: any) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
+  }
 
   ngOnInit() {
-  
     let id = this.route.snapshot.paramMap.get("id");
-    this.input = id;
+    this.idProveedorRecibido = id;
+    console.log("ME enviarón este proveedor", this.idProveedorRecibido)
   }
 
-  guardar() {
-    if (this.id1 == undefined) {
-      console.log("Entro a crear anticipo")
-      if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
-        this.toastCamposRequeridos();
-      } else {
-        this.FB.registrarAnticiposApesajeCompra("1603763143063","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
-        this.modalCtrl.dismiss();
+  // guardar() {
+  //   if (this.id1 == undefined) {
+  //     console.log("Entro a crear anticipo")
+  //     if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
+  //       this.toastCamposRequeridos();
+  //     } else {
+  //       this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+  //       this.modalCtrl.dismiss();
 
-      }
+  //     }
 
-    } else {
-      console.log("Entro a MODIFICAR---")
-      if (this.tipoAnticipoEdit == "" || this.valorEdit == "") {
-        this.toastCamposRequeridos();
-        console.log("No modificaste nada")
-      } else {
-        this.FB.registrarAnticiposApesajeCompra("1603763143063","12345", this.tipoAnticipoEdit, this.valorEdit, "image");
-        this.modalCtrl.dismiss();
-      }
-    }
-  }
-
+  //   } else {
+  //     console.log("Entro a MODIFICAR---")
+  //     if (this.tipoAnticipoEdit == "" || this.valorEdit == "") {
+  //       this.toastCamposRequeridos();
+  //       console.log("No modificaste nada")
+  //     } else {
+  //       this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
+  //       this.modalCtrl.dismiss();
+  //     }
+  //   }
+  // }
 
   volver() {
     this.modalCtrl.dismiss();
