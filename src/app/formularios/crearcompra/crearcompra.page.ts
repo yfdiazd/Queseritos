@@ -66,13 +66,17 @@ export class CrearcompraPage implements OnInit {
 
   async presentAlertRadio() {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Crear bulto ' + (this.listaBultos.length + 1),
+      cssClass: 'alertAddPeso',
+      header: 'Creando bulto ' + (this.listaBultos.length + 1) + '.',
+      keyboardClose: false,
       inputs: [
         {
+          cssClass: 'inputAddPeso',
           name: 'peso',
-          type: 'text',
-          value: ""
+          type: 'number',
+          value: "",
+          min:"1",
+          placeholder: 'Ingrese el peso.',
         }
       ],
       buttons: [

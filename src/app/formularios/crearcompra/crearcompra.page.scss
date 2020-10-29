@@ -100,24 +100,16 @@ ion-content {
 
           .td2 {
 
-            input {
-              border-radius: 10px;
-              background: transparentize($color: #1a1446, $amount: 0.8);
-              text-align: center;
-              margin: 0;
-              height: 100%;
-              border-style: none;
+            .valorTabla {
+              display: block;
               width: 100%;
+              text-align: center;
+
             }
 
-            input[type="number"]::-webkit-inner-spin-button,
-            input[type="number"]::-webkit-outer-spin-button {
-              -webkit-appearance: none;
-              margin: 0;
-            }
-
-            input[type="number"] {
-              -moz-appearance: textfield;
+            .valorTabla::after {
+              content: ' Kg';
+              color: black;
             }
           }
 

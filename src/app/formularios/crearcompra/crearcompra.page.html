@@ -35,7 +35,8 @@
               <label (ngModel)="numbulto">{{i+1}}</label>
             </td>
             <td class="td2">
-              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
+              <label class="valorTabla" type="number" (ngModelChange)="edit($event)">{{lista.peso}} </label>
+              <!-- <input class="valorTabla" type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" /> -->
             </td>
             <td class="td3">
               <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
