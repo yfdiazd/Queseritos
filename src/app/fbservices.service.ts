@@ -1149,7 +1149,7 @@ export class FBservicesService {
 
     }
 
-    proveedoresCompraLista: any;
+    public proveedoresCompraLista: any;
     getProveedoresCompra(idProveedor) {
         this.proveedoresCompraLista = [];
         firebase.database().ref("usuario/compras/" + idProveedor.toString())
