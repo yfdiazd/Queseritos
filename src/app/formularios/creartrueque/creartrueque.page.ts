@@ -1,10 +1,10 @@
-import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, ToastController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { FBservicesService } from "../../fbservices.service";
-import { Pipe, PipeTransform } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ModalController, ToastController } from '@ionic/angular';
+
+import { FBservicesService } from '../../fbservices.service';
+
 @Component({
   selector: 'app-creartrueque',
   templateUrl: './creartrueque.page.html',
@@ -26,15 +26,15 @@ export class CreartruequePage implements OnInit {
 
   //--------------------------------------
 
-  public transform(value: any) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
-  }
-
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedorRecibido = id;
     console.log("ME enviarón este proveedor", this.idProveedorRecibido)
   }
+  public transform(value: any) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
+  }
+
 
   // guardar() {
   //   if (this.id1 == undefined) {

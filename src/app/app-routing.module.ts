@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'homeproveedores', loadChildren: () => import('./home/homeproveedores/homeproveedores.module').then(m => m.HomeproveedoresPageModule) },
   { path: 'homeconductores', loadChildren: () => import('./home/homeconductores/homeconductores.module').then(m => m.HomeconductoresPageModule) },
   { path: 'homepesajes', loadChildren: () => import('./home/homepesajes/homepesajes.module').then(m => m.HomepesajesPageModule) },
-  { path: 'cardlotes', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },
+  { path: 'cardlotes/:id', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },
   {
     path: 'detallelote',
     loadChildren: () => import('./formularios/detallelote/detallelote.module').then(m => m.DetallelotePageModule)
@@ -46,12 +46,13 @@ const routes: Routes = [
   },
   {
     path: 'confirmarventa',
-    loadChildren: () => import('./formularios/confirmarventa/confirmarventa.module').then( m => m.ConfirmarventaPageModule)
+    loadChildren: () => import('./formularios/confirmarventa/confirmarventa.module').then(m => m.ConfirmarventaPageModule)
   },
   {
     path: 'cardlistaclientes',
-    loadChildren: () => import('./cards/cardlistaclientes/cardlistaclientes.module').then( m => m.CardlistaclientesPageModule)
+    loadChildren: () => import('./cards/cardlistaclientes/cardlistaclientes.module').then(m => m.CardlistaclientesPageModule)
   }
+
 
 
 

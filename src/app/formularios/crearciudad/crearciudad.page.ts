@@ -54,7 +54,13 @@ export class CrearciudadPage implements OnInit {
     toast.present();
   }
 
-  fofo(){
-    this.FB.takePhoto();
+  fofo(event){
+    console.log("Sssssssssssdsssssssssssssssssssssssssssss ", event);
+    this.FB.takePhoto(event);
+    this.veiM();
+  }
+
+  veiM(){
+    this.FB.getFoto();
   }
 }

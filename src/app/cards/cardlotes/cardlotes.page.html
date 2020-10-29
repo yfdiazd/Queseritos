@@ -16,12 +16,13 @@
         <p class="div-v">{{idproveedor}}</p>
       </div>
     </div>
-   </div>
+  </div>
   <div class="div-secundario">
-      <ion-item class="item">
+    <ion-item class="item" *ngFor="let item of FB.listaLotesDelProveedor">
       <div class="div-card">
-          <ion-card class="card" (click)="irDetalleLote()">
-          <div class="div-title">
+        <ion-card class="card" (click)="irDetalleLote(item)">
+          <h1>LOTE: {{item}}</h1>
+          <!-- <div class="div-title">
             <ion-title>LOTE 1</ion-title>
           </div>
           <div class="seccion-1">
@@ -47,13 +48,13 @@
               <p class="div-t">Saldo</p>
               <p class="div-s" id="saldo-credito2">{{costoTotalCompra | currency:'USD':true: '2.0-0'}}</p>
             </div>
-          </div>
+          </div> -->
         </ion-card>
       </div>
     </ion-item>
-  
-   </div>
-   <ion-button (click)="saldarDeuda()" expand="full">
+
+  </div>
+  <ion-button (click)="saldarDeuda()" expand="full">
     <ion-icon name="cash-outline"></ion-icon>
     Saldar Deuda
   </ion-button>

@@ -16,8 +16,6 @@ import { element } from 'protractor';
 
 export class CardlistaproveedoresPage implements OnInit {
 
-  listanombres: any[] = [];
-  cont: number = 0;
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,
@@ -25,36 +23,51 @@ export class CardlistaproveedoresPage implements OnInit {
     private navCtrl: NavController,
     private alertController: AlertController,
     private router: Router,
+  ) { }
 
-  ) {
-    this.listarproveedores();
-    this.listanombres;
-  }
+  listanombres: any[];
+  cont: number = 0;
 
   ngOnInit() {
+    this.FB.getProveedoresCompra();
+    this.listarproveedores();
   }
 
   listarproveedores() {
     this.listanombres = [];
-    this.FB.proveedoresLista.forEach(element => {
-      this.listanombres.push({ id: element.nombre })
-      console.log("imprime element2", this.listanombres)
-    });
+    this.FB.proveedoresCompraLista.forEach(lotesExistentes => {
+      console.log("Este es el proveedor que tiene lote", lotesExistentes);
+      this.FB.proveedoresLista.forEach(proveedor => {
+        // this.FB.getLotesDelProveedor(proveedor.id);
+        console.log("Este es el proveedor a recorrer", proveedor.nombre, " - ", proveedor.id);
+
+        if (lotesExistentes == proveedor.id) {
+          console.log("Si tiene lote", proveedor.nombre);
+          // this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: lotesExistentes.length })
+        } else {
+          console.log("No tiene lote", proveedor.nombre);
+        }
+        this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: 0 });
+      })
+    })
   }
 
 
-  validarlote: any[];
-  irCardLote(input) {
-    console.log("Esto es el ID del proveedor", input)
-    if (this.validarlote == undefined || this.validarlote == null) {
 
-      this.presentAlertConfirm(input.id);
-      //console.log("va a mostrar el pop up", input);
+  // enviarProveedor(dato) {
+  //   console.log("dato.id: ", dato.nombre);
+
+  // }
+
+  async irCardLote(input) {
+    if (this.FB.proveedoresCompraLista.includes(input.id)) {
+      console.log("Se envia el id: ", input.id)
+      this.FB.getLotesDelProveedor(input.id);
+      this.navCtrl.navigateForward(['cardlotes/', input.id]);
     }
     else {
-
-      this.navCtrl.navigateForward('cardlotes')
-      //console.log("va ir a cardlote",  input);
+      console.log("Se envia a crear el id: ", input.id)
+      this.presentAlertConfirm(input.id);
     }
   }
 
