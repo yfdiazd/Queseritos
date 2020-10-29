@@ -1065,7 +1065,7 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-   public pesajeConfirmadoLista: any = [];
+    public pesajeConfirmadoLista: any = [];
     getPesajeConfirmado(idProveedor, idPesajeCompra) {
         this.pesajeConfirmadoLista = [];
         this.lastLote = [];
@@ -1076,12 +1076,12 @@ export class FBservicesService {
             .on("value", snapshot => {
                 if (snapshot.exists) {
                     snapshot.forEach(element => {
-                        console.log("Elemente de lista pesaje cof ", element);
-                        this.pesajeConfirmadoLista.push(element);
+                        console.log("Elemente de lista pesaje cof ", element.val());
+                        this.pesajeConfirmadoLista.push(element.val());
                     });
                 }
             });
-            return this.pesajeConfirmadoLista;
+        return this.pesajeConfirmadoLista;
     }
 
 
@@ -1129,25 +1129,38 @@ export class FBservicesService {
 
     }
 
-    takePhoto() {
-        this.camera.getPicture(this.options).then((imageData) => {
-            // imageData is either a base64 encoded string or a file URI
-            // If it's base64 (DATA_URL):
-            let base64Image = 'data:image/jpeg;base64,' + imageData;
-        }, (err) => {
-            console.log(err);
-        });
+    img: any;
+    getFoto() {
+        this.img = null;
+        firebase
+            .storage()
+            .ref("anticipo/prov/fecha-pro").getDownloadURL().then(imgUr => {
+
+                console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
+                this.img = imgUr;
+                console.log("asdasdasdasdasdasd asda sd asd asd ", this.img);
+                return this.img;
+
+            });
+    }
+    takePhoto(file) {
+
+        firebase.storage().ref("anticipo/prov/fecha-pro").put(file.target.files[0]);
 
     }
 
     proveedoresCompraLista: any;
-    getProveedoresCompra() {
+    getProveedoresCompra(idProveedor) {
         this.proveedoresCompraLista = [];
-        firebase.database().ref("usuario/compras/")
+        firebase.database().ref("usuario/compras/" + idProveedor.toString())
             .on("value", snapshot => {
-                snapshot.forEach(element => {
-                    this.proveedoresCompraLista.push(element.key);
-                });
+                if (snapshot.exists) {
+                    snapshot.forEach(element => {
+                        this.proveedoresCompraLista.push(element.key);
+                    });
+
+
+                }
             });
         return this.proveedoresCompraLista;
     }

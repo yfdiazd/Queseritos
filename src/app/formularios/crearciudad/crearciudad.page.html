@@ -20,9 +20,11 @@
       Guardar
     </ion-button>
     
-    <input type="file" class="myFile">
+    <input type="file" (change)="fofo($event)" class="myFile">
     <progress min="0" max="100" value="65"></progress>
 
+
+    <img [src]="FB.img" id="img">
   </div>
   
 
