@@ -15,8 +15,8 @@
     <ion-item-sliding class="slider" *ngFor="let lista of FB.proveedoresLista">
       <ion-item class="item">
         <ion-card class="card">
-          <p><span>Nombres: </span> {{lista.nombre}}</p>
-          <p><span>Apellidos: </span> {{lista.apellido}}</p>
+          <ion-card-title><p>{{lista.nombre}}</p></ion-card-title>
+          <ion-card-title><p>{{lista.apellido}}</p></ion-card-title>
           <p><span>Número de Identificación: </span> {{lista.numIndetificacion}}</p>
           <p><span>Celular: </span> {{lista.telefono}}</p>
           <p><span>Dirección: </span> {{lista.direccion}}</p>

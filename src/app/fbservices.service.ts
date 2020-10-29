@@ -208,8 +208,6 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getProveedoresCompra();
-                this.getLoteProveedor();
-                this.recorreListas();
 
             } else {
 
@@ -1146,34 +1144,15 @@ export class FBservicesService {
 
     }
 
-    //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
-    //Metodo para traer todos los funcionarios
-    getInfoCompra(idProveedor, idCompra) {
-
-        this.lastLote = [];
-        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idCompra)
-            .on("value", snapshot => {
-                this.infoCompraUnica = [];
-                if (snapshot.val().estado == 1) {
-                    this.infoCompraUnica.push(snapshot.val());
-                }
-                console.log("infoGuardada: ", this.infoCompraUnica)
-                return this.infoCompraUnica;
-            });
-    }
-
     takePhoto() {
         this.camera.getPicture(this.options).then((imageData) => {
             // imageData is either a base64 encoded string or a file URI
             // If it's base64 (DATA_URL):
             let base64Image = 'data:image/jpeg;base64,' + imageData;
         }, (err) => {
-
+            console.log(err);
         });
-
+   
     }
 
     proveedoresCompraLista: any;
@@ -1302,6 +1281,25 @@ export class FBservicesService {
         }
 
         return this.listaPaVer;
+    }
+
+    //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
+    //Metodo para traer todos los funcionarios
+    getInfoCompra(idProveedor, idCompra) {
+
+        this.lastLote = [];
+        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idCompra)
+            .on("value", snapshot => {
+                this.infoCompraUnica = [];
+                if (snapshot.val().estado == 1) {
+                    this.infoCompraUnica.push(snapshot.val());
+                }
+                console.log("infoGuardada: ", this.infoCompraUnica)
+                return this.infoCompraUnica;
+            });
     }
 
 }
