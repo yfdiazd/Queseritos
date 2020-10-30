@@ -28,9 +28,9 @@ export class CreartruequePage implements OnInit {
   @Input() datos;
 
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get("id");
-    this.idCompraRecibida = id;
-    console.log("ME enviarón este proveedor", this.idCompraRecibida)
+    
+    console.log("ME enviarón este compra", this.datos.id)
+    console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
   }
   // public transform(value: any) {
@@ -48,8 +48,23 @@ export class CreartruequePage implements OnInit {
     })
   }
 
+  imagen: any;
+  nombreArchLoaded: string = "Subir Archivo";
+  subirImg(event) {
+    this.imagen = event;    
+    this.nombreArchLoaded = (this.imagen.target.files[0].name +" fue cargado 100%");
+    
+    
+    return this.imagen, this.nombreArchLoaded;
 
+  }
   guardar() {
+
+
+
+    this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.tipoAnticipoEdit, this.valor, this.imagen);
+
+
     // if (this.id1 == undefined) {
     //   console.log("Entro a crear anticipo")
     //   if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {

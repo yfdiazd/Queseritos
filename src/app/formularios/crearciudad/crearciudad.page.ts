@@ -19,7 +19,7 @@ export class CrearciudadPage implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController) {
   }
- 
+
   ngOnInit() { }
 
   guardar() {
@@ -45,7 +45,7 @@ export class CrearciudadPage implements OnInit {
 
   async toastCamposRequeridos() {
     const toast = await this.toastController.create({
-      message: "Falta diligenciar campos requeridos.", 
+      message: "Falta diligenciar campos requeridos.",
       cssClass: "toast",
       color: 'warning',
       position: 'top',
@@ -54,13 +54,4 @@ export class CrearciudadPage implements OnInit {
     toast.present();
   }
 
-  fofo(event){
-    console.log("Sssssssssssdsssssssssssssssssssssssssssss ", event);
-    this.FB.takePhoto(event);
-    this.veiM();
-  }
-
-  veiM(){
-    this.FB.getFoto();
-  }
 }

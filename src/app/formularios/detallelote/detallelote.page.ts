@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { ELOOP } from 'constants';
+import { AnyTxtRecord } from 'dns';
+import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { LoginPage } from 'src/app/login/login.page';
 
 import { CreartruequePage } from '../creartrueque/creartrueque.page';
 
@@ -20,7 +24,8 @@ export class DetallelotePage implements OnInit {
     private alertController: AlertController,
     private navCtrl: NavController
   ) {
-    
+
+
   }
 
   public loteRecibido: any;
@@ -28,7 +33,7 @@ export class DetallelotePage implements OnInit {
   public nombreProv: any;
 
   //Lista de anticipos para mostrar de la compra
-  listaAnticipos: any[];
+
 
   ngOnInit() {
     let idLote = this.route.snapshot.paramMap.get("id");
@@ -36,51 +41,108 @@ export class DetallelotePage implements OnInit {
     this.loteRecibido = idLote;
     this.provRecibido = idProv;
     console.log("Se recibe lote: ", this.loteRecibido, this.provRecibido);
-    this.traerAnticipos();
-    this.traerNombre();
 
+    this.traerNombre();
+    this.unirListas();
+    this.traerAnticipos()
   }
 
-  idPesajeCompra: any;
-  listaFront: any[];
+  listaPesajes: any[];
+  objPesajes: any;
+  listaAnticipos: any[];
+  objAnticipos: any;
   traerAnticipos() {
-    this.idPesajeCompra = null;
-    this.listaFront = [];
+    this.objPesajes = null;
+    this.listaPesajes = [];
+    this.listaAnticipos = [];
+    this.objAnticipos = null;
     console.log("this.FB.pesajeLoteProveedorLista", this.FB.pesajeLoteProveedorLista);
     console.log("this.FB.anticiposLoteProveedorLista", this.FB.anticiposLoteProveedorLista);
 
-    this.FB.pesajeLoteProveedorLista.forEach(pesaje => {
-      this.FB.anticiposLoteProveedorLista.forEach(anticipo => {
-        if (anticipo.idPesajeCompra == pesaje.id) {
-          console.log("Si entro", anticipo.idPesajeCompra, " - ", pesaje.id);
+    if (this.FB.pesajeLoteProveedorLista.length > 0) {
 
-          this.idPesajeCompra = ({
-            costoTotalCompra: pesaje.costoTotalCompra,
-            fechaCompra: pesaje.fechaCompra,
-            id: pesaje.id,
-            idProducto: pesaje.idProducto,
-            idProveedor: pesaje.idProveedor,
-            lote: pesaje.lote,
-            pesoBultos: pesaje.pesoBultos,
-            totalBulto: pesaje.totalBulto,
-            pesajes: {
-              archivo: anticipo.archivo,
-              fechaAnticipo: anticipo.fechaAnticipo,
-              id: anticipo.id,
-              idPesajeCompra: anticipo.idPesajeCompra,
-              idTipoAnticipo: anticipo.idTipoAnticipo,
-              valorAnticipo: anticipo.valorAnticipo,
-            }
-          });
-          console.log("Si entro", this.idPesajeCompra);
-          this.listaFront.push(this.idPesajeCompra);
-          this.idPesajeCompra = null;
-        }
 
-      })
-    })
+      this.FB.pesajeLoteProveedorLista.forEach(pesajes => {
+        this.objPesajes = ({
+          id: pesajes.id,
+          idProveedor: pesajes.idProveedor,
+          costoTotalCompra: pesajes.costoTotalCompra,
+          fechaCompra: pesajes.fechaCompra,
+          idProducto: pesajes.idProducto,
+          pesoBultos: pesajes.pesoBultos,
+          totalBulto: pesajes.totalBulto
+        });
+        this.listaPesajes.push(this.objPesajes);
+      });
+    }
+
+    if (this.FB.anticiposLoteProveedorLista.length > 0) {
+
+      this.FB.anticiposLoteProveedorLista.forEach(anticipos => {
+        this.objAnticipos = ({
+          fechaAnticipo: anticipos.fechaAnticipo,
+          idPesajeCompra: anticipos.idPesajeCompra,
+          idTipoAnticipo: anticipos.idTipoAnticipo,
+          valorAnticipo: anticipos.valorAnticipo
+        });
+        this.listaAnticipos.push(this.objAnticipos);
+      });
+    }
+
+    console.log("Listo las listas meeeeeeeeeeeeeeeeeeeeeeeee ", this.listaPesajes, this.listaAnticipos);
+    return this.listaPesajes, this.listaAnticipos;
+
+  }
+
+  listaFront: any[];
+  objFront: any;
+  async unirListas() {
+    let llamarMetodo = await this.traerAnticipos();
+    this.listaFront = [];
+    this.objFront = null;
+
+    
+    if (this.listaAnticipos.length != 0 && this.listaPesajes.length != 0) {
+      this.listaPesajes.forEach(pesos => {
+        this.listaAnticipos.forEach(ant => {
+           
+          
+
+        });
+      });
+    } else if (this.listaPesajes.length != 0 && this.listaFront.length == 0) {
+      this.listaPesajes.forEach(element => {
+        this.objFront = ({
+          id: element.id,
+          idProveedor: element.idProveedor,
+          costoCompra: element.costoTotalCompra,
+          fechaCompra: element.fechaCompra,
+          idProducto: element.idProducto,
+          pesoBultos: element.pesoBultos,
+          totalBultos: element.totalBulto,
+          listaAnts: 0
+        });
+        this.listaFront.push(this.objFront);
+      });
+    } else if (this.listaAnticipos.length != 0 && this.listaFront.length == 0) {
+      this.listaAnticipos.forEach(element => {
+
+        this.objAnticipos = ({
+          fechaAnticipo: element.fechaAnticipo,
+          idPesajeCompra: element.idPesajeCompra,
+          idTipoAnticipo: element.idTipoAnticipo,
+          valorAnticipo: element.valorAnticipo
+        });
+        this.listaAnticipos.push(this.objAnticipos);
+      });
+    }
+
+
+    console.log("Los -------------------------------------------> ", this.listaFront, llamarMetodo);
     return this.listaFront;
   }
+
+
   traerNombre() {
     this.nombreProv = [];
     console.log("Nombre prov", this.provRecibido);

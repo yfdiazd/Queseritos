@@ -217,8 +217,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
-                this.getPesajeLoteProveedor("1603763143063", "25-10-2020-L1");
-                this.getAnticiposLoteProveedor("1603763143063", "25-10-2020-L1");
+                
 
             } else {
 
@@ -1116,6 +1115,9 @@ export class FBservicesService {
         this.idAnticipos = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        console.log("#333333333333 ", idProveedor, this.idAnticipos, archivo);
+        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+        
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/anticipos/" + this.idAnticipos)
@@ -1129,6 +1131,7 @@ export class FBservicesService {
                 idPesajeCompra: idPesajeCompra,
                 estado: 1
             });
+        
         this.toastOperacionExitosa();
     }
 
@@ -1152,11 +1155,11 @@ export class FBservicesService {
     }
 
     img: any;
-    getFoto() {
+    getFoto(idProveedor, idAnticipo) {
         this.img = null;
         firebase
             .storage()
-            .ref("anticipo/prov/fecha-pro").getDownloadURL().then(imgUr => {
+            .ref("anticipos/" + idProveedor + "/" + idAnticipo).getDownloadURL().then(imgUr => {
 
                 console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
                 this.img = imgUr;
@@ -1165,9 +1168,9 @@ export class FBservicesService {
 
             });
     }
-    takePhoto(file) {
+    upLoadImage(idProveedor, idAnticipo, file) {
 
-        firebase.storage().ref("anticipo/prov/fecha-pro").put(file.target.files[0]);
+        firebase.storage().ref("anticipos/" + idProveedor + "/" + idAnticipo).put(file.target.files[0]);
 
     }
 
