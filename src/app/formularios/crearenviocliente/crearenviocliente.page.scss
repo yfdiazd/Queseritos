@@ -20,8 +20,8 @@ ion-content {
     .div-principal {
       width: 100%;
       margin: auto;
-      position: fixed;
-      height: 10%;
+      //position: fixed;
+      height: 20%;
       background-color: #4346ff;
       z-index: 1;
          
@@ -36,6 +36,10 @@ ion-content {
               width: 100%;
               height: 50%;
               color: white;
+          }
+          input[type=number]{
+           -moz-appearance: textfield;
+           
           }
          
         }
@@ -58,7 +62,7 @@ ion-content {
                   width: 100%;
                   height: 50%;
                   font-size: 3.1vh;
-                  color: blue;
+                  color: white;
               }
           }
       }
@@ -69,9 +73,9 @@ ion-content {
 
         max-width: 700px;
         height: 80%;
-        background-color:red;
+        background-color: #c8f7f3;
         width: 100%;
-        padding-top: 45px;
+        padding-top: 10px;
        
    
          .p-title {

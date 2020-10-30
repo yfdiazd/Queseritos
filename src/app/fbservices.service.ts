@@ -207,7 +207,6 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getProveedoresCompra();
                 this.getLoteProveedor();
                 this.recorreListas();
 
@@ -1098,7 +1097,6 @@ export class FBservicesService {
                     return this.pesajeConfirmadoLista;
                 }
             });
-
     }
 
 
@@ -1176,14 +1174,18 @@ export class FBservicesService {
 
     }
 
-    proveedoresCompraLista: any;
-    getProveedoresCompra() {
+    public proveedoresCompraLista: any;
+    getProveedoresCompra(idProveedor) {
         this.proveedoresCompraLista = [];
-        firebase.database().ref("usuario/compras/")
+        firebase.database().ref("usuario/compras/" + idProveedor.toString())
             .on("value", snapshot => {
-                snapshot.forEach(element => {
-                    this.proveedoresCompraLista.push(element.key);
-                });
+                if (snapshot.exists) {
+                    snapshot.forEach(element => {
+                        this.proveedoresCompraLista.push(element.key);
+                    });
+
+
+                }
             });
         return this.proveedoresCompraLista;
     }
