@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { ELOOP } from 'constants';
+import { AnyTxtRecord } from 'dns';
+import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { LoginPage } from 'src/app/login/login.page';
 
 import { CreartruequePage } from '../creartrueque/creartrueque.page';
 
@@ -20,7 +24,8 @@ export class DetallelotePage implements OnInit {
     private alertController: AlertController,
     private navCtrl: NavController
   ) {
-    
+
+
   }
 
   public loteRecibido: any;
@@ -28,59 +33,26 @@ export class DetallelotePage implements OnInit {
   public nombreProv: any;
 
   //Lista de anticipos para mostrar de la compra
-  listaAnticipos: any[];
+
 
   ngOnInit() {
     let idLote = this.route.snapshot.paramMap.get("id");
     let idProv = this.route.snapshot.paramMap.get("prov");
     this.loteRecibido = idLote;
     this.provRecibido = idProv;
+    this.FB.getPesajeLoteProveedor(idProv, idLote)
     console.log("Se recibe lote: ", this.loteRecibido, this.provRecibido);
-    this.traerAnticipos();
+    this.FB.pesajeLoteProveedorLista.forEach(element =>{
+      console.log("-----------------*-*-*-*- ", element.anticipos);
+      
+    });
+
     this.traerNombre();
-
   }
 
-  idPesajeCompra: any;
-  listaFront: any[];
-  traerAnticipos() {
-    this.idPesajeCompra = null;
-    this.listaFront = [];
-    console.log("this.FB.pesajeLoteProveedorLista", this.FB.pesajeLoteProveedorLista);
-    console.log("this.FB.anticiposLoteProveedorLista", this.FB.anticiposLoteProveedorLista);
 
-    this.FB.pesajeLoteProveedorLista.forEach(pesaje => {
-      this.FB.anticiposLoteProveedorLista.forEach(anticipo => {
-        if (anticipo.idPesajeCompra == pesaje.id) {
-          console.log("Si entro", anticipo.idPesajeCompra, " - ", pesaje.id);
 
-          this.idPesajeCompra = ({
-            costoTotalCompra: pesaje.costoTotalCompra,
-            fechaCompra: pesaje.fechaCompra,
-            id: pesaje.id,
-            idProducto: pesaje.idProducto,
-            idProveedor: pesaje.idProveedor,
-            lote: pesaje.lote,
-            pesoBultos: pesaje.pesoBultos,
-            totalBulto: pesaje.totalBulto,
-            pesajes: {
-              archivo: anticipo.archivo,
-              fechaAnticipo: anticipo.fechaAnticipo,
-              id: anticipo.id,
-              idPesajeCompra: anticipo.idPesajeCompra,
-              idTipoAnticipo: anticipo.idTipoAnticipo,
-              valorAnticipo: anticipo.valorAnticipo,
-            }
-          });
-          console.log("Si entro", this.idPesajeCompra);
-          this.listaFront.push(this.idPesajeCompra);
-          this.idPesajeCompra = null;
-        }
-
-      })
-    })
-    return this.listaFront;
-  }
+  
   traerNombre() {
     this.nombreProv = [];
     console.log("Nombre prov", this.provRecibido);

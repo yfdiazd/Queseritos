@@ -21,13 +21,14 @@
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let item of listaFront">
+    <ion-item-sliding class="slider" *ngFor="let item of FB.pesajeLoteProveedorLista">
       <ion-item class="item">
         <div class="div-card">
           <ion-card class="card" >
             <!-- <ion-card> -->
-            <p>Pesaje: Costo total: {{item.id}}</p>
-            <ion-button (click)="crearModal(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
+              <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
+              <p>Producto: {{item.idProducto}}</p>
+              <ion-button (click)="crearModal(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
               <ion-icon slot="end" name="cash" color="success"></ion-icon>+
             </ion-button>
             <div class="div_tabla">
@@ -39,14 +40,14 @@
                   <th class="th4">Fecha</th>
                 </thead>
                 <tbody class="tbody">
-                  <!-- <tr class="tr" *ngFor="let lista of item.pesajes"> -->
-                  <tr class="tr">
+                   <tr class="tr" *ngFor="let lista of item.anticipos"> 
+                  <!-- <tr class="tr"> -->
 
                     <td class="td1">
-                      <label (ngModel)="tipoAnt">Adelanto</label>
+                      <label (ngModel)="tipoAnt">{{lista.idTipoAnticipo}}</label>
                     </td>
                     <td class="td2">
-                      <label (ngModel)="valor">$150.000</label>
+                      <label (ngModel)="valor">{{lista.valorAnticipo | currency:'USD':true: '2.0-0'}}</label>
                     </td>
                     <td class="td3">
                       <label (ngModel)="concepto">ninguno</label>

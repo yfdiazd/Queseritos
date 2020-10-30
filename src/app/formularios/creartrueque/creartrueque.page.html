@@ -16,21 +16,21 @@
     <p class="subtituloR">Tipo de Anticipo</p>
     <ion-select class="camposForm" [(ngModel)]="tipoAnticipoEdit" [interfaceOptions]="customAlertOptions"
       interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
-      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.tipoAnticipoLista">
+      <ion-select-option [value]="lista.id" *ngFor="let lista of FB.tipoAnticipoLista">
         {{lista.descripcion}}
-      </ion-select-option>
+      </ion-select-option> 
     </ion-select>
     <p class="subtituloR">Valor</p>
     <input class="camposForm" type="number" [(ngModel)]="valor" />
 
     <div class="div-file">
 
-        <label> Subir archivo </label>
-        <input class="file-upload" id="file-upload" type="file" (change)="cambiar()" />
+        <label> {{nombreArchLoaded}}  </label>
+        <input class="file-upload" id="file-upload" type="file" (change)="subirImg($event)" />
 
     </div>
     <ion-button (click)="guardar()" expand="full">
-      <ion-icon name="save-outline"></ion-icon>
+      <ion-icon name="save-outline"></ion-icon> 
       Guardar
     </ion-button>
   </div>
