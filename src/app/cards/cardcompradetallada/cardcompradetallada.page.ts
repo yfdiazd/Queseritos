@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 
@@ -13,10 +13,10 @@ export class CardcompradetalladaPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private FB: FBservicesService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private actionSheetController: ActionSheetController,
+    private navCtrl: NavController
   ) {
-    // this.FB.getProveedorCompra();
-    // this.listaPesajesProveedor();
     this.FB.getProductos();
     this.traerTipoQueso();
     this.traerNombre();
@@ -100,5 +100,29 @@ export class CardcompradetalladaPage implements OnInit {
     });
     console.log("se ele envia el proveedor y el id de compra", card.id, this.idProveedor)
     return await modal.present();
+  }
+
+  async abrirMenu() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Opciones',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Crear compra',
+        icon: 'bag-add-outline',
+        handler: () => {
+          this.navCtrl.navigateForward(["crearcompra/", this.idProveedor]);
+        }
+      }, {
+        text: 'Cancelar',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
+
+
   }
 }

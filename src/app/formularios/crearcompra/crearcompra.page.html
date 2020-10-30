@@ -2,7 +2,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-<ion-back-button defaultHref="/cardcompras" color="danger"></ion-back-button>
+      <ion-back-button defaultHref="/cardcompras" color="danger"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">PESAJE COMPRA</ion-title>
   </ion-toolbar>
@@ -10,8 +10,8 @@
 
 <ion-content>
   <div class="div-principal">
-<div class="info">
-      <p class="p-title">Proveedor: {{idProveedor}}</p>
+    <div class="info">
+      <p class="p-title">Proveedor: {{nombreProv}}</p>
       <p class="p-title">Fecha Compra: {{fecha}}</p>
       <p class="p-title">Tipo de queso:</p>
       <ion-select [(ngModel)]="productoDefault" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
@@ -27,30 +27,34 @@
         <thead class="thead">
           <th class="th1">Bulto</th>
           <th class="th2">Peso</th>
-          <th class="th3"></th>
+          <th class="th3">
+            <div class="div_toggle">
+              <ion-chip class="btn-add" (click)="agregarBultoLista()">
+                <ion-icon name="add" color="success"></ion-icon>
+                <!-- <ion-label color="dark">Agregar</ion-label> -->
+              </ion-chip>
+            </div>
+          </th>
         </thead>
         <tbody class="tbody">
           <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
             <td class="td1">
-              <label (ngModel)="numbulto">{{i+1}}</label>
+              <label  (ngModel)="numbulto">{{i+1}}</label>
             </td>
             <td class="td2">
               <label class="valorTabla" type="number" (ngModelChange)="edit($event)">{{lista.peso}} </label>
-              <!-- <input class="valorTabla" type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" /> -->
             </td>
             <td class="td3">
-              <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
+              <div class="div_toggle">
+                <ion-chip class="btn-remove" (click)="removeRegister()">
+                  <ion-icon name="close" color="danger"></ion-icon>
+                </ion-chip>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="div_toggle">
-        <ion-chip class="btn-add" (click)="agregarBultoLista()">
-          <ion-icon name="add" color="success"></ion-icon>
-          <ion-label color="dark">Agregar</ion-label>
-        </ion-chip>
-      </div>
-      <ion-button (click)="guardar()" expand="full" color="success">
+      <ion-button class="btn_guardar" *ngIf="mostrar" (click)="guardar()" expand="full" color="success">
         <ion-icon name="save-outline"></ion-icon>
         <ion-label>Guardar</ion-label>
       </ion-button>

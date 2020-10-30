@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">DISTRIBUYE TU COMPRA</ion-title>
-    <ion-buttons  [disabled]="isEnabled" slot="end" (click)="crearModal()">
+    <ion-buttons *ngIf="mostrarCrearConfirmar" [disabled]="isEnabled" slot="end" (click)="crearModal()">
       <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
     </ion-buttons>
     <ion-buttons slot="start">
@@ -14,7 +14,10 @@
 <ion-content>
   <div class="div-principal">
     <div class="info">
-      <p><span>peso confirmado [</span> {{sumaPeso}} <span>] de </span> {{pesoTotal}}</p>
+      <p>Peso confirmado</p>
+      <label [(ngModel)]="sumaPeso" id="variablePeso">{{sumaPeso}}</label> <label> / {{pesoTotal}}</label>
+      <!-- <h1 id="mensajePeso" *ngIf="mostrarMsgLleno">Ya no puedes llegaste al limite</h1> -->
+
     </div>
   </div>
   <div class="div_tabla">
@@ -27,7 +30,7 @@
         <th class="th4">Valor Total</th>
       </thead>
       <tbody class="tbody">
-        <tr class="tr" *ngFor="let lista of FB.pesajeConfirmadoLista" >
+        <tr class="tr" *ngFor="let lista of FB.pesajeConfirmadoLista">
           <td class="td1">
             <label (ngModel)="numbulto">{{lista.nombreEstadoQueso}}</label>
           </td>
@@ -40,9 +43,13 @@
           <td class="td4">
             <label (ngModel)="numbulto">{{lista.costoTotalEstado | currency:'USD':true: '2.0-0'}}</label>
           </td>
-          <!-- <td class="td4">
-              <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
-            </td> -->
+          <td class="td4">
+            <div class="div_toggle">
+              <ion-chip class="btn-remove" (click)="removeRegister()">
+                <ion-icon name="close" color="danger"></ion-icon>
+              </ion-chip>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -58,10 +65,10 @@
       </ion-button> -->
 
   </div>
-  <ion-footer>
+  <!-- <ion-footer>
     <ion-button (click)="guardar()" expand="full" color="success">
       <ion-icon name="save-outline"></ion-icon>
       <ion-label>Guardar</ion-label>
     </ion-button>
-  </ion-footer>
+  </ion-footer> -->
 </ion-content>

@@ -1084,7 +1084,6 @@ export class FBservicesService {
             .on("value", snapshot => {
                 if (snapshot.exists) {
                     snapshot.forEach(element => {
-                        console.log("Snapshot: ", element.val())
                         this.estadoProductoLista.forEach(estadoPro => {
                             if (estadoPro.id == element.val().idEstadoProducto) {
                                 this.objPesajeConfirmado = ({

@@ -30,8 +30,7 @@ export class MainMenuPage {
     private alertController: AlertController,
     private router: Router
   ) {
-    
-    
+   
   }
 
   comprar() {
@@ -43,10 +42,10 @@ export class MainMenuPage {
   irCardLotes() {
     this.navCtrl.navigateForward(["cardlistaproveedores"]);
   }
-  irCardListaClientes(){
+  irCardListaClientes() {
     this.navCtrl.navigateForward(["cardlistaclientes"]);
   }
-  irCardListaProveedores(){
+  irCardListaProveedores() {
     this.navCtrl.navigateForward(["cardlistaproveedores"]);
   }
 

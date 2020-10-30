@@ -29,8 +29,10 @@ export class HomepesajesPage implements OnInit {
   idProveedorLocal: any;
 
   pesoTotal = 0;
+  sumaPeso = 0;
 
-  isEnabled = true;
+  mostrarCrearConfirmar: boolean = true;
+  mostrarMsgLleno: boolean = false;
 
   ngOnInit() {
     localStorage.setItem("idCompraLocal", this.idCompra);
@@ -38,33 +40,58 @@ export class HomepesajesPage implements OnInit {
     this.idCompraLocal = this.idCompra;
     this.idProveedorLocal = this.idProv;
     this.traerPeso();
-    this.sumarPesos();
+    this.cambiarEstilos();
 
   }
+
   async traerPeso() {
-    this.FB.infoCompraUnica.forEach(info => {
+    let valorPeso = await this.FB.infoCompraUnica;
+    valorPeso.forEach(info => {
       this.pesoTotal = info.pesoBultos;
+      console.log("ESto es el valorPeso", info.pesoBultos)
     })
+    this.sumarPesos();
   }
-  sumaPeso = 0;
+
   async sumarPesos() {
-    this.sumaPeso = 0;
-    this.FB.pesajeConfirmadoLista.forEach(info => {
+    let valorPeso = await this.FB.pesajeConfirmadoLista;
+    valorPeso.forEach(info => {
       console.log("info.pesosDel Pesaje", info.cantidadEstado)
       this.sumaPeso = this.sumaPeso + parseInt(info.cantidadEstado);
       console.log("la suma es", this.sumaPeso)
-    })
-    if(this.sumaPeso == this.pesoTotal){
-      this.isEnabled = false;
-    }
+    });
+    this.validarCrear();
+    this.cambiarEstilos();
+
   }
 
+  validarCrear() {
+    if (this.sumaPeso >= this.pesoTotal) {
+      this.mostrarCrearConfirmar = false;
+    } else {
+      this.mostrarCrearConfirmar = true;
+    }
+  }
 
   crearModal() {
     var idCompra = localStorage.getItem("idCompraLocal");
     var idProv = localStorage.getItem("idProveedorLocal");
     // this.navCtrl.navigateForward('confirmarpesaje');
     this.presentPopover(idCompra, idProv);
+  }
+  pesoActual;
+  numero;
+  
+
+  cambiarEstilos() {
+    console.log("Esto es el peso actual", this.sumaPeso)
+    if (this.sumaPeso < this.pesoTotal) {
+      console.log("Esto es el peso actual", this.sumaPeso)
+      document.getElementById("variablePeso").style.color = "green";
+    } else if (this.sumaPeso >= this.pesoTotal) {
+      document.getElementById("variablePeso").style.color = "red";
+      this.mostrarMsgLleno = true;
+    }
   }
 
   async presentPopover(idCompra, idProv) {
@@ -75,10 +102,11 @@ export class HomepesajesPage implements OnInit {
       componentProps: {
         idCompra: idCompra,
         idProv: idProv,
-        pesoDisponible: (this.pesoTotal - this.sumaPeso) 
+        pesoDisponible: (this.pesoTotal - this.sumaPeso)
       },
     });
     await popover.present();
+    this.traerPeso();
   };
 
   guardar() {

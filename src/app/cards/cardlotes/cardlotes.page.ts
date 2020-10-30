@@ -9,21 +9,18 @@ import { FBservicesService } from 'src/app/fbservices.service';
   styleUrls: ['./cardlotes.page.scss'],
 })
 export class CardlotesPage implements OnInit {
-  idproveedor = "Fernanda";
-  numlote: "15-10-2020 - L1";
-  totalBulto: "10";
-  costoTotalCompra: "$1000.000";
-  pesoBultos: "240";
 
-  public nombreProv: any;
+
+
   constructor(
     private route: ActivatedRoute,
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
   ) {
-  }
 
+  }
+  public nombreProv: any;
   public idProveedorRecibido: any;
 
   ngOnInit() {
@@ -32,10 +29,8 @@ export class CardlotesPage implements OnInit {
     this.traerNombre();
   }
 
-  traerNombre() {
+  async traerNombre() {
     this.nombreProv = [];
-    console.log("Nombre prov", this.idProveedorRecibido);
-
     this.FB.proveedoresLista.forEach(element => {
       if (element.id == this.idProveedorRecibido) {
         this.nombreProv = element.nombre;

@@ -12,6 +12,8 @@ export class CrearcompraPage implements OnInit {
 
   public idProveedor;
   public fecha;
+
+  public mostrar: boolean = false;
   productoDefault: any;
   //Variables para los bultos
   public numbulto = 1;
@@ -20,6 +22,8 @@ export class CrearcompraPage implements OnInit {
   public bultoObj: any = null;
   public contadorPeso: number;
   public lote;
+  //Nombre el proveedor
+  public nombreProv: any;
 
   constructor(
     private alertController: AlertController,
@@ -28,14 +32,6 @@ export class CrearcompraPage implements OnInit {
     private navCtrl: NavController
   ) {
 
-    // this.nombres = this.FB.proveedoresLista;
-    // console.log("proveedor", this.nombres);
-    // this.nombres.forEach(element => {
-    //   if(element.id == this.id){
-    //     console.log("Si lo encontro", element.nombre)
-    //   }
-    //   console.log("No se encontró")
-    // })sasdasdaadasdcfsdaadas
   }
 
   ngOnInit() {
@@ -43,6 +39,7 @@ export class CrearcompraPage implements OnInit {
     this.idProveedor = id;
     this.fecha = this.FB.fechaActual();
     this.traerTipoQuesoDefault();
+    this.traerNombre();
     // console.log(" se recibe id: ", this.id);
   }
 
@@ -56,15 +53,29 @@ export class CrearcompraPage implements OnInit {
     })
   }
 
+  async traerNombre() {
+    this.nombreProv = [];
+    this.FB.proveedoresLista.forEach(element => {
+      if (element.id == this.idProveedor) {
+        this.nombreProv = element.nombre;
+      }
+    })
+  }
+
   removeRegister(index) {
     this.listaBultos.splice(index, 1);
+    this.validacion();
+  }
+  validacion(){
+    if(this.listaBultos.length > 0){
+      this.mostrar = true;
+    }else{
+      this.mostrar = false;
+    }
   }
 
-  agregarBultoLista() {
-    this.presentAlertRadio();
-  }
-
-  async presentAlertRadio() {
+  async agregarBultoLista() {
+    
     const alert = await this.alertController.create({
       cssClass: 'alertAddPeso',
       header: 'Creando bulto ' + (this.listaBultos.length + 1) + '.',
@@ -75,7 +86,7 @@ export class CrearcompraPage implements OnInit {
           name: 'peso',
           type: 'number',
           value: "",
-          min:"1",
+          min: "1",
           placeholder: 'Ingrese el peso.',
         }
       ],
@@ -103,6 +114,7 @@ export class CrearcompraPage implements OnInit {
             } else {
               console.log("El peso no fue modificado");
             }
+            this.validacion();
           }
         }
       ]

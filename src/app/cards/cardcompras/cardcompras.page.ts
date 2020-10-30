@@ -78,7 +78,7 @@ export class CardcomprasPage implements OnInit {
   irCompra(card) {
     this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
   }
-  
+
 
   irCompraDetallada(card) {
     this.FB.getPesajeCompra(card.idProv);
@@ -101,22 +101,6 @@ export class CardcomprasPage implements OnInit {
             this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
           });
           this.alertProveedores();
-
-          // var elemento = document.getElementById("select-alert");
-          // elemento.click();
-        }
-      },
-      // {
-      //   text: 'Distribuir pesos',
-      //   icon: 'podium',
-      //   handler: () => {
-      //           //   }
-      // },
-      {
-        text: 'Quitar compra',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
         }
       }, {
         text: 'Cancelar',
