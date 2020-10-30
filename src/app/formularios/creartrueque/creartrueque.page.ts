@@ -60,9 +60,9 @@ export class CreartruequePage implements OnInit {
   }
   guardar() {
 
+    console.log("loteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ", this.datos.lote);
 
-
-    this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.tipoAnticipoEdit, this.valor, this.imagen);
+    this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
 
 
     // if (this.id1 == undefined) {

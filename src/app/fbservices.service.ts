@@ -217,7 +217,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
-                
+
 
             } else {
 
@@ -999,7 +999,8 @@ export class FBservicesService {
                 pesoBultos: pesoBultos,
                 costoTotalCompra: 0,
                 bultoLista: bultosTT,
-                estado: 1
+                estado: 1,
+                anticipos: 0
             });
     }
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
@@ -1110,17 +1111,28 @@ export class FBservicesService {
 
 
     //metodo que permite registrar un anticipo a la compra
-    registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, idTipoAnticipo, valorAnticipo, archivo) {
-
+    registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, lote, idTipoAnticipo, valorAnticipo, archivo) {
+        let objAnt: any = null;
         this.idAnticipos = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        console.log("#333333333333 ", idProveedor, this.idAnticipos, archivo);
+
+        objAnt = ({
+            id: this.idAnticipos,
+            fechaAnticipo: this.fechaActual(),
+            idProveedor: idProveedor,
+            idTipoAnticipo: idTipoAnticipo,
+            valorAnticipo: valorAnticipo,
+            archivo: archivo,
+            idPesajeCompra: idPesajeCompra,
+            estado: 1
+        });
+
         this.upLoadImage(idProveedor, this.idAnticipos, archivo);
-        
+
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/anticipos/" + this.idAnticipos)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + this.idAnticipos)
             .set({
                 id: this.idAnticipos,
                 fechaAnticipo: this.fechaActual(),
@@ -1131,8 +1143,37 @@ export class FBservicesService {
                 idPesajeCompra: idPesajeCompra,
                 estado: 1
             });
-        
+
+
+        this.getPesajeAnt(idProveedor, lote, idPesajeCompra, objAnt, this.idAnticipos);
         this.toastOperacionExitosa();
+    }
+
+    getPesajeAnt(idProveedor, lote, idPesajeCompra, anticipo, idAnticipo) {
+        let listaAnt: any[] = [];
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if(element.val().idPesajeCompra == idPesajeCompra){
+                        console.log("Lista de ants == ", element.val());
+                        
+                        listaAnt.push(element.val());
+                    }
+                });
+
+            });
+            this.updatePesajeAnt(idProveedor, lote, idPesajeCompra, listaAnt);
+    }
+    updatePesajeAnt(idProveedor, lote, idPesajeCompra, anticipo) {
+
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesajeCompra)
+            .update({
+                anticipos: anticipo
+            });
     }
 
     getAnticipoProveedor() {
