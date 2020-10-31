@@ -47,3 +47,10 @@
         -moz-appearance: textfield;
     }
 }
+
+.cssLoading {
+    color: #c8f7f3;
+    backface-visibility: 0.8;
+    --background: #222;
+    --spinner-color: rgb(0, 162, 255);
+}

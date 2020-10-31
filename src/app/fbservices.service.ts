@@ -217,7 +217,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
-
+                this.recorreListas();
 
             } else {
 
@@ -1071,8 +1071,9 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
+
     public pesajeConfirmadoLista: any = [];
-    public objPesajeConfirmado
+    public objPesajeConfirmado: any;
     getPesajeConfirmado(idProveedor, idPesajeCompra) {
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
@@ -1155,15 +1156,15 @@ export class FBservicesService {
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
             .on("value", snapshot => {
                 snapshot.forEach(element => {
-                    if(element.val().idPesajeCompra == idPesajeCompra){
+                    if (element.val().idPesajeCompra == idPesajeCompra) {
                         console.log("Lista de ants == ", element.val());
-                        
+
                         listaAnt.push(element.val());
                     }
                 });
 
             });
-            this.updatePesajeAnt(idProveedor, lote, idPesajeCompra, listaAnt);
+        this.updatePesajeAnt(idProveedor, lote, idPesajeCompra, listaAnt);
     }
     updatePesajeAnt(idProveedor, lote, idPesajeCompra, anticipo) {
 
@@ -1175,12 +1176,13 @@ export class FBservicesService {
             });
     }
 
-    getAnticipoProveedor() {
+    async getAnticipoProveedor() {
 
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         this.anticipoCompraLista = [];
-        this.proveedoresLista.forEach(element => {
+        let proveedoresLista = await this.proveedoresLista;
+        proveedoresLista.forEach(element => {
             firebase
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/anticipos")

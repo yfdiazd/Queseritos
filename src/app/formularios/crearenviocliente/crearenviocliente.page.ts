@@ -1,5 +1,5 @@
 import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
@@ -18,22 +18,24 @@ export class CrearenvioclientePage implements OnInit {
   public contadorPeso: number;
   public tipoQueso;
   public lote;
-  idcliente;
+  
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private alertController: AlertController,
     private toastController: ToastController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navCtrl: NavController
   ) {
   
    }
-
+ public idcliente:any;
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
+    console.log("se recibe id solito", id );
     this.idcliente=id;
     console.log("se recibe id listacliente", this.idcliente);
-    console.log("se recibe id solito", id );
+    
    
   }
 

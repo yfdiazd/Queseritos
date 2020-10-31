@@ -27,8 +27,7 @@ export class CreartruequePage implements OnInit {
   //--------------------------------------
   @Input() datos;
 
-  ngOnInit() {
-    
+  ngOnInit() {    
     console.log("ME enviarón este compra", this.datos.id)
     console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
