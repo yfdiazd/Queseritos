@@ -986,6 +986,7 @@ export class FBservicesService {
         this.idPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        this.crearBalanceLote(idProveedor, this.lastLote.toString());
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + this.idPesajeCompra)
@@ -1015,7 +1016,7 @@ export class FBservicesService {
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
                 .on("value", snapshot => {
-                    if (snapshot.exists && snapshot.val() !== null) {
+                    if (snapshot.exists() && snapshot.val() !== null) {
 
                         this.proveedorCompraLista.push(snapshot.val());
                     }
@@ -1041,15 +1042,35 @@ export class FBservicesService {
     }
 
     updateCostoCompra(idProveedor, idPesajeCompra, totalCompra) {
-
-
-
+        let totalLocal = 0;
+        this.getCostoCompra(idProveedor, idPesajeCompra);
+        totalLocal = this.costoCompraTemp;
+        totalLocal = (totalLocal + totalCompra);
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
             .update({
-                costoTotalCompra: totalCompra
+                costoTotalCompra: totalLocal
             });
+    }
+
+    costoCompraTemp: number;
+    getCostoCompra(idProveedor, idPesajeCompra) {
+        this.costoCompraTemp = 0;
+
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (element.key == idPesajeCompra) {
+                        console.log("Elelelelel ", element.val());
+                        this.costoCompraTemp = element.val().costoTotalCompra;
+                    }
+
+                });
+            });
+            return this.costoCompraTemp;
     }
 
     //Confirmar pesajes
@@ -1251,17 +1272,17 @@ export class FBservicesService {
                     console.log("Elllll............. ", element.val());
                     console.log("Elllll222............. ", element.val().balance.anticiposLote);
                     console.log("Elllll222............. ", element.val().balance.comprasLote);
-                    
+
                     this.objLotesDelProveedor = ({
                         lote: element.key,
                         compra: element.val().balance.comprasLote,
-                        anticipo:  element.val().balance.anticiposLote
+                        anticipo: element.val().balance.anticiposLote
                     })
                     this.listaLotesDelProveedor.push(this.objLotesDelProveedor);
                 });
             });
-            console.log("Retornandoooooo ", this.listaLotesDelProveedor);
-            
+        console.log("Retornandoooooo ", this.listaLotesDelProveedor);
+
         return this.listaLotesDelProveedor;
     }
 
