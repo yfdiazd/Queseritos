@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">DISTRIBUYE TU COMPRA</ion-title>
-    <ion-buttons *ngIf="mostrarCrearConfirmar" [disabled]="isEnabled" slot="end" (click)="crearModal()">
+    <ion-buttons *ngIf="mostrarCrearConfirmar" slot="end" (click)="presentPopover()">
       <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
     </ion-buttons>
     <ion-buttons slot="start">
@@ -15,7 +15,7 @@
   <div class="div-principal">
     <div class="info">
       <p>Peso confirmado</p>
-      <label [(ngModel)]="sumaPeso" id="variablePeso">{{sumaPeso}}</label> <label> / {{pesoTotal}}</label>
+      <p id="variablePeso">{{sumaPeso}}</p> <label> / {{pesoTotal}}</label>
       <!-- <h1 id="mensajePeso" *ngIf="mostrarMsgLleno">Ya no puedes llegaste al limite</h1> -->
 
     </div>
@@ -65,10 +65,4 @@
       </ion-button> -->
 
   </div>
-  <!-- <ion-footer>
-    <ion-button (click)="guardar()" expand="full" color="success">
-      <ion-icon name="save-outline"></ion-icon>
-      <ion-label>Guardar</ion-label>
-    </ion-button>
-  </ion-footer> -->
 </ion-content>

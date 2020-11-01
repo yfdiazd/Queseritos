@@ -9,9 +9,6 @@ import { FBservicesService } from 'src/app/fbservices.service';
   styleUrls: ['./cardlotes.page.scss'],
 })
 export class CardlotesPage implements OnInit {
-
-
-
   constructor(
     private route: ActivatedRoute,
     private FB: FBservicesService,
@@ -23,12 +20,13 @@ export class CardlotesPage implements OnInit {
   public nombreProv: any;
   public idProveedorRecibido: any;
 
+
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedorRecibido = id;
     this.traerNombre();
   }
-
+  
   async traerNombre() {
     this.nombreProv = [];
     this.FB.proveedoresLista.forEach(element => {

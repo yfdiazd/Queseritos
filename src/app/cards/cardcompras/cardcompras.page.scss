@@ -1,19 +1,20 @@
-ion-toolbar {
-    --background: #1a1446;
-}
+ion-header {
+    ion-toolbar {
+        --background: #1a1446;
 
-ion-title {
-    font-size: 20px;
 
-}
-
-.titulo {
-    color: white;
+        .titulo {
+            // font-size: 20px;
+            color: white;
+        }
+    }
 }
 
 ion-content {
     padding: 0;
     margin: 0;
+    width: 100%;
+    height: 100%;
     --background: #c8f7f3;
     --color: black;
 
@@ -23,289 +24,305 @@ ion-content {
         padding: 0;
     }
 
-    p>span {
-        font-size: 15px;
-    }
-
-    .btn-options {
-        position: fixed;
-
-    }
-
-    //-------------Vista del header-----------------
-    .div-principal {
+    .div_content {
         width: 100%;
-        margin: auto;
-        position: fixed;
-        height: 20%;
-        // background-color: #24c263;
-        // background-color: #1a1446;
-        background-color: #439992;
-        z-index: 1;
-        // border-bottom-right-radius: 20%;
-        // border-bottom-left-radius: 20%;
-        // border-bottom-style: solid;
-        // border-color: #1a1446;        
-
-        .div-fila-1 {
-            display: inline-block;
-            width: 100%;
-            height: 40%;
-            text-align: center;
-
-            .fila1_p_titulo {
-                width: 100%;
-                height: 40%;
-                // color: #1a1446;
-                color: white;
-            }
-
-            .fila1_p_valor {
-                width: 100%;
-                height: 60%;
-                font-size: 5vh;
-                color: yellow;
-            }
-        }
-
-        .div-fila-2 {
-            width: 100%;
-            height: 60%;
-            text-align: center;
-            display: flex;
-
-            .fila2_col1 {
-                display: inline-block;
-                width: 50%;
-                height: 100%;
-                text-align: center;
-
-                #saldo-credito {
-                    color: rgb(226, 93, 93);
-                    text-shadow: #500707 1px 1px 1px;
-                }
-
-                #saldo-debito {
-                    color: rgb(109, 223, 3);
-                    text-shadow: #013303 1px 1px 1px;
-                }
-
-                .div-t {
-                    // color: #1a1446;
-                    color: white;
-                    width: 100%;
-                    height: 20%;
-                    font-size: 2.5vh;
-                }
-
-                .div-v {
-                    width: 100%;
-                    height: 30%;
-                    font-size: 2.5vh;
-                }
-            }
-
-            .fila2_col2 {
-                display: inline-block;
-                margin: auto;
-                width: 50%;
-                height: 100%;
-                text-align: center;
-
-                .div-t {
-                    text-align: center;
-                    // color: #1a1446;
-                    color: white;
-                    font-size: 3vh;
-                    width: 100%;
-                    height: 40%;
-                }
-
-                .div-v {
-                    width: 100%;
-                    height: 60%;
-                    font-size: 3.1vh;
-                    color: blue;
-                }
-            }
-        }
-    }
-
-    //-----------------------Vista del conenido de las cards o lista de compras
-
-    .div-secundario {
         height: 100%;
-        width: 100%;
-        margin-top: 8.5rem;
-        position: absolute;
-        z-index: 0;
 
-        .div-card {
-            width: 100%;
-            border: #1a1446 solid 3px;
-            border-radius: 5px;
-        }
-
-        .slider {
-            width: 100%;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0;
-            margin-top: 20px;
-        }
-
-        .item {
-            --background: transparent;
-            --border-style: none;
-        }
-
-        .div-head_button {
-            width: 100%;
-            height: 100%;
-            border-style: none;
-
-            .add {
-                width: 100%;
-                margin: 0;
-                height: 25px;
-                border-style: none;
-                background-color: #1a1446;
-            }
-        }
-
-        .card {
+        //-------------Vista del header-----------------
+        .div-principal {
             width: 100%;
             margin: auto;
-            height: 150px;
-            background-color: white;
-        }
-
-        .div_head_title {
-            width: 100%;
+            padding: 0;
+            position: fixed;
             height: 20%;
+            background-color: #439992;
+            border-bottom-style: solid;
+            border-color: #1a1446;
+            z-index: 20;
 
-            p {
+            .div-fila-1 {
+                display: inline-block;
+                position: flex;
                 width: 100%;
-                height: 100%;
-                color: #1a1446;
-                text-align: left;
-                font-weight: bold;
-                height: 100%;
-                font-size: 4vh;
-                padding-left: 10px;
-            }
-        }
-
-        .div_body_content {
-            width: 100%;
-            height: 80%;
-
-            .seccion-1 {
-                display: inline-block;
-                width: 50%;
-                height: 100%;
+                height: 30%;
+                padding: 0;
+                margin: 0;
                 text-align: center;
-                // outline-style: solid;
-                // outline-width: 2px;
-                // outline-color: #000000;
 
-                .div-cajita-1 {
-                    width: 100%;
-                    height: 40%;
 
-                    .seccion_title {
-                        width: 100%;
-                        height: 30%;
-                        color: #1a1446;
-                        font-weight: bold;
-                    }
-
-                    .seccion_valor_bulto {
-                        color: #000000;
-                        text-align: center;
-                        font-size: 25px;
-                        font-weight: bold;
-                        height: 70%;
-                    }
+                p {
+                    padding: 0;
+                    margin: 0;
                 }
 
-                .div-cajita-2 {
-                    width: 100%;
-                    height: 60%;
+                .fila1_p_titulo {
+                    display: inline-block;
+                    position: relative;
+                    width: 50%;
+                    height: 100%;
+                    margin: auto;
+                    font-size: 2.5vmax;
+                    color: #1a1446;
+                    font-weight: bold;
+                    text-align: end;
+                }
 
-                    .seccion_title {
-                        width: 100%;
-                        height: 20%;
-                        padding: 0;
-                        color: #1a1446;
-                        font-weight: bold;
-                    }
+                .fila1_p_valor {
+                    display: inline-block;
+                    position: flex;
+                    width: 50%;
+                    height: 100%;
+                    padding-left: 20px;
+                    font-size: 4vh;
+                    color: yellow;
+                    text-align: start;
+                }
 
-                    .seccion_valor {
-                        width: 100%;
-                        height: 35%;
-                    }
-
-                    #saldo-credito2 {
-                        color: rgb(255, 61, 61);
-                        // text-shadow: #f84f4f 1px 1px 1px;
-                    }
-
-                    #saldo-debito2 {
-                        color: rgb(42, 158, 42);
-                        // text-shadow: #082702 1px 1px 1px;
-                    }
+                .fila1_p_valor::after {
+                    content: "Kg";
+                    color: yellow;
+                    font-size: 2vh;
                 }
             }
 
-            .seccion-2 {
-                position: absolute;
-                display: inline-block;
-                width: 50%;
-                height: 80%;
+            .div-fila-2 {
+                width: 100%;
+                height: 70%;
                 text-align: center;
-                // outline-style: solid;
-                // outline-width: 2px;
-                // outline-color: #000000;
+                display: flex;
 
-                .seccion2_title {
+                .fila2_col1 {
+                    display: inline-block;
+                    width: 50%;
+                    height: 100%;
+                    text-align: center;
+
+                    #saldo-credito {
+                        color: darkred;
+                        text-shadow: #500707 1px 1px 1px;
+                    }
+
+                    #saldo-debito {
+                        color: #90ee90;
+                        text-shadow: #013303 1px 1px 1px;
+                    }
+
+
+                }
+
+                .fila2_col2 {
+                    display: inline-block;
+                    margin: auto;
+                    width: 50%;
+                    height: 100%;
+                    text-align: center;
+
+                    .div-t {
+
+                        width: 100%;
+                        height: 40%;
+                    }
+
+                    .div-v {
+                        width: 100%;
+                        height: 60%;
+                        font-size: 3.5vh;
+                    }
+                }
+
+                .div-t {
                     color: #1a1446;
                     font-weight: bold;
                     width: 100%;
-                    height: 30%;
-                }
-
-                .seccion2-valor {
-                    width: 100%;
-                    color: #000000;
-                    font-size: 25px;
-                    margin: auto;
-                    font-weight: bold;
-                }
-
-                .seccion2-valor2 {
-                    width: 100%;
-                    height: 60%;
-                    margin: auto;
-                    color: #0300ca;
+                    height: 20%;
                     font-size: 3vh;
                 }
 
-                .div-cajita-1 {
+                .div-v {
                     width: 100%;
-                    height: 50%;
+                    height: 30%;
+                    font-size: 3.5vh;
                 }
 
-                .div-cajita-2 {
-                    width: 100%;
-                    height: 50%;
 
-
-                }
             }
         }
 
+        //-----------------------Vista del conenido de las cards o lista de compras
 
+        .div-secundario {
+            height: 80%;
+            width: 100%;
+            margin-top: 8.5rem;
+            position: absolute;
+            z-index: 10;
+
+            .div-card {
+                width: 100%;
+                border: #1a1446 solid 3px;
+                border-radius: 5px;
+            }
+
+            .slider {
+                width: 100%;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0;
+                margin-top: 20px;
+            }
+
+            .item {
+                --background: transparent;
+                --border-style: none;
+            }
+
+            .div-head_button {
+                width: 100%;
+                height: 100%;
+                border-style: none;
+
+                .add {
+                    width: 100%;
+                    margin: 0;
+                    height: 25px;
+                    border-style: none;
+                    background-color: #1a1446;
+                }
+            }
+
+            .card {
+                width: 100%;
+                margin: auto;
+                height: 150px;
+                background-color: white;
+
+                .div_head_title {
+                    width: 100%;
+                    height: 20%;
+
+                    .nombre {
+                        width: 100%;
+                        height: 100%;
+                        color: #ff2f73;
+                        text-align: left;
+                        font-weight: bold;
+                        height: 100%;
+                        line-height: 100%;
+                        font-size: 2.7vmax;
+                        padding-left: 10px;
+                    }
+                }
+
+                .div_body_content {
+                    width: 100%;
+                    height: 80%;
+
+                    .seccion-1 {
+                        display: inline-block;
+                        width: 50%;
+                        height: 100%;
+                        text-align: center;
+                        // outline-style: solid;
+                        // outline-width: 2px;
+                        // outline-color: #000000;
+
+                        .div-cajita-1 {
+                            width: 100%;
+                            height: 40%;
+
+                            .seccion_title {
+                                width: 100%;
+                                height: 30%;
+                                color: #1a1446;
+                                font-weight: bold;
+                            }
+
+                            .seccion_valor_bulto {
+                                color: #000000;
+                                text-align: center;
+                                font-size: 25px;
+                                font-weight: bold;
+                                height: 70%;
+                            }
+                        }
+
+                        .div-cajita-2 {
+                            width: 100%;
+                            height: 60%;
+
+                            .seccion_title {
+                                width: 100%;
+                                height: 20%;
+                                padding: 0;
+                                color: #1a1446;
+                                font-weight: bold;
+                            }
+
+                            .seccion_valor {
+                                width: 100%;
+                                height: 35%;
+                            }
+
+                            #saldo-credito2 {
+                                color: rgb(255, 61, 61);
+                                // text-shadow: #f84f4f 1px 1px 1px;
+                            }
+
+                            #saldo-debito2 {
+                                color: rgb(42, 158, 42);
+                                // text-shadow: #082702 1px 1px 1px;
+                            }
+                        }
+                    }
+
+                    .seccion-2 {
+                        position: absolute;
+                        display: inline-block;
+                        width: 50%;
+                        height: 80%;
+                        text-align: center;
+                        // outline-style: solid;
+                        // outline-width: 2px;
+                        // outline-color: #000000;
+
+                        .seccion2_title {
+                            color: #1a1446;
+                            font-weight: bold;
+                            width: 100%;
+                            height: 30%;
+                        }
+
+                        .seccion2-valor {
+                            width: 100%;
+                            color: #000000;
+                            font-size: 25px;
+                            margin: auto;
+                            font-weight: bold;
+                        }
+
+                        .seccion2-valor2 {
+                            width: 100%;
+                            height: 60%;
+                            margin: auto;
+                            color: #0300ca;
+                            font-size: 3vh;
+                        }
+
+                        .div-cajita-1 {
+                            width: 100%;
+                            height: 50%;
+                        }
+
+                        .div-cajita-2 {
+                            width: 100%;
+                            height: 50%;
+
+
+                        }
+                    }
+                }
+            }
+        }
     }
 }

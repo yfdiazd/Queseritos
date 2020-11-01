@@ -1,42 +1,53 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, MenuController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, MenuController, ModalController, NavController } from '@ionic/angular';
 
 import { FBservicesService } from '../fbservices.service';
-
-// import { HomeciudadesPage } from '../home/homeciudades/homeciudades.page';
-// import { HometipotruequePage } from '../home/hometipotrueque/hometipotrueque.page';
-// import { HometiposquesoPage } from '../home/hometiposqueso/hometiposqueso.page';
-// import { HometiposidentificacionPage } from '../home/hometiposidentificacion/hometiposidentificacion.page';
-// import { HometipoanticipoPage } from '../home/hometipoanticipo/hometipoanticipo.page';
-// import { HomeproveedoresPage } from '../home/homeproveedores/homeproveedores.page';
-// import { HomeestadoquesoPage } from '../home/homeestadoqueso/homeestadoqueso.page';
-// import { HomeconductoresPage } from '../home/homeconductores/homeconductores.page';
-// import { HomeclientesPage } from '../home/homeclientes/homeclientes.page';
 
 @Component({
   selector: 'app-main-menu',
   templateUrl: './main-menu.page.html',
   styleUrls: ['./main-menu.page.scss'],
 })
-export class MainMenuPage {
+export class MainMenuPage  implements OnInit  {
   public listaProveedores: any[];
   public input = { data: [] };
+  public loading: any;
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,
     private FB: FBservicesService,
     private navCtrl: NavController,
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private loadingCtrl: LoadingController,
   ) {
-   
+    this.FB.getLoteProveedor();
+  }
+
+  ngOnInit() {
+    this.presentLoading('Espere...');
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 1500);
   }
 
   comprar() {
     this.navCtrl.navigateForward('cardcompras');
     this.FB.getProveedorCompra();
     this.FB.getAnticipoProveedor();
+
+  }
+  async presentLoading(message: string) {
+    this.loading = await this.loadingCtrl.create({
+      message,
+      cssClass: 'cssLoading',
+      keyboardClose: false,
+      backdropDismiss: false,
+      spinner: 'lines',
+      translucent: true
+    });
+    return this.loading.present();
   }
 
   irCardLotes() {

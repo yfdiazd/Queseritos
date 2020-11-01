@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
+import { Router, Routes } from '@angular/router';
+import { ActionSheetController, AlertController, LoadingController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
-
 
 @Component({
   selector: 'app-cardcompras',
@@ -21,35 +21,76 @@ export class CardcomprasPage implements OnInit {
   public listaDatos: any = [];
   public objProv: any;
 
+  public valorCss: any;
+  public loading: any;
+
 
   constructor(
     public actionSheetController: ActionSheetController,
     private FB: FBservicesService,
     private alertController: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
 
   ) { }
 
   ngOnInit() {
+    
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.traerNombre();
+    this.cambioSaldo();
+    this.presentLoading('Espere...');
+    console.log("Esto es para ver", this.listaDatos);
+
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 1500);
+  }  
+
+  async presentLoading(message: string) {
+    this.loading = await this.loadingCtrl.create({
+      message,
+      cssClass: 'cssLoading',
+      keyboardClose: false,
+      backdropDismiss: false,
+      spinner: 'lines',
+      translucent: true
+    });
+    return this.loading.present();
+  }
+  cambioSaldo() {
+    let valor1 = this.FB.saldodebitototal;
+    let valor2 = this.FB.saldocreditotal;
+    console.log("Sumas", valor1, " - ", valor2);
+    if ((valor1 - valor2) < 0) {
+      document.getElementById("valorCss").style.color = "crimson";
+      document.getElementById("valorCss").style.textShadow = "#500707 1px 1px 1px";
+
+    } else {
+      document.getElementById("valorCss").style.color = "lime";
+    }
   }
 
   doRefresh(event) {
-    this.FB.getLoteProveedor();
     this.validacionLote();
+    this.FB.getLoteProveedor();
     this.traerNombre();
+    this.cambioSaldo();
     setTimeout(() => {
       event.target.complete();
     }, 1000);
   }
 
-  traerNombre() {
+  async traerNombre() {
     this.listaDatos = [];
     this.objProv = null;
-    this.FB.proveedoresLista.forEach(element => {
-      this.FB.listaPaVer.forEach(element2 => {
+    let proveedoresLista = this.FB.proveedoresLista;
+    let listaPaVer = this.FB.listaPaVer;
+    console.log("Esto se ve: ", proveedoresLista, " y " , listaPaVer);
+    
+    proveedoresLista.forEach(element => {
+      listaPaVer.forEach(element2 => {
         if (element.id == element2.idProvedor) {
           this.objProv = ({
             nombre: element.nombre,
@@ -63,54 +104,40 @@ export class CardcomprasPage implements OnInit {
         }
       })
     })
+    console.log("lista datos", this.listaDatos);
+    
     return this.listaDatos;
   }
 
   //Validación del ultimo lote con el día en que ingresa a cardcompras: Muestra el alert
-  validacionLote() {
-    this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
+  async validacionLote() {
+    const ordenLotes = await this.FB.listaOrdenLotes();
+    this.loteActual = (ordenLotes.slice(this.FB.ultimoLote.length - 1));
     if (this.loteActual.toString().includes(this.FB.fechaActual())) {
     } else {
       this.alertConfirmarNuevoLote();
     }
   }
 
-  irCompra(card) {
+  async irCompra(card) {
     this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
   }
 
-
-  irCompraDetallada(card) {
+  async irCompraDetallada(card) {
     this.FB.getPesajeCompra(card.idProv);
     this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
   }
 
   async opciones() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Que deseas hacer?',
-      cssClass: 'my-custom-class',
-      mode: 'md',
-      buttons: [{
-        text: 'Agregar proveedor',
-        icon: 'person-add',
-        handler: () => {
-          this.input = { data: [] };
-          this.listaProveedores = [];
-          this.FB.proveedoresLista.forEach(element => {
-            let provee = element;
-            this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
-          });
-          this.alertProveedores();
-        }
-      }, {
-        text: 'Cancelar',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-        }
-      }]
+
+    this.input = { data: [] };
+    this.listaProveedores = [];
+    this.FB.proveedoresLista.forEach(element => {
+      let provee = element;
+      this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
     });
-    await actionSheet.present();
+    this.alertProveedores();
+
   }
 
   async alertProveedores() {
@@ -118,6 +145,8 @@ export class CardcomprasPage implements OnInit {
       cssClass: 'my-custom-class',
       header: 'Proveedores',
       inputs: this.input.data,
+      keyboardClose: false,
+      backdropDismiss: false,
       buttons: [
         {
           text: 'Cancel',
@@ -162,6 +191,15 @@ export class CardcomprasPage implements OnInit {
     });
 
     await alert.present();
+  }
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 }
 

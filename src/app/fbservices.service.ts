@@ -218,7 +218,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
-                this.getBalanceLote("1604192795560", "01-11-2020-L3");
+                this.recorreListas();
 
             } else {
 
@@ -1024,11 +1024,11 @@ export class FBservicesService {
         return this.proveedorCompraLista;
     }
     // Traer los pesajes del proveedor seleccionado
-    getPesajeCompra(idProveedor) {
+    async getPesajeCompra(idProveedor) {
+        const ordenLotes = await this.listaOrdenLotes();
         this.pesajeCompraLista = [];
         this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.crearBalanceLote(idProveedor, this.lastLote.toString());
+        this.lastLote = (ordenLotes.slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
@@ -1072,13 +1072,14 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    public pesajeConfirmadoLista: any = [];
-    public objPesajeConfirmado
 
-
+    public pesajeConfirmadoLista: any[];
+    public objPesajeConfirmado: any;
+    public sumapesoConfirmado: any;
     getPesajeConfirmado(idProveedor, idPesajeCompra) {
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
+        this.sumapesoConfirmado = 0;
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         firebase
@@ -1086,6 +1087,8 @@ export class FBservicesService {
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString())
             .on("value", snapshot => {
                 if (snapshot.exists) {
+                    this.pesajeConfirmadoLista = [];
+                    this.sumapesoConfirmado = 0;
                     snapshot.forEach(element => {
                         this.estadoProductoLista.forEach(estadoPro => {
                             if (estadoPro.id == element.val().idEstadoProducto) {
@@ -1101,11 +1104,12 @@ export class FBservicesService {
                                 });
                                 this.pesajeConfirmadoLista.push(this.objPesajeConfirmado);
                                 this.objPesajeConfirmado = [];
+                                this.sumapesoConfirmado = this.sumapesoConfirmado + parseInt(element.val().cantidadEstado);
                             }
                         })
-
                     });
-                    return this.pesajeConfirmadoLista;
+                    console.log("este es el peso confirmado 2", this.sumapesoConfirmado);
+                    return this.pesajeConfirmadoLista, this.sumapesoConfirmado;
                 }
             });
     }
@@ -1178,12 +1182,13 @@ export class FBservicesService {
             });
     }
 
-    getAnticipoProveedor() {
+    async getAnticipoProveedor() {
 
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         this.anticipoCompraLista = [];
-        this.proveedoresLista.forEach(element => {
+        let proveedoresLista = await this.proveedoresLista;
+        proveedoresLista.forEach(element => {
             firebase
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/anticipos")
@@ -1382,7 +1387,6 @@ export class FBservicesService {
                 if (snapshot.val().estado == 1) {
                     this.infoCompraUnica.push(snapshot.val());
                 }
-                console.log("infoGuardada: ", this.infoCompraUnica)
                 return this.infoCompraUnica;
             });
     }
