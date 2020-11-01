@@ -40,7 +40,7 @@ export class CrearcompraPage implements OnInit {
     this.fecha = this.FB.fechaActual();
     this.traerTipoQuesoDefault();
     this.traerNombre();
-    // console.log(" se recibe id: ", this.id);
+    console.log(" se recibe id: ", this.idProveedor);
   }
 
   traerTipoQuesoDefault() {
@@ -80,6 +80,7 @@ export class CrearcompraPage implements OnInit {
       cssClass: 'alertAddPeso',
       header: 'Creando bulto ' + (this.listaBultos.length + 1) + '.',
       keyboardClose: false,
+      backdropDismiss: false,
       inputs: [
         {
           cssClass: 'inputAddPeso',
@@ -161,6 +162,6 @@ export class CrearcompraPage implements OnInit {
     );
     this.listaBultos = [];
     this.FB.getPesajeCompra(this.idProveedor);
-    this.navCtrl.navigateForward(["cardcompradetallada/", this.idProveedor]);
+    this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
   }
 }

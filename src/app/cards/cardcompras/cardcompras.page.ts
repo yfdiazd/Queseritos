@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
-
 
 @Component({
   selector: 'app-cardcompras',
@@ -35,15 +35,18 @@ export class CardcomprasPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.traerNombre();
     this.cambioSaldo();
     this.presentLoading('Espere...');
+    console.log("Esto es para ver", this.listaDatos);
+
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
-  }
+  }  
 
   async presentLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
@@ -61,10 +64,10 @@ export class CardcomprasPage implements OnInit {
     let valor2 = this.FB.saldocreditotal;
     console.log("Sumas", valor1, " - ", valor2);
     if ((valor1 - valor2) < 0) {
-      console.log("es negativo");
-      document.getElementById("valorCss").style.color = "darkred";
+      document.getElementById("valorCss").style.color = "crimson";
+      document.getElementById("valorCss").style.textShadow = "#500707 1px 1px 1px";
+
     } else {
-      console.log("Es positivo")
       document.getElementById("valorCss").style.color = "lime";
     }
   }
@@ -84,7 +87,8 @@ export class CardcomprasPage implements OnInit {
     this.objProv = null;
     let proveedoresLista = this.FB.proveedoresLista;
     let listaPaVer = this.FB.listaPaVer;
-
+    console.log("Esto se ve: ", proveedoresLista, " y " , listaPaVer);
+    
     proveedoresLista.forEach(element => {
       listaPaVer.forEach(element2 => {
         if (element.id == element2.idProvedor) {
@@ -100,13 +104,15 @@ export class CardcomprasPage implements OnInit {
         }
       })
     })
+    console.log("lista datos", this.listaDatos);
+    
     return this.listaDatos;
   }
 
   //Validación del ultimo lote con el día en que ingresa a cardcompras: Muestra el alert
   async validacionLote() {
-    let ultimoLote = await this.FB.ultimoLote;
-    this.loteActual = (ultimoLote.slice(this.FB.ultimoLote.length - 1));
+    const ordenLotes = await this.FB.listaOrdenLotes();
+    this.loteActual = (ordenLotes.slice(this.FB.ultimoLote.length - 1));
     if (this.loteActual.toString().includes(this.FB.fechaActual())) {
     } else {
       this.alertConfirmarNuevoLote();
@@ -185,6 +191,15 @@ export class CardcomprasPage implements OnInit {
     });
 
     await alert.present();
+  }
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 }
 
