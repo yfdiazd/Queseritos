@@ -163,6 +163,8 @@ export class CardcomprasPage implements OnInit {
   async alertConfirmarNuevoLote() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
       header: "El ultimo lote no coincide con la fecha actual",
       subHeader: this.loteActual,
       message: '¿Desea crear un nuevo lote?',

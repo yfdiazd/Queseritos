@@ -61,6 +61,8 @@ export class HomeconductoresPage implements OnInit {
   async eliminar(lista) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
+      keyboardClose: false,
+      backdropDismiss: false,
       header: "Espera",
       message: "¿Esta seguro de eliminar " + lista.nombres + "?",
       buttons: [

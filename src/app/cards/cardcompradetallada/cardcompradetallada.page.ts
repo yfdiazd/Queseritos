@@ -92,6 +92,8 @@ export class CardcompradetalladaPage implements OnInit {
     const modal = await this.modalController.create({
       component: HomepesajesPage,
       cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
       componentProps: {
         idCompra: card.id,
         idProv: this.idProveedor
@@ -106,6 +108,8 @@ export class CardcompradetalladaPage implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Opciones',
       cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false, 
       buttons: [{
         text: 'Crear compra',
         icon: 'bag-add-outline',

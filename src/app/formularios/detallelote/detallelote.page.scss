@@ -48,8 +48,9 @@ ion-content {
         height: 90%;
         width: 100%;
         padding-top: 1em;
-        position: absolute;
-        z-index: 0;
+        //position: 0;
+        //z-index: 0;
+        --background: #c8f7f3;
 
         .btn_crearAnt {
             float: right;
@@ -57,7 +58,7 @@ ion-content {
             line-height: 100%;
             --background: #1a1446;
         }
-
+        .item,
         .slider {
             width: 100%;
             max-width: 700px;
@@ -65,17 +66,19 @@ ion-content {
             margin-right: auto;
             padding: 0;
             margin-top: 20px;
+            --background: #c8f7f3;
 
-
-            .item {
-                --background: transparent;
-                --border-style: none;
+            // .item {
+            //    // --background: transparent;
+            //    --background: #c8f7f3;
+            //     --border-style: none;
 
 
                 .div-card {
                     width: 100%;
                     border: #1a1446 solid 3px;
                     border-radius: 5px;
+                    --background: #c8f7f3;
 
 
                     .card {
@@ -132,35 +135,35 @@ ion-content {
                         }
                     }
                 }
-            }
+            //}
         }
     }
 
-    .div-pesoc {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        text-align: left;
-    }
+    // .div-pesoc {
+    //     display: inline-block;
+    //     width: 100%;
+    //     height: 100%;
+    //     text-align: left;
+    // }
 
-    .div-atributo1 {
-        display: inline-block;
-        width: 50%;
-        height: 100%;
+    // .div-atributo1 {
+    //     display: inline-block;
+    //     width: 50%;
+    //     height: 100%;
 
-    }
+    // }
 
-    .div-atributo2 {
-        display: inline-block;
-        width: 50%;
-        height: 100%;
-    }
+    // .div-atributo2 {
+    //     display: inline-block;
+    //     width: 50%;
+    //     height: 100%;
+    // }
 
-    .card1 {
-        margin: auto;
-        text-align: left;
-        --background: #ff2f73;
-    }
+    // .card1 {
+    //     margin: auto;
+    //     text-align: left;
+    //     --background: #ff2f73;
+    // }
 
     #boton-n-lote {
         padding: 0;

@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
-
+import { Router } from '@angular/router';
 import { FBservicesService } from '../../fbservices.service';
+
+
 
 @Component({
   selector: 'app-creartrueque',
@@ -15,7 +17,8 @@ export class CreartruequePage implements OnInit {
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
   // ----------------VARIABLES-------------
   tipoAnticipoEdit: any;
@@ -23,6 +26,9 @@ export class CreartruequePage implements OnInit {
   selectedFile: File;
   public idCompraRecibida: any;
   public nombreProv: any;
+//   @Pipe({
+//     name: 'thousandsPipe'
+// })
 
   //--------------------------------------
   @Input() datos;
@@ -31,10 +37,25 @@ export class CreartruequePage implements OnInit {
     console.log("ME enviarón este compra", this.datos.id)
     console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
+     
   }
-  // public transform(value: any) {
-  //   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
-  // }
+  
+    //  transform(value: any) {
+    //   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
+    //  }
+
+  
+
+
+separadorMiles(){
+  let separador = document.getElementById ('separadorMiles');
+  separador.addEventListener('keyup', e =>{
+    let entrada = e;
+    console.log("aquí debe mostrar lo que meto en valor",entrada);
+
+}, false);
+}
+
 
   traerNombre() {
     this.nombreProv = [];

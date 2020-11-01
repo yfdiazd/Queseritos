@@ -54,6 +54,8 @@ export class HomeciudadesPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
       header: "Espera",
+      keyboardClose: false,
+      backdropDismiss: false,
       message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
       buttons: [
         {

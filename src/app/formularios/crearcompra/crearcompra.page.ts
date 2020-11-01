@@ -80,6 +80,7 @@ export class CrearcompraPage implements OnInit {
       cssClass: 'alertAddPeso',
       header: 'Creando bulto ' + (this.listaBultos.length + 1) + '.',
       keyboardClose: false,
+      backdropDismiss: false,
       inputs: [
         {
           cssClass: 'inputAddPeso',

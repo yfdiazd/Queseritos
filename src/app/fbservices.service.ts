@@ -518,7 +518,6 @@ export class FBservicesService {
             firebase
                 .database()
                 .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
-                .onDisconnect()
                 .set({
                     id: this.idCiudad,
                     codigo: codigoCiudad,

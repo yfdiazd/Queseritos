@@ -99,6 +99,8 @@ export class HomepesajesPage implements OnInit {
       component: ConfirmarpesajePage,
       cssClass: 'popover_style',
       translucent: true,
+      keyboardClose: false,
+      backdropDismiss: false,
       componentProps: {
         idCompra: idCompra,
         idProv: idProv,

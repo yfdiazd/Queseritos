@@ -75,6 +75,8 @@ export class CardlistaproveedoresPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirm!',
+      keyboardClose: false,
+      backdropDismiss: false,
       message: 'El proveedor no tiene asociado lote de compra, ¿Desea crearle un anticipo?',
       buttons: [
         {

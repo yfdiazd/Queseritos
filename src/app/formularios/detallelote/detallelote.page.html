@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item-sliding class="slider" *ngFor="let item of FB.pesajeLoteProveedorLista">
+    <ion-item class="slider" *ngFor="let item of FB.pesajeLoteProveedorLista">
       <ion-item class="item">
         <div class="div-card">
           <ion-card class="card" >
@@ -36,7 +36,7 @@
                 <thead class="thead">
                   <th class="th1">Tipo anticipo</th>
                   <th class="th2">valor</th>
-                  <th class="th3">Concepto</th>
+                  <th class="th3">Imagen</th>
                   <th class="th4">Fecha</th>
                 </thead>
                 <tbody class="tbody">
@@ -63,14 +63,14 @@
         </div>
       </ion-item>
       <!-- opción para eliminar registro -->
-      <ion-item-options side="end">
+      <!-- <ion-item-options side="end">
         <ion-item-option color="danger" (click)="editarModal(lista)">Eliminar</ion-item-option>
-      </ion-item-options>
+      </ion-item-options> -->
       <!-- Opción para editar el registro -->
-      <ion-item-options side="start">
+      <!-- <ion-item-options side="start">
         <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+      </ion-item-options> -->
+    </ion-item>
     <!-- <ion-row class="row1">
       <ion-col id="col1">
         <ion-button class="add" (click)="irCrearTrueque()" color="success" expand="full">
