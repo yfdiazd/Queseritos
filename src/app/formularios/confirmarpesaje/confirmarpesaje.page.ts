@@ -50,6 +50,7 @@ export class ConfirmarpesajePage implements OnInit {
     this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado);
     this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado);
     this.popover.dismiss();
+    
     this.FB.getPesajeConfirmado(this.idProv, this.idCompra);
   }
 

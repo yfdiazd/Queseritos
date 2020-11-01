@@ -21,7 +21,9 @@
     <ion-item class="item" *ngFor="let item of FB.listaLotesDelProveedor" (click)="irDetalleLote(item)">
       <ion-icon slot="start" name="chevron-forward">
       </ion-icon>
-      <ion-label>{{item}}</ion-label>
+      <ion-label>Lote: {{ item.lote}}</ion-label>
+      <ion-label>Total Compras: {{  item.compra}}</ion-label>
+      <ion-label>Total Anticipos {{ item.anticipo  }}</ion-label>
       <ion-badge slot="end">42</ion-badge>
     </ion-item>
 

@@ -16,11 +16,7 @@ export class CardcompradetalladaPage implements OnInit {
     private modalController: ModalController,
     private actionSheetController: ActionSheetController,
     private navCtrl: NavController
-  ) {
-    this.FB.getProductos();
-    this.traerTipoQueso();
-    this.traerNombre();
-  }
+  ) { }
 
   //--------------VARIABLES
   public idProveedor;
@@ -34,14 +30,14 @@ export class CardcompradetalladaPage implements OnInit {
   //lista de la compra que se recorre en el HTML
   public listaCompras: any[] = [];
 
-
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedor = id;
-    this.FB.getProductos();
     this.FB.getPesajeCompra(this.idProveedor);
+    this.FB.getProductos();    
+    this.traerTipoQueso();
+    this.traerNombre();
     console.log("Se recibe el proveedor: ", this.idProveedor);
-    // this.listaCards();
     console.log("pesajeCompraLista", this.FB.pesajeCompraLista)
   }
 
@@ -57,7 +53,12 @@ export class CardcompradetalladaPage implements OnInit {
     })
   }
 
-  traerNombre() {
+  async traerNombre() {
+    const getCompras = await this.FB.getPesajeCompra(this.idProveedor);
+    console.log("getCompras:", getCompras);
+    console.log("pesajeCompraLista,", this.FB.pesajeCompraLista);
+    
+    
     this.nombreProv = [];
     this.FB.proveedoresLista.forEach(element => {
       this.FB.pesajeCompraLista.forEach(element2 => {
@@ -97,36 +98,24 @@ export class CardcompradetalladaPage implements OnInit {
       componentProps: {
         idCompra: card.id,
         idProv: this.idProveedor
-
       },
     });
     console.log("se ele envia el proveedor y el id de compra", card.id, this.idProveedor)
-    return await modal.present();
+    await modal.present();
   }
 
-  async abrirMenu() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Opciones',
-      cssClass: 'my-custom-class',
-      keyboardClose: false,
-      backdropDismiss: false, 
-      buttons: [{
-        text: 'Crear compra',
-        icon: 'bag-add-outline',
-        handler: () => {
-          this.navCtrl.navigateForward(["crearcompra/", this.idProveedor]);
-        }
-      }, {
-        text: 'Cancelar',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-    await actionSheet.present();
+  irCompra() {
+    console.log("Se envia este id proveedor", this.idProveedor);
+    this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
+  }
 
-
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 }
