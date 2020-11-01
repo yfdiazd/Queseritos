@@ -4,6 +4,7 @@ import { AlertController, NavController, ToastController } from '@ionic/angular'
 import * as firebase from 'firebase';
 import { element } from 'protractor';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { log } from 'console';
 
 
 //import { Camera, CameraOriginal } from '@ionic-native/camera';
@@ -217,7 +218,7 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
-
+                this.getBalanceLote("1604192795560", "01-11-2020-L3");
 
             } else {
 
@@ -518,7 +519,6 @@ export class FBservicesService {
             firebase
                 .database()
                 .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
-                .onDisconnect()
                 .set({
                     id: this.idCiudad,
                     codigo: codigoCiudad,
@@ -1028,6 +1028,7 @@ export class FBservicesService {
         this.pesajeCompraLista = [];
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        this.crearBalanceLote(idProveedor, this.lastLote.toString());
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
@@ -1053,10 +1054,10 @@ export class FBservicesService {
 
     //Confirmar pesajes
     agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
-
         this.idConfirmarPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado);
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString() + "/" + this.idConfirmarPesajeCompra)
@@ -1073,6 +1074,8 @@ export class FBservicesService {
     }
     public pesajeConfirmadoLista: any = [];
     public objPesajeConfirmado
+
+
     getPesajeConfirmado(idProveedor, idPesajeCompra) {
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
@@ -1115,17 +1118,17 @@ export class FBservicesService {
         this.idAnticipos = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-
-        objAnt = ({
-            id: this.idAnticipos,
-            fechaAnticipo: this.fechaActual(),
-            idProveedor: idProveedor,
-            idTipoAnticipo: idTipoAnticipo,
-            valorAnticipo: valorAnticipo,
-            archivo: archivo,
-            idPesajeCompra: idPesajeCompra,
-            estado: 1
-        });
+        this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo),
+            objAnt = ({
+                id: this.idAnticipos,
+                fechaAnticipo: this.fechaActual(),
+                idProveedor: idProveedor,
+                idTipoAnticipo: idTipoAnticipo,
+                valorAnticipo: valorAnticipo,
+                archivo: archivo,
+                idPesajeCompra: idPesajeCompra,
+                estado: 1
+            });
 
         this.upLoadImage(idProveedor, this.idAnticipos, archivo);
 
@@ -1155,15 +1158,15 @@ export class FBservicesService {
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
             .on("value", snapshot => {
                 snapshot.forEach(element => {
-                    if(element.val().idPesajeCompra == idPesajeCompra){
+                    if (element.val().idPesajeCompra == idPesajeCompra) {
                         console.log("Lista de ants == ", element.val());
-                        
+
                         listaAnt.push(element.val());
                     }
                 });
 
             });
-            this.updatePesajeAnt(idProveedor, lote, idPesajeCompra, listaAnt);
+        this.updatePesajeAnt(idProveedor, lote, idPesajeCompra, listaAnt);
     }
     updatePesajeAnt(idProveedor, lote, idPesajeCompra, anticipo) {
 
@@ -1230,17 +1233,30 @@ export class FBservicesService {
         return this.proveedoresCompraLista;
     }
     listaLotesDelProveedor: any[];
+    objLotesDelProveedor: any;
     async getLotesDelProveedor(idProveedor) {
         this.listaLotesDelProveedor = [];
+        this.objLotesDelProveedor = null;
         firebase
             .database()
             .ref()
             .child("usuario/compras/" + idProveedor)
             .on("value", snapshot => {
                 snapshot.forEach(element => {
-                    this.listaLotesDelProveedor.push(element.key);
+                    console.log("Elllll............. ", element.val());
+                    console.log("Elllll222............. ", element.val().balance.anticiposLote);
+                    console.log("Elllll222............. ", element.val().balance.comprasLote);
+                    
+                    this.objLotesDelProveedor = ({
+                        lote: element.key,
+                        compra: element.val().balance.comprasLote,
+                        anticipo:  element.val().balance.anticiposLote
+                    })
+                    this.listaLotesDelProveedor.push(this.objLotesDelProveedor);
                 });
             });
+            console.log("Retornandoooooo ", this.listaLotesDelProveedor);
+            
         return this.listaLotesDelProveedor;
     }
 
@@ -1405,5 +1421,66 @@ export class FBservicesService {
             });
     }
 
+
+    crearBalanceLote(idProveedor, lote) {
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+            .on("value", snapshot => {
+                if (!snapshot.exists()) {
+                    firebase
+                        .database()
+                        .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                        .set({
+                            comprasLote: 0,
+                            anticiposLote: 0
+                        });
+                }
+            });
+
+    }
+
+    balanceLoteCompra: number;
+    balanceLoteAnts: number;
+    getBalanceLote(idProveedor, lote) {
+        this.balanceLoteCompra = 0;
+        this.balanceLoteAnts = 0;
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote)
+            .on("value", snapshot => {
+                snapshot.forEach(element => {
+                    if (element.key == "balance") {
+                        this.balanceLoteCompra = element.val().comprasLote;
+                        this.balanceLoteAnts = element.val().anticiposLote;
+
+                    }
+                });
+            });
+        return this.balanceLoteCompra, this.balanceLoteAnts;
+
+    }
+    updateBalanceLoteCompra(idProveedor, lote, compra) {
+        this.getBalanceLote(idProveedor, lote);
+        let local = this.balanceLoteCompra;
+        local = (local + compra);
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+            .update({
+                comprasLote: local
+            });
+    }
+    updateBalanceLoteAnt(idProveedor, lote, anticipo) {
+        this.getBalanceLote(idProveedor, lote);
+        let local = this.balanceLoteAnts;
+        local = (local + anticipo);
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+            .update({
+                anticiposLote: local
+            });
+    }
 
 }

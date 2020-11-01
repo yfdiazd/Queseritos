@@ -59,9 +59,10 @@ export class CardlistaproveedoresPage implements OnInit {
   // }
 
   async irCardLote(input) {
-    if (this.FB.proveedoresCompraLista.includes(input.id)) {
+    if (this.FB.proveedoresCompraLista.includes(input.id)) { 
       console.log("Se envia el id: ", input.id)
       this.FB.getLotesDelProveedor(input.id);
+
       this.navCtrl.navigateForward(['cardlotes/', input.id]);
     }
     else {
