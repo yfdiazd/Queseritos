@@ -32,8 +32,9 @@
                 </div>
                 <div class="div_fila_2_part_right">
                   <ion-button class="btn_modal" (click)="modalConfirmarPesaje(card)" fill="outline" expand="full" shape="round">
-                    <ion-icon name="bar-chart" color="tertiary"></ion-icon><br>
+                    <ion-icon class="icon" name="bar-chart" color="tertiary"></ion-icon>
                   </ion-button>
+                  <!-- <ion-badge class="badge" slot="end" color="tertiary">33</ion-badge> -->
                 </div>
               </div>
             </div>
@@ -60,11 +61,11 @@
       </ion-item>
       <!-- opción para eliminar registro -->
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="editarModal(lista)">Eliminar</ion-item-option>
+        <ion-item-option color="danger" (click)="eliminarRegistro(card)">Eliminar</ion-item-option>
       </ion-item-options>
       <!-- Opción para editar el registro -->
       <ion-item-options side="start">
-        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
+        <ion-item-option color="warning" (click)="alertEditar(lista)">Editar</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </div>
