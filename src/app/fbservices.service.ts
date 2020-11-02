@@ -630,6 +630,7 @@ export class FBservicesService {
                         this.clientesLista.push(element.val());
                     }
                 });
+                console.log("imprime lista de clientes fb", this.clientesLista);
                 return this.clientesLista;
             });
     }

@@ -6,14 +6,14 @@
     </ion-buttons>
     <ion-title class="titulo">PROVEEDORES</ion-title>
     </ion-toolbar>
-    <ion-searchbar placeholder="Buscar proveedor" (ionChange)="buscar($event)"></ion-searchbar>
+    <ion-searchbar placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>
 <ion-list class="lista">
-  <ion-item *ngFor="let input of FB.proveedoresLista">
+  <ion-item *ngFor="let input of listanombres1">
   <ion-badge slot="start">11</ion-badge>
-  <ion-label class="lista" (click)="irCardLote(input)">{{input.nombre}}</ion-label>
+  <ion-label class="lista" (click)="irCardLote(input)">{{input}}</ion-label>
   <ion-reorder slot="end"></ion-reorder>
   </ion-item>
 </ion-list>
