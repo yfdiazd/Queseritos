@@ -42,9 +42,9 @@ export class DetallelotePage implements OnInit {
     this.provRecibido = idProv;
     this.FB.getPesajeLoteProveedor(idProv, idLote)
     console.log("Se recibe lote: ", this.loteRecibido, this.provRecibido);
-    this.FB.pesajeLoteProveedorLista.forEach(element =>{
+    this.FB.pesajeLoteProveedorLista.forEach(element => {
       console.log("-----------------*-*-*-*- ", element.anticipos);
-      
+
     });
 
     this.traerNombre();
@@ -52,7 +52,7 @@ export class DetallelotePage implements OnInit {
 
 
 
-  
+
   traerNombre() {
     this.nombreProv = [];
     console.log("Nombre prov", this.provRecibido);
@@ -73,11 +73,12 @@ export class DetallelotePage implements OnInit {
     const modal = await this.modalController.create({
       component: CreartruequePage,
       cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
       componentProps: {
         datos: item,
       },
-    });
-    return await modal.present();
+    }); await modal.present();
   }
 
 }

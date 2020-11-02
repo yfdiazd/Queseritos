@@ -14,10 +14,10 @@
 <ion-content>
   <div class="div-principal">
     <div class="info">
-      <p>Peso confirmado</p>
-      <p id="variablePeso">{{sumaPeso}}</p> <label> / {{pesoTotal}}</label>
-      <!-- <h1 id="mensajePeso" *ngIf="mostrarMsgLleno">Ya no puedes llegaste al limite</h1> -->
-
+      <p class="p">Peso confirmado:</p>
+      <h3 class="h3">{{FB.sumapesoConfirmado}}<span>kg de</span> {{pesoTotal}}<span>Kg.</span></h3>
+      <p class="p">Valor calculado:</p>
+      <h3 class="h3">{{FB.saldoPesoConfirmado | currency:'USD':true: '2.0-0'}}</h3>
     </div>
   </div>
   <div class="div_tabla">
@@ -30,29 +30,22 @@
         <th class="th4">Valor Total</th>
       </thead>
       <tbody class="tbody">
-        <tr class="tr" *ngFor="let lista of FB.pesajeConfirmadoLista">
-          <td class="td1">
-            <label (ngModel)="numbulto">{{lista.nombreEstadoQueso}}</label>
-          </td>
-          <td class="td2">
-            <label (ngModel)="peso">{{lista.cantidadEstado}}</label>
-          </td>
-          <td class="td3">
-            <label (ngModel)="numbulto">{{lista.costoKilo | currency:'USD':true: '2.0-0'}}</label>
-          </td>
-          <td class="td4">
-            <label (ngModel)="numbulto">{{lista.costoTotalEstado | currency:'USD':true: '2.0-0'}}</label>
-          </td>
-          <td class="td4">
-            <div class="div_toggle">
-              <ion-chip class="btn-remove" (click)="removeRegister()">
-                <ion-icon name="close" color="danger"></ion-icon>
-              </ion-chip>
-            </div>
-          </td>
+        <tr class="tr">
         </tr>
       </tbody>
     </table>
+    <ion-item-sliding class="slider" *ngFor="let lista of FB.pesajeConfirmadoLista">
+      <ion-item class="item">
+        <label class="td1" (ngModel)="numbulto">{{lista.nombreEstadoQueso}}</label>
+        <label class="td2" (ngModel)="peso">{{lista.cantidadEstado}}</label>
+        <label class="td3" (ngModel)="numbulto">{{lista.costoKilo | currency:'USD':true: '2.0-0'}}</label>
+        <label class="td4" (ngModel)="numbulto">{{lista.costoTotalEstado | currency:'USD':true: '2.0-0'}}</label>
+      </ion-item>
+      <ion-item-options class="item-opt" side="end">
+        <ion-item-option color="danger" (click)="removeRegister(lista)">Eliminar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
     <!-- <div class="div_toggle">
         <ion-chip class="btn-add" (click)="agregarBultoLista()">
           <ion-icon name="add" color="success"></ion-icon>

@@ -9,30 +9,37 @@
 
 <ion-content>
   <div class="div-formulario">
-    <p>Peso disponible {{pesoDisponible}}</p>
-    <p class="p-title">Estado de queso:</p>
-    <ion-select [(ngModel)]="idEstadoProducto" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
-      multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
-      <ion-select-option [value]="lista.id" *ngFor="let lista of FB.estadoProductoLista">
-        {{lista.descripcion}}
-      </ion-select-option>
-    </ion-select>
-    <p>Peso</p>
-    <input type="number" min="1" max="2"  [(ngModel)]="peso" (ngModelChange)="calcular($event)" />
-    <!-- <ion-item>
+    <div *ngIf="siPuede">
+      <p>Peso disponible {{pesoTotal - suma}}</p>
+      <p class="p-title">Estado de queso:</p>
+      <ion-select [(ngModel)]="idEstadoProducto" placeholder="Seleccione" class="select"
+        [interfaceOptions]="customAlertOptions" interface="alert" multiple="false" ok-text="Aceptar"
+        cancel-text="Cancelar">
+        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.estadoProductoLista">
+          {{lista.descripcion}}
+        </ion-select-option>
+      </ion-select>
+      <p>Peso</p>
+      <input type="number" placeholder="Falta {{pesoTotal - suma}}" [(ngModel)]="peso"
+        (ngModelChange)="calcular($event)" />
+      <!-- <ion-item>
       <ion-label position="floating">Peso</ion-label>
     </ion-item> -->
-    <p>Valor Kilo</p>
-    <input type="number" [(ngModel)]="costoKilo" (ngModelChange)="calcular($event)" />
-    <!-- <ion-item>
+      <p>Valor Kilo</p>
+      <input type="number" placeholder="$" [(ngModel)]="costoKilo" (ngModelChange)="calcular($event)" />
+      <!-- <ion-item>
       <ion-label position="floating">Valor Kilo</ion-label>
     </ion-item> -->
-    <h1 style="color: black;">{{sumado | currency:'USD':true: '2.0-0'}}</h1>
-  </div>
-  <div>
-    <ion-button (click)="guardar()" expand="full">
-      <ion-icon name="save-outline"></ion-icon>
-      Confirmar
-    </ion-button>
+      <h1 style="color: black;">{{sumado | currency:'USD':true: '2.0-0'}}</h1>
+    </div>
+    <div *ngIf="siPuede">
+      <ion-button (click)="guardar()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Confirmar
+      </ion-button>
+    </div>
+    <div>
+      <h2 *ngIf="noPuede"> No puedes confirmar mas pesajes, has llegado al limite.</h2>
+    </div>
   </div>
 </ion-content>

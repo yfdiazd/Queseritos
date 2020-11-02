@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
+import { ActionSheetController, AlertController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 
@@ -14,8 +14,9 @@ export class CardcompradetalladaPage implements OnInit {
     private route: ActivatedRoute,
     private FB: FBservicesService,
     private modalController: ModalController,
-    private actionSheetController: ActionSheetController,
-    private navCtrl: NavController
+    private alertController: AlertController,
+    private navCtrl: NavController,
+
   ) { }
 
   //--------------VARIABLES
@@ -34,11 +35,11 @@ export class CardcompradetalladaPage implements OnInit {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedor = id;
     this.FB.getPesajeCompra(this.idProveedor);
-    this.FB.getProductos();    
+    this.FB.getProductos();
     this.traerTipoQueso();
     this.traerNombre();
     console.log("Se recibe el proveedor: ", this.idProveedor);
-    console.log("pesajeCompraLista", this.FB.pesajeCompraLista)
+    console.log("listaParaElFront", this.listaCompras)
   }
 
   traerTipoQueso() {
@@ -52,13 +53,8 @@ export class CardcompradetalladaPage implements OnInit {
       })
     })
   }
-
+  cantidadConfirmaciones = 0;
   async traerNombre() {
-    const getCompras = await this.FB.getPesajeCompra(this.idProveedor);
-    console.log("getCompras:", getCompras);
-    console.log("pesajeCompraLista,", this.FB.pesajeCompraLista);
-    
-    
     this.nombreProv = [];
     this.FB.proveedoresLista.forEach(element => {
       this.FB.pesajeCompraLista.forEach(element2 => {
@@ -67,10 +63,15 @@ export class CardcompradetalladaPage implements OnInit {
         }
       })
     })
+
+
     this.FB.pesajeCompraLista.forEach(pesaje => {
       this.FB.productosLista.forEach(producto => {
         if (pesaje.idProducto == producto.id) {
+
+
           this.listaCompras.push({
+            anticipos: pesaje.anticipos,
             bultoLista: pesaje.bultoLista,
             costoTotalCompra: pesaje.costoTotalCompra,
             fechaCompra: pesaje.fechaCompra,
@@ -85,6 +86,7 @@ export class CardcompradetalladaPage implements OnInit {
         }
       })
     })
+
   }
 
   async modalConfirmarPesaje(card) {
@@ -100,13 +102,64 @@ export class CardcompradetalladaPage implements OnInit {
         idProv: this.idProveedor
       },
     });
-    console.log("se ele envia el proveedor y el id de compra", card.id, this.idProveedor)
     await modal.present();
   }
 
   irCompra() {
     console.log("Se envia este id proveedor", this.idProveedor);
     this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
+  }
+
+  eliminarRegistro(lista) {
+    if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
+      this.removeRegister(lista);
+    } else {
+      this.alertRemove();
+    }
+  }
+
+  async removeRegister(lista) {   
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Cuidado!',
+      message: 'Esta seguro de eliminar el pesaje?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'SI',
+          handler: () => {
+         
+            this.FB.deletePesajeCompra(this.idProveedor, lista.id);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  async alertRemove() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Restricción',
+      message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
+      buttons: ['Aceptar']
+    });
+    await alert.present();
+  }
+
+  async alertEditar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Esta en desarrollo',
+      message: 'Aún no esta disponible esta opción',
+      buttons: ['Aceptar']
+    });
+    await alert.present();
   }
 
   irInicio() {

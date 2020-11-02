@@ -1006,10 +1006,10 @@ export class FBservicesService {
     }
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
     async getProveedorCompra() {
-
+        const ordenLotes = await this.listaOrdenLotes();
         this.proveedorCompraLista = [];
         this.lastLote = [];
-        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
 
         this.proveedoresLista.forEach(element => {
             firebase
@@ -1041,6 +1041,17 @@ export class FBservicesService {
             });
     }
 
+    deletePesajeCompra(idProveedor, idPesajeCompra) {
+        const ordenLotes = this.listaOrdenLotes();
+        this.lastLote = [];
+        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+            .remove();
+        this.toastOperacionExitosa();
+    }
+
     updateCostoCompra(idProveedor, idPesajeCompra, totalCompra) {
         let totalLocal = 0;
         this.getCostoCompra(idProveedor, idPesajeCompra);
@@ -1070,7 +1081,7 @@ export class FBservicesService {
 
                 });
             });
-            return this.costoCompraTemp;
+        return this.costoCompraTemp;
     }
 
     //Confirmar pesajes
@@ -1081,7 +1092,7 @@ export class FBservicesService {
         this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado);
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString() + "/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
                 codigoLote: this.lastLote.toString(),
@@ -1097,19 +1108,23 @@ export class FBservicesService {
     public pesajeConfirmadoLista: any[];
     public objPesajeConfirmado: any;
     public sumapesoConfirmado: any;
-    getPesajeConfirmado(idProveedor, idPesajeCompra) {
+    public saldoPesoConfirmado: any;
+    async getPesajeConfirmado(idProveedor, idPesajeCompra) {
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
         this.sumapesoConfirmado = 0;
+        const ordenLotes = await this.listaOrdenLotes();
         this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
+        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
+
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra.toString())
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra)
             .on("value", snapshot => {
-                if (snapshot.exists) {
+                if (snapshot.exists()) {
                     this.pesajeConfirmadoLista = [];
                     this.sumapesoConfirmado = 0;
+                    this.saldoPesoConfirmado = 0;
                     snapshot.forEach(element => {
                         this.estadoProductoLista.forEach(estadoPro => {
                             if (estadoPro.id == element.val().idEstadoProducto) {
@@ -1124,15 +1139,25 @@ export class FBservicesService {
                                     idPesajeCompra: element.val().idPesajeCompra
                                 });
                                 this.pesajeConfirmadoLista.push(this.objPesajeConfirmado);
-                                this.objPesajeConfirmado = [];
-                                this.sumapesoConfirmado = this.sumapesoConfirmado + parseInt(element.val().cantidadEstado);
+                                this.objPesajeConfirmado = null;
+                                this.sumapesoConfirmado = (this.sumapesoConfirmado + parseInt(element.val().cantidadEstado));
+                                this.saldoPesoConfirmado = (this.saldoPesoConfirmado + parseInt(element.val().costoTotalEstado))
                             }
                         })
                     });
-                    console.log("este es el peso confirmado 2", this.sumapesoConfirmado);
-                    return this.pesajeConfirmadoLista, this.sumapesoConfirmado;
                 }
+                return this.pesajeConfirmadoLista, this.sumapesoConfirmado;
             });
+    }
+    deletePesajeConfirmado(idProveedor, idPesajeCompra, idPesajeConfirmado) {
+        const ordenLotes = this.listaOrdenLotes();
+        this.lastLote = [];
+        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + idPesajeConfirmado)
+            .remove();
+        this.toastOperacionExitosa();
     }
 
 
@@ -1410,6 +1435,7 @@ export class FBservicesService {
                 }
                 return this.infoCompraUnica;
             });
+        this.getPesajeConfirmado(idProveedor, idCompra);
     }
 
     public anticiposLoteProveedorLista: any[];

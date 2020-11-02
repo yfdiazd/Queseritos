@@ -27,11 +27,22 @@ export class CreartruequePage implements OnInit {
   //--------------------------------------
   @Input() datos;
 
-  ngOnInit() {    
+  ngOnInit() {
     console.log("ME enviarón este compra", this.datos.id)
     console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
   }
+
+  // formateador() {
+  //   document.getElementById("number").onblur = function () {
+  //     this.textontet = parseFloat(this.value.replace(/,/g, ""))
+  //       .toFixed(2)
+  //       .toString()
+  //       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  //     document.getElementById("display").value = this.value.replace(/,/g, "")
+  //   }
+  // }
   // public transform(value: any) {
   //   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
   // }
@@ -50,19 +61,18 @@ export class CreartruequePage implements OnInit {
   imagen: any;
   nombreArchLoaded: string = "Subir Archivo";
   subirImg(event) {
-    this.imagen = event;    
-    this.nombreArchLoaded = (this.imagen.target.files[0].name +" fue cargado 100%");
-    
-    
+    this.imagen = event;
+    this.nombreArchLoaded = (this.imagen.target.files[0].name + " fue cargado 100%");
     return this.imagen, this.nombreArchLoaded;
-
   }
+
+
   guardar() {
 
     console.log("loteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ", this.datos.lote);
     this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
     this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
-
+    this.modalCtrl.dismiss();
 
     // if (this.id1 == undefined) {
     //   console.log("Entro a crear anticipo")
