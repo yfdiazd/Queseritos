@@ -1186,21 +1186,21 @@ export class FBservicesService {
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, lote, idTipoAnticipo, valorAnticipo, archivo) {
         let objAnt: any = null;
         this.idAnticipos = this.idGenerator();
+        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo),
-            objAnt = ({
-                id: this.idAnticipos,
-                fechaAnticipo: this.fechaActual(),
-                idProveedor: idProveedor,
-                idTipoAnticipo: idTipoAnticipo,
-                valorAnticipo: valorAnticipo,
-                archivo: archivo,
-                idPesajeCompra: idPesajeCompra,
-                estado: 1
-            });
+        this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "suma");
+        objAnt = ({
+            id: this.idAnticipos,
+            fechaAnticipo: this.fechaActual(),
+            idProveedor: idProveedor,
+            idTipoAnticipo: idTipoAnticipo,
+            valorAnticipo: valorAnticipo,
+            archivo: archivo,
+            idPesajeCompra: idPesajeCompra,
+            estado: 1
+        });
 
-        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
 
         firebase
             .database()
@@ -1217,11 +1217,11 @@ export class FBservicesService {
             });
 
 
-        this.getPesajeAnt(idProveedor, lote, idPesajeCompra, objAnt, this.idAnticipos);
+        this.getPesajeAnt(idProveedor, lote, idPesajeCompra);
         this.toastOperacionExitosa();
     }
 
-    getPesajeAnt(idProveedor, lote, idPesajeCompra, anticipo, idAnticipo) {
+    getPesajeAnt(idProveedor, lote, idPesajeCompra) {
         let listaAnt: any[] = [];
         firebase
             .database()
@@ -1287,6 +1287,21 @@ export class FBservicesService {
         firebase.storage().ref("anticipos/" + idProveedor + "/" + idAnticipo).put(file.target.files[0]);
 
     }
+    deleteImage(idProveedor, idAnticipo) {
+        firebase.storage().ref("anticipos/" + idProveedor + "/" + idAnticipo).delete();
+    }
+
+    deleteAnticiposApesajeCompra(idProveedor, idPesaje, idAnticipo, valorAnticipo, lote) {
+        this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "resta")
+        this.updateBalanceLoteCompra
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + idAnticipo)
+            .remove();
+
+        this.getPesajeAnt(idProveedor, lote, idPesaje);
+    }
+
 
     public proveedoresCompraLista: any[];
 
@@ -1554,16 +1569,28 @@ export class FBservicesService {
                 });
         }
     }
-    updateBalanceLoteAnt(idProveedor, lote, anticipo) {
-        this.getBalanceLote(idProveedor, lote);
-        let local = this.balanceLoteAnts;
-        local = (local + anticipo);
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
-            .update({
-                anticiposLote: local
-            });
+    updateBalanceLoteAnt(idProveedor, lote, anticipo, accion) {
+        if (accion == "suma") {
+            this.getBalanceLote(idProveedor, lote);
+            let local = this.balanceLoteAnts;
+            local = (local + anticipo);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                    anticiposLote: local
+                });
+        } else if (accion == "resta") {
+            this.getBalanceLote(idProveedor, lote);
+            let local = this.balanceLoteAnts;
+            local = (local - anticipo);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                    anticiposLote: local
+                });
+        }
     }
 
 }
