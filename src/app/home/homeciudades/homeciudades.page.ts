@@ -16,6 +16,7 @@ import { __values } from "tslib";
 })
 export class HomeciudadesPage implements OnInit {
   listanombreciudad: any[]=[];
+  objciudad: any;
   constructor(
     private FB: FBservicesService,
     public alertController: AlertController,
@@ -24,6 +25,8 @@ export class HomeciudadesPage implements OnInit {
     public modalController: ModalController
   ) {
     this.listarnombresciudades();
+    this.FB.ciudadesLista;
+    
     
   }
 
@@ -89,12 +92,15 @@ export class HomeciudadesPage implements OnInit {
 
   listarnombresciudades(){
     this.listanombreciudad = [];
+    this.objciudad=null;
     this.FB.ciudadesLista.forEach(element=>{
-      console.log("imprimo element ciudad", element)
-      this.listanombreciudad.push(element.descripcion)
+      this.objciudad= ({
+        codigo: element.codigo, 
+        descripcion: element.descripcion
+      })
+      this.listanombreciudad.push(this.objciudad);
       
     })
-    console.log("imprime descripción ciudades", this.listanombreciudad)
     return this.listanombreciudad;
   }
   getItems(ev:any){
@@ -105,22 +111,23 @@ export class HomeciudadesPage implements OnInit {
     {
       
       this.listanombreciudad = this.listanombreciudad.filter((item)=>{
-        console.log("imprime return", item )
-        return (item.toLowerCase().indexOf(val.toLowerCase())> -1)
+        return (item.descripcion.toLowerCase().indexOf(val.toLowerCase())> -1)
         
       })
   
     }
-    else{
-      if (val== '' || val == undefined){    
-        return this.listanombreciudad;
+    
+      else if(val== '' || val == undefined)
+      {   
+          this.listanombreciudad= this.FB.ciudadesLista;
+          return this.listanombreciudad;
+      }
         
   
-      }
+      
      
     }
   }
   
    
     
-}

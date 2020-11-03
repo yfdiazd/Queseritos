@@ -2,6 +2,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { formatCurrency, getCurrencySymbol } from '@angular/common';
 import { FBservicesService } from '../../fbservices.service';
 
 
@@ -13,8 +14,7 @@ import { FBservicesService } from '../../fbservices.service';
   styleUrls: ['./creartrueque.page.scss'],
 })
 export class CreartruequePage implements OnInit {
-
-
+  cantidad: string;
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -39,6 +39,7 @@ export class CreartruequePage implements OnInit {
     console.log("ME enviarón este compra", this.datos.id)
     console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
+
 
   }
 
