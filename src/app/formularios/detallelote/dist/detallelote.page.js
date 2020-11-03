@@ -47,11 +47,11 @@ var core_1 = require("@angular/core");
 var creartrueque_page_1 = require("../creartrueque/creartrueque.page");
 var vistaimg_page_1 = require("./vistaimg/vistaimg.page");
 var DetallelotePage = /** @class */ (function () {
-    function DetallelotePage(route, FB, modalController, popoverController, navCtrl) {
+    function DetallelotePage(route, FB, modalController, alertController, navCtrl) {
         this.route = route;
         this.FB = FB;
         this.modalController = modalController;
-        this.popoverController = popoverController;
+        this.alertController = alertController;
         this.navCtrl = navCtrl;
         this.Lotenum = "17-10-2020-L1";
         this.proveedor = "fernanda";
@@ -62,11 +62,6 @@ var DetallelotePage = /** @class */ (function () {
         var idProv = this.route.snapshot.paramMap.get("prov");
         this.loteRecibido = idLote;
         this.provRecibido = idProv;
-        this.FB.getPesajeLoteProveedor(idProv, idLote);
-        console.log("Se recibe lote: ", this.loteRecibido, this.provRecibido);
-        this.FB.pesajeLoteProveedorLista.forEach(function (element) {
-            console.log("-----------------*-*-*-*- ", element.anticipos);
-        });
         this.traerNombre();
         this.generarData();
     };
@@ -105,7 +100,7 @@ var DetallelotePage = /** @class */ (function () {
                                 }
                             });
                         });
-                        return [2 /*return*/];
+                        return [2 /*return*/, this.dataFront];
                 }
             });
         });
@@ -147,6 +142,46 @@ var DetallelotePage = /** @class */ (function () {
         // this.navCtrl.navigateForward(['creartrueque/', item.id])
         this.irHomeAnticipo(item);
     };
+    DetallelotePage.prototype.removeRegister = function (lista) {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Cuidado!',
+                            message: 'Esta seguro de eliminar el anticipo?',
+                            buttons: [
+                                {
+                                    text: 'Cancelar',
+                                    role: 'cancel',
+                                    cssClass: 'secondary',
+                                    handler: function (blah) {
+                                        console.log('Confirm Cancel: blah');
+                                    }
+                                }, {
+                                    text: 'SI',
+                                    handler: function () {
+                                        console.log('Confirm Okay', lista);
+                                        _this.FB.deleteAnticiposApesajeCompra(lista.idProveedor, lista.idPesajeCompra, lista.id, lista.valorAnticipo, _this.loteRecibido);
+                                        _this.FB.getPesajeLoteProveedor(_this.provRecibido, _this.loteRecibido);
+                                        _this.FB.getAnticiposLoteProveedor(_this.provRecibido, _this.loteRecibido);
+                                        _this.generarData();
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     DetallelotePage.prototype.irHomeAnticipo = function (item) {
         return __awaiter(this, void 0, void 0, function () {
             var modal;
@@ -166,10 +201,20 @@ var DetallelotePage = /** @class */ (function () {
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
+                        this.generarData();
                         return [2 /*return*/];
                 }
             });
         });
+    };
+    DetallelotePage.prototype.irInicio = function () {
+        this.navCtrl.navigateBack(["main-menu"]);
+    };
+    DetallelotePage.prototype.irCompras = function () {
+        this.navCtrl.navigateBack(["cardcompras"]);
+    };
+    DetallelotePage.prototype.irEstado = function () {
+        this.navCtrl.navigateBack(["cardlistaproveedores"]);
     };
     DetallelotePage = __decorate([
         core_1.Component({

@@ -23,7 +23,7 @@ export class CardlistaproveedoresPage implements OnInit {
     private navCtrl: NavController,
     private alertController: AlertController,
     private router: Router,
-    private route: ActivatedRoute
+    private route : ActivatedRoute
   ) { }
 
   listanombres: any[];
@@ -33,38 +33,48 @@ export class CardlistaproveedoresPage implements OnInit {
   ngOnInit() {
     this.FB.getProveedoresCompra();
     this.listarproveedores();
+    this.listadoproveedores();
   }
 
   listarproveedores() {
     this.listanombres = [];
     this.FB.proveedoresLista.forEach(proveedor => {
-      this.listanombres.push({ nombres: proveedor.nombre + " " + proveedor.apellido, id: proveedor.id, cantidad: 0 });
+      this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: 0 });
     })
-    return this.listanombres;
+  }
+
+  listadoproveedores(){
+    this.listanombres1 =[];
+    this.FB.proveedoresLista.forEach(element =>{
+      this.listanombres1.push((element.nombre + " " + element.apellido))
+
+    })
+    return this.listanombres1;
+
   }
 
 
-
-
   async irCardLote(input) {
-    this.FB.proveedoresLista.forEach(element => {
-      if (element.nombre + " " + element.apellido == input.nombres) {
-        if (this.FB.proveedoresCompraLista.includes(element.id)) {
+    this.FB.proveedoresLista.forEach(element=>{
+      if(element.nombre + " " + element.apellido == input)
+      {
+        if (this.FB.proveedoresCompraLista.includes(element.id)) { 
           console.log("Se envia el id: ", element.id)
           this.FB.getLotesDelProveedor(element.id);
-
+    
           this.navCtrl.navigateForward(['cardlotes/', element.id]);
         }
         else {
           console.log("Se envia a crear el id: ", element.id)
           this.presentAlertConfirm(element.id);
         }
+
       }
     })
-
-  }
-
-
+    
+  } 
+   
+  
 
   async presentAlertConfirm(idProveedor) {
     console.log("Esto me envia el proveedor seleccionado", idProveedor)
@@ -95,24 +105,25 @@ export class CardlistaproveedoresPage implements OnInit {
     await alert.present();
   }
 
-  getItems(ev: any) {
+  getItems(ev:any){
     this.listanombres1;
     let val = ev.target.value;
-    if (val && val.trim() != '') {
-
-      this.listanombres1 = this.listanombres1.filter((item) => {
-        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1)
-
+    if (val && val.trim() != '')
+    {
+      
+      this.listanombres1 = this.listanombres1.filter((item)=>{
+        return (item.toLowerCase().indexOf(val.toLowerCase())> -1)
+        
       })
-
+  
     }
-    else {
-      if (val == '' || val == undefined) {
+    else{
+      if (val== '' || val == undefined){    
         return this.listadoproveedores();
-
-
+        
+  
       }
-
+     
     }
   }
 

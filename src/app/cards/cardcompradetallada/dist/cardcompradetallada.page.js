@@ -85,6 +85,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.nombreProv = [];
+                this.listaCompras = [];
+                console.log("Lista comporassasssssssssssssss:", this.listaCompras);
                 this.FB.proveedoresLista.forEach(function (element) {
                     _this.FB.pesajeCompraLista.forEach(function (element2) {
                         if (element.id == element2.idProveedor) {
@@ -177,6 +179,9 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                     text: 'SI',
                                     handler: function () {
                                         _this.FB.deletePesajeCompra(_this.idProveedor, lista.id);
+                                        _this.FB.getPesajeCompra(_this.idProveedor);
+                                        _this.traerTipoQueso();
+                                        _this.traerNombre();
                                     }
                                 }
                             ]

@@ -77,7 +77,7 @@ export class ConfirmarpesajePage implements OnInit {
     }
     else {
       this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado);
-      this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado);
+      this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado, "suma");
       this.FB.getPesajeConfirmado(this.idProv, this.idCompra);
       this.popover.dismiss();
     }

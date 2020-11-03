@@ -99,10 +99,10 @@ export class CreartruequePage implements OnInit {
 
 
   guardar() {
-
-    console.log("loteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ", this.datos.lote);
     this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
     this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
+    this.FB.getPesajeLoteProveedor(this.datos.idProveedor, this.datos.lote);
+    this.FB.getAnticiposLoteProveedor(this.datos.idProveedor, this.datos.lote);
     this.modalCtrl.dismiss();
   }
 

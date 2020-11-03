@@ -21,7 +21,7 @@
       <ion-label class="labels">Total Compras: {{item.compra}}</ion-label>
       <ion-label class="labels">Total Anticipos: {{item.anticipo}}</ion-label>
       <ion-icon slot="start" name="chevron-forward"></ion-icon>
-      <ion-badge slot="end">{{item.cantAnticipos}}</ion-badge>
+      <ion-badge slot="end">0</ion-badge>
     </ion-card>
   </div>
   <ion-button (click)="saldarDeuda()" expand="full">
@@ -29,3 +29,25 @@
     Saldar Deuda
   </ion-button>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-tabs class="">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="irInicio()">
+          <ion-icon name="home"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irCompras()">
+          <ion-icon name="cart"></ion-icon>
+          <ion-label>Compras</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irEstado()">
+          <ion-icon name="podium"></ion-icon>
+          <ion-label>Estado</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+</ion-footer>

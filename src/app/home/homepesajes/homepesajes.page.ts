@@ -40,7 +40,7 @@ export class HomepesajesPage implements OnInit {
     this.traerPeso();
     this.sumarPesos();
   }
-  
+
   async traerPeso() {
     this.pesoTotal = 0;
     let valorPeso = await this.FB.infoCompraUnica;
@@ -73,10 +73,7 @@ export class HomepesajesPage implements OnInit {
     await popover.present();
     this.sumarPesos();
     this.traerPeso();
-  }
-  guardar() {
-
-  }
+  }  
   volver() {
     this.modalController.dismiss();
   }
@@ -98,8 +95,8 @@ export class HomepesajesPage implements OnInit {
         }, {
           text: 'SI',
           handler: () => {
-            console.log('Confirm Okay');
-            this.FB.deletePesajeConfirmado(this.idProv, this.idCompra, lista.id); 
+            console.log('Confirm Okay', lista);
+            this.FB.deletePesajeConfirmado(this.idProv, this.idCompra, lista.id, lista.costoTotalEstado);
             this.FB.getInfoCompra(this.idProv, this.idCompra)
             this.FB.getPesajeConfirmado(this.idProv, this.idCompra);
           }

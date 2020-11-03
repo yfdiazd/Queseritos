@@ -1073,6 +1073,7 @@ var FBservicesService = /** @class */ (function () {
                             .database()
                             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
                             .on("value", function (snapshot) {
+                            _this.pesajeCompraLista = [];
                             snapshot.forEach(function (element) {
                                 _this.pesajeCompraLista.push(element.val());
                             });
@@ -1093,17 +1094,33 @@ var FBservicesService = /** @class */ (function () {
             .remove();
         this.toastOperacionExitosa();
     };
-    FBservicesService.prototype.updateCostoCompra = function (idProveedor, idPesajeCompra, totalCompra) {
-        var totalLocal = 0;
-        this.getCostoCompra(idProveedor, idPesajeCompra);
-        totalLocal = this.costoCompraTemp;
-        totalLocal = (totalLocal + totalCompra);
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
-            .update({
-            costoTotalCompra: totalLocal
-        });
+    FBservicesService.prototype.updateCostoCompra = function (idProveedor, idPesajeCompra, totalCompra, accion) {
+        if (accion == "suma") {
+            var totalLocal = 0;
+            this.getCostoCompra(idProveedor, idPesajeCompra);
+            totalLocal = this.costoCompraTemp;
+            totalLocal = (totalLocal + totalCompra);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .update({
+                costoTotalCompra: totalLocal
+            });
+        }
+        else if (accion == "resta") {
+            console.log("Vamos a RESTARRRRRRRRRRRRR");
+            var totalLocal = 0;
+            this.getCostoCompra(idProveedor, idPesajeCompra);
+            totalLocal = this.costoCompraTemp;
+            totalLocal = (totalLocal - totalCompra);
+            console.log("Restassssssssssssss ", totalLocal);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .update({
+                costoTotalCompra: totalLocal
+            });
+        }
     };
     FBservicesService.prototype.getCostoCompra = function (idProveedor, idPesajeCompra) {
         var _this = this;
@@ -1126,7 +1143,7 @@ var FBservicesService = /** @class */ (function () {
         this.idConfirmarPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado);
+        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado, "suma");
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
@@ -1193,10 +1210,12 @@ var FBservicesService = /** @class */ (function () {
             });
         });
     };
-    FBservicesService.prototype.deletePesajeConfirmado = function (idProveedor, idPesajeCompra, idPesajeConfirmado) {
+    FBservicesService.prototype.deletePesajeConfirmado = function (idProveedor, idPesajeCompra, idPesajeConfirmado, valor) {
         var ordenLotes = this.listaOrdenLotes();
         this.lastLote = [];
         this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
+        this.updateCostoCompra(idProveedor, idPesajeCompra, valor, "resta");
+        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), valor, "resta");
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + idPesajeConfirmado)
@@ -1207,20 +1226,10 @@ var FBservicesService = /** @class */ (function () {
     FBservicesService.prototype.registrarAnticiposApesajeCompra = function (idProveedor, idPesajeCompra, lote, idTipoAnticipo, valorAnticipo, archivo) {
         var objAnt = null;
         this.idAnticipos = this.idGenerator();
+        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo),
-            objAnt = ({
-                id: this.idAnticipos,
-                fechaAnticipo: this.fechaActual(),
-                idProveedor: idProveedor,
-                nombreAnticipo: idTipoAnticipo,
-                valorAnticipo: valorAnticipo,
-                archivo: archivo,
-                idPesajeCompra: idPesajeCompra,
-                estado: 1
-            });
-        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+        this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "suma");
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + this.idAnticipos)
@@ -1234,10 +1243,12 @@ var FBservicesService = /** @class */ (function () {
             idPesajeCompra: idPesajeCompra,
             estado: 1
         });
-        this.getPesajeAnt(idProveedor, lote, idPesajeCompra, objAnt, this.idAnticipos);
+        if (idPesajeCompra !== 0) {
+            this.getPesajeAnt(idProveedor, lote, idPesajeCompra);
+        }
         this.toastOperacionExitosa();
     };
-    FBservicesService.prototype.getPesajeAnt = function (idProveedor, lote, idPesajeCompra, anticipo, idAnticipo) {
+    FBservicesService.prototype.getPesajeAnt = function (idProveedor, lote, idPesajeCompra) {
         var listaAnt = [];
         firebase
             .database()
@@ -1278,6 +1289,7 @@ var FBservicesService = /** @class */ (function () {
                                 .database()
                                 .ref("usuario/compras/" + element.id + "/" + _this.lastLote.toString() + "/anticipos")
                                 .on('value', function (snapshot) {
+                                _this.anticipoCompraLista = [];
                                 if (snapshot.exists && snapshot.val() !== null) {
                                     _this.anticipoCompraLista.push(snapshot.val());
                                 }
@@ -1304,6 +1316,20 @@ var FBservicesService = /** @class */ (function () {
     };
     FBservicesService.prototype.upLoadImage = function (idProveedor, idAnticipo, file) {
         firebase.storage().ref("anticipos/" + idProveedor + "/" + idAnticipo).put(file.target.files[0]);
+    };
+    FBservicesService.prototype.deleteImage = function (idProveedor, idAnticipo) {
+        firebase.storage().ref("anticipos/" + idProveedor + "/" + idAnticipo)["delete"]();
+    };
+    FBservicesService.prototype.deleteAnticiposApesajeCompra = function (idProveedor, idPesaje, idAnticipo, valorAnticipo, lote) {
+        this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "resta");
+        this.updateBalanceLoteCompra;
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + idAnticipo)
+            .remove();
+        if (idAnticipo !== 0) {
+            this.getPesajeAnt(idProveedor, lote, idPesaje);
+        }
     };
     FBservicesService.prototype.getProveedoresCompra = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -1334,12 +1360,13 @@ var FBservicesService = /** @class */ (function () {
                     .ref()
                     .child("usuario/compras/" + idProveedor)
                     .on("value", function (snapshot) {
+                    _this.listaLotesDelProveedor = [];
+                    _this.objLotesDelProveedor = null;
                     snapshot.forEach(function (element) {
                         _this.objLotesDelProveedor = ({
                             lote: element.key,
                             compra: element.val().balance.comprasLote,
-                            anticipo: element.val().balance.anticiposLote,
-                            cantAnticipos: element.val().anticipos.length
+                            anticipo: element.val().balance.anticiposLote
                         });
                         _this.listaLotesDelProveedor.push(_this.objLotesDelProveedor);
                     });
@@ -1528,27 +1555,53 @@ var FBservicesService = /** @class */ (function () {
         });
         return this.balanceLoteCompra, this.balanceLoteAnts;
     };
-    FBservicesService.prototype.updateBalanceLoteCompra = function (idProveedor, lote, compra) {
-        this.getBalanceLote(idProveedor, lote);
-        var local = this.balanceLoteCompra;
-        local = (local + compra);
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
-            .update({
-            comprasLote: local
-        });
+    FBservicesService.prototype.updateBalanceLoteCompra = function (idProveedor, lote, compra, accion) {
+        if (accion == "suma") {
+            this.getBalanceLote(idProveedor, lote);
+            var local = this.balanceLoteCompra;
+            local = (local + compra);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                comprasLote: local
+            });
+        }
+        else if (accion == "resta") {
+            this.getBalanceLote(idProveedor, lote);
+            var local = this.balanceLoteCompra;
+            local = (local - compra);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                comprasLote: local
+            });
+        }
     };
-    FBservicesService.prototype.updateBalanceLoteAnt = function (idProveedor, lote, anticipo) {
-        this.getBalanceLote(idProveedor, lote);
-        var local = this.balanceLoteAnts;
-        local = (local + anticipo);
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
-            .update({
-            anticiposLote: local
-        });
+    FBservicesService.prototype.updateBalanceLoteAnt = function (idProveedor, lote, anticipo, accion) {
+        if (accion == "suma") {
+            this.getBalanceLote(idProveedor, lote);
+            var local = this.balanceLoteAnts;
+            local = (local + anticipo);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                anticiposLote: local
+            });
+        }
+        else if (accion == "resta") {
+            this.getBalanceLote(idProveedor, lote);
+            var local = this.balanceLoteAnts;
+            local = (local - anticipo);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                anticiposLote: local
+            });
+        }
     };
     FBservicesService = __decorate([
         core_1.Injectable({

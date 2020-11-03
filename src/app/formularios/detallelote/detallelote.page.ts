@@ -22,7 +22,7 @@ export class DetallelotePage implements OnInit {
     private route: ActivatedRoute,
     private FB: FBservicesService,
     private modalController: ModalController,
-    private popoverController: PopoverController,
+    private alertController: AlertController,
     private navCtrl: NavController
   ) {
 
@@ -41,13 +41,6 @@ export class DetallelotePage implements OnInit {
     let idProv = this.route.snapshot.paramMap.get("prov");
     this.loteRecibido = idLote;
     this.provRecibido = idProv;
-    this.FB.getPesajeLoteProveedor(idProv, idLote)
-    console.log("Se recibe lote: ", this.loteRecibido, this.provRecibido);
-    this.FB.pesajeLoteProveedorLista.forEach(element => {
-      console.log("-----------------*-*-*-*- ", element.anticipos);
-
-    });
-
     this.traerNombre();
     this.generarData();
   }
@@ -55,12 +48,11 @@ export class DetallelotePage implements OnInit {
   dataFront: any;
   async generarData() {
     this.dataFront = [];
-    const lista = await this.FB.pesajeLoteProveedorLista;
-    const productos = await this.FB.productosLista;
+    let lista = await this.FB.pesajeLoteProveedorLista;
+    let productos = await this.FB.productosLista;
     console.log("lista obtenida", lista);
     lista.forEach(compra => {
-      console.log("Esto es los anticipos: ", compra.anticipos,);
-
+      console.log("Esto es los anticipos: ", compra.anticipos);
       productos.forEach(producto => {
         if (compra.idProducto == producto.id) {
           this.dataFront.push({
@@ -78,8 +70,8 @@ export class DetallelotePage implements OnInit {
           })
         }
       })
-
     })
+    return this.dataFront;
 
   }
   async verImagen(data) {
@@ -109,6 +101,34 @@ export class DetallelotePage implements OnInit {
     // this.navCtrl.navigateForward(['creartrueque/', item.id])
     this.irHomeAnticipo(item);
   }
+  async removeRegister(lista) {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Cuidado!',
+      message: 'Esta seguro de eliminar el anticipo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'SI',
+          handler: () => {
+            console.log('Confirm Okay', lista);
+            this.FB.deleteAnticiposApesajeCompra(lista.idProveedor, lista.idPesajeCompra, lista.id, lista.valorAnticipo, this.loteRecibido);
+            this.FB.getPesajeLoteProveedor(this.provRecibido, this.loteRecibido);
+            this.FB.getAnticiposLoteProveedor(this.provRecibido, this.loteRecibido);
+            this.generarData();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 
   async irHomeAnticipo(item) {
     const modal = await this.modalController.create({
@@ -119,7 +139,18 @@ export class DetallelotePage implements OnInit {
       componentProps: {
         datos: item,
       },
-    }); await modal.present();
+    })
+    await modal.present();
+    this.generarData();
+  }
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 
 }

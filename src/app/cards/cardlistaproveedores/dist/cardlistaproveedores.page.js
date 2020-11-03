@@ -58,21 +58,29 @@ var CardlistaproveedoresPage = /** @class */ (function () {
     CardlistaproveedoresPage.prototype.ngOnInit = function () {
         this.FB.getProveedoresCompra();
         this.listarproveedores();
+        this.listadoproveedores();
     };
     CardlistaproveedoresPage.prototype.listarproveedores = function () {
         var _this = this;
         this.listanombres = [];
         this.FB.proveedoresLista.forEach(function (proveedor) {
-            _this.listanombres.push({ nombres: proveedor.nombre + " " + proveedor.apellido, id: proveedor.id, cantidad: 0 });
+            _this.listanombres.push({ nombres: proveedor.nombre, id: proveedor.id, cantidad: 0 });
         });
-        return this.listanombres;
+    };
+    CardlistaproveedoresPage.prototype.listadoproveedores = function () {
+        var _this = this;
+        this.listanombres1 = [];
+        this.FB.proveedoresLista.forEach(function (element) {
+            _this.listanombres1.push((element.nombre + " " + element.apellido));
+        });
+        return this.listanombres1;
     };
     CardlistaproveedoresPage.prototype.irCardLote = function (input) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.FB.proveedoresLista.forEach(function (element) {
-                    if (element.nombre + " " + element.apellido == input.nombres) {
+                    if (element.nombre + " " + element.apellido == input) {
                         if (_this.FB.proveedoresCompraLista.includes(element.id)) {
                             console.log("Se envia el id: ", element.id);
                             _this.FB.getLotesDelProveedor(element.id);
