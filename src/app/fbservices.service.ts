@@ -1190,18 +1190,6 @@ export class FBservicesService {
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "suma");
-        objAnt = ({
-            id: this.idAnticipos,
-            fechaAnticipo: this.fechaActual(),
-            idProveedor: idProveedor,
-            idTipoAnticipo: idTipoAnticipo,
-            valorAnticipo: valorAnticipo,
-            archivo: archivo,
-            idPesajeCompra: idPesajeCompra,
-            estado: 1
-        });
-
-
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + this.idAnticipos)
@@ -1215,9 +1203,12 @@ export class FBservicesService {
                 idPesajeCompra: idPesajeCompra,
                 estado: 1
             });
+        if (idPesajeCompra !== 0) {
+            this.getPesajeAnt(idProveedor, lote, idPesajeCompra);
+        }
 
 
-        this.getPesajeAnt(idProveedor, lote, idPesajeCompra);
+
         this.toastOperacionExitosa();
     }
 
@@ -1298,8 +1289,10 @@ export class FBservicesService {
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + idAnticipo)
             .remove();
+        if (idAnticipo !== 0) {
+            this.getPesajeAnt(idProveedor, lote, idPesaje);
 
-        this.getPesajeAnt(idProveedor, lote, idPesaje);
+        }
     }
 
 
