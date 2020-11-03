@@ -1113,6 +1113,7 @@ export class FBservicesService {
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
         this.sumapesoConfirmado = 0;
+        this.saldoPesoConfirmado = 0;
         const ordenLotes = await this.listaOrdenLotes();
         this.lastLote = [];
         this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
@@ -1141,7 +1142,7 @@ export class FBservicesService {
                                 this.pesajeConfirmadoLista.push(this.objPesajeConfirmado);
                                 this.objPesajeConfirmado = null;
                                 this.sumapesoConfirmado = (this.sumapesoConfirmado + parseInt(element.val().cantidadEstado));
-                                this.saldoPesoConfirmado = (this.saldoPesoConfirmado + parseInt(element.val().costoTotalEstado))
+                                this.saldoPesoConfirmado = (this.saldoPesoConfirmado + parseInt(element.val().costoTotalEstado));
                             }
                         })
                     });
