@@ -63,8 +63,6 @@ export class CardcompradetalladaPage implements OnInit {
         }
       })
     })
-
-
     this.FB.pesajeCompraLista.forEach(pesaje => {
       this.FB.productosLista.forEach(producto => {
         if (pesaje.idProducto == producto.id) {

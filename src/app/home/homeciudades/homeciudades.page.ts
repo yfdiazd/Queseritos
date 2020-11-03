@@ -15,13 +15,17 @@ import { __values } from "tslib";
   styleUrls: ["./homeciudades.page.scss"],
 })
 export class HomeciudadesPage implements OnInit {
+  listanombreciudad: any[]=[];
   constructor(
     private FB: FBservicesService,
     public alertController: AlertController,
     private router: Router,
     private navCtrl: NavController,
     public modalController: ModalController
-  ) {}
+  ) {
+    this.listarnombresciudades();
+    
+  }
 
   codigoCiudad: string;
   descripcionCiudad: string;
@@ -54,6 +58,8 @@ export class HomeciudadesPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
       header: "Espera",
+      keyboardClose: false,
+      backdropDismiss: false,
       message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
       buttons: [
         {
@@ -80,4 +86,41 @@ export class HomeciudadesPage implements OnInit {
   async cerrar(){
     this.navCtrl.navigateForward('main-menu');
   }
+
+  listarnombresciudades(){
+    this.listanombreciudad = [];
+    this.FB.ciudadesLista.forEach(element=>{
+      console.log("imprimo element ciudad", element)
+      this.listanombreciudad.push(element.descripcion)
+      
+    })
+    console.log("imprime descripción ciudades", this.listanombreciudad)
+    return this.listanombreciudad;
+  }
+  getItems(ev:any){
+    this.listanombreciudad;
+    let val = ev.target.value;
+    console.log("imprime val", val)
+    if (val && val.trim() != '')
+    {
+      
+      this.listanombreciudad = this.listanombreciudad.filter((item)=>{
+        console.log("imprime return", item )
+        return (item.toLowerCase().indexOf(val.toLowerCase())> -1)
+        
+      })
+  
+    }
+    else{
+      if (val== '' || val == undefined){    
+        return this.listanombreciudad;
+        
+  
+      }
+     
+    }
+  }
+  
+   
+    
 }

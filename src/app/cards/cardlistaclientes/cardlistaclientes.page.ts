@@ -17,6 +17,7 @@ export class CardlistaclientesPage implements OnInit {
   nombres:string;
   cont:number =0;
   items:any;
+  objlistanombres: any
   constructor(
     private modalCtrl: ModalController,
     private menu: MenuController,
@@ -27,54 +28,58 @@ export class CardlistaclientesPage implements OnInit {
 
   ) { 
     this.listarnombresclientes();
-    this.initializeItems();
+  
   }
 
   ngOnInit() {
     
   }
-initializeItems(){
-  this.items = this.listanombres;
-  console.log("imprime el items", this.items)
 
-}
 
 getItems(ev:any){
+  this.listanombres;
   let val = ev.target.value;
   if (val && val.trim() != '')
   {
-    console.log("imprime valor de val", val)
-    this.items = this.items.filter((item)=>{
-      console.log("imprime valor de item", item)
+    
+    this.listanombres = this.listanombres.filter((item)=>{
       return (item.toLowerCase().indexOf(val.toLowerCase())> -1)
-      console.log("retorna item y val", item)
+      
     })
 
+  }
+  else{
+    if (val== '' || val == undefined){    
+      return this.listarnombresclientes();
+      
+
+    }
+   
   }
 }
 
   listarnombresclientes(){
     this.listanombres = [];
     this.FB.clientesLista.forEach(element=>{
-      this.listanombres.push(element.nombres)
-      //console.log("imprimiendo nombres", element)
+      this.listanombres.push((element.nombres + " " + element.apellidos))
+      
     })
+    return this.listanombres;
   }
   
 
   irCardListaClientes(input){
-
-    this.navCtrl.navigateForward(['crearenviocliente/', input.id]);
-    console.log("se envia id cliente", input.id)
+      this.FB.clientesLista.forEach(element=>{
+      if(element.nombres + " " + element.apellidos == input)
+      {
+        this.navCtrl.navigateForward(['crearenviocliente/', element.id]);
+      }
+      
+      
+    })
+    
+    
   }
-
-  // reorder(event) {
-  //   console.log(event);
-  //   const itemMover = this.FB.clientesLista.splice(event.detail.from, 1)[0];
-  //   this.FB.clientesLista.splice(event.detail.to, 0, itemMover);
-  //   event.detail.complete();
-  // }
- 
 
 
 }

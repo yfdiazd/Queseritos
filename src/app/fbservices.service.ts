@@ -630,6 +630,7 @@ export class FBservicesService {
                         this.clientesLista.push(element.val());
                     }
                 });
+                console.log("imprime lista de clientes fb", this.clientesLista);
                 return this.clientesLista;
             });
     }
@@ -1174,7 +1175,7 @@ export class FBservicesService {
                 id: this.idAnticipos,
                 fechaAnticipo: this.fechaActual(),
                 idProveedor: idProveedor,
-                idTipoAnticipo: idTipoAnticipo,
+                nombreAnticipo: idTipoAnticipo,
                 valorAnticipo: valorAnticipo,
                 archivo: archivo,
                 idPesajeCompra: idPesajeCompra,
@@ -1249,7 +1250,7 @@ export class FBservicesService {
         return this.anticipoCompraLista;
     }
 
-    img: any;
+    public img: any;
     getFoto(idProveedor, idAnticipo) {
         this.img = null;
         firebase
@@ -1259,8 +1260,8 @@ export class FBservicesService {
                 console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
                 this.img = imgUr;
                 console.log("asdasdasdasdasdasd asda sd asd asd ", this.img);
-                return this.img;
 
+                return this.img;
             });
     }
     upLoadImage(idProveedor, idAnticipo, file) {
@@ -1295,14 +1296,11 @@ export class FBservicesService {
             .child("usuario/compras/" + idProveedor)
             .on("value", snapshot => {
                 snapshot.forEach(element => {
-                    console.log("Elllll............. ", element.val());
-                    console.log("Elllll222............. ", element.val().balance.anticiposLote);
-                    console.log("Elllll222............. ", element.val().balance.comprasLote);
-
                     this.objLotesDelProveedor = ({
                         lote: element.key,
                         compra: element.val().balance.comprasLote,
-                        anticipo: element.val().balance.anticiposLote
+                        anticipo: element.val().balance.anticiposLote,
+                        cantAnticipos: element.val().anticipos.length
                     })
                     this.listaLotesDelProveedor.push(this.objLotesDelProveedor);
                 });
@@ -1449,7 +1447,6 @@ export class FBservicesService {
             .on("value", snaptshot => {
                 if (snaptshot.exists) {
                     snaptshot.forEach(element => {
-                        console.log("antssssssssssssssss s s ", element.val())
                         this.anticiposLoteProveedorLista.push(element.val());
                     });
                 }
@@ -1466,7 +1463,6 @@ export class FBservicesService {
             .on("value", snapshot => {
                 if (snapshot.exists) {
                     snapshot.forEach(element => {
-                        console.log("copppppspspsps ", element.val());
                         this.pesajeLoteProveedorLista.push(element.val());
                     });
                 }

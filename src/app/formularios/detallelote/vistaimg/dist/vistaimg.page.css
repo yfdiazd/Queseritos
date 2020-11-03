@@ -1,0 +1,13 @@
+.btn_volver {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35px;
+  height: 35px;
+  z-index: 30;
+}
+
+.img {
+  margin: auto;
+  z-index: 20;
+}

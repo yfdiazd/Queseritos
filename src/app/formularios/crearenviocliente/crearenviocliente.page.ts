@@ -54,6 +54,8 @@ export class CrearenvioclientePage implements OnInit {
   async presentAlertRadio() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
       header: 'Crear Pesada ' + (this.listaPesada.length + 1),
       inputs: [
         {

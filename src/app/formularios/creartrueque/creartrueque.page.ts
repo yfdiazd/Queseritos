@@ -1,8 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
-
+import { Router } from '@angular/router';
 import { FBservicesService } from '../../fbservices.service';
+
+
+
 
 @Component({
   selector: 'app-creartrueque',
@@ -11,11 +14,13 @@ import { FBservicesService } from '../../fbservices.service';
 })
 export class CreartruequePage implements OnInit {
 
+
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
   // ----------------VARIABLES-------------
   tipoAnticipoEdit: any;
@@ -23,6 +28,9 @@ export class CreartruequePage implements OnInit {
   selectedFile: File;
   public idCompraRecibida: any;
   public nombreProv: any;
+  //   @Pipe({
+  //     name: 'thousandsPipe'
+  // })
 
   //--------------------------------------
   @Input() datos;
@@ -31,21 +39,44 @@ export class CreartruequePage implements OnInit {
     console.log("ME enviarón este compra", this.datos.id)
     console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
+
   }
 
-  // formateador() {
-  //   document.getElementById("number").onblur = function () {
-  //     this.textontet = parseFloat(this.value.replace(/,/g, ""))
-  //       .toFixed(2)
-  //       .toString()
-  //       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  //     document.getElementById("display").value = this.value.replace(/,/g, "")
-  //   }
-  // }
-  // public transform(value: any) {
+  //  transform(value: any) {
   //   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
-  // }
+  //  }
+
+
+
+
+  separador(event) {
+    var separador = event;
+    console.log("imprime separador", separador)
+    separador.addEventListener('keyup', (e) => {
+      console.log("muestro la entrada del campo valor ", entrada);
+      var entrada = e.target.value.split('.').join('');
+      entrada = entrada.split('').reverse();
+      var salida = [];
+      var aux = '';
+      console.log("muestro la entrada del campo valor ", entrada);
+      var paginador = Math.ceil(entrada.lenght / 3);
+      console.log("muestro la paginación ", paginador);
+      for (let i = 0; i < paginador; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (entrada[j + (i * 3)] != undefined) {
+            aux += entrada[j + (i * 3)];
+
+          }
+        }
+        salida.push(aux);
+        console.log("muestro la paginación ", aux);
+        aux = '';
+        e.target.value = salida.join('.').split("").reverse().join('')
+      }
+
+    }, false);
+  }
+
 
   traerNombre() {
     this.nombreProv = [];
@@ -73,27 +104,6 @@ export class CreartruequePage implements OnInit {
     this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
     this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
     this.modalCtrl.dismiss();
-
-    // if (this.id1 == undefined) {
-    //   console.log("Entro a crear anticipo")
-    //   if (this.tipoAnticipoEdit == undefined || this.valorEdit == undefined) {
-    //     this.toastCamposRequeridos();
-    //   } else {
-    //     this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
-    //     this.modalCtrl.dismiss();
-
-    //   }
-
-    // } else {
-    //   console.log("Entro a MODIFICAR---")
-    //   if (this.tipoAnticipoEdit == "" || this.valorEdit == "") {
-    //     this.toastCamposRequeridos();
-    //     console.log("No modificaste nada")
-    //   } else {
-    //     this.FB.registrarAnticiposApesajeCompra("1603763143063", "12345", this.tipoAnticipoEdit, this.valorEdit, "image");
-    //     this.modalCtrl.dismiss();
-    //   }
-    // }
   }
 
   volver() {

@@ -46,23 +46,27 @@ exports.CardcompradetalladaPage = void 0;
 var core_1 = require("@angular/core");
 var homepesajes_page_1 = require("src/app/home/homepesajes/homepesajes.page");
 var CardcompradetalladaPage = /** @class */ (function () {
-    function CardcompradetalladaPage(route, FB, modalController) {
+    function CardcompradetalladaPage(route, FB, modalController, alertController, navCtrl) {
         this.route = route;
         this.FB = FB;
         this.modalController = modalController;
+        this.alertController = alertController;
+        this.navCtrl = navCtrl;
         //Datos consolidados para la visualización
         this.listaCard = [];
-        // this.FB.getProveedorCompra();
-        // this.listaPesajesProveedor();
-        this.FB.getProductos();
-        this.traerTipoQueso();
-        this.traerNombre();
+        //lista de la compra que se recorre en el HTML
+        this.listaCompras = [];
+        this.cantidadConfirmaciones = 0;
     }
     CardcompradetalladaPage.prototype.ngOnInit = function () {
         var id = this.route.snapshot.paramMap.get("id");
         this.idProveedor = id;
+        this.FB.getPesajeCompra(this.idProveedor);
+        this.FB.getProductos();
+        this.traerTipoQueso();
+        this.traerNombre();
         console.log("Se recibe el proveedor: ", this.idProveedor);
-        // this.listaCards();
+        console.log("listaParaElFront", this.listaCompras);
     };
     CardcompradetalladaPage.prototype.traerTipoQueso = function () {
         var _this = this;
@@ -77,36 +81,166 @@ var CardcompradetalladaPage = /** @class */ (function () {
         });
     };
     CardcompradetalladaPage.prototype.traerNombre = function () {
-        var _this = this;
-        this.nombreProv = [];
-        this.FB.proveedoresLista.forEach(function (element) {
-            _this.FB.pesajeCompraLista.forEach(function (element2) {
-                if (element.id == element2.idProveedor) {
-                    _this.nombreProv = element.nombre;
-                }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.nombreProv = [];
+                this.FB.proveedoresLista.forEach(function (element) {
+                    _this.FB.pesajeCompraLista.forEach(function (element2) {
+                        if (element.id == element2.idProveedor) {
+                            _this.nombreProv = element.nombre;
+                        }
+                    });
+                });
+                this.FB.pesajeCompraLista.forEach(function (pesaje) {
+                    _this.FB.productosLista.forEach(function (producto) {
+                        if (pesaje.idProducto == producto.id) {
+                            _this.listaCompras.push({
+                                anticipos: pesaje.anticipos,
+                                bultoLista: pesaje.bultoLista,
+                                costoTotalCompra: pesaje.costoTotalCompra,
+                                fechaCompra: pesaje.fechaCompra,
+                                id: pesaje.id,
+                                idProducto: pesaje.idProducto,
+                                idProveedor: pesaje.idProveedor,
+                                lote: pesaje.lote,
+                                pesoBultos: pesaje.pesoBultos,
+                                totalBulto: pesaje.totalBulto,
+                                nompreProducto: producto.descripcion
+                            });
+                        }
+                    });
+                });
+                return [2 /*return*/];
             });
         });
     };
-    CardcompradetalladaPage.prototype.presentPopover = function (card) {
+    CardcompradetalladaPage.prototype.modalConfirmarPesaje = function (card) {
         return __awaiter(this, void 0, void 0, function () {
             var modal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.modalController.create({
-                            component: homepesajes_page_1.HomepesajesPage,
-                            cssClass: 'my-custom-class',
-                            componentProps: {
-                                idCompra: card.id,
-                                idProv: card.idProveedor
-                            }
-                        })];
+                    case 0:
+                        this.FB.getInfoCompra(this.idProveedor, card.id);
+                        this.FB.getPesajeConfirmado(this.idProveedor, card.id);
+                        return [4 /*yield*/, this.modalController.create({
+                                component: homepesajes_page_1.HomepesajesPage,
+                                cssClass: 'my-custom-class',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {
+                                    idCompra: card.id,
+                                    idProv: this.idProveedor
+                                }
+                            })];
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
+    };
+    CardcompradetalladaPage.prototype.irCompra = function () {
+        console.log("Se envia este id proveedor", this.idProveedor);
+        this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
+    };
+    CardcompradetalladaPage.prototype.eliminarRegistro = function (lista) {
+        if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
+            this.removeRegister(lista);
+        }
+        else {
+            this.alertRemove();
+        }
+    };
+    CardcompradetalladaPage.prototype.removeRegister = function (lista) {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Cuidado!',
+                            message: 'Esta seguro de eliminar el pesaje?',
+                            buttons: [
+                                {
+                                    text: 'Cancelar',
+                                    role: 'cancel',
+                                    cssClass: 'secondary',
+                                    handler: function (blah) {
+                                        console.log('Confirm Cancel: blah');
+                                    }
+                                }, {
+                                    text: 'SI',
+                                    handler: function () {
+                                        _this.FB.deletePesajeCompra(_this.idProveedor, lista.id);
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardcompradetalladaPage.prototype.alertRemove = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Restricción',
+                            message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
+                            buttons: ['Aceptar']
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardcompradetalladaPage.prototype.alertEditar = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Esta en desarrollo',
+                            message: 'Aún no esta disponible esta opción',
+                            buttons: ['Aceptar']
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardcompradetalladaPage.prototype.irInicio = function () {
+        this.navCtrl.navigateBack(["main-menu"]);
+    };
+    CardcompradetalladaPage.prototype.irCompras = function () {
+        this.navCtrl.navigateBack(["cardcompras"]);
+    };
+    CardcompradetalladaPage.prototype.irEstado = function () {
+        this.navCtrl.navigateBack(["cardlistaproveedores"]);
     };
     CardcompradetalladaPage = __decorate([
         core_1.Component({

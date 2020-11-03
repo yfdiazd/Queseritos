@@ -19,6 +19,8 @@ export class HometipotruequePage implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Que deseas hacer?',
       cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
       buttons: [{
         text: 'Crear',
         icon: 'person-add',

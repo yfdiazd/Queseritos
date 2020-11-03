@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, PopoverController } from '@ionic/angular';
 import { ELOOP } from 'constants';
 import { AnyTxtRecord } from 'dns';
 import { element } from 'protractor';
@@ -8,6 +8,7 @@ import { FBservicesService } from 'src/app/fbservices.service';
 import { LoginPage } from 'src/app/login/login.page';
 
 import { CreartruequePage } from '../creartrueque/creartrueque.page';
+import { VistaimgPage } from './vistaimg/vistaimg.page';
 
 @Component({
   selector: 'app-detallelote',
@@ -21,7 +22,7 @@ export class DetallelotePage implements OnInit {
     private route: ActivatedRoute,
     private FB: FBservicesService,
     private modalController: ModalController,
-    private alertController: AlertController,
+    private popoverController: PopoverController,
     private navCtrl: NavController
   ) {
 
@@ -48,15 +49,55 @@ export class DetallelotePage implements OnInit {
     });
 
     this.traerNombre();
+    this.generarData();
   }
 
+  dataFront: any;
+  async generarData() {
+    this.dataFront = [];
+    const lista = await this.FB.pesajeLoteProveedorLista;
+    const productos = await this.FB.productosLista;
+    console.log("lista obtenida", lista);
+    lista.forEach(compra => {
+      console.log("Esto es los anticipos: ", compra.anticipos,);
 
+      productos.forEach(producto => {
+        if (compra.idProducto == producto.id) {
+          this.dataFront.push({
+            anticipos: compra.anticipos,
+            bultoLista: compra.bultoLista,
+            costoTotalCompra: compra.costoTotalCompra,
+            fechaCompra: compra.fechaCompra,
+            id: compra.id,
+            idProducto: compra.idProducto,
+            idProveedor: compra.idProveedor,
+            lote: compra.lote,
+            pesoBultos: compra.pesoBultos,
+            totalBulto: compra.totalBulto,
+            nompreProducto: producto.descripcion
+          })
+        }
+      })
 
+    })
+
+  }
+  async verImagen(data) {
+
+    let foto = await this.FB.getFoto(this.provRecibido, data.id);
+    console.log("esto es la foto", foto);
+    const popover = await this.modalController.create({
+      component: VistaimgPage,
+      cssClass: 'img_modal',
+      keyboardClose: false,
+      backdropDismiss: false
+    });
+    return await popover.present();
+  }
 
   traerNombre() {
     this.nombreProv = [];
     console.log("Nombre prov", this.provRecibido);
-
     this.FB.proveedoresLista.forEach(element => {
       if (element.id == this.provRecibido) {
         this.nombreProv = element.nombre;

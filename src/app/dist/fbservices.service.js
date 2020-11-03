@@ -680,6 +680,7 @@ var FBservicesService = /** @class */ (function () {
                     _this.clientesLista.push(element.val());
                 }
             });
+            console.log("imprime lista de clientes fb", _this.clientesLista);
             return _this.clientesLista;
         });
     };
@@ -1213,7 +1214,7 @@ var FBservicesService = /** @class */ (function () {
                 id: this.idAnticipos,
                 fechaAnticipo: this.fechaActual(),
                 idProveedor: idProveedor,
-                idTipoAnticipo: idTipoAnticipo,
+                nombreAnticipo: idTipoAnticipo,
                 valorAnticipo: valorAnticipo,
                 archivo: archivo,
                 idPesajeCompra: idPesajeCompra,
@@ -1334,13 +1335,11 @@ var FBservicesService = /** @class */ (function () {
                     .child("usuario/compras/" + idProveedor)
                     .on("value", function (snapshot) {
                     snapshot.forEach(function (element) {
-                        console.log("Elllll............. ", element.val());
-                        console.log("Elllll222............. ", element.val().balance.anticiposLote);
-                        console.log("Elllll222............. ", element.val().balance.comprasLote);
                         _this.objLotesDelProveedor = ({
                             lote: element.key,
                             compra: element.val().balance.comprasLote,
-                            anticipo: element.val().balance.anticiposLote
+                            anticipo: element.val().balance.anticiposLote,
+                            cantAnticipos: element.val().anticipos.length
                         });
                         _this.listaLotesDelProveedor.push(_this.objLotesDelProveedor);
                     });
@@ -1475,7 +1474,6 @@ var FBservicesService = /** @class */ (function () {
             .on("value", function (snaptshot) {
             if (snaptshot.exists) {
                 snaptshot.forEach(function (element) {
-                    console.log("antssssssssssssssss s s ", element.val());
                     _this.anticiposLoteProveedorLista.push(element.val());
                 });
             }
@@ -1492,7 +1490,6 @@ var FBservicesService = /** @class */ (function () {
             .on("value", function (snapshot) {
             if (snapshot.exists) {
                 snapshot.forEach(function (element) {
-                    console.log("copppppspspsps ", element.val());
                     _this.pesajeLoteProveedorLista.push(element.val());
                 });
             }

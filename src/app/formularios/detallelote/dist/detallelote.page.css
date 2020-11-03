@@ -1,0 +1,146 @@
+ion-toolbar {
+  --background: #1a1446;
+}
+
+.titulo {
+  color: white;
+}
+
+ion-content {
+  padding: 0;
+  margin: 0;
+  --background: #c8f7f3;
+  --color: #1a1446;
+}
+ion-content .div-principal {
+  width: 100%;
+  height: 10%;
+  background-color: #15317c;
+  position: fixed;
+  z-index: 20;
+}
+ion-content .div-principal .col_1,
+ion-content .div-principal .col_2 {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+}
+ion-content .div-principal .p1,
+ion-content .div-principal .p2 {
+  margin: 0%;
+  padding: 0%;
+}
+ion-content .div-principal .p1 {
+  font-size: 2.5vh;
+  color: #fff;
+}
+ion-content .div-principal .p2 {
+  font-size: 3vh;
+  font-weight: bold;
+  color: #c8f7f3;
+}
+ion-content .div-secundario {
+  height: 90%;
+  width: 100%;
+  margin: auto;
+  margin-top: 5rem;
+  max-width: 800px;
+  z-index: 10;
+}
+ion-content .div-secundario .btn_crearAnt {
+  float: right;
+  width: 25%;
+  line-height: 100%;
+  --background: #1a1446;
+}
+ion-content .div-secundario .div-card {
+  width: 100%;
+  border: #1a1446 solid 3px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+ion-content .div-secundario .div-card .card {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+}
+ion-content .div-secundario .div-card .card .div_info {
+  padding: 10px;
+  color: #1a1446;
+  font-weight: bold;
+}
+ion-content .div-secundario .div-card .card .div_tabla {
+  width: 100%;
+  margin: auto;
+}
+ion-content .div-secundario .div-card .card .div_tabla p {
+  font-size: 3vh;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider {
+  width: 100%;
+  border-style: none;
+  padding: 0;
+  margin: 0;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider .item {
+  --background: transparent;
+  width: 100%;
+  margin: 0;
+  position: relative;
+  float: left;
+  padding-inline-start: 0;
+  --padding-start: 0;
+  --ion-safe-area-right: 0;
+  --inner-padding-end: 0;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td1,
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td2,
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td3,
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td4 {
+  text-align: center;
+  color: #1a1446;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  font-size: 2vh;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td1 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td2 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td3 {
+  width: 10%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .td4 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .slider .item .item-opt {
+  padding: 0;
+  margin: 0;
+}
+ion-content .div-secundario .div-card .card .div_tabla .table {
+  width: 100%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .table .thead {
+  border: solid 2px #1a1446;
+  background: #1a1446;
+  color: white;
+}
+ion-content .div-secundario .div-card .card .div_tabla .table .thead .th1 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .table .thead .th2 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .table .thead .th3 {
+  width: 10%;
+}
+ion-content .div-secundario .div-card .card .div_tabla .table .thead .th4 {
+  width: 30%;
+}
