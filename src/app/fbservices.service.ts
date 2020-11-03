@@ -1052,17 +1052,35 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
-    updateCostoCompra(idProveedor, idPesajeCompra, totalCompra) {
-        let totalLocal = 0;
-        this.getCostoCompra(idProveedor, idPesajeCompra);
-        totalLocal = this.costoCompraTemp;
-        totalLocal = (totalLocal + totalCompra);
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
-            .update({
-                costoTotalCompra: totalLocal
-            });
+    updateCostoCompra(idProveedor, idPesajeCompra, totalCompra, accion) {
+        if (accion == "suma") {
+
+            let totalLocal = 0;
+            this.getCostoCompra(idProveedor, idPesajeCompra);
+            totalLocal = this.costoCompraTemp;
+            totalLocal = (totalLocal + totalCompra);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .update({
+                    costoTotalCompra: totalLocal
+                });
+        } else if (accion == "resta") {
+            console.log("Vamos a RESTARRRRRRRRRRRRR");
+
+            let totalLocal = 0;
+            this.getCostoCompra(idProveedor, idPesajeCompra);
+            totalLocal = this.costoCompraTemp;
+            totalLocal = (totalLocal - totalCompra);
+            console.log("Restassssssssssssss ", totalLocal);
+
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .update({
+                    costoTotalCompra: totalLocal
+                });
+        }
     }
 
     costoCompraTemp: number;
@@ -1089,7 +1107,7 @@ export class FBservicesService {
         this.idConfirmarPesajeCompra = this.idGenerator();
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado);
+        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado, "suma");
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
@@ -1149,10 +1167,12 @@ export class FBservicesService {
                 return this.pesajeConfirmadoLista, this.sumapesoConfirmado;
             });
     }
-    deletePesajeConfirmado(idProveedor, idPesajeCompra, idPesajeConfirmado) {
+    deletePesajeConfirmado(idProveedor, idPesajeCompra, idPesajeConfirmado, valor) {
         const ordenLotes = this.listaOrdenLotes();
         this.lastLote = [];
         this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
+        this.updateCostoCompra(idProveedor, idPesajeCompra, valor, "resta");
+        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), valor, "resta");
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + idPesajeConfirmado)
@@ -1511,16 +1531,28 @@ export class FBservicesService {
         return this.balanceLoteCompra, this.balanceLoteAnts;
 
     }
-    updateBalanceLoteCompra(idProveedor, lote, compra) {
-        this.getBalanceLote(idProveedor, lote);
-        let local = this.balanceLoteCompra;
-        local = (local + compra);
-        firebase
-            .database()
-            .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
-            .update({
-                comprasLote: local
-            });
+    updateBalanceLoteCompra(idProveedor, lote, compra, accion) {
+        if (accion == "suma") {
+            this.getBalanceLote(idProveedor, lote);
+            let local = this.balanceLoteCompra;
+            local = (local + compra);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                    comprasLote: local
+                });
+        } else if (accion == "resta") {
+            this.getBalanceLote(idProveedor, lote);
+            let local = this.balanceLoteCompra;
+            local = (local - compra);
+            firebase
+                .database()
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/balance")
+                .update({
+                    comprasLote: local
+                });
+        }
     }
     updateBalanceLoteAnt(idProveedor, lote, anticipo) {
         this.getBalanceLote(idProveedor, lote);
