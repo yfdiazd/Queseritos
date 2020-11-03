@@ -2,6 +2,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import {formatCurrency, getCurrencySymbol} from '@angular/common';
 import { FBservicesService } from '../../fbservices.service';
 
 
@@ -13,8 +14,8 @@ import { FBservicesService } from '../../fbservices.service';
   styleUrls: ['./creartrueque.page.scss'],
 })
 export class CreartruequePage implements OnInit {
+cantidad:string;
 
-  
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -39,6 +40,7 @@ export class CreartruequePage implements OnInit {
     console.log("ME enviarón este compra", this.datos.id)
     console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
+
      
   }
   
@@ -49,34 +51,41 @@ export class CreartruequePage implements OnInit {
   
 
 
-separador(event){
-  var separador = event;
-  console.log("imprime separador", separador)
-  separador.addEventListener('keyup', (e) =>{
-      console.log("muestro la entrada del campo valor ", entrada); 
-      var entrada= e.target.value.split('.').join('');
-      entrada = entrada.split('').reverse();
-      var salida = [];
-      var aux = '';
-      console.log("muestro la entrada del campo valor ", entrada); 
-      var paginador = Math.ceil(entrada.lenght / 3 );
-      console.log("muestro la paginación ", paginador); 
-      for(let i= 0; i<paginador; i++)
-      {
-          for(let j=0; j<3; j++){
-              if(entrada[j+(i*3)]!=undefined){
-                  aux+=entrada[j+(i*3)];
+// separador(value: string){
+//      console.log("entro a funcion separador", value)
+//      let val = parseInt(value, 10);
+//      if (Number.isNaN(val)) {
+//       val = 0;
+//     }
+//     this.cantidad = formatCurrency(val, 'en-US', getCurrencySymbol('USD', 'wide'));
+//     }
+  // var separador = event;
+  // console.log("imprime separador", separador)
+  // separador.addEventListener('keyup', (e) =>{
+  //     console.log("muestro la entrada del campo valor ", entrada); 
+  //     var entrada= e.target.value.split('.').join('');
+  //     entrada = entrada.split('').reverse();
+  //     var salida = [];
+  //     var aux = '';
+  //     console.log("muestro la entrada del campo valor ", entrada); 
+  //     var paginador = Math.ceil(entrada.lenght / 3 );
+  //     console.log("muestro la paginación ", paginador); 
+  //     for(let i= 0; i<paginador; i++)
+  //     {
+  //         for(let j=0; j<3; j++){
+  //             if(entrada[j+(i*3)]!=undefined){
+  //                 aux+=entrada[j+(i*3)];
   
-              }
-          }
-          salida.push(aux);
-          console.log("muestro la paginación ", aux); 
-          aux='';
-          e.target.value=salida.join('.').split("").reverse().join('')
-      }
+  //             }
+  //         }
+  //         salida.push(aux);
+  //         console.log("muestro la paginación ", aux); 
+  //         aux='';
+  //         e.target.value=salida.join('.').split("").reverse().join('')
+  //     }
      
-  }, false);
-}
+  // }, false);
+
 
 
   traerNombre() {

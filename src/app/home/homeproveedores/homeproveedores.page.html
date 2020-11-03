@@ -12,7 +12,8 @@
 
 <ion-content>
   <div class="div-principal">
-    <ion-item-sliding class="slider" *ngFor="let lista of FB.proveedoresLista">
+    <ion-searchbar placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
+    <ion-item-sliding class="slider" *ngFor="let lista of listanomproveedores">
       <ion-item class="item">
         <ion-card class="card">
           <ion-card-title><p>{{lista.nombre}}</p></ion-card-title>

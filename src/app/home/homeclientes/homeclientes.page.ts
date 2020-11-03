@@ -9,13 +9,16 @@ import { CrearclientesPage } from 'src/app/formularios/crearclientes/crearclient
   styleUrls: ['./homeclientes.page.scss'],
 })
 export class HomeclientesPage implements OnInit {
-  
+  listanombrecliente: any[]=[];
+  objclientes: any;
   constructor(
     private navCtrl: NavController,
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private alertController: AlertController
-  ) { }
+  ) {
+     this.listarnombresciudades()
+   }
 
   ngOnInit() {
   }
@@ -94,15 +97,46 @@ export class HomeclientesPage implements OnInit {
     this.navCtrl.navigateForward('main-menu');
   }
 
-  buscar(ev:any){
-    this.FB.clientesLista;
-    const val = ev.target.value;
-    if (val && val.trim !== ''){
-      this.FB.clientesLista= this.FB.clientesLista.filter((item)=>{
-        return (item.toLowerCase().indexOf(val.toLowerCase())> -1);
-      });
-    }
+  listarnombresciudades(){
+    this.listanombrecliente = [];
+    this.objclientes=null;
+    this.FB.clientesLista.forEach(element=>{
+      this.objclientes= ({
+        nombres: element.nombres, 
+        apellidos: element.apellidos,
+        numIndetificacion:element.numIndetificacion,
+        empresa: element.empresa,
+        celular: element.celular,
+        correo: element.correo,
+        direccion: element.direccion
+      })
+      this.listanombrecliente.push(this.objclientes);
+      
+    })
+    return this.listanombrecliente;
+  }
+  getItems(ev:any){
+    this.listanombrecliente;
+    let val = ev.target.value;
+    if (val && val.trim() != '')
+    {
+      
+      this.listanombrecliente = this.listanombrecliente.filter((item)=>{
+        return (item.nombres.toLowerCase().indexOf(val.toLowerCase())> -1)
+        
+      })
   
+    }
+    
+      else if(val== '' || val == undefined)
+      {   
+          this.listanombrecliente= this.FB.clientesLista;
+          return this.listanombrecliente;
+      }
+        
+  
+      
+     
     }
 
 
