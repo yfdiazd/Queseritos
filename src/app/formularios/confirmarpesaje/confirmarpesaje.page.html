@@ -10,7 +10,7 @@
 <ion-content>
   <div class="div-formulario">
     <div *ngIf="siPuede">
-      <p>Peso disponible {{pesoTotal - suma}}</p>
+      <p>Peso disponible {{pesoTotal - FB.sumapesoConfirmado}}</p>
       <p class="p-title">Estado de queso:</p>
       <ion-select [(ngModel)]="idEstadoProducto" placeholder="Seleccione" class="select"
         [interfaceOptions]="customAlertOptions" interface="alert" multiple="false" ok-text="Aceptar"
@@ -20,7 +20,7 @@
         </ion-select-option>
       </ion-select>
       <p>Peso</p>
-      <input type="number" placeholder="Falta {{pesoTotal - suma}}" [(ngModel)]="peso"
+      <input type="number" placeholder="Falta {{pesoTotal - FB.sumapesoConfirmado}}" [(ngModel)]="peso"
         (ngModelChange)="calcular($event)" />
       <!-- <ion-item>
       <ion-label position="floating">Peso</ion-label>
@@ -30,7 +30,7 @@
       <!-- <ion-item>
       <ion-label position="floating">Valor Kilo</ion-label>
     </ion-item> -->
-      <h1 style="color: black;">{{sumado | currency:'USD':true: '2.0-0'}}</h1>
+      <h1 style="color: black;">{{costoTotalEstado | currency:'USD':true: '2.0-0'}}</h1>
     </div>
     <div *ngIf="siPuede">
       <ion-button (click)="guardar()" expand="full">
@@ -39,7 +39,7 @@
       </ion-button>
     </div>
     <div>
-      <h2 *ngIf="noPuede"> No puedes confirmar mas pesajes, has llegado al limite.</h2>
+      <h2 *ngIf="noPuede" style="color: black;"> No puedes confirmar mas pesajes, has llegado al limite.</h2>
     </div>
   </div>
 </ion-content>

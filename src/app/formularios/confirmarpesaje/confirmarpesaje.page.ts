@@ -19,12 +19,7 @@ export class ConfirmarpesajePage implements OnInit {
   //variable auto costo del peso y costo
   calculaCostoTotal: number = 0;
 
-  //variables para operaciones
-  sumado = 0;
-
-
   @Input() id;
-
   @Input() idCompra;
   @Input() idProv;
   @Input() pesoTotal = 0;
@@ -37,12 +32,10 @@ export class ConfirmarpesajePage implements OnInit {
   noPuede: boolean = false;
   siPuede: boolean = true;
 
-  suma = 0;
+  suma;
 
   constructor(
-
     private FB: FBservicesService,
-    private HP: HomepesajesPage,
     private popover: PopoverController,
     private alertController: AlertController
   ) { }
@@ -54,11 +47,17 @@ export class ConfirmarpesajePage implements OnInit {
       this.idProv,
       this.pesoTotal,
     );
-
   }
 
   validarCreacion() {
-    if (this.suma >= this.pesoTotal) {
+
+    this.suma = 0;
+    // let valorPeso = await this.FB.pesajeConfirmadoLista;
+    this.FB.pesajeConfirmadoLista.forEach(info => {
+      this.suma += parseInt(info.cantidadEstado);
+    });
+
+    if ((this.pesoTotal - this.suma) == 0) {
       this.noPuede = true;
       this.siPuede = false;
     } else {
@@ -66,16 +65,17 @@ export class ConfirmarpesajePage implements OnInit {
       this.siPuede = true;
     }
   }
-
+  calcular() {
+    this.costoTotalEstado = (parseInt(this.peso) * parseInt(this.costoKilo));
+  }
 
   guardar() {
     if (parseInt(this.peso) > (this.pesoTotal - this.suma)) {
       this.presentAlert();
-    } else if (parseInt(this.peso) < 0 || (parseInt(this.costoKilo) < 0)) {
+    } else if (parseInt(this.peso) <= 0 || (parseInt(this.costoKilo) <= 0)) {
       this.presentAlert2();
     }
     else {
-      this.costoTotalEstado = (parseInt(this.peso) * parseInt(this.costoKilo));
       this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado);
       this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado);
       this.FB.getPesajeConfirmado(this.idProv, this.idCompra);

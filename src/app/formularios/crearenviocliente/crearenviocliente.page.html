@@ -13,85 +13,93 @@
     <div class="div-fila-1">
       <p class="fila1_p_titulo">Límite</p>
       <input type="number" [(ngModel)]="placaEdit" />
+      <ion-item>
+        <ion-label position="floating">Límite</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
     </div>
     <div class="div-fila-2">
       <p class="fila2_p_titulo">Peso Actual</p>
       <p class="fila2_p_valor">{{pesoacumulado}}<span> Kg</span></p>
+      <ion-item>
+        <ion-label position="floating">Peso Actual</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
     </div>
   </div>
 
   <div class="div-secundario">
-    
-      <p class="p-title">Ciudad<span>*</span></p>
-      <ion-select [(ngModel)]="codigociudadEdit" class="select" [interfaceOptions]="customAlertOptions2"
-        interface="alert" multiple="false" ok-text="Aceptar" cancel-text="CANCELAR">
-        <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.ciudadesLista">
-          {{lista.descripcion}}
-        </ion-select-option>
-      </ion-select>
 
-      <div>
-        <label for="fenvio">Fecha Envío:</label>
-        <input type="date" id="fenvio" name="fenvio" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
-        <span class="validity"></span>
-      </div>
+    <p class="p-title">Ciudad<span>*</span></p>
+    <ion-select [(ngModel)]="codigociudadEdit" class="select" [interfaceOptions]="customAlertOptions2" interface="alert"
+      multiple="false" ok-text="Aceptar" cancel-text="CANCELAR">
+      <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.ciudadesLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
 
-      <p class="p-title">Tipo de queso:</p>
-      <ion-select [(ngModel)]="tipoQueso" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
-        multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
-        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.productosLista">
-          {{lista.descripcion}}
-        </ion-select-option>
-      </ion-select>
+    <div>
+      <label for="fenvio">Fecha Envío:</label>
+      <input type="date" id="fenvio" name="fenvio" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+      <span class="validity"></span>
+    </div>
 
-      <p class="p-title">Conductor:</p>
-      <ion-select [(ngModel)]="idconductor" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
-        multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
-        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.conductoresLista">
-          {{lista.nombres}}
-        </ion-select-option>
-      </ion-select>
+    <p class="p-title">Tipo de queso:</p>
+    <ion-select [(ngModel)]="tipoQueso" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
+      multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      <ion-select-option [value]="lista.id" *ngFor="let lista of FB.productosLista">
+        {{lista.descripcion}}
+      </ion-select-option>
+    </ion-select>
 
-      <p class="p-title">Placa<span>*</span></p>
-      <input type="text" placeholder="{{placaEdit}}" [(ngModel)]="placaEdit" />
+    <p class="p-title">Conductor:</p>
+    <ion-select [(ngModel)]="idconductor" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
+      multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
+      <ion-select-option [value]="lista.id" *ngFor="let lista of FB.conductoresLista">
+        {{lista.nombres}}
+      </ion-select-option>
+    </ion-select>
 
-      <div class="div-input">
-        <ion-item class="item-file">
-          <label for=""> Subir archivo </label>
-          <input class="file-upload" onchange='cambiar()' type="file" />
-        </ion-item>
-      </div>
+    <p class="p-title">Placa<span>*</span></p>
+    <input type="text" placeholder="{{placaEdit}}" [(ngModel)]="placaEdit" />
 
-      <div class="div-table">
-        <p>Relación de Pesadas</p>
-        <table class="table">
-          <thead class="thead">
-            <th class="th1">Pesada</th>
-            <th class="th2">Peso</th>
-            <th class="th3"></th>
-          </thead>
-          <tbody class="tbody">
-            <tr class="tr" *ngFor="let lista of listaPesada; let i=index">
-              <td class="td1">
-                <label (ngModel)="numpesada">{{i+1}}</label>
-              </td>
-              <td class="td2">
-                <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
-              </td>
-              <td class="td3">
-                <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <ion-chip class="btn-add" (click)="agregarPesoLista()">
-          <ion-icon name="add" color="success"></ion-icon>
-          <ion-label color="dark">Agregar</ion-label>
-        </ion-chip>
-        <ion-button (click)="guardar()" expand="full" color="success">
-          <ion-icon name="save-outline"></ion-icon>
-          <ion-label>Guardar</ion-label>
-        </ion-button>
-      </div>
+    <div class="div-input">
+      <ion-item class="item-file">
+        <label for=""> Subir archivo </label>
+        <input class="file-upload" onchange='cambiar()' type="file" />
+      </ion-item>
+    </div>
+
+    <div class="div-table">
+      <p>Relación de Pesadas</p>
+      <table class="table">
+        <thead class="thead">
+          <th class="th1">Pesada</th>
+          <th class="th2">Peso</th>
+          <th class="th3"></th>
+        </thead>
+        <tbody class="tbody">
+          <tr class="tr" *ngFor="let lista of listaPesada; let i=index">
+            <td class="td1">
+              <label (ngModel)="numpesada">{{i+1}}</label>
+            </td>
+            <td class="td2">
+              <input type="number" value="{{lista.peso}}" (ngModelChange)="edit($event)" />
+            </td>
+            <td class="td3">
+              <ion-icon name="close" (click)="removeRegister()" color="danger"></ion-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ion-chip class="btn-add" (click)="agregarPesoLista()">
+        <ion-icon name="add" color="success"></ion-icon>
+        <ion-label color="dark">Agregar</ion-label>
+      </ion-chip>
+      <ion-button (click)="guardar()" expand="full" color="success">
+        <ion-icon name="save-outline"></ion-icon>
+        <ion-label>Guardar</ion-label>
+      </ion-button>
+    </div>
   </div>
 </ion-content>
