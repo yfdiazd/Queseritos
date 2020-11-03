@@ -39,8 +39,8 @@ export class HomepesajesPage implements OnInit {
   ngOnInit() {
     this.traerPeso();
     this.sumarPesos();
-    // this.cambiarEstilos();
   }
+  
   async traerPeso() {
     this.pesoTotal = 0;
     let valorPeso = await this.FB.infoCompraUnica;
@@ -56,18 +56,6 @@ export class HomepesajesPage implements OnInit {
       this.sumaPeso = this.sumaPeso + parseInt(info.cantidadEstado);
     });
   }
-
-  // cambiarEstilos() {
-
-  //   // console.log("Esto es el peso actual", this.sumaPeso)
-  //   // if (this.sumaPeso < this.pesoTotal) {
-  //   //   this.mostrarCrearConfirmar = true;
-  //   //   document.getElementById("variablePeso").style.color = "green";
-  //   // } else if (this.sumaPeso >= this.pesoTotal) {
-  //   //   this.mostrarCrearConfirmar = false;
-  //   //   document.getElementById("variablePeso").style.color = "red";
-  //   // }
-  // } 
 
   async presentPopover() {
     const popover = await this.PopoverController.create({
