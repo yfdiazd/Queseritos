@@ -105,7 +105,7 @@ export class HomeciudadesPage implements OnInit {
     {
       
       this.listanombreciudad = this.listanombreciudad.filter((item)=>{
-        console.log("imprime return",(item.toLowerCase().indexOf(val.toLowerCase())> -1) )
+        console.log("imprime return", item )
         return (item.toLowerCase().indexOf(val.toLowerCase())> -1)
         
       })
