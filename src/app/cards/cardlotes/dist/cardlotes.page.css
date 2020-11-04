@@ -19,22 +19,23 @@ ion-content .div-principal {
   position: fixed;
   z-index: 20;
 }
-ion-content .div-principal .col-1 {
+ion-content .div-principal .col_1 {
   display: inline-block;
   width: 100%;
   height: 100%;
+  margin: auto;
   text-align: center;
 }
-ion-content .div-principal .p1,
-ion-content .div-principal .p2 {
+ion-content .div-principal .col_1 .p1,
+ion-content .div-principal .col_1 .p2 {
   margin: 0%;
   padding: 0%;
 }
-ion-content .div-principal .p1 {
+ion-content .div-principal .col_1 .p1 {
   font-size: 2.5vh;
   color: #fff;
 }
-ion-content .div-principal .p2 {
+ion-content .div-principal .col_1 .p2 {
   font-size: 3vh;
   font-weight: bold;
   color: #c8f7f3;

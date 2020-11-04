@@ -55,8 +55,10 @@ var DetallelotePage = /** @class */ (function () {
         this.navCtrl = navCtrl;
         this.Lotenum = "17-10-2020-L1";
         this.proveedor = "fernanda";
+        //Lista de anticipos para mostrar de la compra
+        this.cards_Compras = true;
+        this.cards_anticipos = false;
     }
-    //Lista de anticipos para mostrar de la compra
     DetallelotePage.prototype.ngOnInit = function () {
         var idLote = this.route.snapshot.paramMap.get("id");
         var idProv = this.route.snapshot.paramMap.get("prov");
@@ -64,6 +66,17 @@ var DetallelotePage = /** @class */ (function () {
         this.provRecibido = idProv;
         this.traerNombre();
         this.generarData();
+    };
+    DetallelotePage.prototype.cambiarHoja = function (event) {
+        var valorSegment = event.detail.value;
+        if (valorSegment == "ccompras") {
+            this.cards_Compras = true;
+            this.cards_anticipos = false;
+        }
+        else {
+            this.cards_Compras = false;
+            this.cards_anticipos = true;
+        }
     };
     DetallelotePage.prototype.generarData = function () {
         return __awaiter(this, void 0, void 0, function () {

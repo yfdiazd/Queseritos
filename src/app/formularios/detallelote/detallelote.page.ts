@@ -36,6 +36,10 @@ export class DetallelotePage implements OnInit {
   //Lista de anticipos para mostrar de la compra
 
 
+  cards_Compras: boolean = true;
+  cards_anticipos: boolean = false;
+
+
   ngOnInit() {
     let idLote = this.route.snapshot.paramMap.get("id");
     let idProv = this.route.snapshot.paramMap.get("prov");
@@ -43,6 +47,18 @@ export class DetallelotePage implements OnInit {
     this.provRecibido = idProv;
     this.traerNombre();
     this.generarData();
+  }
+
+  cambiarHoja(event) {
+    const valorSegment = event.detail.value;
+    if (valorSegment == "ccompras") {
+      this.cards_Compras = true;
+      this.cards_anticipos = false;
+    } else {
+      this.cards_Compras = false;
+      this.cards_anticipos = true;
+    }
+
   }
 
   dataFront: any;
