@@ -58,6 +58,7 @@ var DetallelotePage = /** @class */ (function () {
         //Lista de anticipos para mostrar de la compra
         this.cards_Compras = true;
         this.cards_anticipos = false;
+        this.crearAnticipo = false;
     }
     DetallelotePage.prototype.ngOnInit = function () {
         var idLote = this.route.snapshot.paramMap.get("id");
@@ -66,16 +67,19 @@ var DetallelotePage = /** @class */ (function () {
         this.provRecibido = idProv;
         this.traerNombre();
         this.generarData();
+        this.generarDataDirecta();
     };
     DetallelotePage.prototype.cambiarHoja = function (event) {
         var valorSegment = event.detail.value;
         if (valorSegment == "ccompras") {
             this.cards_Compras = true;
             this.cards_anticipos = false;
+            this.crearAnticipo = false;
         }
         else {
             this.cards_Compras = false;
             this.cards_anticipos = true;
+            this.crearAnticipo = true;
         }
     };
     DetallelotePage.prototype.generarData = function () {
@@ -108,6 +112,41 @@ var DetallelotePage = /** @class */ (function () {
                                         lote: compra.lote,
                                         pesoBultos: compra.pesoBultos,
                                         totalBulto: compra.totalBulto,
+                                        nompreProducto: producto.descripcion
+                                    });
+                                }
+                            });
+                        });
+                        return [2 /*return*/, this.dataFront];
+                }
+            });
+        });
+    };
+    DetallelotePage.prototype.generarDataDirecta = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var lista, productos;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.FB.getAnticipoDirectoProveedor(this.provRecibido, this.loteRecibido);
+                        this.dataFrontDirecta = [];
+                        return [4 /*yield*/, this.FB.anticipoDirectoProveedorLista];
+                    case 1:
+                        lista = _a.sent();
+                        return [4 /*yield*/, this.FB.tipoAnticipoLista];
+                    case 2:
+                        productos = _a.sent();
+                        lista.forEach(function (anticipo) {
+                            console.log("Esto es los anticipos: ", anticipo);
+                            productos.forEach(function (producto) {
+                                if (anticipo.idTipoAnticipo == producto.id) {
+                                    _this.dataFrontDirecta.push({
+                                        valorAnticipo: anticipo.valorAnticipo,
+                                        fechaAnticipo: anticipo.fechaAnticipo,
+                                        idPesajeCompra: anticipo.idPesajeCompra,
+                                        idProveedor: anticipo.idProveedor,
+                                        id: anticipo.id,
                                         nompreProducto: producto.descripcion
                                     });
                                 }
@@ -181,6 +220,7 @@ var DetallelotePage = /** @class */ (function () {
                                         _this.FB.getPesajeLoteProveedor(_this.provRecibido, _this.loteRecibido);
                                         _this.FB.getAnticiposLoteProveedor(_this.provRecibido, _this.loteRecibido);
                                         _this.generarData();
+                                        _this.generarDataDirecta();
                                     }
                                 }
                             ]
@@ -215,6 +255,34 @@ var DetallelotePage = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         this.generarData();
+                        this.generarDataDirecta();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DetallelotePage.prototype.irHomeAnticipo2 = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: creartrueque_page_1.CreartruequePage,
+                            cssClass: 'my-custom-class',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idProveedor: this.provRecibido,
+                                id: 0,
+                                lote: this.loteRecibido,
+                                card: "si"
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });

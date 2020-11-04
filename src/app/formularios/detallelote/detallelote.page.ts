@@ -38,6 +38,7 @@ export class DetallelotePage implements OnInit {
 
   cards_Compras: boolean = true;
   cards_anticipos: boolean = false;
+  crearAnticipo: boolean = false;
 
 
   ngOnInit() {
@@ -47,6 +48,7 @@ export class DetallelotePage implements OnInit {
     this.provRecibido = idProv;
     this.traerNombre();
     this.generarData();
+    this.generarDataDirecta();
   }
 
   cambiarHoja(event) {
@@ -54,9 +56,11 @@ export class DetallelotePage implements OnInit {
     if (valorSegment == "ccompras") {
       this.cards_Compras = true;
       this.cards_anticipos = false;
+      this.crearAnticipo = false;
     } else {
       this.cards_Compras = false;
       this.cards_anticipos = true;
+      this.crearAnticipo = true;
     }
 
   }
@@ -82,6 +86,30 @@ export class DetallelotePage implements OnInit {
             lote: compra.lote,
             pesoBultos: compra.pesoBultos,
             totalBulto: compra.totalBulto,
+            nompreProducto: producto.descripcion
+          })
+        }
+      })
+    })
+    return this.dataFront;
+
+  }
+  dataFrontDirecta: any;
+  async generarDataDirecta() {
+    this.FB.getAnticipoDirectoProveedor(this.provRecibido, this.loteRecibido);
+    this.dataFrontDirecta = [];
+    let lista = await this.FB.anticipoDirectoProveedorLista;
+    let productos = await this.FB.tipoAnticipoLista;
+    lista.forEach(anticipo => {
+      console.log("Esto es los anticipos: ", anticipo);
+      productos.forEach(producto => {
+        if (anticipo.idTipoAnticipo == producto.id) {
+          this.dataFrontDirecta.push({           
+            valorAnticipo: anticipo.valorAnticipo,
+            fechaAnticipo: anticipo.fechaAnticipo,
+            idPesajeCompra: anticipo.idPesajeCompra,
+            idProveedor: anticipo.idProveedor,
+            id: anticipo.id,
             nompreProducto: producto.descripcion
           })
         }
@@ -139,6 +167,7 @@ export class DetallelotePage implements OnInit {
             this.FB.getPesajeLoteProveedor(this.provRecibido, this.loteRecibido);
             this.FB.getAnticiposLoteProveedor(this.provRecibido, this.loteRecibido);
             this.generarData();
+            this.generarDataDirecta();
           }
         }
       ]
@@ -158,6 +187,22 @@ export class DetallelotePage implements OnInit {
     })
     await modal.present();
     this.generarData();
+    this.generarDataDirecta();
+  }
+
+  async irHomeAnticipo2() {
+    const modal = await this.modalController.create({
+      component: CreartruequePage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idProveedor: this.provRecibido,
+        id: 0,
+        lote: this.loteRecibido,
+        card: "si"
+      },
+    }); await modal.present();
   }
   irInicio() {
     this.navCtrl.navigateBack(["main-menu"]);

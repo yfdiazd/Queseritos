@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import { element } from 'protractor';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { log } from 'console';
+import { Direct } from 'protractor/built/driverProviders';
 
 
 //import { Camera, CameraOriginal } from '@ionic-native/camera';
@@ -1262,6 +1263,26 @@ export class FBservicesService {
         });
         return this.anticipoCompraLista;
     }
+    anticipoDirectoProveedorLista: any[];
+    getAnticipoDirectoProveedor(idProveedor, lote) {
+        this.anticipoDirectoProveedorLista = [];
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
+            .on("value", snapshot => {
+                this.anticipoDirectoProveedorLista = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+                        if (element.val().idPesajeCompra == 0 || element.val().idPesajeCompra == "0") {
+                            console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val());
+
+                            this.anticipoDirectoProveedorLista.push(element.val());
+                        }
+                    });
+                }
+            });
+        return this.anticipoDirectoProveedorLista;
+    }
 
     public img: any;
     getFoto(idProveedor, idAnticipo) {
@@ -1288,12 +1309,12 @@ export class FBservicesService {
 
     deleteAnticiposApesajeCompra(idProveedor, idPesaje, idAnticipo, valorAnticipo, lote) {
         this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "resta")
-        this.updateBalanceLoteCompra
+        this.deleteImage(idProveedor, idAnticipo);
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + idAnticipo)
             .remove();
-        if (idAnticipo !== 0) {
+        if (idPesaje !== 0) {
             this.getPesajeAnt(idProveedor, lote, idPesaje);
 
         }

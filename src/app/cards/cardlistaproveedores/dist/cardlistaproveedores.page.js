@@ -44,6 +44,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CardlistaproveedoresPage = void 0;
 var core_1 = require("@angular/core");
+var creartrueque_page_1 = require("src/app/formularios/creartrueque/creartrueque.page");
 var CardlistaproveedoresPage = /** @class */ (function () {
     function CardlistaproveedoresPage(modalCtrl, menu, FB, navCtrl, alertController, router, route) {
         this.modalCtrl = modalCtrl;
@@ -74,6 +75,33 @@ var CardlistaproveedoresPage = /** @class */ (function () {
             _this.listanombres1.push((element.nombre + " " + element.apellido));
         });
         return this.listanombres1;
+    };
+    CardlistaproveedoresPage.prototype.irHomeAnticipo = function (idProveedor, lote) {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalCtrl.create({
+                            component: creartrueque_page_1.CreartruequePage,
+                            cssClass: 'my-custom-class',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idProveedor: idProveedor,
+                                id: 0,
+                                lote: lote,
+                                card: "si"
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     CardlistaproveedoresPage.prototype.irCardLote = function (input) {
         return __awaiter(this, void 0, void 0, function () {
@@ -121,7 +149,11 @@ var CardlistaproveedoresPage = /** @class */ (function () {
                                     }, {
                                         text: 'Ok',
                                         handler: function () {
-                                            _this.navCtrl.navigateForward(["creartrueque/", idProveedor]);
+                                            var ordenLotes = _this.FB.listaOrdenLotes();
+                                            var loteLocal = [];
+                                            loteLocal = (ordenLotes.slice(ordenLotes.length - 1));
+                                            _this.irHomeAnticipo(idProveedor, loteLocal.toString());
+                                            _this.navCtrl.navigateForward(["detallelote/", loteLocal.toString(), idProveedor]);
                                             _this.alertController.dismiss();
                                         }
                                     }

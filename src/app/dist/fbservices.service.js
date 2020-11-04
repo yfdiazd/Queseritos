@@ -1302,6 +1302,25 @@ var FBservicesService = /** @class */ (function () {
             });
         });
     };
+    FBservicesService.prototype.getAnticipoDirectoProveedor = function (idProveedor, lote) {
+        var _this = this;
+        this.anticipoDirectoProveedorLista = [];
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
+            .on("value", function (snapshot) {
+            _this.anticipoDirectoProveedorLista = [];
+            if (snapshot.exists()) {
+                snapshot.forEach(function (element) {
+                    if (element.val().idPesajeCompra == 0 || element.val().idPesajeCompra == "0") {
+                        console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val());
+                        _this.anticipoDirectoProveedorLista.push(element.val());
+                    }
+                });
+            }
+        });
+        return this.anticipoDirectoProveedorLista;
+    };
     FBservicesService.prototype.getFoto = function (idProveedor, idAnticipo) {
         var _this = this;
         this.img = null;
@@ -1322,12 +1341,12 @@ var FBservicesService = /** @class */ (function () {
     };
     FBservicesService.prototype.deleteAnticiposApesajeCompra = function (idProveedor, idPesaje, idAnticipo, valorAnticipo, lote) {
         this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "resta");
-        this.updateBalanceLoteCompra;
+        this.deleteImage(idProveedor, idAnticipo);
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + idAnticipo)
             .remove();
-        if (idAnticipo !== 0) {
+        if (idPesaje !== 0) {
             this.getPesajeAnt(idProveedor, lote, idPesaje);
         }
     };

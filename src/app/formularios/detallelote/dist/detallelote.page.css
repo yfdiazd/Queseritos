@@ -54,39 +54,39 @@ ion-content .div-secundario .btn_crearAnt {
   line-height: 100%;
   --background: #1a1446;
 }
-ion-content .div-secundario .div-card {
+ion-content .div-secundario .div-card1 {
   width: 100%;
   border: #1a1446 solid 3px;
   border-radius: 5px;
   background-color: #fff;
 }
-ion-content .div-secundario .div-card .card {
+ion-content .div-secundario .div-card1 .card {
   width: 100%;
   margin: auto;
   background-color: white;
 }
-ion-content .div-secundario .div-card .card .div_info {
+ion-content .div-secundario .div-card1 .card .div_info {
   padding: 10px;
   color: #1a1446;
   font-weight: bold;
 }
-ion-content .div-secundario .div-card .card .div_tabla {
+ion-content .div-secundario .div-card1 .card .div_tabla {
   width: 100%;
   margin: auto;
 }
-ion-content .div-secundario .div-card .card .div_tabla p {
+ion-content .div-secundario .div-card1 .card .div_tabla p {
   font-size: 3vh;
   font-weight: bold;
   text-align: center;
   width: 100%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider {
   width: 100%;
   border-style: none;
   padding: 0;
   margin: 0;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider .item {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item {
   --background: transparent;
   width: 100%;
   margin: 0;
@@ -97,10 +97,10 @@ ion-content .div-secundario .div-card .card .div_tabla .slider .item {
   --ion-safe-area-right: 0;
   --inner-padding-end: 0;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td1,
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td2,
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td3,
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td4 {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td1,
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td2,
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td3,
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td4 {
   text-align: center;
   color: #1a1446;
   display: inline-block;
@@ -108,39 +108,122 @@ ion-content .div-secundario .div-card .card .div_tabla .slider .item .td4 {
   margin: 0;
   font-size: 2vh;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td1 {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td1 {
   width: 30%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td2 {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td2 {
   width: 30%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td3 {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td3 {
   width: 10%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .td4 {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .td4 {
   width: 30%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .slider .item .item-opt {
+ion-content .div-secundario .div-card1 .card .div_tabla .slider .item .item-opt {
   padding: 0;
   margin: 0;
 }
-ion-content .div-secundario .div-card .card .div_tabla .table {
+ion-content .div-secundario .div-card1 .card .div_tabla .table {
   width: 100%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .table .thead {
+ion-content .div-secundario .div-card1 .card .div_tabla .table .thead {
   border: solid 2px #1a1446;
   background: #1a1446;
   color: white;
 }
-ion-content .div-secundario .div-card .card .div_tabla .table .thead .th1 {
+ion-content .div-secundario .div-card1 .card .div_tabla .table .thead .th1 {
   width: 30%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .table .thead .th2 {
+ion-content .div-secundario .div-card1 .card .div_tabla .table .thead .th2 {
   width: 30%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .table .thead .th3 {
+ion-content .div-secundario .div-card1 .card .div_tabla .table .thead .th3 {
   width: 10%;
 }
-ion-content .div-secundario .div-card .card .div_tabla .table .thead .th4 {
+ion-content .div-secundario .div-card1 .card .div_tabla .table .thead .th4 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card2 {
+  width: 100%;
+  border: #1a1446 solid 3px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+ion-content .div-secundario .div-card2 .div_tabla {
+  width: 100%;
+  margin: auto;
+  border: #1a1446 solid 3px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+ion-content .div-secundario .div-card2 .div_tabla p {
+  font-size: 3vh;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider {
+  width: 100%;
+  border-style: none;
+  padding: 0;
+  margin: 0;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider .item {
+  --background: transparent;
+  width: 100%;
+  margin: 0;
+  position: relative;
+  float: left;
+  padding-inline-start: 0;
+  --padding-start: 0;
+  --ion-safe-area-right: 0;
+  --inner-padding-end: 0;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td1,
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td2,
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td3,
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td4 {
+  text-align: center;
+  color: #1a1446;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  font-size: 2vh;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td1 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td2 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td3 {
+  width: 10%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .td4 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .slider .item .item-opt {
+  padding: 0;
+  margin: 0;
+}
+ion-content .div-secundario .div-card2 .div_tabla .table {
+  width: 100%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .table .thead {
+  border: solid 2px #1a1446;
+  background: #1a1446;
+  color: white;
+}
+ion-content .div-secundario .div-card2 .div_tabla .table .thead .th1 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .table .thead .th2 {
+  width: 30%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .table .thead .th3 {
+  width: 10%;
+}
+ion-content .div-secundario .div-card2 .div_tabla .table .thead .th4 {
   width: 30%;
 }

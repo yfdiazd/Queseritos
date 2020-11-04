@@ -51,11 +51,17 @@ var CreartruequePage = /** @class */ (function () {
         this.toastController = toastController;
         this.route = route;
         this.router = router;
+        //   @Pipe({
+        //     name: 'thousandsPipe'
+        // })
+        //--------------------------------------
+        // Esta variable es cuando viene de detalle lote
+        this.datos = [];
         this.nombreArchLoaded = "Subir Archivo";
     }
     CreartruequePage.prototype.ngOnInit = function () {
-        console.log("ME enviarón este compra", this.datos.id);
-        console.log("ME enviarón este proveedor", this.datos.idProveedor);
+        //console.log("ME enviarón este compra", this.datos.id)
+        // console.log("ME enviarón este proveedor", this.datos.idProveedor)
         this.traerNombre();
     };
     //  transform(value: any) {
@@ -89,12 +95,23 @@ var CreartruequePage = /** @class */ (function () {
     CreartruequePage.prototype.traerNombre = function () {
         var _this = this;
         this.nombreProv = [];
-        console.log("Nombre prov", this.datos.idProveedor);
-        this.FB.proveedoresLista.forEach(function (element) {
-            if (element.id == _this.datos.idProveedor) {
-                _this.nombreProv = element.nombre;
-            }
-        });
+        console.log("antes de validar datosssssssss ", this.card);
+        if (this.card == "si") {
+            console.log("Nombre prov sin lista", this.idProveedor);
+            this.FB.proveedoresLista.forEach(function (element) {
+                if (element.id == _this.idProveedor) {
+                    _this.nombreProv = element.nombre;
+                }
+            });
+        }
+        else {
+            console.log("Nombre prov con lista", this.datos.idProveedor);
+            this.FB.proveedoresLista.forEach(function (element) {
+                if (element.id == _this.datos.idProveedor) {
+                    _this.nombreProv = element.nombre;
+                }
+            });
+        }
     };
     CreartruequePage.prototype.subirImg = function (event) {
         this.imagen = event;
@@ -102,11 +119,19 @@ var CreartruequePage = /** @class */ (function () {
         return this.imagen, this.nombreArchLoaded;
     };
     CreartruequePage.prototype.guardar = function () {
-        this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
-        this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
-        this.FB.getPesajeLoteProveedor(this.datos.idProveedor, this.datos.lote);
-        this.FB.getAnticiposLoteProveedor(this.datos.idProveedor, this.datos.lote);
-        this.modalCtrl.dismiss();
+        console.log(" esto es ", this.card);
+        if (this.card == "si") {
+            console.log("Cuando viene sin compra pepaa ", this.idProveedor, this.id, this.lote);
+            this.FB.crearBalanceLote(this.idProveedor, this.lote);
+            this.FB.registrarAnticiposApesajeCompra(this.idProveedor, this.id, this.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
+            this.modalCtrl.dismiss();
+        }
+        else {
+            console.log("Cuando viene de detalles pape  ", this.datos);
+            this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
+            this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
+            this.modalCtrl.dismiss();
+        }
     };
     CreartruequePage.prototype.volver = function () {
         this.modalCtrl.dismiss();
@@ -134,6 +159,18 @@ var CreartruequePage = /** @class */ (function () {
     __decorate([
         core_1.Input()
     ], CreartruequePage.prototype, "datos");
+    __decorate([
+        core_1.Input()
+    ], CreartruequePage.prototype, "idProveedor");
+    __decorate([
+        core_1.Input()
+    ], CreartruequePage.prototype, "id");
+    __decorate([
+        core_1.Input()
+    ], CreartruequePage.prototype, "lote");
+    __decorate([
+        core_1.Input()
+    ], CreartruequePage.prototype, "card");
     CreartruequePage = __decorate([
         core_1.Component({
             selector: 'app-creartrueque',
