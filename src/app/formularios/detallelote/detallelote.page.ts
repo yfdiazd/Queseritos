@@ -72,7 +72,7 @@ export class DetallelotePage implements OnInit {
   async irHomeAnticipo(item) {
     const modal = await this.modalController.create({
       component: CreartruequePage,
-      cssClass: 'my-custom-class',
+      cssClass: 'my-custom-class', 
       keyboardClose: false,
       backdropDismiss: false,
       componentProps: {

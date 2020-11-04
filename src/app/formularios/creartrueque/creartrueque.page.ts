@@ -25,11 +25,18 @@ export class CreartruequePage implements OnInit {
   public nombreProv: any;
 
   //--------------------------------------
-  @Input() datos;
+  // Esta variable es cuando viene de detalle lote
+  @Input() datos: any = [];
+  // esta es la variable de cuando viene de carlotes
+  @Input() idProveedor;
+  @Input() id;
+  @Input() lote;
+  @Input() card;
+
 
   ngOnInit() {
-    console.log("ME enviarón este compra", this.datos.id)
-    console.log("ME enviarón este proveedor", this.datos.idProveedor)
+    //console.log("ME enviarón este compra", this.datos.id)
+    // console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
   }
 
@@ -48,15 +55,32 @@ export class CreartruequePage implements OnInit {
   // }
 
   traerNombre() {
-    this.nombreProv = [];
-    console.log("Nombre prov", this.datos.idProveedor);
 
-    this.FB.proveedoresLista.forEach(element => {
-      if (element.id == this.datos.idProveedor) {
-        this.nombreProv = element.nombre;
-      }
-    })
+    this.nombreProv = [];
+    console.log("antes de validar datosssssssss ", this.card);
+
+
+    if (this.card == "si") {
+      console.log("Nombre prov sin lista", this.idProveedor);
+
+      this.FB.proveedoresLista.forEach(element => {
+        if (element.id == this.idProveedor) {
+          this.nombreProv = element.nombre;
+        }
+      });
+    } else {
+      console.log("Nombre prov con lista", this.datos.idProveedor);
+
+      this.FB.proveedoresLista.forEach(element => {
+        if (element.id == this.datos.idProveedor) {
+          this.nombreProv = element.nombre;
+        }
+      });
+    }
   }
+
+
+
 
   imagen: any;
   nombreArchLoaded: string = "Subir Archivo";
@@ -68,11 +92,19 @@ export class CreartruequePage implements OnInit {
 
 
   guardar() {
+    console.log(" esto es ", this.card);
 
-    console.log("loteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ", this.datos.lote);
-    this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
-    this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
-    this.modalCtrl.dismiss();
+    if (this.card == "si") {
+      console.log("Cuando viene sin compra pepaa ", this.idProveedor, this.id, this.lote);
+      this.FB.crearBalanceLote(this.idProveedor, this.lote);
+      this.FB.registrarAnticiposApesajeCompra(this.idProveedor, this.id, this.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
+      this.modalCtrl.dismiss();
+    } else {
+      console.log("Cuando viene de detalles pape  ", this.datos);
+      this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
+      this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
+      this.modalCtrl.dismiss();
+    }
 
     // if (this.id1 == undefined) {
     //   console.log("Entro a crear anticipo")
