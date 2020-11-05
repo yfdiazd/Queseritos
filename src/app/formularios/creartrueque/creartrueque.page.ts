@@ -1,8 +1,7 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { formatCurrency, getCurrencySymbol } from '@angular/common';
+
 import { FBservicesService } from '../../fbservices.service';
 
 
@@ -43,19 +42,8 @@ export class CreartruequePage implements OnInit {
 
 
   ngOnInit() {
-    //console.log("ME enviarón este compra", this.datos.id)
-    // console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
-
-
   }
-
-  //  transform(value: any) {
-  //   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
-  //  }
-
-
-
 
   separador(event) {
     var separador = event;
@@ -85,7 +73,6 @@ export class CreartruequePage implements OnInit {
     }, false);
   }
 
-
   traerNombre() {
 
     this.nombreProv = [];
@@ -110,9 +97,6 @@ export class CreartruequePage implements OnInit {
       });
     }
   }
-
-
-
 
   imagen: any;
   nombreArchLoaded: string = "Subir Archivo";
@@ -141,7 +125,9 @@ export class CreartruequePage implements OnInit {
       console.log("Cuando viene sin compra pepaa ", this.idProveedor, this.id, this.lote);
       this.FB.crearBalanceLote(this.idProveedor, this.lote);
       this.FB.registrarAnticiposApesajeCompra(this.idProveedor, this.id, this.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
-      this.modalCtrl.dismiss();
+      this.FB.getPesajeLoteProveedor(this.datos.idProveedor, this.datos.lote);
+      this.FB.getAnticipoDirectoProveedor(this.idProveedor, this.lote);
+      this.modalCtrl.dismiss("true", "actualizar");
     } else {
       if (this.datos.idProveedor == null || this.datos.id == null || this.datos.lote == null || this.tipoAnticipoEdit == null || this.valor == null || this.imagen == undefined) {
         this.FB.toastCamposBlanco();
@@ -149,7 +135,9 @@ export class CreartruequePage implements OnInit {
       console.log("Cuando viene de detalles pape  ", this.datos);
       this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
       this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
-      this.modalCtrl.dismiss();
+      this.FB.getPesajeLoteProveedor(this.datos.idProveedor, this.datos.lote);
+      this.FB.getAnticipoDirectoProveedor(this.idProveedor, this.lote);
+      this.modalCtrl.dismiss("true", "actualizar");
     }
   }
 
@@ -168,7 +156,7 @@ export class CreartruequePage implements OnInit {
     toast.present();
   }
 
- 
+
 }
 
 

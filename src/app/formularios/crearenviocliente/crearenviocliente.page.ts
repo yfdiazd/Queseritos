@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { FBservicesService } from "../../fbservices.service";
+import { CrearventaPage } from '../crearventa/crearventa.page';
 
 @Component({
   selector: 'app-crearenviocliente',
@@ -23,7 +24,13 @@ export class CrearenvioclientePage implements OnInit {
   //variables alejo
   pesoLimite;
   pesoAcumulado = 0;
-  
+
+  input_limite: boolean = false;
+
+  customPickerOptions: any;
+
+  nombreArchLoaded = "Subir archivo";
+
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -32,16 +39,35 @@ export class CrearenvioclientePage implements OnInit {
     private route: ActivatedRoute,
     private navCtrl: NavController
   ) {
-  
-   }
- public idcliente:any;
+    this.customPickerOptions = {
+      buttons: [{
+        text: 'Aceptar',
+        handler: () => console.log('Clicked Save!')
+      }, {
+        text: 'Cancelar',
+        handler: () => {
+          console.log('Clicked Log. Do not Dismiss.');
+          return false;
+        }
+      }]
+    }
+  }
+  public idcliente: any;
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
-    console.log("se recibe id solito", id );
-    this.idcliente=id;
+    console.log("se recibe id solito", id);
+    this.idcliente = id;
     console.log("se recibe id listacliente", this.idcliente);
-    
-   
+
+
+  }
+
+  bloquearInputLimite(event) {
+    if (event.detail.checked == true) {
+      this.input_limite = true;
+    } else if (event.detail.checked == false) {
+      this.input_limite = false;
+    }
   }
 
   removeRegister(index) {
@@ -119,14 +145,42 @@ export class CrearenvioclientePage implements OnInit {
     console.log("Total peso de los bultos: " + this.contadorPeso);
   }
 
-   guardar() {
-     console.log("Fechaaaaaaaaaaaaaa ", this.fecha);
-     let fe = this.fecha.split("-", 3);
-     console.log("Fechaaaaaaaaaaaaaa ", fe[0]);
-     console.log("Fechaaaaaaaaaaaaaa ", fe[1]);
-     console.log("Fechaaaaaaaaaaaaaa ", fe[2]);
-     console.log("Fechaaaaaaaaaaaaaa NODO ", (fe[0] +"-" +fe[1]));
-     
+  guardar() {
+    console.log("Fechaaaaaaaaaaaaaa ", this.fecha);
+    let fe = this.fecha.split("-", 3);
+    console.log("Fechaaaaaaaaaaaaaa ", fe[0]);
+    console.log("Fechaaaaaaaaaaaaaa ", fe[1]);
+    console.log("Fechaaaaaaaaaaaaaa ", fe[2]);
+    console.log("Fechaaaaaaaaaaaaaa NODO ", (fe[0] + "-" + fe[1]));
+
+  }
+  customAlertOptions: any = {
+    header: "Seleccione uno",
+    translucent: true,
+    keyboardClose: false,
+    backdropDismiss: false
+  };
+
+  async agregar() {
+    const modal = await this.modalCtrl.create({
+      component: CrearventaPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+      },
+    })
+    await modal.present();
+    // const { data } = await modal.onWillDismiss();
+    // console.log("Esperando esto: ", data);
+    // if (data == "true") {
+    //   console.log("Entro al if: ", data);
+    //   this.cambiarHoja(true);
+    // }
+  }
+
+
+  // guardar() {
   //   // this.listaBultos.pop();
   //   this.contarPeso();
   //   console.log("El id del tipo de queso es: ", this.tipoQueso)
@@ -141,6 +195,6 @@ export class CrearenvioclientePage implements OnInit {
   //     this.listaBultos
   //   );
   //   this.listaBultos = [];
-   }
-
 }
+
+

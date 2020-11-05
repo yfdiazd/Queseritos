@@ -1,0 +1,233 @@
+ion-toolbar {
+  --background: #1a1446;
+}
+
+ion-title {
+  font-size: 20px;
+}
+
+.titulo {
+  color: white;
+}
+
+ion-content {
+  padding: 0;
+  margin: 0;
+  --background: #c8f7f3;
+  --color: #1a1446;
+}
+ion-content .content {
+  width: 100%;
+  max-width: 700px;
+  margin: auto;
+}
+ion-content .content .div-principal {
+  width: 100%;
+  max-width: 700px;
+  height: 10%;
+  margin: auto;
+  position: fixed;
+  z-index: 20;
+  --background: #15317c;
+}
+ion-content .content .div-principal .div-fila-1,
+ion-content .content .div-principal .div-fila-2 {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+}
+ion-content .content .div-principal .div-fila-2 .item {
+  --background: #15317c;
+  color: #cccccc;
+}
+ion-content .content .div-principal .div-fila-1 .item {
+  --background: #15317c;
+  color: #c8f7f3;
+}
+ion-content .content .div-principal .div-fila-1 .item .input_limite::after {
+  content: "Kg";
+  font-size: 10px;
+  color: #c8f7f3;
+}
+ion-content .content .div-principal .div-fila-1 .item .input_limite::-webkit-inner-spin-button,
+ion-content .content .div-principal .div-fila-1 .item .input_limite::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+ion-content .content .div-principal .div-fila-1 .item .input_limite {
+  -moz-appearance: textfield;
+}
+ion-content .content .div-principal .div-fila-1 .item .div_toggle {
+  padding: 0;
+  margin: 0;
+  width: 70px;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+}
+ion-content .content .div-principal .div-fila-1 .item .div_toggle .icon {
+  width: 25%;
+  height: 100%;
+}
+ion-content .content .div-principal .div-fila-1 .item .div_toggle ion-toggle {
+  --handle-border-radius: 15px 15px 15px 15px;
+  --handle-spacing: 0px;
+  width: 50%;
+  padding: 0;
+  height: 90%;
+}
+ion-content .content .div-secundario {
+  height: 90%;
+  width: 100%;
+  padding-top: 8vh;
+}
+ion-content .content .div-secundario .p-title,
+ion-content .content .div-secundario .p-title_r {
+  width: 100%;
+  font-weight: bold;
+  color: #1a1446;
+  font-weight: bold;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+ion-content .content .div-secundario .p-title_r::after {
+  content: "*";
+  color: red;
+}
+ion-content .content .div-secundario .select {
+  background-color: white;
+  color: #1a1446;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #1a1446;
+  font-size: medium;
+  padding-left: 10px;
+  border-radius: 5px;
+  height: 40px;
+  width: 100%;
+  margin-bottom: 20px;
+  --placeholder-color: #1a1446;
+  --placeholder-opacity: 1;
+  text-transform: uppercase;
+}
+ion-content .content .div-secundario .div-file {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 auto 30px;
+  min-height: 15px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 40px;
+}
+ion-content .content .div-secundario .div-file label {
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: block;
+  border-radius: 10px;
+  line-height: 40px;
+  color: #1a1446;
+  position: absolute;
+  background-color: #ff2f73;
+}
+ion-content .content .div-secundario .div-file .file-upload {
+  border: 10000px solid transparent;
+  cursor: pointer;
+  font-size: 10000px;
+  margin: 0;
+  opacity: 0;
+  outline: 0 none;
+  padding: 0;
+  position: absolute;
+  right: -1000px;
+  top: -1000px;
+}
+ion-content .content .div-secundario .btn-add {
+  background-color: darkgreen;
+  float: right;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+ion-content .content .div-secundario .div_table {
+  width: 100%;
+  margin: auto;
+}
+ion-content .content .div-secundario .div_table p {
+  font-size: 3vh;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+ion-content .content .div-secundario .div_table .table {
+  width: 100%;
+}
+ion-content .content .div-secundario .div_table .table .thead {
+  border: solid 2px #1a1446;
+  background: #1a1446;
+  color: white;
+}
+ion-content .content .div-secundario .div_table .table .thead .th1 {
+  width: 10%;
+}
+ion-content .content .div-secundario .div_table .table .thead .th2 {
+  width: 30%;
+}
+ion-content .content .div-secundario .div_table .table .thead .th3 {
+  width: 30%;
+}
+ion-content .content .div-secundario .div_table .table .thead .th4 {
+  width: 30%;
+}
+ion-content .content .div-secundario .div_table .slider {
+  width: 100%;
+  border-style: none;
+  padding: 0;
+  margin: 0;
+}
+ion-content .content .div-secundario .div_table .slider .item {
+  --background: transparent;
+  width: 100%;
+  margin: 0;
+  position: relative;
+  float: left;
+  padding-inline-start: 0;
+  --padding-start: 0;
+  --ion-safe-area-right: 0;
+  --inner-padding-end: 0;
+}
+ion-content .content .div-secundario .div_table .slider .item .td1,
+ion-content .content .div-secundario .div_table .slider .item .td2,
+ion-content .content .div-secundario .div_table .slider .item .td3,
+ion-content .content .div-secundario .div_table .slider .item .td4 {
+  text-align: center;
+  color: #1a1446;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  font-size: 2vh;
+}
+ion-content .content .div-secundario .div_table .slider .item .td1 {
+  width: 10%;
+}
+ion-content .content .div-secundario .div_table .slider .item .td2 {
+  width: 30%;
+}
+ion-content .content .div-secundario .div_table .slider .item .td3 {
+  width: 30%;
+}
+ion-content .content .div-secundario .div_table .slider .item .td4 {
+  width: 30%;
+}
+ion-content .content .div-secundario .div_table .slider .item .item-opt {
+  padding: 0;
+  margin: 0;
+}
