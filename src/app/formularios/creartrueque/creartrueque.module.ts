@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 import { IonicModule } from '@ionic/angular';
-
 import { CreartruequePageRoutingModule } from './creartrueque-routing.module';
 
 import { CreartruequePage } from './creartrueque.page';
@@ -15,7 +14,8 @@ import { CreartruequePage } from './creartrueque.page';
     IonicModule,
     CreartruequePageRoutingModule,
     HttpClientModule
-  ],
-  declarations: [CreartruequePage]
+  ], 
+   declarations: [CreartruequePage],
+   providers: [CurrencyPipe]
 })
 export class CreartruequePageModule {}

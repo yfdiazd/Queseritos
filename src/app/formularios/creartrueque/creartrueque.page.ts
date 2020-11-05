@@ -1,8 +1,9 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, ElementRef,Input, NgModule, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController, ToastController } from '@ionic/angular';
+import { AngularDelegate, ModalController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import {formatCurrency, getCurrencySymbol} from '@angular/common';
+import { CurrencyPipe} from '@angular/common';
+//import { NgModel } from '@angular/forms';
 import { FBservicesService } from '../../fbservices.service';
 
 
@@ -15,14 +16,22 @@ import { FBservicesService } from '../../fbservices.service';
 })
 export class CreartruequePage implements OnInit {
 cantidad:string;
+name = 'Angular';
+ Valor;
+ amount;
 
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router,
+    //private model : NgModel,
+    private currencyPipe : CurrencyPipe,
+    private element : ElementRef
+  ) {}
+
+  
   // ----------------VARIABLES-------------
   tipoAnticipoEdit: any;
   valor: any;
@@ -40,10 +49,18 @@ cantidad:string;
     console.log("ME enviarón este compra", this.datos.id)
     console.log("ME enviarón este proveedor", this.datos.idProveedor)
     this.traerNombre();
-
+    
+    
      
   }
-  
+
+  transformAmount(element){
+    console.log("aqui muestro element", element)
+    this.Valor = this.currencyPipe.transform(this.Valor, '$');
+    console.log("aquí muestro Valor", this.Valor)
+
+    element.target.value = this.Valor;
+  }
     //  transform(value: any) {
     //   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");;
     //  }
