@@ -40,8 +40,8 @@ export class CardlotesPage implements OnInit {
   }
 
   irDetalleLote(item) {
-    this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);
-    this.FB.getAnticiposLoteProveedor(this.idProveedorRecibido, item.lote);
+    this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);   
+    this.FB.getAnticipoDirectoProveedor(this.idProveedorRecibido, item.lote);
     this.navCtrl.navigateForward(["detallelote/", item.lote, this.idProveedorRecibido]);
   }
 

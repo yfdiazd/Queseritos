@@ -1256,7 +1256,6 @@ var FBservicesService = /** @class */ (function () {
             .on("value", function (snapshot) {
             snapshot.forEach(function (element) {
                 if (element.val().idPesajeCompra == idPesajeCompra) {
-                    console.log("Lista de ants == ", element.val());
                     listaAnt.push(element.val());
                 }
             });
@@ -1313,7 +1312,6 @@ var FBservicesService = /** @class */ (function () {
             if (snapshot.exists()) {
                 snapshot.forEach(function (element) {
                     if (element.val().idPesajeCompra == 0 || element.val().idPesajeCompra == "0") {
-                        console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val());
                         _this.anticipoDirectoProveedorLista.push(element.val());
                     }
                 });
@@ -1327,9 +1325,7 @@ var FBservicesService = /** @class */ (function () {
         firebase
             .storage()
             .ref("anticipos/" + idProveedor + "/" + idAnticipo).getDownloadURL().then(function (imgUr) {
-            console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
             _this.img = imgUr;
-            console.log("asdasdasdasdasdasd asda sd asd asd ", _this.img);
             return _this.img;
         });
     };
@@ -1510,22 +1506,6 @@ var FBservicesService = /** @class */ (function () {
         });
         this.getPesajeConfirmado(idProveedor, idCompra);
     };
-    FBservicesService.prototype.getAnticiposLoteProveedor = function (idProveedor, lote) {
-        var _this = this;
-        this.anticiposLoteProveedorLista = [];
-        firebase
-            .database()
-            .ref()
-            .child("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
-            .on("value", function (snaptshot) {
-            if (snaptshot.exists) {
-                snaptshot.forEach(function (element) {
-                    _this.anticiposLoteProveedorLista.push(element.val());
-                });
-            }
-        });
-        return this.anticiposLoteProveedorLista;
-    };
     FBservicesService.prototype.getPesajeLoteProveedor = function (idProveedor, lote) {
         var _this = this;
         this.pesajeLoteProveedorLista = [];
@@ -1534,6 +1514,7 @@ var FBservicesService = /** @class */ (function () {
             .ref()
             .child("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
             .on("value", function (snapshot) {
+            _this.pesajeLoteProveedorLista = [];
             if (snapshot.exists) {
                 snapshot.forEach(function (element) {
                     _this.pesajeLoteProveedorLista.push(element.val());

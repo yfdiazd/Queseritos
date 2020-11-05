@@ -1224,8 +1224,6 @@ export class FBservicesService {
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     if (element.val().idPesajeCompra == idPesajeCompra) {
-                        console.log("Lista de ants == ", element.val());
-
                         listaAnt.push(element.val());
                     }
                 });
@@ -1274,8 +1272,6 @@ export class FBservicesService {
                 if (snapshot.exists()) {
                     snapshot.forEach(element => {
                         if (element.val().idPesajeCompra == 0 || element.val().idPesajeCompra == "0") {
-                            console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val());
-
                             this.anticipoDirectoProveedorLista.push(element.val());
                         }
                     });
@@ -1290,10 +1286,7 @@ export class FBservicesService {
         firebase
             .storage()
             .ref("anticipos/" + idProveedor + "/" + idAnticipo).getDownloadURL().then(imgUr => {
-
-                console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
                 this.img = imgUr;
-                console.log("asdasdasdasdasdasd asda sd asd asd ", this.img);
 
                 return this.img;
             });
@@ -1489,22 +1482,6 @@ export class FBservicesService {
         this.getPesajeConfirmado(idProveedor, idCompra);
     }
 
-    public anticiposLoteProveedorLista: any[];
-    getAnticiposLoteProveedor(idProveedor, lote) {
-        this.anticiposLoteProveedorLista = [];
-        firebase
-            .database()
-            .ref()
-            .child("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
-            .on("value", snaptshot => {
-                if (snaptshot.exists) {
-                    snaptshot.forEach(element => {
-                        this.anticiposLoteProveedorLista.push(element.val());
-                    });
-                }
-            });
-        return this.anticiposLoteProveedorLista;
-    }
     public pesajeLoteProveedorLista: any[];
     getPesajeLoteProveedor(idProveedor, lote) {
         this.pesajeLoteProveedorLista = [];
@@ -1513,6 +1490,7 @@ export class FBservicesService {
             .ref()
             .child("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
             .on("value", snapshot => {
+                this.pesajeLoteProveedorLista = [];
                 if (snapshot.exists) {
                     snapshot.forEach(element => {
                         this.pesajeLoteProveedorLista.push(element.val());

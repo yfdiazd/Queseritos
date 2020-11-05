@@ -72,7 +72,7 @@ var CardlotesPage = /** @class */ (function () {
     };
     CardlotesPage.prototype.irDetalleLote = function (item) {
         this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);
-        this.FB.getAnticiposLoteProveedor(this.idProveedorRecibido, item.lote);
+        this.FB.getAnticipoDirectoProveedor(this.idProveedorRecibido, item.lote);
         this.navCtrl.navigateForward(["detallelote/", item.lote, this.idProveedorRecibido]);
     };
     CardlotesPage.prototype.irInicio = function () {
