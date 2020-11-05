@@ -33,7 +33,7 @@ export class CrearcompraPage implements OnInit {
   ) {
 
   }
-
+  
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedor = id;
@@ -66,16 +66,17 @@ export class CrearcompraPage implements OnInit {
     this.listaBultos.splice(index, 1);
     this.validacion();
   }
-  validacion(){
-    if(this.listaBultos.length > 0){
+
+  validacion() {
+    if (this.listaBultos.length > 0) {
       this.mostrar = true;
-    }else{
+    } else {
       this.mostrar = false;
     }
   }
 
   async agregarBultoLista() {
-    
+
     const alert = await this.alertController.create({
       cssClass: 'alertAddPeso',
       header: 'Creando bulto ' + (this.listaBultos.length + 1) + '.',

@@ -3,6 +3,8 @@ import { CommonModule, CurrencyPipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 import { IonicModule } from '@ionic/angular';
+import {jsonlocal} from 'src/assets/js/archjson.js';
+
 import { CreartruequePageRoutingModule } from './creartrueque-routing.module';
 
 import { CreartruequePage } from './creartrueque.page';
@@ -13,9 +15,9 @@ import { CreartruequePage } from './creartrueque.page';
     FormsModule,
     IonicModule,
     CreartruequePageRoutingModule,
-    HttpClientModule
-  ], 
-   declarations: [CreartruequePage],
-   providers: [CurrencyPipe]
+    HttpClientModule,
+    jsonlocal
+  ],
+  declarations: [CreartruequePage]
 })
 export class CreartruequePageModule {}

@@ -5,6 +5,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
     </ion-buttons>
+    <ion-button *ngIf="crearAnticipo" fill="clear" shape="round" slot="end" (click)="irHomeAnticipo2()">
+      <ion-icon name="cash" color="success">+</ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -12,107 +15,104 @@
 <ion-content>
   <div class="div-principal">
     <div class="col_1">
-      <h2 class="h2">Proveedor</h2>
-      <h1 class="h1">{{nombreProv}}</h1>
+      <p class="p1">Proveedor</p>
+      <p class="p2">{{nombreProv}}</p>
     </div>
     <div class="col_2">
-      <h2 class="h2">Lote No:</h2>
-      <h1 class="h1">{{loteRecibido}}</h1>
+      <p class="p1">N° lote</p>
+      <p class="p2">{{loteRecibido}}</p>
     </div>
   </div>
   <div class="div-secundario">
-    <ion-item class="slider" *ngFor="let item of FB.pesajeLoteProveedorLista">
-      <ion-item class="item">
-        <div class="div-card">
-          <ion-card class="card" >
-            <!-- <ion-card> -->
-              <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
-              <p>Producto: {{item.idProducto}}</p>
-              <ion-button (click)="crearModal(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
-              <ion-icon slot="end" name="cash" color="success"></ion-icon>+
-            </ion-button>
-            <div class="div_tabla">
-              <table class="table">
-                <thead class="thead">
-                  <th class="th1">Tipo anticipo</th>
-                  <th class="th2">valor</th>
-                  <th class="th3">Imagen</th>
-                  <th class="th4">Fecha</th>
-                </thead>
-                <tbody class="tbody">
-                   <tr class="tr" *ngFor="let lista of item.anticipos"> 
-                  <!-- <tr class="tr"> -->
-
-                    <td class="td1">
-                      <label (ngModel)="tipoAnt">{{lista.idTipoAnticipo}}</label>
-                    </td>
-                    <td class="td2">
-                      <label (ngModel)="valor">{{lista.valorAnticipo | currency:'USD':true: '2.0-0'}}</label>
-                    </td>
-                    <td class="td3">
-                      <label (ngModel)="concepto">ninguno</label>
-                    </td>
-                    <td class="td4">
-                      <label (ngModel)="fecha">29/10/2020</label>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </ion-card>
+    <ion-segment class="segment" (ionChange)="cambiarHoja($event)" color="tertiary" value="ccompras">
+      <ion-segment-button value="ccompras">
+        <ion-label>Compra</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="scompras">
+        <ion-label>Directa</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <div class="div-card1" *ngIf="cards_Compras">
+      <ion-card class="card" *ngFor="let item of dataFront">
+        <div class="div_info">
+          <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
+          <p>Producto: {{item.nompreProducto}}</p>
+          <ion-button (click)="crearModal(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
+            <ion-icon slot="end" name="cash" color="success"></ion-icon>+
+          </ion-button>
         </div>
-      </ion-item>
-      <!-- opción para eliminar registro -->
-      <!-- <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="editarModal(lista)">Eliminar</ion-item-option>
-      </ion-item-options> -->
-      <!-- Opción para editar el registro -->
-      <!-- <ion-item-options side="start">
-        <ion-item-option color="warning" (click)="editarModal(lista)">Editar</ion-item-option>
-      </ion-item-options> -->
-    </ion-item>
-    <!-- <ion-row class="row1">
-      <ion-col id="col1">
-        <ion-button class="add" (click)="irCrearTrueque()" color="success" expand="full">
-          <ion-icon name="add-outline"></ion-icon>
-        </ion-button>
-        <ion-card id="card1">
-          <div id="title1">Tipo de queso: {{tipoqueso}}</div>
-          <div class="div-pesoc">
-            <div class="div-stq">Fecha: {{fechcompra}} </div>
-          </div>
-          <div class="div-atributo1">
-            <div>Bulto:{{idbulto}}</div>
-          </div>
-          <div class="div-atributo2">
-            <div>Peso: {{pesobulto}} Kg</div>
-          </div>
-          <div class="div-atributo1">
-            <div>Bulto:{{idbulto1}}</div>
-          </div>
-          <div class="div-atributo2">
-            <div>Peso: {{pesobulto2}} Kg</div>
-          </div>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row class="row2">
-      <ion-col id="col1">
-        <ion-card id="card2">
-          <p>Anticipos</p>
-          <div id="title1">Fecha Anticipo: {{fechcompra}}</div>
-          <div class="div-pesoc">
-            <div class="div-stq">Concepto: {{concepto}} </div>
-          </div>
-          <div class="div-atributo1">
-            <div>Valor:{{valor}}</div>
-          </div>
-          <div >
-            <div>Descargar Soporte:</div>
-            <a href="link/to/your/download/file" download>Download link</a> 
-          </div>      
-        </ion-card>
-      </ion-col>
-    </ion-row> -->
+        <div class="div_tabla">
+          <table class="table">
+            <thead class="thead">
+              <th class="th1">Tipo anticipo</th>
+              <th class="th2">valor</th>
+              <th class="th3">Imagen</th>
+              <th class="th4">Fecha</th>
+            </thead>
+          </table>
+          <ion-item-sliding class="slider" *ngFor="let lista of item.anticipos">
+            <ion-item class="item">
+              <label class="td1" (ngModel)="tipoAnt">{{lista.idTipoAnticipo}}</label>
+              <label class="td2" (ngModel)="valor">{{lista.valorAnticipo | currency:'USD':true: '2.0-0'}}</label>
+              <label class="td3" (ngModel)="concepto" (click)="verImagen(lista)">
+                <ion-icon name="image-outline" color="tertiary"></ion-icon>
+              </label>
+              <label class="td4" (ngModel)="fecha">{{lista.fechaAnticipo}}</label>
+            </ion-item>
+            <ion-item-options class="item-opt" side="end">
+              <ion-item-option color="danger" (click)="removeRegister(lista)">Eliminar</ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </div>
+      </ion-card>
+    </div>
+    <div class="div-card2" *ngIf="cards_anticipos">
+      <div class="div_tabla">
+        <table class="table">
+          <thead class="thead">
+            <th class="th1">Tipo anticipo</th>
+            <th class="th2">valor</th>
+            <th class="th3">Imagen</th>
+            <th class="th4">Fecha</th>
+          </thead>
+        </table>
+        <ion-item-sliding class="slider" *ngFor="let item of dataFrontDirecta">
+          <ion-item class="item">
+            <label class="td1" (ngModel)="tipoAnt">{{item.nompreProducto}}</label>
+            <label class="td2" (ngModel)="valor">{{item.valorAnticipo | currency:'USD':true: '2.0-0'}}</label>
+            <label class="td3" (ngModel)="concepto" (click)="verImagen(lista)">
+              <ion-icon name="image-outline" color="tertiary"></ion-icon>
+            </label>
+            <label class="td4" (ngModel)="fecha">{{item.fechaAnticipo}}</label>
+          </ion-item>
+          <ion-item-options class="item-opt" side="end">
+            <ion-item-option color="danger" (click)="removeRegister(lista)">Eliminar</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </div>
   </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-tabs class="">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="irInicio()">
+          <ion-icon name="home"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irCompras()">
+          <ion-icon name="cart"></ion-icon>
+          <ion-label>Compras</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irEstado()">
+          <ion-icon name="podium"></ion-icon>
+          <ion-label>Estado</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+</ion-footer>

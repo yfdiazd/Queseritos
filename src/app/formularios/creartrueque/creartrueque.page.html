@@ -16,7 +16,7 @@
     <p class="subtituloR">Tipo de Anticipo</p>
     <ion-select class="camposForm" [(ngModel)]="tipoAnticipoEdit" [interfaceOptions]="customAlertOptions"
       interface="alert" multiple="false" ok-text="Aceptar" cancel-text="Cancelar">
-      <ion-select-option [value]="lista.id" *ngFor="let lista of FB.tipoAnticipoLista">
+      <ion-select-option [value]="lista.descripcion" *ngFor="let lista of FB.tipoAnticipoLista">
         {{lista.descripcion}}
       </ion-select-option>
     </ion-select>

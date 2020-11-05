@@ -31,6 +31,7 @@ const routes: Routes = [
   { path: 'homeproveedores', loadChildren: () => import('./home/homeproveedores/homeproveedores.module').then(m => m.HomeproveedoresPageModule) },
   { path: 'homeconductores', loadChildren: () => import('./home/homeconductores/homeconductores.module').then(m => m.HomeconductoresPageModule) },
   { path: 'homepesajes', loadChildren: () => import('./home/homepesajes/homepesajes.module').then(m => m.HomepesajesPageModule) },
+  { path: 'homeventas', loadChildren: () => import('./home/homeventas/homeventas.module').then(m => m.HomeventasPageModule)},
   { path: 'cardlotes/:id', loadChildren: () => import('./cards/cardlotes/cardlotes.module').then(m => m.CardlotesPageModule) },
   {
     path: 'detallelote/:id/:prov',
@@ -51,7 +52,11 @@ const routes: Routes = [
   {
     path: 'cardlistaclientes',
     loadChildren: () => import('./cards/cardlistaclientes/cardlistaclientes.module').then(m => m.CardlistaclientesPageModule)
+  },  {
+    path: 'cardventas',
+    loadChildren: () => import('./cards/cardventas/cardventas.module').then( m => m.CardventasPageModule)
   }
+
 
 
 

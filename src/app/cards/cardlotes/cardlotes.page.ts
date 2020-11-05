@@ -14,11 +14,12 @@ export class CardlotesPage implements OnInit {
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController
-  ) { 
+  ) {
 
   }
   public nombreProv: any;
   public idProveedorRecibido: any;
+
 
 
   ngOnInit() {
@@ -26,7 +27,9 @@ export class CardlotesPage implements OnInit {
     this.idProveedorRecibido = id;
     this.traerNombre();
   }
-  
+
+
+
   async traerNombre() {
     this.nombreProv = [];
     this.FB.proveedoresLista.forEach(element => {
@@ -37,11 +40,19 @@ export class CardlotesPage implements OnInit {
   }
 
   irDetalleLote(item) {
-    console.log("Datos a enviar", this.idProveedorRecibido, item.lote);
-    console.log("esto es itemmmm ", item.lote);
     this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);
     this.FB.getAnticiposLoteProveedor(this.idProveedorRecibido, item.lote);
     this.navCtrl.navigateForward(["detallelote/", item.lote, this.idProveedorRecibido]);
+  }
+
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 
 

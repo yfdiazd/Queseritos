@@ -18,6 +18,10 @@ export class CrearenvioclientePage implements OnInit {
   public contadorPeso: number;
   public tipoQueso;
   public lote;
+
+  //variables alejo
+  pesoLimite;
+  pesoAcumulado = 0;
   
   constructor(
     private FB: FBservicesService,

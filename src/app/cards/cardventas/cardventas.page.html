@@ -1,0 +1,99 @@
+<ion-router-outlet main></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="titulo">DETALLE VENTAS</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+    </ion-buttons>
+    <ion-button fill="clear" shape="round" slot="end" (click)="irVenta()">
+      +<ion-icon name="cart" color="success"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div-principal">
+    <ion-title class="title">{{nombrecliente}}</ion-title>
+  </div>
+  <div class="div-secundario">
+    <ion-item-sliding class="slider" *ngFor="let card of listaVentas">
+      <ion-item class="item">
+        <div class="div-card">
+          <ion-card class="card">
+            <div class="div_info">
+              <div class="div_fila_1">
+                <p><span>Tipo de queso: </span><span class="tipo_queso">{{nompreProducto}}</span></p>
+                <p><span>Fecha:</span> {{fechaCompra}}</p>
+              </div>
+              <div class="div_fila_2">
+                <div class="div_fila_2_part_left">
+                  <p class="p"><span>Peso total:</span> {{pesoPesadas}} </p>
+                  <p class="p"><span>Pesadas:</span> {{totalPesada}}</p>
+                </div>
+                <div class="div_fila_2_part_right">
+                  <ion-button class="btn_modal" (click)="modalConfirmarPesaje(card)" fill="outline" expand="full" shape="round">
+                    <ion-icon class="icon" name="bar-chart" color="tertiary"></ion-icon>
+                  </ion-button>
+                 
+                </div>
+              </div>
+            </div>
+            <div class="div_tabla">
+              <table class="table">
+                <thead class="thead">
+                  <th class="th1">Pesada</th>
+                  <th class="th2">Estado</th>
+                  <th class="th3">Peso (Kg)</th>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="tr" *ngFor="let lista of pesadaLista ,let i=index">
+                    <td class="td1">
+                      <label (ngModel)="numbulto">{{i+1}}</label>
+                    </td>
+                    <td class="td2">
+                      <label (ngModel)="peso">{{estado}}</label>
+                    </td>
+                    <td class="td3">
+                      <label (ngModel)="peso">{{peso}}</label>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ion-card>
+        </div>
+      </ion-item>
+      <!-- opción para eliminar registro -->
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminarRegistro(card)">Eliminar</ion-item-option>
+      </ion-item-options>
+      <!-- Opción para editar el registro -->
+      <ion-item-options side="start">
+        <ion-item-option color="warning" (click)="alertEditar(lista)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-tabs class="">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="irInicio()">
+          <ion-icon name="home"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irCompras()">
+          <ion-icon name="cart"></ion-icon>
+          <ion-label>Compras</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irEstado()">
+          <ion-icon name="podium"></ion-icon>
+          <ion-label>Estado</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+</ion-footer>

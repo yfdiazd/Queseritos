@@ -14,8 +14,10 @@ ion-content {
 
     .div-principal {
         width: 100%;
-        height: 15%;
-        background-color: #4376ff;
+        height: 10%;
+        background-color: #15317c;
+        position: fixed;
+        z-index: 20;
 
         .col_1,
         .col_2 {
@@ -25,21 +27,21 @@ ion-content {
             text-align: center;
         }
 
-        .h1,
-        .h2 {
+        .p1,
+        .p2 {
             margin: 0%;
             padding: 0%;
         }
 
-        .h2 {
-            font-size: 3vh;
-            color: #1a1446;
+        .p1 {
+            font-size: 2.5vh;
+            color: #fff;
         }
 
-        .h1 {
-            font-size: 4vh;
-            color: #ff2f73;
+        .p2 {
+            font-size: 3vh;
             font-weight: bold;
+            color: #c8f7f3;
         }
     }
 
@@ -47,10 +49,12 @@ ion-content {
     .div-secundario {
         height: 90%;
         width: 100%;
-        padding-top: 1em;
-        //position: 0;
-        //z-index: 0;
-        --background: #c8f7f3;
+        margin: auto;
+        margin-top: 5rem;
+        max-width: 800px;
+        z-index: 10;
+
+
 
         .btn_crearAnt {
             float: right;
@@ -58,125 +62,226 @@ ion-content {
             line-height: 100%;
             --background: #1a1446;
         }
-        .item,
-        .slider {
+
+
+        .div-card1 {
             width: 100%;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0;
-            margin-top: 20px;
-            --background: #c8f7f3;
-
-            // .item {
-            //    // --background: transparent;
-            //    --background: #c8f7f3;
-            //     --border-style: none;
+            border: #1a1446 solid 3px;
+            border-radius: 5px;
+            background-color: #fff;
 
 
-                .div-card {
+            .card {
+                width: 100%;
+                margin: auto;
+                background-color: white;
+
+                .div_info {
+                    padding: 10px;
+                    color: #1a1446;
+                    font-weight: bold;
+                }
+
+                .div_tabla {
                     width: 100%;
-                    border: #1a1446 solid 3px;
-                    border-radius: 5px;
-                    --background: #c8f7f3;
+                    margin: auto;
 
-
-                    .card {
+                    p {
+                        font-size: 3vh;
+                        font-weight: bold;
+                        text-align: center;
                         width: 100%;
-                        margin: auto;
-                        background-color: white;
-                        padding: 15px;
 
-                        .div_tabla {
+                    }
+
+                    .slider {
+                        width: 100%;
+                        border-style: none;
+                        padding: 0;
+                        margin: 0;
+
+                        .item {
+                            --background: transparent;
+                            // --border-style: none;
                             width: 100%;
-                            margin: auto;
+                            margin: 0;
+                            position: relative;
+                            float: left;
+                            padding-inline-start: 0;
+                            --padding-start: 0;
+                            --ion-safe-area-right: 0;
+                            --inner-padding-end: 0;
 
-                            p {
-                                font-size: 3vh;
-                                font-weight: bold;
+                            .td1,
+                            .td2,
+                            .td3,
+                            .td4 {
                                 text-align: center;
-                                width: 100%;
+                                color: #1a1446;
+                                display: inline-block;
+                                padding: 0;
+                                margin: 0;
+                                font-size: 2vh;
+                            }
+
+                            .td1 {
+                                width: 30%;
 
                             }
 
-                            .table {
-                                width: 100%;
+                            .td2 {
+                                width: 30%;
+
+                            }
+
+                            .td3 {
+                                width: 10%;
+                            }
+
+                            .td4 {
+                                width: 30%;
+                            }
+
+                            .item-opt {
+                                padding: 0;
+                                margin: 0;
+                            }
+                        }
+                    }
+
+                    .table {
+                        width: 100%;
 
 
-                                .thead {
-                                    border: solid 2px #1a1446;
-                                    background: #1a1446;
-                                    color: white;
+                        .thead {
+                            border: solid 2px #1a1446;
+                            background: #1a1446;
+                            color: white;
 
-                                    .th1 {
-                                        width: 30%;
-                                    }
+                            .th1 {
+                                width: 30%;
+                            }
 
-                                    .th2 {
-                                        width: 70%;
-                                    }
-                                }
+                            .th2 {
+                                width: 30%;
+                            }
 
-                                .tbody {
-                                    border: solid 2px #1a1446;
+                            .th3 {
+                                width: 10%;
+                            }
 
-                                    .td1 {
-                                        width: 30%;
-                                        text-align: center;
-                                    }
-
-                                    .td2 {
-                                        width: 70%;
-                                        text-align: center;
-                                    }
-
-                                }
+                            .th4 {
+                                width: 30%;
                             }
                         }
                     }
                 }
-            //}
+            }
+        }
+
+        .div-card2 {
+            width: 100%;
+            border: #1a1446 solid 3px;
+            border-radius: 5px;
+            background-color: #fff;
+
+            .div_tabla {
+                width: 100%;
+                margin: auto;
+                border: #1a1446 solid 3px;
+                border-radius: 5px;
+                background-color: #fff;
+
+                p {
+                    font-size: 3vh;
+                    font-weight: bold;
+                    text-align: center;
+                    width: 100%;
+
+                }
+
+                .slider {
+                    width: 100%;
+                    border-style: none;
+                    padding: 0;
+                    margin: 0;
+
+                    .item {
+                        --background: transparent;
+                        // --border-style: none;
+                        width: 100%;
+                        margin: 0;
+                        position: relative;
+                        float: left;
+                        padding-inline-start: 0;
+                        --padding-start: 0;
+                        --ion-safe-area-right: 0;
+                        --inner-padding-end: 0;
+
+                        .td1,
+                        .td2,
+                        .td3,
+                        .td4 {
+                            text-align: center;
+                            color: #1a1446;
+                            display: inline-block;
+                            padding: 0;
+                            margin: 0;
+                            font-size: 2vh;
+                        }
+
+                        .td1 {
+                            width: 30%;
+
+                        }
+
+                        .td2 {
+                            width: 30%;
+
+                        }
+
+                        .td3 {
+                            width: 10%;
+                        }
+
+                        .td4 {
+                            width: 30%;
+                        }
+
+                        .item-opt {
+                            padding: 0;
+                            margin: 0;
+                        }
+                    }
+                }
+
+                .table {
+                    width: 100%;
+
+
+                    .thead {
+                        border: solid 2px #1a1446;
+                        background: #1a1446;
+                        color: white;
+
+                        .th1 {
+                            width: 30%;
+                        }
+
+                        .th2 {
+                            width: 30%;
+                        }
+
+                        .th3 {
+                            width: 10%;
+                        }
+
+                        .th4 {
+                            width: 30%;
+                        }
+                    }
+                }
+            }
         }
     }
-
-    // .div-pesoc {
-    //     display: inline-block;
-    //     width: 100%;
-    //     height: 100%;
-    //     text-align: left;
-    // }
-
-    // .div-atributo1 {
-    //     display: inline-block;
-    //     width: 50%;
-    //     height: 100%;
-
-    // }
-
-    // .div-atributo2 {
-    //     display: inline-block;
-    //     width: 50%;
-    //     height: 100%;
-    // }
-
-    // .card1 {
-    //     margin: auto;
-    //     text-align: left;
-    //     --background: #ff2f73;
-    // }
-
-    #boton-n-lote {
-        padding: 0;
-        line-height: 20px;
-        width: 18px;
-        font-size: 20pt;
-        font-family: tahoma;
-        margin-top: 0;
-        margin-right: 2px;
-        position: absolute;
-        top: 0;
-        right: 10px;
-        background: #ff2f73;
-    }
-
 }

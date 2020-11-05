@@ -26,10 +26,10 @@ export class MainMenuPage  implements OnInit  {
   }
 
   ngOnInit() {
-    // this.presentLoading('Espere...');
-    // setTimeout(() => {
-    //   this.loading.dismiss();
-    // }, 1500);
+    this.presentLoading('Espere...');
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 1500);
   }
 
   comprar() {

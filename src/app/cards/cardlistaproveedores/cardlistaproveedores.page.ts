@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { identifierModuleUrl } from '@angular/compiler';
 import { element } from 'protractor';
+import { CreartruequePage } from 'src/app/formularios/creartrueque/creartrueque.page';
 
 @Component({
   selector: 'app-cardlistaproveedores',
@@ -23,7 +24,7 @@ export class CardlistaproveedoresPage implements OnInit {
     private navCtrl: NavController,
     private alertController: AlertController,
     private router: Router,
-    private route : ActivatedRoute
+    private route: ActivatedRoute
   ) { }
 
   listanombres: any[];
@@ -43,25 +44,38 @@ export class CardlistaproveedoresPage implements OnInit {
     })
   }
 
-  listadoproveedores(){
-    this.listanombres1 =[];
-    this.FB.proveedoresLista.forEach(element =>{
+  listadoproveedores() {
+    this.listanombres1 = [];
+    this.FB.proveedoresLista.forEach(element => {
       this.listanombres1.push((element.nombre + " " + element.apellido))
 
     })
     return this.listanombres1;
 
   }
+  async irHomeAnticipo(idProveedor, lote) {
+    const modal = await this.modalCtrl.create({
+      component: CreartruequePage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idProveedor: idProveedor,
+        id: 0,
+        lote: lote,
+        card: "si"
+      },
+    }); await modal.present();
+  }
 
 
   async irCardLote(input) {
-    this.FB.proveedoresLista.forEach(element=>{
-      if(element.nombre + " " + element.apellido == input)
-      {
-        if (this.FB.proveedoresCompraLista.includes(element.id)) { 
+    this.FB.proveedoresLista.forEach(element => {
+      if (element.nombre + " " + element.apellido == input) {
+        if (this.FB.proveedoresCompraLista.includes(element.id)) {
           console.log("Se envia el id: ", element.id)
           this.FB.getLotesDelProveedor(element.id);
-    
+
           this.navCtrl.navigateForward(['cardlotes/', element.id]);
         }
         else {
@@ -71,10 +85,10 @@ export class CardlistaproveedoresPage implements OnInit {
 
       }
     })
-    
-  } 
-   
-  
+
+  }
+
+
 
   async presentAlertConfirm(idProveedor) {
     console.log("Esto me envia el proveedor seleccionado", idProveedor)
@@ -95,7 +109,13 @@ export class CardlistaproveedoresPage implements OnInit {
         }, {
           text: 'Ok',
           handler: () => {
-            this.navCtrl.navigateForward(["creartrueque/", idProveedor]);
+            const ordenLotes = this.FB.listaOrdenLotes();
+            let loteLocal = [];
+            loteLocal = (ordenLotes.slice(ordenLotes.length - 1));
+            this.irHomeAnticipo(idProveedor, loteLocal.toString());
+
+
+            this.navCtrl.navigateForward(["detallelote/", loteLocal.toString(), idProveedor]);
             this.alertController.dismiss();
           }
         }
@@ -105,25 +125,24 @@ export class CardlistaproveedoresPage implements OnInit {
     await alert.present();
   }
 
-  getItems(ev:any){
+  getItems(ev: any) {
     this.listanombres1;
     let val = ev.target.value;
-    if (val && val.trim() != '')
-    {
-      
-      this.listanombres1 = this.listanombres1.filter((item)=>{
-        return (item.toLowerCase().indexOf(val.toLowerCase())> -1)
-        
+    if (val && val.trim() != '') {
+
+      this.listanombres1 = this.listanombres1.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1)
+
       })
-  
+
     }
-    else{
-      if (val== '' || val == undefined){    
+    else {
+      if (val == '' || val == undefined) {
         return this.listadoproveedores();
-        
-  
+
+
       }
-     
+
     }
   }
 
