@@ -85,21 +85,35 @@ export class CreartruequePage implements OnInit {
   imagen: any;
   nombreArchLoaded: string = "Subir Archivo";
   subirImg(event) {
-    this.imagen = event;
-    this.nombreArchLoaded = (this.imagen.target.files[0].name + " fue cargado 100%");
-    return this.imagen, this.nombreArchLoaded;
+    let valida = event.target.files[0].type;
+    console.log("Fotoo ", valida);
+    if (valida.includes("image")) {
+      this.imagen = event;
+      this.nombreArchLoaded = (this.imagen.target.files[0].name + " fue cargado 100%");
+      return this.imagen, this.nombreArchLoaded;
+    } else {
+      this.FB.toastArchivoImagen();
+    }
+
   }
 
 
   guardar() {
+    console.log("imagennnnnnnnnnnnnn ", this.imagen);
+    
     console.log(" esto es ", this.card);
-
     if (this.card == "si") {
+      if (this.idProveedor == null || this.id, this.lote == null || this.tipoAnticipoEdit == null || this.valor == null || this.imagen == undefined) {
+        this.FB.toastCamposBlanco();
+      }
       console.log("Cuando viene sin compra pepaa ", this.idProveedor, this.id, this.lote);
       this.FB.crearBalanceLote(this.idProveedor, this.lote);
       this.FB.registrarAnticiposApesajeCompra(this.idProveedor, this.id, this.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
       this.modalCtrl.dismiss();
     } else {
+      if (this.datos.idProveedor == null || this.datos.id == null || this.datos.lote == null || this.tipoAnticipoEdit == null || this.valor == null || this.imagen == undefined) {
+        this.FB.toastCamposBlanco();
+      }
       console.log("Cuando viene de detalles pape  ", this.datos);
       this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
       this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);

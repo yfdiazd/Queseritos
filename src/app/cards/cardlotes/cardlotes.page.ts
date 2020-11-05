@@ -34,7 +34,7 @@ export class CardlotesPage implements OnInit {
         this.nombreProv = element.nombre;
       }
     })
-  }
+  } 
 
   irDetalleLote(item) {
     console.log("Datos a enviar", this.idProveedorRecibido, item.lote);

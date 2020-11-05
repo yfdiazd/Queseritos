@@ -22,8 +22,9 @@
       <ion-icon slot="start" name="chevron-forward">
       </ion-icon>
       <ion-label>Lote: {{ item.lote}}</ion-label>
-      <ion-label>Total Compras: {{  item.compra}}</ion-label>
-      <ion-label>Total Anticipos {{ item.anticipo  }}</ion-label>
+      <ion-label>Total Crédito: {{  item.compra}}</ion-label>
+      <ion-label>Total Debitos {{ item.anticipo  }}</ion-label>
+      <ion-label>Total Debitos {{ item.compra - item.anticipo  }}</ion-label>
       <ion-badge slot="end">42</ion-badge>
     </ion-item>
 
