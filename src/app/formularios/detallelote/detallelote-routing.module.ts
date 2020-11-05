@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: DetallelotePage
+  },  {
+    path: 'vistaimg',
+    loadChildren: () => import('./vistaimg/vistaimg.module').then( m => m.VistaimgPageModule)
   }
+
 ];
 
 @NgModule({

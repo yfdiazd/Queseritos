@@ -8,11 +8,12 @@
       <ion-icon slot="icon-only" name="add" color="success"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
+  <ion-searchbar placeholder="Buscar ciudad" (ionChange)="getItems($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>
   <div class="div-principal">
-    <ion-item-sliding class="slider" *ngFor="let lista of FB.ciudadesLista">
+    <ion-item-sliding class="slider" *ngFor="let lista of listanombreciudad">
       <ion-item class="item">
         <ion-card class="card">
           <p><span>Código: </span> {{lista.codigo}}</p>

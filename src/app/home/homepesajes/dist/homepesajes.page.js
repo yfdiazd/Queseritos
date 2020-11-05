@@ -46,30 +46,68 @@ exports.HomepesajesPage = void 0;
 var core_1 = require("@angular/core");
 var confirmarpesaje_page_1 = require("src/app/formularios/confirmarpesaje/confirmarpesaje.page");
 var HomepesajesPage = /** @class */ (function () {
-    function HomepesajesPage(FB, PopoverController, modalController) {
+    function HomepesajesPage(FB, PopoverController, modalController, alertController) {
         this.FB = FB;
         this.PopoverController = PopoverController;
         this.modalController = modalController;
-        this.listaCompraDetallada = [];
+        this.alertController = alertController;
+        this.pesoTotal = 0;
+        this.sumaPeso = 0;
+        this.mostrarCrearConfirmar = true;
+        this.traerPeso();
+        this.sumarPesos();
     }
     HomepesajesPage.prototype.ngOnInit = function () {
+        this.traerPeso();
+        this.sumarPesos();
     };
-    HomepesajesPage.prototype.crearModal = function () {
-        // this.navCtrl.navigateForward('confirmarpesaje');
-        this.presentPopover(this.idCompra, this.idProv);
-    };
-    HomepesajesPage.prototype.presentPopover = function (idCompra, idProv) {
+    HomepesajesPage.prototype.traerPeso = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var popover, data;
+            var valorPeso;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.pesoTotal = 0;
+                        return [4 /*yield*/, this.FB.infoCompraUnica];
+                    case 1:
+                        valorPeso = _a.sent();
+                        valorPeso.forEach(function (info) {
+                            _this.pesoTotal = info.pesoBultos;
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    HomepesajesPage.prototype.sumarPesos = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.sumaPeso = 0;
+                // let valorPeso = await this.FB.pesajeConfirmadoLista;
+                this.FB.pesajeConfirmadoLista.forEach(function (info) {
+                    _this.sumaPeso = _this.sumaPeso + parseInt(info.cantidadEstado);
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    HomepesajesPage.prototype.presentPopover = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var popover;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.PopoverController.create({
                             component: confirmarpesaje_page_1.ConfirmarpesajePage,
                             cssClass: 'popover_style',
                             translucent: true,
+                            keyboardClose: false,
+                            backdropDismiss: false,
                             componentProps: {
-                                idCompra: idCompra,
-                                idProv: idProv
+                                idCompra: this.idCompra,
+                                idProv: this.idProv,
+                                pesoTotal: this.pesoTotal
                             }
                         })];
                     case 1:
@@ -77,20 +115,56 @@ var HomepesajesPage = /** @class */ (function () {
                         return [4 /*yield*/, popover.present()];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, popover.onDidDismiss()];
-                    case 3:
-                        data = (_a.sent()).data;
-                        console.log("Esto trajo:", data);
-                        this.listaCompraDetallada.push(data);
-                        console.log("La lista es deeeeeeeeeeeeeeeeee ", this.listaCompraDetallada);
+                        this.sumarPesos();
+                        this.traerPeso();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    ;
     HomepesajesPage.prototype.volver = function () {
         this.modalController.dismiss();
+    };
+    HomepesajesPage.prototype.removeRegister = function (lista) {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("valores", this.idProv, this.idCompra, lista);
+                        return [4 /*yield*/, this.alertController.create({
+                                cssClass: 'my-custom-class',
+                                header: 'Cuidado!',
+                                message: 'Esta seguro de <strong>eliminar</strong> el pesaje confirmado?',
+                                buttons: [
+                                    {
+                                        text: 'Cancelar',
+                                        role: 'cancel',
+                                        cssClass: 'secondary',
+                                        handler: function (blah) {
+                                            console.log('Confirm Cancel: blah');
+                                        }
+                                    }, {
+                                        text: 'SI',
+                                        handler: function () {
+                                            console.log('Confirm Okay', lista);
+                                            _this.FB.deletePesajeConfirmado(_this.idProv, _this.idCompra, lista.id, lista.costoTotalEstado);
+                                            _this.FB.getInfoCompra(_this.idProv, _this.idCompra);
+                                            _this.FB.getPesajeConfirmado(_this.idProv, _this.idCompra);
+                                        }
+                                    }
+                                ]
+                            })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     __decorate([
         core_1.Input()
@@ -98,9 +172,6 @@ var HomepesajesPage = /** @class */ (function () {
     __decorate([
         core_1.Input()
     ], HomepesajesPage.prototype, "idProv");
-    __decorate([
-        core_1.Input()
-    ], HomepesajesPage.prototype, "listaBultos");
     HomepesajesPage = __decorate([
         core_1.Injectable({
             providedIn: "root"

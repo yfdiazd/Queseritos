@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 import { IonicModule } from '@ionic/angular';
+import {jsonlocal} from 'src/assets/js/archjson.js';
 
 import { CreartruequePageRoutingModule } from './creartrueque-routing.module';
 
@@ -14,7 +15,8 @@ import { CreartruequePage } from './creartrueque.page';
     FormsModule,
     IonicModule,
     CreartruequePageRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    jsonlocal
   ],
   declarations: [CreartruequePage]
 })

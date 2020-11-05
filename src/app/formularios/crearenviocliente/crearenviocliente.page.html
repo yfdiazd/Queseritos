@@ -11,19 +11,18 @@
 <ion-content>
   <div class="div-principal">
     <div class="div-fila-1">
-      <p class="fila1_p_titulo">Límite</p>
-      <input type="number" [(ngModel)]="placaEdit" />
-      <ion-item>
+      <ion-item class="item">
         <ion-label position="floating">Límite</ion-label>
-        <ion-input></ion-input>
+        <ion-input type="number" [(ngModel)]="pesoLimite"> </ion-input>
       </ion-item>
+      <ion-icon name="lock-closed-outline"></ion-icon>
+      <ion-toggle color="danger"></ion-toggle>
+      <ion-icon name="lock-closed-outline"></ion-icon>
     </div>
     <div class="div-fila-2">
-      <p class="fila2_p_titulo">Peso Actual</p>
-      <p class="fila2_p_valor">{{pesoacumulado}}<span> Kg</span></p>
-      <ion-item>
+      <ion-item class="item">
         <ion-label position="floating">Peso Actual</ion-label>
-        <ion-input></ion-input>
+        <ion-input type="number" [(ngModel)]="pesoAcumulado"></ion-input>
       </ion-item>
     </div>
   </div>

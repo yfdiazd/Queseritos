@@ -73,10 +73,7 @@ export class HomepesajesPage implements OnInit {
     await popover.present();
     this.sumarPesos();
     this.traerPeso();
-  }
-  guardar() {
-
-  }
+  }  
   volver() {
     this.modalController.dismiss();
   }

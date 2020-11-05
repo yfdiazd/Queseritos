@@ -16,7 +16,8 @@ import { __values } from "tslib";
   styleUrls: ['./homeproveedores.page.scss'],
 })
 export class HomeproveedoresPage implements OnInit {
-
+  listanomproveedores: any []=[];
+  objproveedor:any;
   constructor(
     private navCtrl: NavController,
     private FB: FBservicesService,
@@ -32,6 +33,7 @@ export class HomeproveedoresPage implements OnInit {
 
 
   ngOnInit() {
+    this.listarnombresproveedores()
   }
 
   async editarModal(lista) {
@@ -64,6 +66,8 @@ export class HomeproveedoresPage implements OnInit {
   async eliminar(lista) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
+      keyboardClose: false,
+      backdropDismiss: false,
       header: "Espera",
       message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
       buttons: [
@@ -91,6 +95,47 @@ export class HomeproveedoresPage implements OnInit {
   async cerrar() {
     this.navCtrl.navigateForward('main-menu');
   }
+  listarnombresproveedores(){
+    this.listanomproveedores = [];
+    this.objproveedor=null;
+    this.FB.proveedoresLista.forEach(element=>{
+      this.objproveedor= ({
+        nombre: element.nombre, 
+        apellido: element.apellido,
+        numIndetificacion:element.numIndetificacion,
+        telefono: element.telefono,
+        direccion: element.direccion,
+        correo: element.correo
+        
+      })
+      this.listanomproveedores.push(this.objproveedor);
+      
+    })
+    return this.listanomproveedores;
+  }
+  getItems(ev:any){
+    this.listanomproveedores;
+    let val = ev.target.value;
+    if (val && val.trim() != '')
+    {
+      
+      this.listanomproveedores = this.listanomproveedores.filter((item)=>{
+        return (item.nombre.toLowerCase().indexOf(val.toLowerCase())> -1)
+        
+      })
+  
+    }
+    
+      else if(val== '' || val == undefined)
+      {   
+          this.listanomproveedores= this.FB.proveedoresLista;
+          return this.listanomproveedores;
+      }
+        
+  
+      
+     
+    }
 
 
 

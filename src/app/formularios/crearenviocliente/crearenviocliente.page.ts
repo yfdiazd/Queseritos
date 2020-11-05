@@ -18,6 +18,10 @@ export class CrearenvioclientePage implements OnInit {
   public contadorPeso: number;
   public tipoQueso;
   public lote;
+
+  //variables alejo
+  pesoLimite;
+  pesoAcumulado = 0;
   
   constructor(
     private FB: FBservicesService,
@@ -50,6 +54,8 @@ export class CrearenvioclientePage implements OnInit {
   async presentAlertRadio() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
       header: 'Crear Pesada ' + (this.listaPesada.length + 1),
       inputs: [
         {

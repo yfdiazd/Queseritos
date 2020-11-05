@@ -29,10 +29,6 @@
         <th class="th3">Valor Kg</th>
         <th class="th4">Valor Total</th>
       </thead>
-      <tbody class="tbody">
-        <tr class="tr">
-        </tr>
-      </tbody>
     </table>
     <ion-item-sliding class="slider" *ngFor="let lista of FB.pesajeConfirmadoLista">
       <ion-item class="item">
@@ -45,17 +41,5 @@
         <ion-item-option color="danger" (click)="removeRegister(lista)">Eliminar</ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
-
-    <!-- <div class="div_toggle">
-        <ion-chip class="btn-add" (click)="agregarBultoLista()">
-          <ion-icon name="add" color="success"></ion-icon>
-          <ion-label color="dark">Agregar</ion-label>
-        </ion-chip>
-      </div>
-      <ion-button (click)="guardar()" expand="full" color="success">
-        <ion-icon name="save-outline"></ion-icon>
-        <ion-label>Guardar</ion-label>
-      </ion-button> -->
-
   </div>
 </ion-content>

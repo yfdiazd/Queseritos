@@ -56,6 +56,9 @@ export class CardcompradetalladaPage implements OnInit {
   cantidadConfirmaciones = 0;
   async traerNombre() {
     this.nombreProv = [];
+    this.listaCompras = [];
+    console.log("Lista comporassasssssssssssssss:", this.listaCompras);
+    
     this.FB.proveedoresLista.forEach(element => {
       this.FB.pesajeCompraLista.forEach(element2 => {
         if (element.id == element2.idProveedor) {
@@ -63,12 +66,9 @@ export class CardcompradetalladaPage implements OnInit {
         }
       })
     })
-
-
     this.FB.pesajeCompraLista.forEach(pesaje => {
       this.FB.productosLista.forEach(producto => {
         if (pesaje.idProducto == producto.id) {
-
 
           this.listaCompras.push({
             anticipos: pesaje.anticipos,
@@ -103,6 +103,7 @@ export class CardcompradetalladaPage implements OnInit {
       },
     });
     await modal.present();
+
   }
 
   irCompra() {
@@ -118,7 +119,7 @@ export class CardcompradetalladaPage implements OnInit {
     }
   }
 
-  async removeRegister(lista) {   
+  async removeRegister(lista) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Cuidado!',
@@ -134,8 +135,11 @@ export class CardcompradetalladaPage implements OnInit {
         }, {
           text: 'SI',
           handler: () => {
-         
+
             this.FB.deletePesajeCompra(this.idProveedor, lista.id);
+            this.FB.getPesajeCompra(this.idProveedor);
+            this.traerTipoQueso();
+            this.traerNombre();
           }
         }
       ]

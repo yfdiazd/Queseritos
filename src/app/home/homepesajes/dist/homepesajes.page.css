@@ -1,0 +1,114 @@
+ion-toolbar {
+  --background: #1a1446;
+}
+ion-toolbar .titulo {
+  color: white;
+  font-size: 2vh;
+}
+
+ion-content {
+  padding: 0;
+  margin: 0;
+  --background: #c8f7f3;
+  --color: #1a1446;
+}
+ion-content .div-principal {
+  width: 90%;
+  padding: 15px;
+  margin: auto;
+}
+ion-content .div-principal .info .p {
+  font-size: 15px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  color: #1a1446;
+}
+ion-content .div-principal .info .h3 {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  color: #ff2f73;
+}
+ion-content .div-principal .info .h3 > span {
+  font-size: 15px;
+  color: #1a1446;
+}
+ion-content .div_tabla {
+  width: 100%;
+  margin: auto;
+}
+ion-content .div_tabla p {
+  font-size: 3vh;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
+ion-content .div_tabla .table {
+  width: 100%;
+}
+ion-content .div_tabla .table .thead {
+  border: solid 2px #1a1446;
+  background: #1a1446;
+  color: white;
+}
+ion-content .div_tabla .table .thead .th1 {
+  width: 40%;
+}
+ion-content .div_tabla .table .thead .th2 {
+  width: 10%;
+}
+ion-content .div_tabla .table .thead .th3 {
+  width: 20%;
+}
+ion-content .div_tabla .table .thead .th4 {
+  width: 30%;
+}
+ion-content .div_tabla .slider {
+  width: 100%;
+  border-style: none;
+  padding: 0;
+  margin: 0;
+}
+ion-content .div_tabla .slider .item {
+  --background: transparent;
+  width: 100%;
+  margin: 0;
+  position: relative;
+  float: left;
+  padding-inline-start: 0;
+  --padding-start: 0;
+  --ion-safe-area-right: 0;
+  --inner-padding-end: 0;
+}
+ion-content .div_tabla .slider .item .td1,
+ion-content .div_tabla .slider .item .td2,
+ion-content .div_tabla .slider .item .td3,
+ion-content .div_tabla .slider .item .td4 {
+  text-align: center;
+  color: #1a1446;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  font-size: 2vh;
+}
+ion-content .div_tabla .slider .item .td1 {
+  width: 40%;
+}
+ion-content .div_tabla .slider .item .td2 {
+  width: 10%;
+}
+ion-content .div_tabla .slider .item .td2::after {
+  content: "Kg";
+  font-size: 1.5vh;
+}
+ion-content .div_tabla .slider .item .td3 {
+  width: 20%;
+}
+ion-content .div_tabla .slider .item .td4 {
+  width: 30%;
+}
+ion-content .div_tabla .slider .item .item-opt {
+  padding: 0;
+  margin: 0;
+}

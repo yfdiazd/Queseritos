@@ -85,6 +85,10 @@ export class FBservicesService {
     usuario: string;
     public totalTodo;
 
+    //variables para el saldar Deudas
+    moverHistoricoLista: any[];
+    objMoverHistorico: any;
+
     fecha: Date;
 
     config = {
@@ -220,7 +224,6 @@ export class FBservicesService {
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
                 this.recorreListas();
-
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -649,6 +652,7 @@ export class FBservicesService {
                         this.clientesLista.push(element.val());
                     }
                 });
+                console.log("imprime lista de clientes fb", this.clientesLista);
                 return this.clientesLista;
             });
     }
@@ -1053,6 +1057,7 @@ export class FBservicesService {
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
             .on("value", snapshot => {
+                this.pesajeCompraLista = [];
                 snapshot.forEach(element => {
                     this.pesajeCompraLista.push(element.val());
                 });
@@ -1150,6 +1155,7 @@ export class FBservicesService {
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
         this.sumapesoConfirmado = 0;
+        this.saldoPesoConfirmado = 0;
         const ordenLotes = await this.listaOrdenLotes();
         this.lastLote = [];
         this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
@@ -1178,7 +1184,7 @@ export class FBservicesService {
                                 this.pesajeConfirmadoLista.push(this.objPesajeConfirmado);
                                 this.objPesajeConfirmado = null;
                                 this.sumapesoConfirmado = (this.sumapesoConfirmado + parseInt(element.val().cantidadEstado));
-                                this.saldoPesoConfirmado = (this.saldoPesoConfirmado + parseInt(element.val().costoTotalEstado))
+                                this.saldoPesoConfirmado = (this.saldoPesoConfirmado + parseInt(element.val().costoTotalEstado));
                             }
                         })
                     });
@@ -1269,6 +1275,7 @@ export class FBservicesService {
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/anticipos")
                 .on('value', snapshot => {
+                    this.anticipoCompraLista = [];
                     if (snapshot.exists && snapshot.val() !== null) {
                         this.anticipoCompraLista.push(snapshot.val());
                     } else {
@@ -1288,9 +1295,9 @@ export class FBservicesService {
                 if (snapshot.exists()) {
                     snapshot.forEach(element => {
                         if (element.val().idPesajeCompra == 0 || element.val().idPesajeCompra == "0") {
-                            console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val);
+                            console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val());
 
-                            this.anticipoDirectoProveedorLista.push(element.val);
+                            this.anticipoDirectoProveedorLista.push(element.val());
                         }
                     });
                 }
@@ -1298,7 +1305,7 @@ export class FBservicesService {
         return this.anticipoDirectoProveedorLista;
     }
 
-    img: any;
+    public img: any;
     getFoto(idProveedor, idAnticipo) {
         this.img = null;
         firebase
@@ -1308,8 +1315,8 @@ export class FBservicesService {
                 console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
                 this.img = imgUr;
                 console.log("asdasdasdasdasdasd asda sd asd asd ", this.img);
-                return this.img;
 
+                return this.img;
             });
     }
     upLoadImage(idProveedor, idAnticipo, file) {
@@ -1328,7 +1335,7 @@ export class FBservicesService {
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/anticipos/" + idAnticipo)
             .remove();
-        if (idAnticipo !== 0) {
+        if (idPesaje !== 0) {
             this.getPesajeAnt(idProveedor, lote, idPesaje);
 
         }
@@ -1360,11 +1367,9 @@ export class FBservicesService {
             .ref()
             .child("usuario/compras/" + idProveedor)
             .on("value", snapshot => {
+                this.listaLotesDelProveedor = [];
+                this.objLotesDelProveedor = null;
                 snapshot.forEach(element => {
-                    console.log("Elllll............. ", element.val());
-                    console.log("Elllll222............. ", element.val().balance.anticiposLote);
-                    console.log("Elllll222............. ", element.val().balance.comprasLote);
-
                     this.objLotesDelProveedor = ({
                         lote: element.key,
                         compra: element.val().balance.comprasLote,
@@ -1515,7 +1520,6 @@ export class FBservicesService {
             .on("value", snaptshot => {
                 if (snaptshot.exists) {
                     snaptshot.forEach(element => {
-                        console.log("antssssssssssssssss s s ", element.val())
                         this.anticiposLoteProveedorLista.push(element.val());
                     });
                 }
@@ -1532,7 +1536,6 @@ export class FBservicesService {
             .on("value", snapshot => {
                 if (snapshot.exists) {
                     snapshot.forEach(element => {
-                        console.log("copppppspspsps ", element.val());
                         this.pesajeLoteProveedorLista.push(element.val());
                     });
                 }
@@ -1624,5 +1627,60 @@ export class FBservicesService {
                 });
         }
     }
+
+
+    //saldar Deudas
+    saldarDeudasProveedor(idProveedor, valor) {
+        this.agregarEstadoProveedor(idProveedor, valor);
+        this.getObjProveedor(idProveedor);
+
+
+    }
+
+    getObjProveedor(idProveedor,) {
+        this.moverHistoricoLista = [];
+        this.objMoverHistorico = null;
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .on("value", snapshot => {
+                this.objMoverHistorico = ({
+                    objHistorico: snapshot.val()
+                });
+
+                this.moverHistoricoLista.push(this.objMoverHistorico);
+                this.agregarHistorico(idProveedor, snapshot.val());
+            });
+
+    }
+    agregarHistorico(idProveedor, objeto) {
+
+        firebase
+            .database()
+            .ref("usuario/historico/" + idProveedor)
+            .set({
+                nodo: objeto
+            });
+    }
+
+    agregarEstadoProveedor(idProveedor, valor) {
+        firebase
+            .database()
+            .ref("usuario/estadoProveedor/" + idProveedor)
+            .set({
+                valor: valor
+            });
+    }
+
+    eliminarNodoProveedor(idProveedor) {
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .remove();
+    }
+
+
+
+
 
 }
