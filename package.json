@@ -31,6 +31,7 @@
     "cordova": "^10.0.0",
     "cordova-plugin-decimal-keyboard": "^1.0.0",
     "firebase": "^7.22.0",
+    "mat-currency-format": "0.0.7",
     "ngx-currency": "^2.5.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",

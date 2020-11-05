@@ -1,13 +1,20 @@
-ion-toolbar {
-    --background: #1a1446;
-}
+ion-header {
+    ion-toolbar {
+        --background: #1a1446;
 
-ion-title {
-    font-size: 20px;
+        ion-title {
+            font-size: 20px;
+            color: white;
 
-}
-.titulo{
-    color: white;
+        }
+
+    }
+
+    .search {
+        width: 100%;
+        max-width: 700px;
+        margin: auto;
+    }
 }
 
 ion-content {
@@ -16,7 +23,14 @@ ion-content {
     --background: #c8f7f3;
     --color: black;
 
+    .content {
+        width: 100%;
+        max-width: 700px;
+        margin: auto;
+    }
+
 }
-.lista{
+
+.lista {
     --background-activated: red;
 }

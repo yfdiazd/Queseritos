@@ -37,7 +37,7 @@ export class CardlotesPage implements OnInit {
         this.nombreProv = element.nombre;
       }
     })
-  }
+  } 
 
   irDetalleLote(item) {
     this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);   

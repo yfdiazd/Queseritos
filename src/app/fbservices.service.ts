@@ -325,6 +325,24 @@ export class FBservicesService {
         toas.present();
     }
 
+    //toast para archivos
+    async toastArchivoImagen() {
+        const toas = await this.toastController.create({
+            message: "El archivo que intenta subir no es de tipo imagen por favor intente de nuevo",
+            color: "danger",
+            duration: 5000
+        });
+        toas.present();
+    }
+    async toastCamposBlanco() {
+        const toas = await this.toastController.create({
+            message: "Por favor diligencie todos los campos del formulario.",
+            color: "danger",
+            duration: 5000
+        });
+        toas.present();
+    }
+
     //METODOS GENERALES:::::::::::::::::::::::::::::::::::
     sleep(milliseconds) {
         const date = Date.now();

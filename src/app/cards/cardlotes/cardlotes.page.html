@@ -16,13 +16,16 @@
     </div>
   </div>
   <div class="div-secundario">
-    <ion-card class="card" *ngFor="let item of FB.listaLotesDelProveedor" (click)="irDetalleLote(item)">
-      <ion-label class="labels">Lote: {{item.lote}}</ion-label>
-      <ion-label class="labels">Total Compras: {{item.compra}}</ion-label>
-      <ion-label class="labels">Total Anticipos: {{item.anticipo}}</ion-label>
-      <ion-icon slot="start" name="chevron-forward"></ion-icon>
-      <ion-badge slot="end">0</ion-badge>
-    </ion-card>
+    <ion-item class="item" *ngFor="let item of FB.listaLotesDelProveedor" (click)="irDetalleLote(item)">
+      <ion-icon slot="start" name="chevron-forward">
+      </ion-icon>
+      <ion-label>Lote: {{ item.lote}}</ion-label>
+      <ion-label>Total Crédito: {{  item.compra}}</ion-label>
+      <ion-label>Total Debitos {{ item.anticipo  }}</ion-label>
+      <ion-label>Total Debitos {{ item.compra - item.anticipo  }}</ion-label>
+
+    </ion-item>
+
   </div>
   <ion-button (click)="saldarDeuda()" expand="full">
     <ion-icon name="cash-outline"></ion-icon>

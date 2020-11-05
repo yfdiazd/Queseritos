@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Crear venta</ion-title>
+    <ion-button (click)="volver()" color="danger">
+      <ion-icon slot="start" name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content">
+    <div class="div-principal">
+
+      <p class="p-title_r">Tipo de queso</p>
+      <ion-select [(ngModel)]="tipoQueso" class="select" placeholder="Seleccione"
+        [interfaceOptions]="customAlertOptions" interface="alert" multiple="false" ok-text="Aceptar"
+        cancel-text="Cancelar">
+        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.productosLista">
+          {{lista.descripcion}}
+        </ion-select-option>
+      </ion-select>
+
+      <p class="p-title_r">Estado</p>
+      <ion-select [(ngModel)]="estadoQueso" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
+        multiple="false" ok-text="Aceptar" placeholder="Seleccione" cancel-text="Cancelar">
+        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.estadoProductoLista">
+          {{lista.descripcion}}
+        </ion-select-option>
+      </ion-select>
+
+
+    </div>
+  </div>
+</ion-content>
