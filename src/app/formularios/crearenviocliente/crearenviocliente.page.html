@@ -35,11 +35,11 @@
       <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.ciudadesLista">
         {{lista.descripcion}}
       </ion-select-option>
-    </ion-select>
+    </ion-select> 
 
     <div>
       <label for="fenvio">Fecha Envío:</label>
-      <input type="date" id="fenvio" name="fenvio" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+      <input type="date" id="fenvio" name="fenvio" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" [(ngModel)]="fecha">
       <span class="validity"></span>
     </div>
 

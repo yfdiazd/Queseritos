@@ -41,6 +41,8 @@ export class FBservicesService {
     idPesajeCompra: string;
     idConfirmarPesajeCompra: string;
     idAnticipos: string;
+    //Id Ventas
+    idVenta: string;
 
     // data de recorrerlista proveedores con compras
     objImp: any;
@@ -1680,7 +1682,26 @@ export class FBservicesService {
     }
 
 
-
+    agregarVenta(idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
+        this.idVenta = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
+            .set({
+                id: this.idVenta,
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa,
+                tipoQueso: tipoQueso
+            });
+        this.toastOperacionExitosa();
+    }
 
 
 }
