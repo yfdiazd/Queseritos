@@ -13,6 +13,10 @@
     <div class="col_1">
       <p class="p1">Proveedor</p>
       <p class="p2">{{nombreProv}}</p>
+      <p class="p2"></p>
+      <ion-label class="labels">Total General Crédito: {{creditoGeneral | currency:'USD':true: '2.0-0'}}</ion-label>
+      <ion-label class="labels">Total General Debito: {{debitoGeneral | currency:'USD':true: '2.0-0'}}</ion-label>
+      <ion-label class="labels">Total General Saldo: {{ saldoGeneral  | currency:'USD':true: '2.0-0'}}</ion-label>
     </div>
   </div>
   <div class="div-secundario">

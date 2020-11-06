@@ -19,6 +19,7 @@ export class CrearenvioclientePage implements OnInit {
   public contadorPeso: number;
   public tipoQueso;
   public lote;
+  public fecha;
 
   //variables alejo
   pesoLimite;
@@ -144,6 +145,15 @@ export class CrearenvioclientePage implements OnInit {
     console.log("Total peso de los bultos: " + this.contadorPeso);
   }
 
+  guardar() {
+    console.log("Fechaaaaaaaaaaaaaa ", this.fecha);
+    let fe = this.fecha.split("-", 3);
+    console.log("Fechaaaaaaaaaaaaaa ", fe[0]);
+    console.log("Fechaaaaaaaaaaaaaa ", fe[1]);
+    console.log("Fechaaaaaaaaaaaaaa ", fe[2]);
+    console.log("Fechaaaaaaaaaaaaaa NODO ", (fe[0] + "-" + fe[1]));
+
+  }
   customAlertOptions: any = {
     header: "Seleccione uno",
     translucent: true,
@@ -185,6 +195,6 @@ export class CrearenvioclientePage implements OnInit {
   //     this.listaBultos
   //   );
   //   this.listaBultos = [];
-  // }
-
 }
+
+

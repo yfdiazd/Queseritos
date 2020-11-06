@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
+import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class CardlotesPage implements OnInit {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedorRecibido = id;
     this.traerNombre();
+    this.estadoGeneral()
   }
 
 
@@ -37,7 +39,7 @@ export class CardlotesPage implements OnInit {
         this.nombreProv = element.nombre;
       }
     })
-  } 
+  }
 
   irDetalleLote(item) {
     this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);   
@@ -55,5 +57,25 @@ export class CardlotesPage implements OnInit {
     this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 
+  creditoGeneral: number;
+  debitoGeneral: number;
+  saldoGeneral: number;
+  estadoGeneral() {
+    this.creditoGeneral = 0;
+    this.debitoGeneral = 0;
+    this.saldoGeneral = 0;
+    console.log("this.FB.listaLotesDelProveedor " , this.FB.listaLotesDelProveedor)
+    this.FB.listaLotesDelProveedor.forEach(element => {
+      
+      this.creditoGeneral += element.compra;
+      this.debitoGeneral += element.anticipo;
+    });
+    this.saldoGeneral = (this.debitoGeneral - this.creditoGeneral);
+    return this.debitoGeneral, this.creditoGeneral, this.saldoGeneral;
+  }
+
+  saldar(){
+    
+  }
 
 }

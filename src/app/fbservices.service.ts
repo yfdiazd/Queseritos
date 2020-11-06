@@ -41,6 +41,8 @@ export class FBservicesService {
     idPesajeCompra: string;
     idConfirmarPesajeCompra: string;
     idAnticipos: string;
+    //Id Ventas
+    idVenta: string;
 
     // data de recorrerlista proveedores con compras
     objImp: any;
@@ -84,6 +86,10 @@ export class FBservicesService {
     // Variable usuario
     usuario: string;
     public totalTodo;
+
+    //variables para el saldar Deudas
+    moverHistoricoLista: any[];
+    objMoverHistorico: any;
 
     fecha: Date;
 
@@ -220,7 +226,6 @@ export class FBservicesService {
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
                 this.recorreListas();
-
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -1602,5 +1607,79 @@ export class FBservicesService {
                 });
         }
     }
+
+
+    //saldar Deudas
+    saldarDeudasProveedor(idProveedor, valor) {
+        this.agregarEstadoProveedor(idProveedor, valor);
+        this.getObjProveedor(idProveedor);
+
+
+    }
+
+    getObjProveedor(idProveedor,) {
+        this.moverHistoricoLista = [];
+        this.objMoverHistorico = null;
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .on("value", snapshot => {
+                this.objMoverHistorico = ({
+                    objHistorico: snapshot.val()
+                });
+
+                this.moverHistoricoLista.push(this.objMoverHistorico);
+                this.agregarHistorico(idProveedor, snapshot.val());
+            });
+
+    }
+    agregarHistorico(idProveedor, objeto) {
+
+        firebase
+            .database()
+            .ref("usuario/historico/" + idProveedor)
+            .set({
+                nodo: objeto
+            });
+    }
+
+    agregarEstadoProveedor(idProveedor, valor) {
+        firebase
+            .database()
+            .ref("usuario/estadoProveedor/" + idProveedor)
+            .set({
+                valor: valor
+            });
+    }
+
+    eliminarNodoProveedor(idProveedor) {
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .remove();
+    }
+
+
+    agregarVenta(idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
+        this.idVenta = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
+            .set({
+                id: this.idVenta,
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa,
+                tipoQueso: tipoQueso
+            });
+        this.toastOperacionExitosa();
+    }
+
 
 }
