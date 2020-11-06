@@ -22,70 +22,13 @@ ion-content .content {
   margin: auto;
 }
 ion-content .content .div-principal {
-  width: 100%;
-  max-width: 700px;
-  height: 10%;
-  margin: auto;
-  position: fixed;
-  z-index: 20;
-  --background: #15317c;
-}
-ion-content .content .div-principal .div-fila-1,
-ion-content .content .div-principal .div-fila-2 {
-  display: inline-block;
-  width: 50%;
-  height: 100%;
-  text-align: center;
-}
-ion-content .content .div-principal .div-fila-2 .item {
-  --background: #15317c;
-  color: #cccccc;
-}
-ion-content .content .div-principal .div-fila-1 .item {
-  --background: #15317c;
-  color: #c8f7f3;
-}
-ion-content .content .div-principal .div-fila-1 .item .input_limite::after {
-  content: "Kg";
-  font-size: 10px;
-  color: #c8f7f3;
-}
-ion-content .content .div-principal .div-fila-1 .item .input_limite::-webkit-inner-spin-button,
-ion-content .content .div-principal .div-fila-1 .item .input_limite::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-ion-content .content .div-principal .div-fila-1 .item .input_limite {
-  -moz-appearance: textfield;
-}
-ion-content .content .div-principal .div-fila-1 .item .div_toggle {
-  padding: 0;
-  margin: 0;
-  width: 70px;
-  height: 25px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: center;
-}
-ion-content .content .div-principal .div-fila-1 .item .div_toggle .icon {
-  width: 25%;
-  height: 100%;
-}
-ion-content .content .div-principal .div-fila-1 .item .div_toggle ion-toggle {
-  --handle-border-radius: 15px 15px 15px 15px;
-  --handle-spacing: 0px;
-  width: 50%;
-  padding: 0;
-  height: 90%;
-}
-ion-content .content .div-secundario {
   height: 90%;
   width: 100%;
-  padding-top: 8vh;
+  padding-top: 2vh;
+  padding: 10px;
 }
-ion-content .content .div-secundario .p-title,
-ion-content .content .div-secundario .p-title_r {
+ion-content .content .div-principal .p-title,
+ion-content .content .div-principal .p-title_r {
   width: 100%;
   font-weight: bold;
   color: #1a1446;
@@ -93,11 +36,12 @@ ion-content .content .div-secundario .p-title_r {
   padding-bottom: 0;
   margin-bottom: 0;
 }
-ion-content .content .div-secundario .p-title_r::after {
+ion-content .content .div-principal .p-title_r::after {
   content: "*";
   color: red;
 }
-ion-content .content .div-secundario .select {
+ion-content .content .div-principal .select,
+ion-content .content .div-principal .input_peso {
   background-color: white;
   color: #1a1446;
   border-style: solid;
@@ -112,4 +56,19 @@ ion-content .content .div-secundario .select {
   --placeholder-color: #1a1446;
   --placeholder-opacity: 1;
   text-transform: uppercase;
+}
+ion-content .content .div-principal input::-webkit-inner-spin-button,
+ion-content .content .div-principal input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+ion-content .content .div-principal input {
+  -moz-appearance: textfield;
+}
+ion-content .content .div-principal .btn_guardar {
+  --background: #1a1446;
+  font-size: 20px;
+  height: 60px;
+  width: 100%;
+  color: white;
 }
