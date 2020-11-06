@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController, PopoverController } from '@ionic/angular';
-import { ELOOP } from 'constants';
-import { AnyTxtRecord } from 'dns';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
-import { LoginPage } from 'src/app/login/login.page';
 
 import { CreartruequePage } from '../creartrueque/creartrueque.page';
 import { VistaimgPage } from './vistaimg/vistaimg.page';
@@ -62,10 +59,15 @@ export class DetallelotePage implements OnInit {
         this.cards_anticipos = false;
         this.crearAnticipo = false;
         this.generarData();
-      } else {
+        this.generarDataDirecta();
+      } else if(valorSegment =="scompras"){
         this.cards_Compras = false;
         this.cards_anticipos = true;
         this.crearAnticipo = true;
+        this.generarData();
+        this.generarDataDirecta();
+      }else{
+        this.generarData();
         this.generarDataDirecta();
       }
     }

@@ -1610,40 +1610,43 @@ export class FBservicesService {
 
 
     //saldar Deudas
-    saldarDeudasProveedor(idProveedor, valor) {
+    async saldarDeudasProveedor(idProveedor, valor) {
         this.agregarEstadoProveedor(idProveedor, valor);
-        this.getObjProveedor(idProveedor);
-
-
+        this.getObjProveedor(idProveedor,)
     }
 
-    getObjProveedor(idProveedor,) {
+    async getObjProveedor(idProveedor) {
+        console.log("Entro al getObjeto");
         this.moverHistoricoLista = [];
         this.objMoverHistorico = null;
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor)
             .on("value", snapshot => {
+                this.moverHistoricoLista = [];
+                this.objMoverHistorico = null;
                 this.objMoverHistorico = ({
                     objHistorico: snapshot.val()
                 });
 
-                this.moverHistoricoLista.push(this.objMoverHistorico);
-                this.agregarHistorico(idProveedor, snapshot.val());
             });
+        this.agregarHistorico(idProveedor, this.objMoverHistorico);
+        console.log("Salio del getOBJETO");
 
     }
-    agregarHistorico(idProveedor, objeto) {
-
+    async agregarHistorico(idProveedor, objeto) {
+        console.log("Entro al crear historico");
         firebase
             .database()
             .ref("usuario/historico/" + idProveedor)
             .set({
                 nodo: objeto
             });
+        console.log("Salio del historico");
     }
 
-    agregarEstadoProveedor(idProveedor, valor) {
+    async agregarEstadoProveedor(idProveedor, valor) {
+        console.log("Entra a crear el estado");
         firebase
             .database()
             .ref("usuario/estadoProveedor/" + idProveedor)
@@ -1651,12 +1654,32 @@ export class FBservicesService {
                 valor: valor
             });
     }
+    public estadoSaldoProveedor: number;
+    async getEstadoProveedor(idProveedor) {
+        console.log("Entra a consultar el estado del proveedor");
+        this.estadoSaldoProveedor = 0;
+        firebase
+            .database()
+            .ref("usuario/estadoProveedor/" + idProveedor)
+            .on("value", snapshot => {
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+                        this.estadoSaldoProveedor = element.val();
+                    })
+                } else {
+                    this.estadoSaldoProveedor = 0;
+                    console.log("No existe el proveedor");
+                }
+            });
+        return this.estadoSaldoProveedor;
+    }
 
-    eliminarNodoProveedor(idProveedor) {
+    async eliminarNodoProveedor(idProveedor) {
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor)
             .remove();
+        console.log("Eliminó");
     }
 
 

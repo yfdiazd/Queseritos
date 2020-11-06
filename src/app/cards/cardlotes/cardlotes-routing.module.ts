@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: CardlotesPage
+  },  {
+    path: 'saldar',
+    loadChildren: () => import('./saldar/saldar.module').then( m => m.SaldarPageModule)
   }
+
 ];
 
 @NgModule({
