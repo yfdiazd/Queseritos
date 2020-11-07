@@ -15,7 +15,7 @@
   <div class="div-principal">
     <div class="info">
       <p class="p">Peso confirmado:</p>
-      <h3 class="h3">{{{fbsumapeso}}<span>kg de</span> {{pesoTotal}}<span>Kg.</span></h3>
+      <h3 class="h3">{{fbsumapeso}}<span>kg de</span> {{pesoTotal}}<span>Kg.</span></h3>
       <p class="p">Valor calculado:</p>
       <h3 class="h3">{{fbsaldoPesoConfirmado | currency:'USD':true: '2.0-0'}}</h3>
     </div>
@@ -24,22 +24,26 @@
     <p #siver>Lista Confirmación</p>
     <table class="table">
       <thead class="thead">
-        <th class="th1">Estado</th>
-        <th class="th2">Peso <span>Kg</span></th>
-        <th class="th3">Valor Kg</th>
-        <th class="th4">Valor Total</th>
+        <th class="th1">Pesadas</th>
+        <th class="th2">Queso</th>
+        <th class="th3">Estado</th>
+        <th class="th4">Peso <span>Kg</span></th>
+        <th class="th5">Valor <span>Kg</span></th>
+        <th class="th6">Valor Total</th>
       </thead>
     </table>
-    <ion-item-sliding class="slider" *ngFor="let lista of pesajeConfirmadoLista">
+    <!-- <ion-item-sliding class="slider" *ngFor="let lista of pesajeConfirmadoLista"> -->
       <ion-item class="item">
-        <label class="td1" (ngModel)="numbulto">{{nombreEstadoQueso}}</label>
-        <label class="td2" (ngModel)="peso">{{cantidadEstado}}</label>
-        <label class="td3" (ngModel)="numbulto">{{costoKilo | currency:'USD':true: '2.0-0'}}</label>
-        <label class="td4" (ngModel)="numbulto">{{costoTotalEstado | currency:'USD':true: '2.0-0'}}</label>
+        <label class="td1" (ngModel)="numpesada">{{pesada}}</label>
+        <label class="td2" (ngModel)="queso">{{queso}}</label>
+        <label class="td3" (ngModel)="estadoqueso">{{estadoqueso}}</label>
+        <label class="td4" (ngModel)="peso">{{peso}}</label>
+        <label class="td5" (ngModel)="costounitario">{{costoKilo | currency:'USD':true: '2.0-0'}}</label>
+        <label class="td6" (ngModel)="costototal">{{costoTotalEstado | currency:'USD':true: '2.0-0'}}</label>
       </ion-item>
       <ion-item-options class="item-opt" side="end">
         <ion-item-option color="danger" (click)="removeRegister(lista)">Eliminar</ion-item-option>
       </ion-item-options>
-    </ion-item-sliding>
+    <!-- </ion-item-sliding> -->
   </div>
 </ion-content>

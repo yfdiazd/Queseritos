@@ -52,8 +52,9 @@ const routes: Routes = [
   {
     path: 'cardlistaclientes',
     loadChildren: () => import('./cards/cardlistaclientes/cardlistaclientes.module').then(m => m.CardlistaclientesPageModule)
-  },  {
-    path: 'cardventas',
+  },
+  {
+    path: 'cardventas/:id',
     loadChildren: () => import('./cards/cardventas/cardventas.module').then( m => m.CardventasPageModule)
   }
 
