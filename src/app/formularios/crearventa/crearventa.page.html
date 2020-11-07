@@ -17,7 +17,7 @@
       <ion-select [(ngModel)]="tipoQueso" (ngModelChange)="permitirGuardar($event)" class="select" placeholder="Seleccione"
         [interfaceOptions]="customAlertOptions" interface="alert" multiple="false" ok-text="Aceptar"
         cancel-text="Cancelar">
-        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.productosLista">
+        <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.productosLista">
           {{lista.descripcion}}
         </ion-select-option>
       </ion-select>
@@ -25,7 +25,7 @@
       <p class="p-title_r">Estado</p>
       <ion-select [(ngModel)]="estadoQueso" (ngModelChange)="permitirGuardar($event)" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
         multiple="false" ok-text="Aceptar" placeholder="Seleccione" cancel-text="Cancelar">
-        <ion-select-option [value]="lista.id" *ngFor="let lista of FB.estadoProductoLista">
+        <ion-select-option [value]="lista.codigo" *ngFor="let lista of FB.estadoProductoLista">
           {{lista.descripcion}}
         </ion-select-option>
       </ion-select>

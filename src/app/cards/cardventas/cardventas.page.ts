@@ -38,7 +38,7 @@ export class CardventasPage implements OnInit {
     console.log("se recibe id solito", id );
     this.idcliente=id;
     console.log("se recibe id listacliente", this.idcliente);
-    this.traerNombre();
+    //this.traerNombre();
     
    
   }
@@ -47,55 +47,55 @@ export class CardventasPage implements OnInit {
     this.navCtrl.navigateBack(["crearenviocliente/", this.idcliente]);
   }
 
-  async modalConfirmarPesada(card) {
-    this.FB.getInfoCompra(this.idcliente, card.id)
-    this.FB.getPesajeConfirmado(this.idcliente, card.id);
-    const modal = await this.modalController.create({
-      component: HomeventasPage,
-      cssClass: 'my-custom-class',
-      keyboardClose: false,
-      backdropDismiss: false,
-      componentProps: {
-        idVenta: card.id,
-        idClient: this.idcliente
-      },
-    });
-    await modal.present();
+  // async modalConfirmarPesada(card) {
+  //   this.FB.getInfoCompra(this.idcliente, card.id)
+  //   this.FB.getPesajeConfirmado(this.idcliente, card.id);
+  //   const modal = await this.modalController.create({
+  //     component: HomeventasPage,
+  //     cssClass: 'my-custom-class',
+  //     keyboardClose: false,
+  //     backdropDismiss: false,
+  //     componentProps: {
+  //       idVenta: card.id,
+  //       idClient: this.idcliente
+  //     },
+  //   });
+  //   await modal.present();
 
-  }
-  async traerNombre() {
-    this.nombreCliente = [];
-    this.listaVentas = [];
-    console.log("Lista ventas:", this.listaVentas);
+  // }
+  // async traerNombre() {
+  //   this.nombreCliente = [];
+  //   this.listaVentas = [];
+  //   console.log("Lista ventas:", this.listaVentas);
     
-    this.FB.proveedoresLista.forEach(element => {
-      this.FB.pesajeCompraLista.forEach(element2 => {
-        if (element.id == element2.idProveedor) {
-          this.nombreCliente = element.nombre;
-        }
-      })
-    })
-    // this.FB.pesajeCompraLista.forEach(pesaje => {
-    //   this.FB.productosLista.forEach(producto => {
-    //     if (pesaje.idProducto == producto.id) {
+  //   this.FB.proveedoresLista.forEach(element => {
+  //     this.FB.listaVentasClientes.forEach(element2 => {
+  //       if (element.id == element2.idcliente) {
+  //         this.nombreCliente = element.nombre;
+  //       }
+  //     })
+  //   })
+  //   this.FB.pesajeCompraLista.forEach(pesaje => {
+  //     this.FB.productosLista.forEach(producto => {
+  //       if (pesaje.idProducto == producto.id) {
 
-    //       this.listaVentas.push({
-    //         anticipos: pesaje.anticipos,
-    //         bultoLista: pesaje.bultoLista,
-    //         costoTotalCompra: pesaje.costoTotalCompra,
-    //         fechaCompra: pesaje.fechaCompra,
-    //         id: pesaje.id,
-    //         idProducto: pesaje.idProducto,
-    //         idProveedor: pesaje.idProveedor,
-    //         lote: pesaje.lote,
-    //         pesoBultos: pesaje.pesoBultos,
-    //         totalBulto: pesaje.totalBulto,
-    //         nompreProducto: producto.descripcion
-    //       })
-    //     }
-    //   })
-    // })
+  //         this.listaVentas.push({
+  //           anticipos: pesaje.anticipos,
+  //           bultoLista: pesaje.bultoLista,
+  //           costoTotalCompra: pesaje.costoTotalCompra,
+  //           fechaCompra: pesaje.fechaCompra,
+  //           id: pesaje.id,
+  //           idProducto: pesaje.idProducto,
+  //           idProveedor: pesaje.idProveedor,
+  //           lote: pesaje.lote,
+  //           pesoBultos: pesaje.pesoBultos,
+  //           totalBulto: pesaje.totalBulto,
+  //           nompreProducto: producto.descripcion
+  //         })
+  //       }
+  //     })
+  //   })
 
-  }
+  // }
 
 }

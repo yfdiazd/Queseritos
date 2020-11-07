@@ -1629,6 +1629,8 @@ export class FBservicesService {
                     objHistorico: snapshot.val()
                 });
 
+                this.moverHistoricoLista.push(this.objMoverHistorico);
+                this.agregarHistorico(idProveedor, this.objMoverHistorico);
             });
         this.agregarHistorico(idProveedor, this.objMoverHistorico);
         console.log("Salio del getOBJETO");
@@ -1674,7 +1676,8 @@ export class FBservicesService {
         return this.estadoSaldoProveedor;
     }
 
-    async eliminarNodoProveedor(idProveedor) {
+  
+    eliminarNodoProveedor(idProveedor) {
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor)
@@ -1682,8 +1685,12 @@ export class FBservicesService {
         console.log("Eliminó");
     }
 
-
-    agregarVenta(idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
+    agregarVenta(idCliente, ciudad, conductor,fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+        console.log("fechaenvio", fechaEnvio);
+        let nodo =fechaEnvio.split("-", 3);
+        
+        
+        let fechaNodo= (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
         firebase
             .database()
@@ -1693,15 +1700,32 @@ export class FBservicesService {
                 idCliente: idCliente,
                 ciudad: ciudad,
                 conductor: conductor,
-                costoVenta: costoVenta,
+                costoVenta: 0,
                 fechaEnvio: fechaEnvio,
                 pesadas: listaPesada,
                 pesoEnviado: pesoEnviado,
                 pesoLimite: pesoLimite,
-                placa: placa,
-                tipoQueso: tipoQueso
+                placa: placa
             });
         this.toastOperacionExitosa();
+    }
+
+    public imgVenta: any;
+    getFotoVenta(idCliente, idVenta) {
+        this.imgVenta = null;
+        firebase
+            .storage()
+            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
+                this.imgVenta = imgUr;
+
+                return this.imgVenta;
+            });
+    }
+
+    upLoadImageVenta(idCliente, idVenta, file) {
+
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
+
     }
 
 
