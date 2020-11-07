@@ -1629,7 +1629,7 @@ export class FBservicesService {
                 });
 
                 this.moverHistoricoLista.push(this.objMoverHistorico);
-                this.agregarHistorico(idProveedor, snapshot.val());
+                this.agregarHistorico(idProveedor, this.objMoverHistorico);
             });
 
     }
@@ -1652,13 +1652,21 @@ export class FBservicesService {
             });
     }
 
+    getEstadoProveedor(idProveedor) {
+        firebase
+            .database()
+            .ref("usuario/estadoProveedor/" + idProveedor)
+            .on("value", snapshot => {
+                snapshot.val();
+            });
+    }
+
     eliminarNodoProveedor(idProveedor) {
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor)
             .remove();
     }
-
 
     agregarVenta(idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
         this.idVenta = this.idGenerator();
@@ -1679,6 +1687,24 @@ export class FBservicesService {
                 tipoQueso: tipoQueso
             });
         this.toastOperacionExitosa();
+    }
+
+    public imgVenta: any;
+    getFotoVenta(idCliente, idVenta) {
+        this.imgVenta = null;
+        firebase
+            .storage()
+            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
+                this.imgVenta = imgUr;
+
+                return this.imgVenta;
+            });
+    }
+
+    upLoadImageVenta(idCliente, idVenta, file) {
+
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
+
     }
 
 

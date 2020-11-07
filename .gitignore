@@ -31,4 +31,11 @@ package.json
 /platforms
 /plugins
 /www
-
+.firebase/
+.firebaserc
+database.rules.json
+firebase.json
+functions/
+public/
+remoteconfig.template.json
+storage.rules
