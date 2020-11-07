@@ -7,12 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.CreartruequePageModule = void 0;
-var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/common/http");
+var core_1 = require("@angular/core");
+var forms_1 = require("@angular/forms");
 var angular_1 = require("@ionic/angular");
-var archjson_js_1 = require("src/assets/js/archjson.js");
 var creartrueque_routing_module_1 = require("./creartrueque-routing.module");
 var creartrueque_page_1 = require("./creartrueque.page");
 var CreartruequePageModule = /** @class */ (function () {
@@ -25,8 +24,7 @@ var CreartruequePageModule = /** @class */ (function () {
                 forms_1.FormsModule,
                 angular_1.IonicModule,
                 creartrueque_routing_module_1.CreartruequePageRoutingModule,
-                http_1.HttpClientModule,
-                archjson_js_1.jsonlocal
+                http_1.HttpClientModule
             ],
             declarations: [creartrueque_page_1.CreartruequePage]
         })

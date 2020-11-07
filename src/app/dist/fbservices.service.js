@@ -390,6 +390,43 @@ var FBservicesService = /** @class */ (function () {
             });
         });
     };
+    //toast para archivos
+    FBservicesService.prototype.toastArchivoImagen = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var toas;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.toastController.create({
+                            message: "El archivo que intenta subir no es de tipo imagen por favor intente de nuevo",
+                            color: "danger",
+                            duration: 5000
+                        })];
+                    case 1:
+                        toas = _a.sent();
+                        toas.present();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    FBservicesService.prototype.toastCamposBlanco = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var toas;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.toastController.create({
+                            message: "Por favor diligencie todos los campos del formulario.",
+                            color: "danger",
+                            duration: 5000
+                        })];
+                    case 1:
+                        toas = _a.sent();
+                        toas.present();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     //METODOS GENERALES:::::::::::::::::::::::::::::::::::
     FBservicesService.prototype.sleep = function (milliseconds) {
         var date = Date.now();
@@ -1256,7 +1293,6 @@ var FBservicesService = /** @class */ (function () {
             .on("value", function (snapshot) {
             snapshot.forEach(function (element) {
                 if (element.val().idPesajeCompra == idPesajeCompra) {
-                    console.log("Lista de ants == ", element.val());
                     listaAnt.push(element.val());
                 }
             });
@@ -1313,7 +1349,6 @@ var FBservicesService = /** @class */ (function () {
             if (snapshot.exists()) {
                 snapshot.forEach(function (element) {
                     if (element.val().idPesajeCompra == 0 || element.val().idPesajeCompra == "0") {
-                        console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val());
                         _this.anticipoDirectoProveedorLista.push(element.val());
                     }
                 });
@@ -1327,9 +1362,7 @@ var FBservicesService = /** @class */ (function () {
         firebase
             .storage()
             .ref("anticipos/" + idProveedor + "/" + idAnticipo).getDownloadURL().then(function (imgUr) {
-            console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
             _this.img = imgUr;
-            console.log("asdasdasdasdasdasd asda sd asd asd ", _this.img);
             return _this.img;
         });
     };
@@ -1510,22 +1543,6 @@ var FBservicesService = /** @class */ (function () {
         });
         this.getPesajeConfirmado(idProveedor, idCompra);
     };
-    FBservicesService.prototype.getAnticiposLoteProveedor = function (idProveedor, lote) {
-        var _this = this;
-        this.anticiposLoteProveedorLista = [];
-        firebase
-            .database()
-            .ref()
-            .child("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
-            .on("value", function (snaptshot) {
-            if (snaptshot.exists) {
-                snaptshot.forEach(function (element) {
-                    _this.anticiposLoteProveedorLista.push(element.val());
-                });
-            }
-        });
-        return this.anticiposLoteProveedorLista;
-    };
     FBservicesService.prototype.getPesajeLoteProveedor = function (idProveedor, lote) {
         var _this = this;
         this.pesajeLoteProveedorLista = [];
@@ -1534,6 +1551,7 @@ var FBservicesService = /** @class */ (function () {
             .ref()
             .child("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
             .on("value", function (snapshot) {
+            _this.pesajeLoteProveedorLista = [];
             if (snapshot.exists) {
                 snapshot.forEach(function (element) {
                     _this.pesajeLoteProveedorLista.push(element.val());
@@ -1621,6 +1639,124 @@ var FBservicesService = /** @class */ (function () {
                 anticiposLote: local
             });
         }
+    };
+    //saldar Deudas
+    FBservicesService.prototype.saldarDeudasProveedor = function (idProveedor, valor) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.agregarEstadoProveedor(idProveedor, valor);
+                this.getObjProveedor(idProveedor);
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.getObjProveedor = function (idProveedor) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                console.log("Entro al getObjeto");
+                this.moverHistoricoLista = [];
+                this.objMoverHistorico = null;
+                firebase
+                    .database()
+                    .ref("usuario/compras/" + idProveedor)
+                    .on("value", function (snapshot) {
+                    _this.moverHistoricoLista = [];
+                    _this.objMoverHistorico = null;
+                    _this.objMoverHistorico = ({
+                        objHistorico: snapshot.val()
+                    });
+                });
+                this.agregarHistorico(idProveedor, this.objMoverHistorico);
+                console.log("Salio del getOBJETO");
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.agregarHistorico = function (idProveedor, objeto) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                console.log("Entro al crear historico");
+                firebase
+                    .database()
+                    .ref("usuario/historico/" + idProveedor)
+                    .set({
+                    nodo: objeto
+                });
+                console.log("Salio del historico");
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.agregarEstadoProveedor = function (idProveedor, valor) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                console.log("Entra a crear el estado");
+                firebase
+                    .database()
+                    .ref("usuario/estadoProveedor/" + idProveedor)
+                    .set({
+                    valor: valor
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.getEstadoProveedor = function (idProveedor) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                console.log("Entra a consultar el estado del proveedor");
+                this.estadoSaldoProveedor = 0;
+                firebase
+                    .database()
+                    .ref("usuario/estadoProveedor/" + idProveedor)
+                    .on("value", function (snapshot) {
+                    if (snapshot.exists()) {
+                        snapshot.forEach(function (element) {
+                            _this.estadoSaldoProveedor = element.val();
+                        });
+                    }
+                    else {
+                        _this.estadoSaldoProveedor = 0;
+                        console.log("No existe el proveedor");
+                    }
+                });
+                return [2 /*return*/, this.estadoSaldoProveedor];
+            });
+        });
+    };
+    FBservicesService.prototype.eliminarNodoProveedor = function (idProveedor) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                firebase
+                    .database()
+                    .ref("usuario/compras/" + idProveedor)
+                    .remove();
+                console.log("Eliminó");
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
+        this.idVenta = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
+            .set({
+            id: this.idVenta,
+            idCliente: idCliente,
+            ciudad: ciudad,
+            conductor: conductor,
+            costoVenta: costoVenta,
+            fechaEnvio: fechaEnvio,
+            pesadas: listaPesada,
+            pesoEnviado: pesoEnviado,
+            pesoLimite: pesoLimite,
+            placa: placa,
+            tipoQueso: tipoQueso
+        });
+        this.toastOperacionExitosa();
     };
     FBservicesService = __decorate([
         core_1.Injectable({

@@ -41,6 +41,8 @@ export class FBservicesService {
     idPesajeCompra: string;
     idConfirmarPesajeCompra: string;
     idAnticipos: string;
+    //Id Ventas
+    idVenta: string;
 
     // data de recorrerlista proveedores con compras
     objImp: any;
@@ -84,6 +86,10 @@ export class FBservicesService {
     // Variable usuario
     usuario: string;
     public totalTodo;
+
+    //variables para el saldar Deudas
+    moverHistoricoLista: any[];
+    objMoverHistorico: any;
 
     fecha: Date;
 
@@ -220,7 +226,6 @@ export class FBservicesService {
                 this.listaOrdenLotes();
                 this.getLoteProveedor();
                 this.recorreListas();
-
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -319,6 +324,24 @@ export class FBservicesService {
     async toastElementoDuplicado() {
         const toas = await this.toastController.create({
             message: "El codigo que intenta agregar ya existe",
+            color: "danger",
+            duration: 5000
+        });
+        toas.present();
+    }
+
+    //toast para archivos
+    async toastArchivoImagen() {
+        const toas = await this.toastController.create({
+            message: "El archivo que intenta subir no es de tipo imagen por favor intente de nuevo",
+            color: "danger",
+            duration: 5000
+        });
+        toas.present();
+    }
+    async toastCamposBlanco() {
+        const toas = await this.toastController.create({
+            message: "Por favor diligencie todos los campos del formulario.",
             color: "danger",
             duration: 5000
         });
@@ -1224,8 +1247,6 @@ export class FBservicesService {
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     if (element.val().idPesajeCompra == idPesajeCompra) {
-                        console.log("Lista de ants == ", element.val());
-
                         listaAnt.push(element.val());
                     }
                 });
@@ -1274,8 +1295,6 @@ export class FBservicesService {
                 if (snapshot.exists()) {
                     snapshot.forEach(element => {
                         if (element.val().idPesajeCompra == 0 || element.val().idPesajeCompra == "0") {
-                            console.log("esto es lo que se agrega a la lista de anticipos con compra 0 ", element.val());
-
                             this.anticipoDirectoProveedorLista.push(element.val());
                         }
                     });
@@ -1290,10 +1309,7 @@ export class FBservicesService {
         firebase
             .storage()
             .ref("anticipos/" + idProveedor + "/" + idAnticipo).getDownloadURL().then(imgUr => {
-
-                console.log("Urrrrrrrrrrrrrrrrrrrrrrrrrrrr ", imgUr);
                 this.img = imgUr;
-                console.log("asdasdasdasdasdasd asda sd asd asd ", this.img);
 
                 return this.img;
             });
@@ -1489,22 +1505,6 @@ export class FBservicesService {
         this.getPesajeConfirmado(idProveedor, idCompra);
     }
 
-    public anticiposLoteProveedorLista: any[];
-    getAnticiposLoteProveedor(idProveedor, lote) {
-        this.anticiposLoteProveedorLista = [];
-        firebase
-            .database()
-            .ref()
-            .child("usuario/compras/" + idProveedor + "/" + lote + "/anticipos")
-            .on("value", snaptshot => {
-                if (snaptshot.exists) {
-                    snaptshot.forEach(element => {
-                        this.anticiposLoteProveedorLista.push(element.val());
-                    });
-                }
-            });
-        return this.anticiposLoteProveedorLista;
-    }
     public pesajeLoteProveedorLista: any[];
     getPesajeLoteProveedor(idProveedor, lote) {
         this.pesajeLoteProveedorLista = [];
@@ -1513,6 +1513,7 @@ export class FBservicesService {
             .ref()
             .child("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
             .on("value", snapshot => {
+                this.pesajeLoteProveedorLista = [];
                 if (snapshot.exists) {
                     snapshot.forEach(element => {
                         this.pesajeLoteProveedorLista.push(element.val());
@@ -1606,5 +1607,102 @@ export class FBservicesService {
                 });
         }
     }
+
+
+    //saldar Deudas
+    async saldarDeudasProveedor(idProveedor, valor) {
+        this.agregarEstadoProveedor(idProveedor, valor);
+        this.getObjProveedor(idProveedor,)
+    }
+
+    async getObjProveedor(idProveedor) {
+        console.log("Entro al getObjeto");
+        this.moverHistoricoLista = [];
+        this.objMoverHistorico = null;
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .on("value", snapshot => {
+                this.moverHistoricoLista = [];
+                this.objMoverHistorico = null;
+                this.objMoverHistorico = ({
+                    objHistorico: snapshot.val()
+                });
+
+            });
+        this.agregarHistorico(idProveedor, this.objMoverHistorico);
+        console.log("Salio del getOBJETO");
+
+    }
+    async agregarHistorico(idProveedor, objeto) {
+        console.log("Entro al crear historico");
+        firebase
+            .database()
+            .ref("usuario/historico/" + idProveedor)
+            .set({
+                nodo: objeto
+            });
+        console.log("Salio del historico");
+    }
+
+    async agregarEstadoProveedor(idProveedor, valor) {
+        console.log("Entra a crear el estado");
+        firebase
+            .database()
+            .ref("usuario/estadoProveedor/" + idProveedor)
+            .set({
+                valor: valor
+            });
+    }
+    public estadoSaldoProveedor: number;
+    async getEstadoProveedor(idProveedor) {
+        console.log("Entra a consultar el estado del proveedor");
+        this.estadoSaldoProveedor = 0;
+        firebase
+            .database()
+            .ref("usuario/estadoProveedor/" + idProveedor)
+            .on("value", snapshot => {
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+                        this.estadoSaldoProveedor = element.val();
+                    })
+                } else {
+                    this.estadoSaldoProveedor = 0;
+                    console.log("No existe el proveedor");
+                }
+            });
+        return this.estadoSaldoProveedor;
+    }
+
+    async eliminarNodoProveedor(idProveedor) {
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .remove();
+        console.log("Eliminó");
+    }
+
+
+    agregarVenta(idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
+        this.idVenta = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
+            .set({
+                id: this.idVenta,
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa,
+                tipoQueso: tipoQueso
+            });
+        this.toastOperacionExitosa();
+    }
+
 
 }

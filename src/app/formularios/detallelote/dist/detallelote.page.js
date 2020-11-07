@@ -55,7 +55,7 @@ var DetallelotePage = /** @class */ (function () {
         this.navCtrl = navCtrl;
         this.Lotenum = "17-10-2020-L1";
         this.proveedor = "fernanda";
-        //Lista de anticipos para mostrar de la compra
+        //Controladores para visualizar el segment
         this.cards_Compras = true;
         this.cards_anticipos = false;
         this.crearAnticipo = false;
@@ -66,20 +66,35 @@ var DetallelotePage = /** @class */ (function () {
         this.loteRecibido = idLote;
         this.provRecibido = idProv;
         this.traerNombre();
-        this.generarData();
-        this.generarDataDirecta();
+        this.cambiarHoja(true);
     };
     DetallelotePage.prototype.cambiarHoja = function (event) {
-        var valorSegment = event.detail.value;
-        if (valorSegment == "ccompras") {
-            this.cards_Compras = true;
-            this.cards_anticipos = false;
-            this.crearAnticipo = false;
+        if (event == true) {
+            console.log("entro desde onInit");
+            this.generarData();
+            this.generarDataDirecta();
         }
         else {
-            this.cards_Compras = false;
-            this.cards_anticipos = true;
-            this.crearAnticipo = true;
+            console.log("Entro desde el html");
+            var valorSegment = event.detail.value;
+            if (valorSegment == "ccompras") {
+                this.cards_Compras = true;
+                this.cards_anticipos = false;
+                this.crearAnticipo = false;
+                this.generarData();
+                this.generarDataDirecta();
+            }
+            else if (valorSegment == "scompras") {
+                this.cards_Compras = false;
+                this.cards_anticipos = true;
+                this.crearAnticipo = true;
+                this.generarData();
+                this.generarDataDirecta();
+            }
+            else {
+                this.generarData();
+                this.generarDataDirecta();
+            }
         }
     };
     DetallelotePage.prototype.generarData = function () {
@@ -96,9 +111,7 @@ var DetallelotePage = /** @class */ (function () {
                         return [4 /*yield*/, this.FB.productosLista];
                     case 2:
                         productos = _a.sent();
-                        console.log("lista obtenida", lista);
                         lista.forEach(function (compra) {
-                            console.log("Esto es los anticipos: ", compra.anticipos);
                             productos.forEach(function (producto) {
                                 if (compra.idProducto == producto.id) {
                                     _this.dataFront.push({
@@ -129,7 +142,6 @@ var DetallelotePage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.FB.getAnticipoDirectoProveedor(this.provRecibido, this.loteRecibido);
                         this.dataFrontDirecta = [];
                         return [4 /*yield*/, this.FB.anticipoDirectoProveedorLista];
                     case 1:
@@ -138,21 +150,20 @@ var DetallelotePage = /** @class */ (function () {
                     case 2:
                         productos = _a.sent();
                         lista.forEach(function (anticipo) {
-                            console.log("Esto es los anticipos: ", anticipo);
-                            productos.forEach(function (producto) {
-                                if (anticipo.idTipoAnticipo == producto.id) {
+                            productos.forEach(function (tipoAnt) {
+                                if (anticipo.idTipoAnticipo == tipoAnt.descripcion) {
                                     _this.dataFrontDirecta.push({
                                         valorAnticipo: anticipo.valorAnticipo,
                                         fechaAnticipo: anticipo.fechaAnticipo,
                                         idPesajeCompra: anticipo.idPesajeCompra,
                                         idProveedor: anticipo.idProveedor,
                                         id: anticipo.id,
-                                        nompreProducto: producto.descripcion
+                                        nompreProducto: tipoAnt.descripcion
                                     });
                                 }
                             });
                         });
-                        return [2 /*return*/, this.dataFront];
+                        return [2 /*return*/, this.dataFrontDirecta];
                 }
             });
         });
@@ -190,10 +201,6 @@ var DetallelotePage = /** @class */ (function () {
             }
         });
     };
-    DetallelotePage.prototype.crearModal = function (item) {
-        // this.navCtrl.navigateForward(['creartrueque/', item.id])
-        this.irHomeAnticipo(item);
-    };
     DetallelotePage.prototype.removeRegister = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
@@ -218,9 +225,8 @@ var DetallelotePage = /** @class */ (function () {
                                         console.log('Confirm Okay', lista);
                                         _this.FB.deleteAnticiposApesajeCompra(lista.idProveedor, lista.idPesajeCompra, lista.id, lista.valorAnticipo, _this.loteRecibido);
                                         _this.FB.getPesajeLoteProveedor(_this.provRecibido, _this.loteRecibido);
-                                        _this.FB.getAnticiposLoteProveedor(_this.provRecibido, _this.loteRecibido);
-                                        _this.generarData();
-                                        _this.generarDataDirecta();
+                                        _this.FB.getAnticipoDirectoProveedor(_this.provRecibido, _this.loteRecibido);
+                                        _this.cambiarHoja(true);
                                     }
                                 }
                             ]
@@ -237,7 +243,7 @@ var DetallelotePage = /** @class */ (function () {
     };
     DetallelotePage.prototype.irHomeAnticipo = function (item) {
         return __awaiter(this, void 0, void 0, function () {
-            var modal;
+            var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
@@ -254,8 +260,14 @@ var DetallelotePage = /** @class */ (function () {
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
-                        this.generarData();
-                        this.generarDataDirecta();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        console.log("Esperando esto: ", data);
+                        if (data == "true") {
+                            console.log("Entro al if: ", data);
+                            this.cambiarHoja(true);
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -263,7 +275,7 @@ var DetallelotePage = /** @class */ (function () {
     };
     DetallelotePage.prototype.irHomeAnticipo2 = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var modal;
+            var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
@@ -283,6 +295,14 @@ var DetallelotePage = /** @class */ (function () {
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        console.log("Esperando esto: ", data);
+                        if (data == "true") {
+                            console.log("Entro al if: ", data);
+                            this.cambiarHoja(true);
+                        }
                         return [2 /*return*/];
                 }
             });

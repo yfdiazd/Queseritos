@@ -21,13 +21,10 @@
       </ion-select-option>
     </ion-select>
     <p class="subtituloR">Valor</p>
-    <!-- <input type="number" class="camposForm"  [(ngModel)]= "valor"/> -->
-    <input type="text"(blur)="transformAmount($event)" [(ngModel)]="Valor"  />
-     <div class="div-file">
-
+    <input type="number" class="camposForm" [(ngModel)]="valor" />
+    <div class="div-file">
       <label> {{nombreArchLoaded}} </label>
       <input class="file-upload" id="file-upload" type="file" (change)="subirImg($event)" />
-
     </div>
     <ion-button (click)="guardar()" expand="full">
       <ion-icon name="save-outline"></ion-icon>

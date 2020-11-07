@@ -44,17 +44,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CardlotesPage = void 0;
 var core_1 = require("@angular/core");
+var saldar_page_1 = require("./saldar/saldar.page");
 var CardlotesPage = /** @class */ (function () {
-    function CardlotesPage(route, FB, alertController, navCtrl) {
+    function CardlotesPage(route, FB, alertController, modalCtrl, navCtrl) {
         this.route = route;
         this.FB = FB;
         this.alertController = alertController;
+        this.modalCtrl = modalCtrl;
         this.navCtrl = navCtrl;
     }
     CardlotesPage.prototype.ngOnInit = function () {
         var id = this.route.snapshot.paramMap.get("id");
         this.idProveedorRecibido = id;
+        this.FB.getLotesDelProveedor(this.idProveedorRecibido);
         this.traerNombre();
+        this.estadoGeneral();
+        this.validarSaldo();
+        this.FB.getEstadoProveedor(this.idProveedorRecibido);
+        this.ultimoSaldo = this.FB.estadoSaldoProveedor;
+    };
+    CardlotesPage.prototype.validarSaldo = function () {
+        if (this.saldoGeneral < 0) {
+            document.getElementById("saldo").style.color = "red";
+        }
+        else {
+            document.getElementById("saldo").style.color = "lime";
+        }
     };
     CardlotesPage.prototype.traerNombre = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -72,7 +87,7 @@ var CardlotesPage = /** @class */ (function () {
     };
     CardlotesPage.prototype.irDetalleLote = function (item) {
         this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);
-        this.FB.getAnticiposLoteProveedor(this.idProveedorRecibido, item.lote);
+        this.FB.getAnticipoDirectoProveedor(this.idProveedorRecibido, item.lote);
         this.navCtrl.navigateForward(["detallelote/", item.lote, this.idProveedorRecibido]);
     };
     CardlotesPage.prototype.irInicio = function () {
@@ -84,6 +99,57 @@ var CardlotesPage = /** @class */ (function () {
     CardlotesPage.prototype.irEstado = function () {
         this.navCtrl.navigateBack(["cardlistaproveedores"]);
     };
+    CardlotesPage.prototype.estadoGeneral = function () {
+        var _this = this;
+        this.creditoGeneral = 0;
+        this.debitoGeneral = 0;
+        this.saldoGeneral = 0;
+        console.log("this.FB.listaLotesDelProveedor ", this.FB.listaLotesDelProveedor);
+        this.FB.listaLotesDelProveedor.forEach(function (element) {
+            _this.creditoGeneral += element.compra;
+            _this.debitoGeneral += element.anticipo;
+        });
+        this.saldoGeneral = (this.debitoGeneral - this.creditoGeneral);
+        console.log("object", this.debitoGeneral, this.creditoGeneral, this.saldoGeneral);
+        return this.debitoGeneral, this.creditoGeneral, this.saldoGeneral;
+    };
+    CardlotesPage.prototype.saldarLotes = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalCtrl.create({
+                            component: saldar_page_1.SaldarPage,
+                            cssClass: 'my-custom-class',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idProv: this.idProveedorRecibido,
+                                creditoGeneral: this.creditoGeneral,
+                                debitoGeneral: this.debitoGeneral,
+                                saldoGeneral: this.saldoGeneral
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        console.log("Esperando esto: ", data);
+                        if (data == "true") {
+                            console.log("Entro al if: ", data);
+                            // this.ngOnInit();
+                            this.navCtrl.navigateBack(["main-menu"]);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardlotesPage.prototype.saldar = function () { };
     CardlotesPage = __decorate([
         core_1.Component({
             selector: 'app-cardlotes',

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { SaldarPage } from './saldar/saldar.page';
 
 @Component({
   selector: 'app-cardlotes',
@@ -13,6 +15,7 @@ export class CardlotesPage implements OnInit {
     private route: ActivatedRoute,
     private FB: FBservicesService,
     private alertController: AlertController,
+    private modalCtrl: ModalController,
     private navCtrl: NavController
   ) {
 
@@ -20,15 +23,27 @@ export class CardlotesPage implements OnInit {
   public nombreProv: any;
   public idProveedorRecibido: any;
 
+  public ultimoSaldo;
 
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedorRecibido = id;
+    this.FB.getLotesDelProveedor(this.idProveedorRecibido);
     this.traerNombre();
+    this.estadoGeneral();
+    this.validarSaldo();
+    this.FB.getEstadoProveedor(this.idProveedorRecibido);
+    this.ultimoSaldo = this.FB.estadoSaldoProveedor;
   }
 
-
+  validarSaldo() {
+    if (this.saldoGeneral < 0) {
+      document.getElementById("saldo").style.color = "red";
+    } else {
+      document.getElementById("saldo").style.color = "lime";
+    }
+  }
 
   async traerNombre() {
     this.nombreProv = [];
@@ -41,7 +56,7 @@ export class CardlotesPage implements OnInit {
 
   irDetalleLote(item) {
     this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);
-    this.FB.getAnticiposLoteProveedor(this.idProveedorRecibido, item.lote);
+    this.FB.getAnticipoDirectoProveedor(this.idProveedorRecibido, item.lote);
     this.navCtrl.navigateForward(["detallelote/", item.lote, this.idProveedorRecibido]);
   }
 
@@ -55,5 +70,46 @@ export class CardlotesPage implements OnInit {
     this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 
+  creditoGeneral: number;
+  debitoGeneral: number;
+  saldoGeneral: number;
+  estadoGeneral() {
+    this.creditoGeneral = 0;
+    this.debitoGeneral = 0;
+    this.saldoGeneral = 0;
+    console.log("this.FB.listaLotesDelProveedor ", this.FB.listaLotesDelProveedor)
+    this.FB.listaLotesDelProveedor.forEach(element => {
+      this.creditoGeneral += element.compra;
+      this.debitoGeneral += element.anticipo;
+    });
+    this.saldoGeneral = (this.debitoGeneral - this.creditoGeneral);
+    console.log("object", this.debitoGeneral, this.creditoGeneral, this.saldoGeneral);
+    return this.debitoGeneral, this.creditoGeneral, this.saldoGeneral;
+  }
+
+  async saldarLotes() {
+    const modal = await this.modalCtrl.create({
+      component: SaldarPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idProv: this.idProveedorRecibido,
+        creditoGeneral: this.creditoGeneral,
+        debitoGeneral: this.debitoGeneral,
+        saldoGeneral: this.saldoGeneral
+      },
+    })
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log("Esperando esto: ", data);
+    if (data == "true") {
+      console.log("Entro al if: ", data);
+      // this.ngOnInit();
+      this.navCtrl.navigateBack(["main-menu"])
+    }
+  }
+
+  saldar() { }
 
 }

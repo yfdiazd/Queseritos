@@ -15,6 +15,11 @@ ion-content {
     margin: 0;
     --background: #c8f7f3;
     --color: black;
+    .content{
+        width: 100%;
+        max-width: 700px;
+        margin: auto;
+    }
 
 }
 .lista{

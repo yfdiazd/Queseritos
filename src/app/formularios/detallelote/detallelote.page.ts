@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController, PopoverController } from '@ionic/angular';
-import { ELOOP } from 'constants';
-import { AnyTxtRecord } from 'dns';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
-import { LoginPage } from 'src/app/login/login.page';
 
 import { CreartruequePage } from '../creartrueque/creartrueque.page';
 import { VistaimgPage } from './vistaimg/vistaimg.page';
@@ -24,18 +21,17 @@ export class DetallelotePage implements OnInit {
     private modalController: ModalController,
     private alertController: AlertController,
     private navCtrl: NavController
-  ) {
-
-
-  }
+  ) { }
 
   public loteRecibido: any;
   public provRecibido: any;
   public nombreProv: any;
 
   //Lista de anticipos para mostrar de la compra
+  dataFront: any;
+  dataFrontDirecta: any;
 
-
+  //Controladores para visualizar el segment
   cards_Compras: boolean = true;
   cards_anticipos: boolean = false;
   crearAnticipo: boolean = false;
@@ -47,32 +43,43 @@ export class DetallelotePage implements OnInit {
     this.loteRecibido = idLote;
     this.provRecibido = idProv;
     this.traerNombre();
-    this.generarData();
-    this.generarDataDirecta();
+    this.cambiarHoja(true);
   }
 
   cambiarHoja(event) {
-    const valorSegment = event.detail.value;
-    if (valorSegment == "ccompras") {
-      this.cards_Compras = true;
-      this.cards_anticipos = false;
-      this.crearAnticipo = false;
+    if (event == true) {
+      console.log("entro desde onInit");
+      this.generarData();
+      this.generarDataDirecta();
     } else {
-      this.cards_Compras = false;
-      this.cards_anticipos = true;
-      this.crearAnticipo = true;
+      console.log("Entro desde el html");
+      const valorSegment = event.detail.value;
+      if (valorSegment == "ccompras") {
+        this.cards_Compras = true;
+        this.cards_anticipos = false;
+        this.crearAnticipo = false;
+        this.generarData();
+        this.generarDataDirecta();
+      } else if(valorSegment =="scompras"){
+        this.cards_Compras = false;
+        this.cards_anticipos = true;
+        this.crearAnticipo = true;
+        this.generarData();
+        this.generarDataDirecta();
+      }else{
+        this.generarData();
+        this.generarDataDirecta();
+      }
     }
 
   }
 
-  dataFront: any;
+
   async generarData() {
     this.dataFront = [];
     let lista = await this.FB.pesajeLoteProveedorLista;
     let productos = await this.FB.productosLista;
-    console.log("lista obtenida", lista);
     lista.forEach(compra => {
-      console.log("Esto es los anticipos: ", compra.anticipos);
       productos.forEach(producto => {
         if (compra.idProducto == producto.id) {
           this.dataFront.push({
@@ -94,32 +101,30 @@ export class DetallelotePage implements OnInit {
     return this.dataFront;
 
   }
-  dataFrontDirecta: any;
+
   async generarDataDirecta() {
-    this.FB.getAnticipoDirectoProveedor(this.provRecibido, this.loteRecibido);
     this.dataFrontDirecta = [];
     let lista = await this.FB.anticipoDirectoProveedorLista;
     let productos = await this.FB.tipoAnticipoLista;
     lista.forEach(anticipo => {
-      console.log("Esto es los anticipos: ", anticipo);
-      productos.forEach(producto => {
-        if (anticipo.idTipoAnticipo == producto.id) {
-          this.dataFrontDirecta.push({           
+      productos.forEach(tipoAnt => {
+        if (anticipo.idTipoAnticipo == tipoAnt.descripcion) {
+          this.dataFrontDirecta.push({
             valorAnticipo: anticipo.valorAnticipo,
             fechaAnticipo: anticipo.fechaAnticipo,
             idPesajeCompra: anticipo.idPesajeCompra,
             idProveedor: anticipo.idProveedor,
             id: anticipo.id,
-            nompreProducto: producto.descripcion
+            nompreProducto: tipoAnt.descripcion
           })
         }
       })
     })
-    return this.dataFront;
+    return this.dataFrontDirecta;
 
   }
-  async verImagen(data) {
 
+  async verImagen(data) {
     let foto = await this.FB.getFoto(this.provRecibido, data.id);
     console.log("esto es la foto", foto);
     const popover = await this.modalController.create({
@@ -141,10 +146,6 @@ export class DetallelotePage implements OnInit {
     })
   }
 
-  crearModal(item) {
-    // this.navCtrl.navigateForward(['creartrueque/', item.id])
-    this.irHomeAnticipo(item);
-  }
   async removeRegister(lista) {
 
     const alert = await this.alertController.create({
@@ -165,9 +166,8 @@ export class DetallelotePage implements OnInit {
             console.log('Confirm Okay', lista);
             this.FB.deleteAnticiposApesajeCompra(lista.idProveedor, lista.idPesajeCompra, lista.id, lista.valorAnticipo, this.loteRecibido);
             this.FB.getPesajeLoteProveedor(this.provRecibido, this.loteRecibido);
-            this.FB.getAnticiposLoteProveedor(this.provRecibido, this.loteRecibido);
-            this.generarData();
-            this.generarDataDirecta();
+            this.FB.getAnticipoDirectoProveedor(this.provRecibido, this.loteRecibido);
+            this.cambiarHoja(true);
           }
         }
       ]
@@ -186,8 +186,12 @@ export class DetallelotePage implements OnInit {
       },
     })
     await modal.present();
-    this.generarData();
-    this.generarDataDirecta();
+    const { data } = await modal.onWillDismiss();
+    console.log("Esperando esto: ", data);
+    if (data == "true") {
+      console.log("Entro al if: ", data);
+      this.cambiarHoja(true);
+    }
   }
 
   async irHomeAnticipo2() {
@@ -202,8 +206,18 @@ export class DetallelotePage implements OnInit {
         lote: this.loteRecibido,
         card: "si"
       },
-    }); await modal.present();
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log("Esperando esto: ", data);
+    if (data == "true") {
+      console.log("Entro al if: ", data);
+      this.cambiarHoja(true);
+    }
+
+
   }
+
   irInicio() {
     this.navCtrl.navigateBack(["main-menu"]);
   }
@@ -213,5 +227,4 @@ export class DetallelotePage implements OnInit {
   irEstado() {
     this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
-
 }

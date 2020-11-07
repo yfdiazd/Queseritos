@@ -10,13 +10,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-list class="lista">
-        <ion-item *ngFor="let input of listanombres">
-        <ion-badge slot="start">11</ion-badge>
-        <ion-label class="lista" (click)="irCardListaClientes(input)">{{input}}</ion-label>
+  <div class="content">
+
+    <ion-list class="lista">
+      <ion-item (click)="irCardListaClientes(input)" *ngFor="let input of listanombres">
+        <ion-icon slot="start" name="chevron-forward"></ion-icon>
+        <ion-label class="lista">{{input}}</ion-label>
         <ion-reorder slot="end"></ion-reorder>
       </ion-item>
+    </ion-list>
 
-  </ion-list>
-
+  </div>
 </ion-content>

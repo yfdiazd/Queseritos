@@ -35,9 +35,10 @@
     <div class="div-card1" *ngIf="cards_Compras">
       <ion-card class="card" *ngFor="let item of dataFront">
         <div class="div_info">
-          <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
           <p>Producto: {{item.nompreProducto}}</p>
-          <ion-button (click)="crearModal(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
+          <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
+          <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
+          <ion-button (click)="irHomeAnticipo(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
             <ion-icon slot="end" name="cash" color="success"></ion-icon>+
           </ion-button>
         </div>
@@ -80,13 +81,13 @@
           <ion-item class="item">
             <label class="td1" (ngModel)="tipoAnt">{{item.nompreProducto}}</label>
             <label class="td2" (ngModel)="valor">{{item.valorAnticipo | currency:'USD':true: '2.0-0'}}</label>
-            <label class="td3" (ngModel)="concepto" (click)="verImagen(lista)">
+            <label class="td3" (ngModel)="concepto" (click)="verImagen(item)">
               <ion-icon name="image-outline" color="tertiary"></ion-icon>
             </label>
             <label class="td4" (ngModel)="fecha">{{item.fechaAnticipo}}</label>
           </ion-item>
           <ion-item-options class="item-opt" side="end">
-            <ion-item-option color="danger" (click)="removeRegister(lista)">Eliminar</ion-item-option>
+            <ion-item-option color="danger" (click)="removeRegister(item)">Eliminar</ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
       </div>
