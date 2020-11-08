@@ -1479,7 +1479,6 @@ export class FBservicesService {
                 this.obtPa = null;
             });
         }
-        console.log("retornooooooooooooooooooooo", this.listaPaVer);
         return this.listaPaVer;
     }
 

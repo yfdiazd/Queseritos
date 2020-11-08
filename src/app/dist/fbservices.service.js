@@ -1522,7 +1522,6 @@ var FBservicesService = /** @class */ (function () {
                 _this.obtPa = null;
             });
         }
-        console.log("retornooooooooooooooooooooo", this.listaPaVer);
         return this.listaPaVer;
     };
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
@@ -1667,6 +1666,8 @@ var FBservicesService = /** @class */ (function () {
                     _this.objMoverHistorico = ({
                         objHistorico: snapshot.val()
                     });
+                    _this.moverHistoricoLista.push(_this.objMoverHistorico);
+                    _this.agregarHistorico(idProveedor, _this.objMoverHistorico);
                 });
                 this.agregarHistorico(idProveedor, this.objMoverHistorico);
                 console.log("Salio del getOBJETO");
@@ -1728,18 +1729,16 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     FBservicesService.prototype.eliminarNodoProveedor = function (idProveedor) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                firebase
-                    .database()
-                    .ref("usuario/compras/" + idProveedor)
-                    .remove();
-                console.log("Eliminó");
-                return [2 /*return*/];
-            });
-        });
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .remove();
+        console.log("Eliminó");
     };
-    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
+    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+        console.log("fechaenvio", fechaEnvio);
+        var nodo = fechaEnvio.split("-", 3);
+        var fechaNodo = (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
         firebase
             .database()
@@ -1749,15 +1748,71 @@ var FBservicesService = /** @class */ (function () {
             idCliente: idCliente,
             ciudad: ciudad,
             conductor: conductor,
-            costoVenta: costoVenta,
+            costoVenta: 0,
             fechaEnvio: fechaEnvio,
             pesadas: listaPesada,
             pesoEnviado: pesoEnviado,
             pesoLimite: pesoLimite,
-            placa: placa,
-            tipoQueso: tipoQueso
+            placa: placa
         });
         this.toastOperacionExitosa();
+    };
+    FBservicesService.prototype.getFotoVenta = function (idCliente, idVenta) {
+        var _this = this;
+        this.imgVenta = null;
+        firebase
+            .storage()
+            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(function (imgUr) {
+            _this.imgVenta = imgUr;
+            return _this.imgVenta;
+        });
+    };
+    FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
+    };
+    FBservicesService.prototype.getVentaCliente = function (idCliente) {
+        var _this = this;
+        this.ventasclienteLista = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente)
+            .on("value", function (snapshot) {
+            _this.listaKey = [];
+            if (snapshot.exists()) {
+                snapshot.forEach(function (element) {
+                    _this.listaKey.push(element.key);
+                });
+                _this.listaKey.forEach(function (element) {
+                    firebase
+                        .database()
+                        .ref("usuario/ventas/" + idCliente + "/" + element)
+                        .on("value", function (snapshot) {
+                        snapshot.forEach(function (element) {
+                            _this.ventasclienteLista.push(element.val());
+                        });
+                    });
+                });
+            }
+            return _this.ventasclienteLista;
+        });
+    };
+    FBservicesService.prototype.getVentaClienteMes = function (idCliente) {
+        var _this = this;
+        var fechaSpl = this.fechaActual().split("-", 3);
+        var nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
+        this.ventasclienteListaMes = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodo)
+            .on("value", function (snapshot) {
+            _this.ventasclienteListaMes = [];
+            if (snapshot.exists()) {
+                snapshot.forEach(function (element) {
+                    _this.ventasclienteListaMes.push(element.val());
+                });
+            }
+            return _this.ventasclienteListaMes;
+        });
     };
     FBservicesService = __decorate([
         core_1.Injectable({
