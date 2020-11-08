@@ -175,7 +175,7 @@ var CrearenvioclientePage = /** @class */ (function () {
         console.log("Total peso de los bultos: " + this.contadorPeso);
     };
     CrearenvioclientePage.prototype.guardar = function () {
-        this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit);
+        this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
         this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
     };
     CrearenvioclientePage.prototype.agregar = function () {

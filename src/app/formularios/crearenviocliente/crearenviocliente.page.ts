@@ -144,7 +144,7 @@ export class CrearenvioclientePage implements OnInit {
   }
 
   guardar() {
-    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit);
+    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
     this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
   }
   customAlertOptions: any = {
