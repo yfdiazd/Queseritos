@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { FBservicesService } from 'src/app/fbservices.service';
+import { FBservicesService } from '../../fbservices.service';
+
 
 @Component({
   selector: 'app-crearventa',
@@ -23,6 +24,8 @@ export class CrearventaPage implements OnInit {
   activarBoton: boolean = false;
 
   ngOnInit() {
+    this.FB.getProductos();
+    this.FB.getEstadoProducto();
 
   }
 

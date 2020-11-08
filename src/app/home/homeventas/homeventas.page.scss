@@ -1,0 +1,153 @@
+ion-toolbar {
+    --background: #1a1446;
+
+    .titulo {
+        color: white;
+        font-size: 2vh;
+    }
+}
+
+ion-content {
+    padding: 0;
+    margin: 0;
+    --background: #c8f7f3;
+    --color: #1a1446;
+
+
+
+    .div-principal {
+        width: 90%;
+        padding: 15px;
+        margin: auto;
+
+
+        .info {
+            .p {
+                font-size: 15px;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                color: #1a1446;
+            }
+
+            .h3 {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                color: #ff2f73;
+            }
+
+            .h3>span {
+                font-size: 15px;
+                color: #1a1446;
+            }
+
+        }
+
+
+
+    }
+
+    .div_tabla {
+        width: 100%;
+        margin: auto;
+
+        p {
+            font-size: 3vh;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+
+        }
+
+        .table {
+            width: 100%;
+
+
+            .thead {
+                border: solid 2px #1a1446;
+                background: #1a1446;
+                color: white;
+
+                .th1 {
+                    width: 40%;
+                }
+
+                .th2 {
+                    width: 10%;
+                }
+
+                .th3 {
+                    width: 20%;
+                }
+
+                .th4 {
+                    width: 30%;
+                }
+            }
+
+
+        }
+
+        .slider {
+            width: 100%;
+            border-style: none;
+            padding: 0;
+            margin: 0;
+
+            .item {
+                --background: transparent;
+                // --border-style: none;
+                width: 100%;
+                margin: 0;
+                position: relative;
+                float: left;
+                padding-inline-start: 0;
+                --padding-start: 0;
+                --ion-safe-area-right: 0;
+                --inner-padding-end: 0;
+
+                .td1,
+                .td2,
+                .td3,
+                .td4 {
+                    text-align: center;
+                    color: #1a1446;
+                    display: inline-block;
+                    padding: 0;
+                    margin: 0;
+                    font-size: 2vh;
+                }
+
+                .td1 {
+                    width: 40%;
+
+                }
+
+                .td2 {
+                    width: 10%;
+
+                }
+
+                .td2::after {
+                    content: 'Kg';
+                    font-size: 1.5vh;
+                }
+
+                .td3 {
+                    width: 20%;
+
+                }
+
+                .td4 {
+                    width: 30%;
+                }
+
+                .item-opt {
+                    padding: 0;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}

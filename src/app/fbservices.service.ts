@@ -1626,6 +1626,8 @@ export class FBservicesService {
                     objHistorico: snapshot.val()
                 });
 
+                this.moverHistoricoLista.push(this.objMoverHistorico);
+                this.agregarHistorico(idProveedor, this.objMoverHistorico);
             });
         this.agregarHistorico(idProveedor, this.objMoverHistorico);
         console.log("Salio del getOBJETO");
@@ -1671,7 +1673,8 @@ export class FBservicesService {
         return this.estadoSaldoProveedor;
     }
 
-    async eliminarNodoProveedor(idProveedor) {
+  
+    eliminarNodoProveedor(idProveedor) {
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor)
@@ -1679,8 +1682,12 @@ export class FBservicesService {
         console.log("Eliminó");
     }
 
-
-    agregarVenta(idCliente, ciudad, conductor, costoVenta, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, tipoQueso, fechaNodo) {
+    agregarVenta(idCliente, ciudad, conductor,fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+        console.log("fechaenvio", fechaEnvio);
+        let nodo =fechaEnvio.split("-", 3);
+        
+        
+        let fechaNodo= (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
         firebase
             .database()
@@ -1690,15 +1697,91 @@ export class FBservicesService {
                 idCliente: idCliente,
                 ciudad: ciudad,
                 conductor: conductor,
-                costoVenta: costoVenta,
+                costoVenta: 0,
                 fechaEnvio: fechaEnvio,
                 pesadas: listaPesada,
                 pesoEnviado: pesoEnviado,
                 pesoLimite: pesoLimite,
-                placa: placa,
-                tipoQueso: tipoQueso
+                placa: placa
             });
         this.toastOperacionExitosa();
+    }
+
+    public imgVenta: any;
+    getFotoVenta(idCliente, idVenta) {
+        this.imgVenta = null;
+        firebase
+            .storage()
+            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
+                this.imgVenta = imgUr;
+
+                return this.imgVenta;
+            });
+    }
+
+    upLoadImageVenta(idCliente, idVenta, file) {
+
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
+
+    }
+    public ventasclienteLista: any[];
+    listaKey: any[];
+    getVentaCliente(idCliente) {
+        this.ventasclienteLista = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente)
+            .on("value", snapshot => {
+                this.listaKey = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+
+
+                        this.listaKey.push(element.key);
+
+                    });
+                    this.listaKey.forEach(element => {
+                        firebase
+                            .database()
+                            .ref("usuario/ventas/" + idCliente + "/" + element)
+                            .on("value", snapshot => {
+                                snapshot.forEach(element => {
+
+                                    this.ventasclienteLista.push(element.val());
+                                });
+                            });
+
+                    });
+
+
+                }
+
+
+                return this.ventasclienteLista;
+            });
+    }
+ 
+    public ventasclienteListaMes: any[];
+    getVentaClienteMes(idCliente) {
+
+        let fechaSpl = this.fechaActual().split("-", 3);
+        let nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
+
+
+        this.ventasclienteListaMes = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodo)
+            .on("value", snapshot => {
+                this.ventasclienteListaMes = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+                        this.ventasclienteListaMes.push(element.val());
+                    });
+                }
+
+                return this.ventasclienteListaMes;
+            });
     }
 
 
