@@ -12,6 +12,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content style="background-color: transparent;" pullingIcon="chevron-down-circle-outline"
+      pullingText="Arrastra para actualizar" refreshingSpinner="circles" refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
   <div class="div-principal">
     <ion-title class="title">{{nombreCliente}}</ion-title>
     <div>
@@ -93,7 +98,6 @@
      </ion-item-sliding> 
   </div>
   <div class ="ventasmes" *ngIf="hiden">
-    <h2>Hola, esto son filtros</h2>
     <ion-item-sliding class="slider" *ngFor="let card of listaFiltrada">
     <ion-item class="item" >
       <div class="div-card">

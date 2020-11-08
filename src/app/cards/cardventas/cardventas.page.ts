@@ -1,5 +1,5 @@
 import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, NavController, ToastController } from '@ionic/angular';
+import { ModalController, NavController, ToastController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
@@ -34,10 +34,12 @@ export class CardventasPage implements OnInit {
     private alertController: AlertController,
     private toastController: ToastController,
     private route: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
   ) { }
 
   public idcliente: any;
+  public loading: any;
   ngOnInit() {
 
     this.customPickerOptions = {
@@ -63,13 +65,36 @@ export class CardventasPage implements OnInit {
     }
 
     let id = this.route.snapshot.paramMap.get("id");
-    console.log("se recibe id solito", id);
     this.idcliente = id;
-    console.log("se recibe id listacliente", this.idcliente);
     this.traerNombre();
-    console.log("imprime lista de ventas de FB", this.FB.ventasclienteLista);
+    
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 1500);
 
+  }
 
+  async presentLoading(message: string) {
+    this.loading = await this.loadingCtrl.create({
+      message,
+      cssClass: 'cssLoading',
+      keyboardClose: false,
+      backdropDismiss: false,
+      spinner: 'lines',
+      translucent: true
+    });
+    return this.loading.present();
+  }
+
+  doRefresh(event) {
+   
+    this.traerNombre();
+    this.presentLoading('Espere...');
+    this.recorriendolista();
+
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 
   listaFiltrada: any;
