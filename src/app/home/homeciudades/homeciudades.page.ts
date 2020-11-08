@@ -101,8 +101,9 @@ export class HomeciudadesPage implements OnInit {
     })
     return this.listanombreciudad;
   }
+
   getItems(ev: any) {
-    this.listanombreciudad;
+    this.listanombreciudad = [];
     let val = ev.target.value;
     console.log("imprime val", val)
     if (val && val.trim() != '') {
