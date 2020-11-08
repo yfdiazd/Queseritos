@@ -14,21 +14,31 @@
 <ion-content>
   <div class="div-principal">
     <ion-title class="title">{{nombreCliente}}</ion-title>
+    <div>
+      <ion-item>
+        <ion-label>Selecciona el año</ion-label>
+        <ion-datetime [pickerOptions]="customPickerOptions" placeholder="Selecciona el año" displayFormat="YYYY" min="2020" max="2100"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Selecciona el mes</ion-label>
+        <ion-datetime displayFormat="MMMM" value="Diciembre"></ion-datetime>
+      </ion-item>
+    </div>
   </div>
   <div class="div-secundario">
-    <!-- <ion-item-sliding class="slider" *ngFor="let card of listaVentas"> -->
-    <ion-item class="item">
+    <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteLista">
+    <ion-item class="item" >
       <div class="div-card">
         <ion-card class="card">
           <div class="div_info">
             <div class="div_fila_1">
-              <p><span>Ciudad: </span><span class="ciudad">{{ciudad}}</span></p>
-              <p><span>Fechaenvio:</span> {{fechaEnvio}}</p>
+              <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
+              <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
             </div>
             <div class="div_fila_2">
               <div class="div_fila_2_part_left">
-                <p class="p"><span>Peso total:</span> {{pesoPesadas}} </p>
-                <p class="p"><span>Pesadas:</span> {{totalPesada}}</p>
+                <p class="p"><span>Peso total:</span> {{card.pesoEnviado}} </p>
+                <!-- <p class="p"><span>Pesadas:</span> {{card.totalPesada}}</p> -->
               </div>
               <div class="div_fila_2_part_right">
                 <ion-button class="btn_modal" (click)="modalConfirmarPesada(card)" fill="outline" expand="full"
@@ -48,7 +58,7 @@
                 <th class="th5">Valor</th>
                 <th class="th6">Total</th>
               </thead>
-              <tbody class="tbody">
+              <!-- <tbody class="tbody">
                 <tr class="tr" *ngFor="let lista of bultoPesada ,let i=index">
                   <td class="td1">
                     <label (ngModel)="numpesada">{{i+1}}</label>
@@ -69,7 +79,7 @@
                     <label (ngModel)="total">{{total}} </label>
                   </td>
                 </tr>
-              </tbody>
+              </tbody> -->
             </table>
           </div>
         </ion-card>
@@ -83,7 +93,7 @@
     <ion-item-options side="start">
       <ion-item-option color="warning" (click)="alertEditar(lista)">Editar</ion-item-option>
     </ion-item-options>
-    <!-- </ion-item-sliding> -->
+     </ion-item-sliding> 
   </div>
 </ion-content>
 

@@ -34,11 +34,16 @@ export class CardventasPage implements OnInit {
 
   public idcliente:any;
   ngOnInit() {
+    
     let id = this.route.snapshot.paramMap.get("id");
     console.log("se recibe id solito", id );
     this.idcliente=id;
     console.log("se recibe id listacliente", this.idcliente);
-    //this.traerNombre();
+    this.traerNombre();
+    console.log("imprime lista de ventas de FB", this.FB.ventasclienteLista);
+   
+    
+    
     
    
   }
@@ -63,39 +68,45 @@ export class CardventasPage implements OnInit {
   //   await modal.present();
 
   // }
-  // async traerNombre() {
-  //   this.nombreCliente = [];
-  //   this.listaVentas = [];
-  //   console.log("Lista ventas:", this.listaVentas);
+
+  recorriendolista(){
+    this.FB.ventasclienteListaMes.forEach(element=>{
+      console.log("elementttttt", element)
+    })
+  }
+  async traerNombre(){
+    this.nombreCliente=[];
+    //this.listaVentas = [];
+    console.log("idcliente traer nombre:", this.idcliente);
     
-  //   this.FB.proveedoresLista.forEach(element => {
-  //     this.FB.listaVentasClientes.forEach(element2 => {
-  //       if (element.id == element2.idcliente) {
-  //         this.nombreCliente = element.nombre;
-  //       }
-  //     })
-  //   })
-  //   this.FB.pesajeCompraLista.forEach(pesaje => {
-  //     this.FB.productosLista.forEach(producto => {
-  //       if (pesaje.idProducto == producto.id) {
+    this.FB.clientesLista.forEach(element => {
+         if (element.id == this.idcliente) {
+          this.nombreCliente = element.nombres;
+        }
+      })
+      console.log("imprime nombre del cliente", this.nombreCliente);
+      return this.nombreCliente;
+    // this.FB.ventasclienteLista.forEach(pesaje => {
+    //   this.FB.productosLista.forEach(producto => {
+    //     if (pesaje.idProducto == producto.id) {
 
-  //         this.listaVentas.push({
-  //           anticipos: pesaje.anticipos,
-  //           bultoLista: pesaje.bultoLista,
-  //           costoTotalCompra: pesaje.costoTotalCompra,
-  //           fechaCompra: pesaje.fechaCompra,
-  //           id: pesaje.id,
-  //           idProducto: pesaje.idProducto,
-  //           idProveedor: pesaje.idProveedor,
-  //           lote: pesaje.lote,
-  //           pesoBultos: pesaje.pesoBultos,
-  //           totalBulto: pesaje.totalBulto,
-  //           nompreProducto: producto.descripcion
-  //         })
-  //       }
-  //     })
-  //   })
+    //       this.listaVentas.push({
+    //         anticipos: pesaje.anticipos,
+    //         bultoLista: pesaje.bultoLista,
+    //         costoTotalCompra: pesaje.costoTotalCompra,
+    //         fechaCompra: pesaje.fechaCompra,
+    //         id: pesaje.id,
+    //         idProducto: pesaje.idProducto,
+    //         idProveedor: pesaje.idProveedor,
+    //         lote: pesaje.lote,
+    //         pesoBultos: pesaje.pesoBultos,
+    //         totalBulto: pesaje.totalBulto,
+    //         nompreProducto: producto.descripcion
+    //       })
+    //     }
+    //   })
+    // })
 
-  // }
+  }
 
 }

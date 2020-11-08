@@ -72,6 +72,8 @@ getItems(ev:any){
       this.FB.clientesLista.forEach(element=>{
       if(element.nombres + " " + element.apellidos == input)
       {
+        this.FB.getVentaCliente(element.id);
+        this.FB.getVentaClienteMes(element.id);
         this.navCtrl.navigateForward(['cardventas/', element.id]);
       }
       

@@ -1727,6 +1727,65 @@ export class FBservicesService {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
 
     }
+    public ventasclienteLista: any[];
+    listaKey: any[];
+    getVentaCliente(idCliente) {
+        this.ventasclienteLista = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente)
+            .on("value", snapshot => {
+                this.listaKey = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+
+
+                        this.listaKey.push(element.key);
+
+                    });
+                    this.listaKey.forEach(element => {
+                        firebase
+                            .database()
+                            .ref("usuario/ventas/" + idCliente + "/" + element)
+                            .on("value", snapshot => {
+                                snapshot.forEach(element => {
+
+                                    this.ventasclienteLista.push(element.val());
+                                });
+                            });
+
+                    });
+
+
+                }
+
+
+                return this.ventasclienteLista;
+            });
+    }
+ 
+    public ventasclienteListaMes: any[];
+    getVentaClienteMes(idCliente) {
+
+        let fechaSpl = this.fechaActual().split("-", 3);
+        let nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
+
+
+        this.ventasclienteListaMes = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodo)
+            .on("value", snapshot => {
+                this.ventasclienteListaMes = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+                        this.ventasclienteListaMes.push(element.val());
+                    });
+                }
+
+                return this.ventasclienteListaMes;
+            });
+    }
 
 
 }
