@@ -4,6 +4,7 @@ import { AlertController, NavController, ToastController } from '@ionic/angular'
 import * as firebase from 'firebase';
 import { element } from 'protractor';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+
 import { log } from 'console';
 import { Direct } from 'protractor/built/driverProviders';
 
@@ -15,7 +16,9 @@ import { Direct } from 'protractor/built/driverProviders';
 @Injectable({
     providedIn: "root"
 })
+
 export class FBservicesService {
+
 
 
     //Variable para paths de validacion
@@ -110,6 +113,7 @@ export class FBservicesService {
         private camera: Camera,
 
     ) {
+
         firebase.initializeApp(this.config);
         this.verificarsesion();
     }
@@ -123,6 +127,7 @@ export class FBservicesService {
 
     //offline
     offLine() {
+
         firebase.firestore().enablePersistence()
             .catch(function (err) {
                 if (err.code == 'failed-precondition') {
@@ -1705,19 +1710,8 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-
-    public imgVenta: any;
-    getFotoVenta(idCliente, idVenta) {
-        this.imgVenta = null;
-        firebase
-            .storage()
-            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
-                this.imgVenta = imgUr;
-
-                return this.imgVenta;
-            });
-    }
-
+   
+  
     upLoadImageVenta(idCliente, idVenta, file) {
 
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);

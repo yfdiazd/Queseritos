@@ -20,12 +20,12 @@ export class CrearenvioclientePage implements OnInit {
   public tipoQueso;
   public lote;
   public fecha;
-  codigociudadEdit:any;  
-  idconductor:any;
+  codigociudadEdit: any;
+  idconductor: any;
   pesoLimite;
   placaEdit;
-  
- 
+
+
   //variables alejo
 
   pesoAcumulado = 0;
@@ -140,7 +140,7 @@ export class CrearenvioclientePage implements OnInit {
     this.listaPesada.forEach(element => {
       if (element.index == index) {
         console.log("Si lo encontro", element.peso)
-      }
+      } 
     })
   }
 
@@ -154,8 +154,9 @@ export class CrearenvioclientePage implements OnInit {
   }
 
   guardar() {
-    this.FB.agregarVenta(this.idcliente,this.codigociudadEdit, this.idconductor, "2020-11-07", "", "", this.pesoLimite, this.placaEdit)
-    console.log("imprimo variables guardar venta", this.idcliente,this.codigociudadEdit, this.idconductor, "2020-11-07", "", "", this.pesoLimite, this.placaEdit);
+    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, "2020-11-07", "", "", this.pesoLimite, this.placaEdit)
+    console.log("imprimo variables guardar venta", this.idcliente, this.codigociudadEdit, this.idconductor, "2020-11-07", "", "", this.pesoLimite, this.placaEdit);
+
 
     
   }
