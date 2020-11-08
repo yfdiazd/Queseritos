@@ -23,7 +23,7 @@
   </div>
   <div class="div-secundario">
     <div class ="ventasmes" *ngIf="show">
-    <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteLista">
+    <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteListaMes"> 
     <ion-item class="item" >
       <div class="div-card">
         <ion-card class="card">
@@ -94,7 +94,7 @@
   </div>
   <div class ="ventasmes" *ngIf="hiden">
     <h2>Hola, esto son filtros</h2>
-    <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteLista">
+    <ion-item-sliding class="slider" *ngFor="let card of listaFiltrada">
     <ion-item class="item" >
       <div class="div-card">
         <ion-card class="card">

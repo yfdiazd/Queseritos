@@ -4,7 +4,7 @@ import { FBservicesService } from '../../fbservices.service';
 
 
 @Component({
-  selector: 'app-crearventa',
+  selector: 'app-crearventa', 
   templateUrl: './crearventa.page.html',
   styleUrls: ['./crearventa.page.scss'],
 })
@@ -47,7 +47,21 @@ export class CrearventaPage implements OnInit {
   }
 
 
+  listaPesadas: any[];
+  objPesadas: any;
   guardar() {
+    this.listaPesadas = [];
+    this.objPesadas = null;
+    this.objPesadas = ({
+      tipoQueso: this.tipoQueso,
+      estadoQueso: this.estadoQueso,
+      peso: this.valor
+    });
+    this.listaPesadas.push(this.objPesadas);
+    console.log("La lista es ", this.listaPesadas);
+
+
+
 
   }
 
