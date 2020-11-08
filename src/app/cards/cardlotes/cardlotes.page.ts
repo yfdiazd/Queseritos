@@ -106,7 +106,8 @@ export class CardlotesPage implements OnInit {
     if (data == "true") {
       console.log("Entro al if: ", data);
       // this.ngOnInit();
-      this.navCtrl.navigateBack(["main-menu"])
+      this.navCtrl.navigateBack(["main-menu"]);
+      this.FB.eliminarNodoProveedor(this.idProveedorRecibido);  
     }
   }
 
