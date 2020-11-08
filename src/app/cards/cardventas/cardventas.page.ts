@@ -17,6 +17,11 @@ export class CardventasPage implements OnInit {
   public nombreCliente: any;
   public listaPesadas: any;
   public listaPesadasVenta: any;
+  anofecha: Date =new Date();
+  customPickerOptions;
+  fechafiltro;
+  show:boolean =true;
+  hiden:boolean =false;
   //Datos consolidados para la visualización
   listaCard: any[] = [];
   //lista de la venta que se recorre en el HTML
@@ -34,6 +39,27 @@ export class CardventasPage implements OnInit {
 
   public idcliente:any;
   ngOnInit() {
+
+    this.customPickerOptions = {
+      buttons: [{
+        text: 'Aceptar',
+        handler: (evento) => {
+          this.show=false;
+          this.hiden=true;
+          console.log("imprime event", evento)
+
+        }
+        
+
+               
+      }, {
+        text: 'Cancelar',
+        handler: () => {
+          console.log('Clicked Log. Do not Dismiss.');
+          return true;
+        }
+      }]
+    }
     
     let id = this.route.snapshot.paramMap.get("id");
     console.log("se recibe id solito", id );
@@ -108,5 +134,12 @@ export class CardventasPage implements OnInit {
     // })
 
   }
+
+  // cambioFecha(event){
+  //   console.log("imprimo evento recibido en campo fecha", event);
+  //   console.log('Date', new Date(event.detail.value));
+    
+
+  // }
 
 }

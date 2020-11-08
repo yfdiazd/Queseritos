@@ -17,15 +17,12 @@
     <div>
       <ion-item>
         <ion-label>Selecciona el año</ion-label>
-        <ion-datetime [pickerOptions]="customPickerOptions" placeholder="Selecciona el año" displayFormat="YYYY" min="2020" max="2100"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label>Selecciona el mes</ion-label>
-        <ion-datetime displayFormat="MMMM" value="Diciembre"></ion-datetime>
+        <ion-datetime [pickerOptions]="customPickerOptions" placeholder="Selecciona el año" displayFormat="YYYY MMMM" min="2020" max="2100"  [(ngModel)]="fechafiltro" ></ion-datetime>
       </ion-item>
     </div>
   </div>
   <div class="div-secundario">
+    <div class ="ventasmes" *ngIf="show">
     <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteLista">
     <ion-item class="item" >
       <div class="div-card">
@@ -95,6 +92,78 @@
     </ion-item-options>
      </ion-item-sliding> 
   </div>
+  <div class ="ventasmes" *ngIf="hiden">
+    <h2>Hola, esto son filtros</h2>
+    <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteLista">
+    <ion-item class="item" >
+      <div class="div-card">
+        <ion-card class="card">
+          <div class="div_info">
+            <div class="div_fila_1">
+              <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
+              <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
+            </div>
+            <div class="div_fila_2">
+              <div class="div_fila_2_part_left">
+                <p class="p"><span>Peso total:</span> {{card.pesoEnviado}} </p>
+                <!-- <p class="p"><span>Pesadas:</span> {{card.totalPesada}}</p> -->
+              </div>
+              <div class="div_fila_2_part_right">
+                <ion-button class="btn_modal" (click)="modalConfirmarPesada(card)" fill="outline" expand="full"
+                  shape="round">
+                  <ion-icon class="icon" name="bar-chart" color="tertiary"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+          <div class="div_tabla">
+            <table class="table">
+              <thead class="thead">
+                <th class="th1">Pesada</th>
+                <th class="th2">Queso</th>
+                <th class="th3">Estado</th>
+                <th class="th4">Peso (Kg)</th>
+                <th class="th5">Valor</th>
+                <th class="th6">Total</th>
+              </thead>
+              <!-- <tbody class="tbody">
+                <tr class="tr" *ngFor="let lista of bultoPesada ,let i=index">
+                  <td class="td1">
+                    <label (ngModel)="numpesada">{{i+1}}</label>
+                  </td>
+                  <td class="td2">
+                    <label (ngModel)="queso">{{queso}}</label>
+                  </td>
+                  <td class="td3">
+                    <label (ngModel)="estado">{{estado}}</label>
+                  </td>
+                  <td class="td4">
+                    <label (ngModel)="peso">{{peso}}</label>
+                  </td>
+                  <td class="td5">
+                    <label (ngModel)="valor">{{valor}} <span>Kg</span></label>
+                  </td>
+                  <td class="td6">
+                    <label (ngModel)="total">{{total}} </label>
+                  </td>
+                </tr>
+              </tbody> -->
+            </table>
+          </div>
+        </ion-card>
+      </div>
+    </ion-item>
+    <!-- opción para eliminar registro -->
+    <ion-item-options side="end">
+      <ion-item-option color="danger" (click)="eliminarRegistro(card)">Eliminar</ion-item-option>
+    </ion-item-options>
+    <!-- Opción para editar el registro -->
+    <ion-item-options side="start">
+      <ion-item-option color="warning" (click)="alertEditar(lista)">Editar</ion-item-option>
+    </ion-item-options>
+     </ion-item-sliding> 
+  </div>
+</div>
 </ion-content>
 
 <ion-footer>

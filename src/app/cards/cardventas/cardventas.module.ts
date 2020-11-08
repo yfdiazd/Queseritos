@@ -13,7 +13,8 @@ import { CardventasPage } from './cardventas.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    CardventasPageRoutingModule
+    CardventasPageRoutingModule,
+   
   ],
   declarations: [CardventasPage]
 })
