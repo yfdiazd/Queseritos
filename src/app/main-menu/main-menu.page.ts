@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, MenuController, ModalController, NavController } from '@ionic/angular';
 
@@ -9,7 +9,7 @@ import { FBservicesService } from '../fbservices.service';
   templateUrl: './main-menu.page.html',
   styleUrls: ['./main-menu.page.scss'],
 })
-export class MainMenuPage  implements OnInit  {
+export class MainMenuPage implements OnInit {
   public listaProveedores: any[];
   public input = { data: [] };
   public loading: any;
@@ -22,7 +22,7 @@ export class MainMenuPage  implements OnInit  {
     private router: Router,
     private loadingCtrl: LoadingController,
   ) {
-    this.FB.getLoteProveedor();
+
   }
 
   ngOnInit() {
@@ -33,9 +33,9 @@ export class MainMenuPage  implements OnInit  {
   }
 
   comprar() {
-    this.navCtrl.navigateForward('cardcompras');
     this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    this.FB.getAnticipoProveedor();   
+    this.navCtrl.navigateForward('cardcompras');
 
   }
   async presentLoading(message: string) {

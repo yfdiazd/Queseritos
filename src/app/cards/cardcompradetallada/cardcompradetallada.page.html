@@ -2,9 +2,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">PESAJES DETALLADOS</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompras" color="danger"></ion-back-button>
-    </ion-buttons>
+
+    <ion-button fill="clear" shape="round" slot="start" (click)="volver()">
+      <ion-icon name="arrow-back" color="danger"></ion-icon>
+    </ion-button>
     <ion-button fill="clear" shape="round" slot="end" (click)="irCompra()">
       +<ion-icon name="cart" color="success"></ion-icon>
     </ion-button>
@@ -31,7 +32,8 @@
                   <p class="p"><span>Lista de bultos:</span> {{card.totalBulto}}</p>
                 </div>
                 <div class="div_fila_2_part_right">
-                  <ion-button class="btn_modal" (click)="modalConfirmarPesaje(card)" fill="outline" expand="full" shape="round">
+                  <ion-button class="btn_modal" (click)="modalConfirmarPesaje(card)" fill="outline" expand="full"
+                    shape="round">
                     <ion-icon class="icon" name="bar-chart" color="tertiary"></ion-icon>
                   </ion-button>
                   <!-- <ion-badge class="badge" slot="end" color="tertiary">33</ion-badge> -->

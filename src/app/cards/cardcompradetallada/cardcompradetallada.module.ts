@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CardcompradetalladaPageRoutingModule } from './cardcompradetallada-routing.module';
 
 import { CardcompradetalladaPage } from './cardcompradetallada.page';
-
+import { CardcomprasPage } from '../cardcompras/cardcompras.page';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,7 @@ import { CardcompradetalladaPage } from './cardcompradetallada.page';
     IonicModule,
     CardcompradetalladaPageRoutingModule
   ],
-  declarations: [CardcompradetalladaPage]
+  declarations: [CardcompradetalladaPage],
+  providers: [CardcomprasPage]
 })
-export class CardcompradetalladaPageModule {}
+export class CardcompradetalladaPageModule { }

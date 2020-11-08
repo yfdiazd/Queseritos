@@ -15,8 +15,7 @@ import { __values } from "tslib";
   styleUrls: ["./homeciudades.page.scss"],
 })
 export class HomeciudadesPage implements OnInit {
-  listanombreciudad: any[]=[];
-  objciudad: any;
+
   constructor(
     private FB: FBservicesService,
     public alertController: AlertController,
@@ -26,16 +25,15 @@ export class HomeciudadesPage implements OnInit {
   ) {
     this.listarnombresciudades();
     this.FB.ciudadesLista;
-    
-    
   }
-
+  listanombreciudad: any[] = [];
+  objciudad: any;
   codigoCiudad: string;
   descripcionCiudad: string;
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  
+
   async editarModal(lista) {
     const modal = await this.modalController.create({
       component: CrearciudadPage,
@@ -48,11 +46,11 @@ export class HomeciudadesPage implements OnInit {
     });
     return await modal.present();
   }
-  
+
   async crearModal() {
     const modal = await this.modalController.create({
       component: CrearciudadPage,
-      cssClass: "my-custom-class"      
+      cssClass: "my-custom-class"
     });
     return await modal.present();
   }
@@ -86,48 +84,46 @@ export class HomeciudadesPage implements OnInit {
     await alert.present();
   }
 
-  async cerrar(){
+  async cerrar() {
     this.navCtrl.navigateForward('main-menu');
   }
 
-  listarnombresciudades(){
+  listarnombresciudades() {
     this.listanombreciudad = [];
-    this.objciudad=null;
-    this.FB.ciudadesLista.forEach(element=>{
-      this.objciudad= ({
-        codigo: element.codigo, 
+    this.objciudad = null;
+    this.FB.ciudadesLista.forEach(element => {
+      this.objciudad = ({
+        codigo: element.codigo,
         descripcion: element.descripcion
       })
       this.listanombreciudad.push(this.objciudad);
-      
+
     })
     return this.listanombreciudad;
   }
-  getItems(ev:any){
+  getItems(ev: any) {
     this.listanombreciudad;
     let val = ev.target.value;
     console.log("imprime val", val)
-    if (val && val.trim() != '')
-    {
-      
-      this.listanombreciudad = this.listanombreciudad.filter((item)=>{
-        return (item.descripcion.toLowerCase().indexOf(val.toLowerCase())> -1)
-        
+    if (val && val.trim() != '') {
+
+      this.listanombreciudad = this.listanombreciudad.filter((item) => {
+        return (item.descripcion.toLowerCase().indexOf(val.toLowerCase()) > -1)
+
       })
-  
+
     }
-    
-      else if(val== '' || val == undefined)
-      {   
-          this.listanombreciudad= this.FB.ciudadesLista;
-          return this.listanombreciudad;
-      }
-        
-  
-      
-     
+
+    else if (val == '' || val == undefined) {
+      this.listanombreciudad = this.FB.ciudadesLista;
+      return this.listanombreciudad;
     }
+
+
+
+
   }
-  
-   
-    
+}
+
+
+

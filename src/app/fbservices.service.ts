@@ -75,7 +75,7 @@ export class FBservicesService {
     public pesajeCompraLista: any[];
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
-    public proveedorCompraLista: any[] = [];
+    public proveedorCompraLista: any[];
     public anticipoCompraLista: any[] = [];
     public loteProveedorLista: any;
     //Lista lotes
@@ -224,8 +224,6 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getLoteProveedor();
-                this.recorreListas();
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -1035,12 +1033,12 @@ export class FBservicesService {
         this.proveedorCompraLista = [];
         this.lastLote = [];
         this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
-
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
                 .on("value", snapshot => {
+
                     if (snapshot.exists() && snapshot.val() !== null) {
 
                         this.proveedorCompraLista.push(snapshot.val());
@@ -1429,8 +1427,6 @@ export class FBservicesService {
 
         this.recorreListas();
         return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
-
-
     }
 
     public listaPaVer: any[];
@@ -1438,7 +1434,7 @@ export class FBservicesService {
     recorreListas() {
         this.listaPaVer = [];
         if (this.listaAnt.length != 0) {
-
+            this.listaPaVer = [];
             this.listaCard.forEach(element => {
                 this.listaAnt.forEach(element2 => {
                     if (element.idProvedor == element2.idProvee) {
@@ -1470,6 +1466,7 @@ export class FBservicesService {
                 });
             });
         } else {
+            this.listaPaVer = [];
             this.listaCard.forEach(elementC => {
                 this.obtPa = ({
                     idProvedor: elementC.idProvedor,
@@ -1482,14 +1479,14 @@ export class FBservicesService {
                 this.obtPa = null;
             });
         }
-
+        console.log("retornooooooooooooooooooooo", this.listaPaVer);
         return this.listaPaVer;
     }
 
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
     //Metodo para traer todos los funcionarios
     getInfoCompra(idProveedor, idCompra) {
-
+        this.infoCompraUnica = [];
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase

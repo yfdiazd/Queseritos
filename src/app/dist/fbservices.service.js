@@ -61,7 +61,6 @@ var FBservicesService = /** @class */ (function () {
         this.saldocreditotal = 0;
         this.saldodebitototal = 0;
         this.anticiposPesajeCompraLista = [];
-        this.proveedorCompraLista = [];
         this.anticipoCompraLista = [];
         //Lista lotes
         this.listaLotes = [];
@@ -178,8 +177,6 @@ var FBservicesService = /** @class */ (function () {
                 _this.getClientes();
                 _this.getConductor();
                 _this.listaOrdenLotes();
-                _this.getLoteProveedor();
-                _this.recorreListas();
             }
             else {
                 _this.navCtrl.navigateBack(["login"]);
@@ -1479,6 +1476,7 @@ var FBservicesService = /** @class */ (function () {
         var _this = this;
         this.listaPaVer = [];
         if (this.listaAnt.length != 0) {
+            this.listaPaVer = [];
             this.listaCard.forEach(function (element) {
                 _this.listaAnt.forEach(function (element2) {
                     if (element.idProvedor == element2.idProvee) {
@@ -1511,6 +1509,7 @@ var FBservicesService = /** @class */ (function () {
             });
         }
         else {
+            this.listaPaVer = [];
             this.listaCard.forEach(function (elementC) {
                 _this.obtPa = ({
                     idProvedor: elementC.idProvedor,
@@ -1523,12 +1522,14 @@ var FBservicesService = /** @class */ (function () {
                 _this.obtPa = null;
             });
         }
+        console.log("retornooooooooooooooooooooo", this.listaPaVer);
         return this.listaPaVer;
     };
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
     //Metodo para traer todos los funcionarios
     FBservicesService.prototype.getInfoCompra = function (idProveedor, idCompra) {
         var _this = this;
+        this.infoCompraUnica = [];
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase

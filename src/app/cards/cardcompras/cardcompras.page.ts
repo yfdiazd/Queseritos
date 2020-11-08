@@ -32,10 +32,11 @@ export class CardcomprasPage implements OnInit {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController
 
-  ) { }
+  ) {
+    console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
+   }
 
   ngOnInit() {
-    
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.traerNombre();

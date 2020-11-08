@@ -45,292 +45,155 @@ exports.__esModule = true;
 exports.CardcomprasPage = void 0;
 var core_1 = require("@angular/core");
 var CardcomprasPage = /** @class */ (function () {
-    function CardcomprasPage(actionSheetController, router, FB, alertController, navCtrl) {
+    function CardcomprasPage(actionSheetController, FB, alertController, navCtrl, loadingCtrl) {
         this.actionSheetController = actionSheetController;
-        this.router = router;
         this.FB = FB;
         this.alertController = alertController;
         this.navCtrl = navCtrl;
-<<<<<<< HEAD
-        this.pesoacumulado = 200;
-        this.saldodebitototal = 120000000;
-        this.saldocreditotal = 140000000;
-=======
-        this.pesoacumulado = 0;
-        this.saldodebitototal = 0;
-        this.saldocreditotal = 0;
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
+        this.loadingCtrl = loadingCtrl;
         this.input = { data: [] };
-        this.nombres = [];
-        //Esta lista va a obtener todas las compras existentes
-        this.listaAllCompras = [];
-        //Esta lista va a guardar las compras de un mismo proveedor
-        this.listaProvNoRepetidos = [];
-        //Lista de idproveedores
-        this.listaIdProveedores = [];
-        // Lista de nombres
-        this.listaNombres = [];
-        //Datos para mostrar en el card
-        this.dataCard = [];
-        //Datos consolidados para la visualización
-        this.listaCard = [];
-<<<<<<< HEAD
-        this.pesoMostrar = 0;
-        this.bultosMostrar = 0;
-        this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
-=======
-        this.listaAnt = [];
+        //Lista de nombres a mostrar
+        this.listaDatos = [];
+        console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
     }
     CardcomprasPage.prototype.ngOnInit = function () {
-        // this.validacionLote();
-        this.listaCards();
+        var _this = this;
+        this.validacionLote();
+        this.FB.getLoteProveedor();
+        this.traerNombre();
+        this.cambioSaldo();
+        this.presentLoading('Espere...');
+        console.log("Esto es para ver", this.listaDatos);
+        setTimeout(function () {
+            _this.loading.dismiss();
+        }, 1500);
+    };
+    CardcomprasPage.prototype.presentLoading = function (message) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.loadingCtrl.create({
+                                message: message,
+                                cssClass: 'cssLoading',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                spinner: 'lines',
+                                translucent: true
+                            })];
+                    case 1:
+                        _a.loading = _b.sent();
+                        return [2 /*return*/, this.loading.present()];
+                }
+            });
+        });
+    };
+    CardcomprasPage.prototype.cambioSaldo = function () {
+        var valor1 = this.FB.saldodebitototal;
+        var valor2 = this.FB.saldocreditotal;
+        console.log("Sumas", valor1, " - ", valor2);
+        if ((valor1 - valor2) < 0) {
+            document.getElementById("valorCss").style.color = "crimson";
+            document.getElementById("valorCss").style.textShadow = "#500707 1px 1px 1px";
+        }
+        else {
+            document.getElementById("valorCss").style.color = "lime";
+        }
     };
     CardcomprasPage.prototype.doRefresh = function (event) {
-        console.log('Begin async operation');
-        this.listaCards();
-        this.listaAnt = [];
-        this.listaCard = [];
-        this.objImp = [];
-        this.saldocreditotal = 0;
-        this.pesoacumulado = 0;
+        this.validacionLote();
+        this.FB.getLoteProveedor();
+        this.traerNombre();
+        this.cambioSaldo();
         setTimeout(function () {
-            console.log('Async operation has ended');
             event.target.complete();
         }, 1000);
     };
     CardcomprasPage.prototype.traerNombre = function () {
-        var _this = this;
-        this.nombreProv = [];
-        this.FB.proveedoresLista.forEach(function (element) {
-            _this.listaPaVer.forEach(function (element2) {
-                if (element.id == element2.idProveedor) {
-                    _this.nombreProv.push({ nombre: element.nombre, idProv: element.id });
-                }
-            });
-        });
-        console.log("Nombres de los proveedores:", this.nombreProv);
-    };
-    CardcomprasPage.prototype.validacionLote = function () {
-        this.loteActual = (this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1));
-        console.log("Lote actual", this.loteActual);
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
-        console.log("LOTE ULTIMO:   ", this.loteActual.toString());
-        console.log("FECHA ACTUAL ----", this.FB.fechaActual());
-        if (this.loteActual.toString().includes(this.FB.fechaActual())) {
-            console.log("Si es el mismo");
-        }
-        else {
-<<<<<<< HEAD
-            this.presentAlertRadio2();
-        }
-    }
-    CardcomprasPage.prototype.ngOnInit = function () {
-=======
-            this.alertConfirmarNuevoLote();
-        }
-    };
-    CardcomprasPage.prototype.listaCards = function () {
-        var _this = this;
-        this.objImp = [];
-        this.onbjAnt = [];
-        this.listaCard = [];
-        this.listaAnt = [];
-        this.saldocreditotal = 0;
-        this.pesoacumulado = 0;
-        this.saldodebitototal = 0;
-        console.log("Lista de provedores con compra", this.FB.proveedorCompraLista);
-        console.log("Lista anticipos ", this.FB.anticipoCompraLista);
-        this.FB.proveedorCompraLista.forEach(function (element) {
-            var total = 0;
-            var totalCosto = 0;
-            var totalBultos = 0;
-            var keys = Object.keys(element);
-            var lotes = element[keys[0]].idProveedor;
-            keys.forEach(function (key) {
-                total += element[key].pesoBultos;
-                totalBultos += element[key].totalBulto;
-                totalCosto += element[key].costoTotalCompra;
-                _this.pesoacumulado += element[key].pesoBultos;
-                _this.saldocreditotal += element[key].costoTotalCompra;
-            });
-            _this.objImp = ({
-                idProvedor: lotes,
-                bultos: totalBultos,
-                costo: totalCosto,
-                peso: total
-            });
-            _this.listaCard.push(_this.objImp);
-        });
-        this.FB.anticipoCompraLista.forEach(function (element) {
-            var totalAnt = 0;
-            var keys = Object.keys(element);
-            var prov = element[keys[0]].idProveedor;
-            keys.forEach(function (key) {
-                totalAnt += element[key].valorAnticipo;
-                _this.saldodebitototal += element[key].valorAnticipo;
-            });
-            _this.onbjAnt = ({
-                valorAnt: totalAnt,
-                idProvee: prov
-            });
-            _this.listaAnt.push(_this.onbjAnt);
-        });
-        console.log("asdasdasdasdasd -*-*-*-*-*-*-*-*-*-", this.listaCard);
-        console.log("---------------- -*-*-*-*-*-*-*-*-*-", this.listaAnt);
-        this.recorreListas();
-        return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
-    };
-    CardcomprasPage.prototype.recorreListas = function () {
-        var _this = this;
-        this.listaPaVer = [];
-        if (this.listaAnt.length != 0) {
-            console.log("siii diferente a 0000 ", this.listaAnt.length);
-            this.listaCard.forEach(function (element) {
-                _this.listaAnt.forEach(function (element2) {
-                    if (element.idProvedor == element2.idProvee) {
-                        _this.obtPa = ({
-                            idProvedor: element.idProvedor,
-                            bultos: element.bultos,
-                            costo: element.costo,
-                            peso: element.peso,
-                            debito: element2.valorAnt
-                        });
-                        _this.listaPaVer.push(_this.obtPa);
-                        _this.obtPa = null;
-                    }
-                    else if (_this.listaPaVer.filter(function (valor) {
-                        return valor.idProvedor == element.idProvedor;
-                    }).length == 0 && _this.listaAnt.filter(function (valorF) {
-                        return valorF.idProvee == element.idProvedor;
-                    }).length == 0) {
-                        console.log("llego vaciooo ");
-                        _this.obtPa = ({
-                            idProvedor: element.idProvedor,
-                            bultos: element.bultos,
-                            costo: element.costo,
-                            peso: element.peso,
-                            debito: 0
-                        });
-                        _this.listaPaVer.push(_this.obtPa);
-                        _this.obtPa = null;
-                    }
-                });
-            });
-        }
-        else {
-            this.listaCard.forEach(function (elementC) {
-                _this.obtPa = ({
-                    idProvedor: elementC.idProvedor,
-                    bultos: elementC.bultos,
-                    costo: elementC.costo,
-                    peso: elementC.peso,
-                    debito: 0
-                });
-                _this.listaPaVer.push(_this.obtPa);
-                _this.obtPa = null;
-            });
-        }
-        console.log("*----------------------------- ", this.listaPaVer);
-        return this.listaPaVer;
-    };
-    CardcomprasPage.prototype.irCompra = function (card) {
-        this.navCtrl.navigateForward(["crearcompra"]);
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
-    };
-    CardcomprasPage.prototype.irVender = function () {
-        this.router.navigate(["cardcompras"]);
-    };
-    CardcomprasPage.prototype.irPesajeCompra = function (card) {
-        // this.FB.getNumBultos(card.id);
-<<<<<<< HEAD
-        this.navCtrl.navigateForward(["crearpesajecompra/", card.id]);
-        console.log("ID:", card.id);
-    };
-    CardcomprasPage.prototype.irCompraDetallada = function () {
-        this.navCtrl.navigateForward(["cardcompradetallada"]);
-    };
-    CardcomprasPage.prototype.presentActionSheet = function () {
-=======
-        this.navCtrl.navigateForward(["crearcompra/", card.idProveedor]);
-    };
-    CardcomprasPage.prototype.irCompraDetallada = function (card) {
-        this.FB.getPesajeCompra(card.idProvedor);
-        this.navCtrl.navigateForward(["cardcompradetallada/", card.idProvedor]);
-    };
-    CardcomprasPage.prototype.opciones = function () {
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
-            var actionSheet;
+            var proveedoresLista, listaPaVer;
             var _this = this;
             return __generator(this, function (_a) {
+                this.listaDatos = [];
+                this.objProv = null;
+                proveedoresLista = this.FB.proveedoresLista;
+                listaPaVer = this.FB.listaPaVer;
+                console.log("Esto se ve: ", proveedoresLista, " y ", listaPaVer);
+                proveedoresLista.forEach(function (element) {
+                    listaPaVer.forEach(function (element2) {
+                        if (element.id == element2.idProvedor) {
+                            _this.objProv = ({
+                                nombre: element.nombre,
+                                idProv: element.id,
+                                bultos: element2.bultos,
+                                costo: element2.costo,
+                                peso: element2.peso,
+                                debito: element2.debito
+                            });
+                            _this.listaDatos.push(_this.objProv);
+                        }
+                    });
+                });
+                console.log("lista datos", this.listaDatos);
+                return [2 /*return*/, this.listaDatos];
+            });
+        });
+    };
+    //Validación del ultimo lote con el día en que ingresa a cardcompras: Muestra el alert
+    CardcomprasPage.prototype.validacionLote = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var ordenLotes;
+            return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.actionSheetController.create({
-                            header: 'Que deseas hacer?',
-                            cssClass: 'my-custom-class',
-                            mode: 'md',
-                            buttons: [{
-                                    text: 'Agregar proveedor',
-                                    icon: 'person-add',
-                                    handler: function () {
-<<<<<<< HEAD
-                                        // this.presentAlertRadio();
-                                        _this.input = { data: [] };
-                                        _this.listaProveedores = [];
-                                        console.log("this.listaProveedores: ", _this.listaProveedores);
-                                        _this.FB.proveedoresLista.forEach(function (element) {
-                                            _this.input.data.push({ name: element.nombre, type: 'radio', label: element.nombre, value: element.id });
-                                        });
-                                        console.log("Se obtuvo esto_:", _this.input);
-                                        _this.presentAlertRadio();
-=======
-                                        _this.input = { data: [] };
-                                        _this.listaProveedores = [];
-                                        _this.FB.proveedoresLista.forEach(function (element) {
-                                            var provee = element;
-                                            _this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
-                                        });
-                                        _this.alertProveedores();
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
-                                        // var elemento = document.getElementById("select-alert");
-                                        // elemento.click();
-                                    }
-                                }, {
-                                    text: 'Distribuir pesos',
-                                    icon: 'podium',
-                                    handler: function () {
-                                        console.log('Share clicked');
-                                    }
-                                }, {
-                                    text: 'Quitar compra',
-                                    role: 'destructive',
-                                    icon: 'trash',
-                                    handler: function () {
-                                        console.log('Delete clicked');
-                                    }
-                                }, {
-                                    text: 'Cancelar',
-                                    icon: 'close',
-                                    role: 'cancel',
-                                    handler: function () {
-                                        console.log('Cancel clicked');
-                                    }
-                                }]
-                        })];
+                    case 0: return [4 /*yield*/, this.FB.listaOrdenLotes()];
                     case 1:
-                        actionSheet = _a.sent();
-                        return [4 /*yield*/, actionSheet.present()];
-                    case 2:
-                        _a.sent();
+                        ordenLotes = _a.sent();
+                        this.loteActual = (ordenLotes.slice(this.FB.ultimoLote.length - 1));
+                        if (this.loteActual.toString().includes(this.FB.fechaActual())) {
+                        }
+                        else {
+                            this.alertConfirmarNuevoLote();
+                        }
                         return [2 /*return*/];
                 }
             });
         });
     };
-<<<<<<< HEAD
-    CardcomprasPage.prototype.presentAlertRadio = function () {
-=======
+    CardcomprasPage.prototype.irCompra = function (card) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
+                return [2 /*return*/];
+            });
+        });
+    };
+    CardcomprasPage.prototype.irCompraDetallada = function (card) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.FB.getPesajeCompra(card.idProv);
+                this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
+                return [2 /*return*/];
+            });
+        });
+    };
+    CardcomprasPage.prototype.opciones = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.input = { data: [] };
+                this.listaProveedores = [];
+                this.FB.proveedoresLista.forEach(function (element) {
+                    var provee = element;
+                    _this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
+                });
+                this.alertProveedores();
+                return [2 /*return*/];
+            });
+        });
+    };
     CardcomprasPage.prototype.alertProveedores = function () {
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
@@ -338,31 +201,21 @@ var CardcomprasPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
-<<<<<<< HEAD
-                            header: 'Radio',
-=======
                             header: 'Proveedores',
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                             inputs: this.input.data,
+                            keyboardClose: false,
+                            backdropDismiss: false,
                             buttons: [
                                 {
                                     text: 'Cancel',
                                     role: 'cancel',
                                     cssClass: 'secondary',
                                     handler: function () {
-                                        console.log('Confirm Cancel');
                                     }
                                 }, {
                                     text: 'Ok',
                                     handler: function (value) {
-                                        console.log('Se envia el id del proveedor: ', value);
-<<<<<<< HEAD
-                                        _this.navCtrl.navigateForward("crearpesajecompra");
-                                        _this.input = { data: [] };
-                                        _this.listaProveedores = [];
-=======
                                         _this.navCtrl.navigateForward(["crearcompra/", value]);
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
                                     }
                                 }
                             ]
@@ -377,11 +230,7 @@ var CardcomprasPage = /** @class */ (function () {
             });
         });
     };
-<<<<<<< HEAD
-    CardcomprasPage.prototype.presentAlertRadio2 = function () {
-=======
     CardcomprasPage.prototype.alertConfirmarNuevoLote = function () {
->>>>>>> 3b59397591d8c311745e5b7cca42cf84ce0a09d4
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
@@ -389,7 +238,10 @@ var CardcomprasPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
-                            header: 'El ultimo lote no coincide con la fecha actual',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            header: "El ultimo lote no coincide con la fecha actual",
+                            subHeader: this.loteActual,
                             message: '¿Desea crear un nuevo lote?',
                             buttons: [
                                 {
@@ -397,14 +249,12 @@ var CardcomprasPage = /** @class */ (function () {
                                     role: 'cancel',
                                     cssClass: 'secondary',
                                     handler: function () {
-                                        console.log('Mantiene el lote actual', _this.loteActual.toString());
                                     }
                                 }, {
                                     text: 'Ok',
                                     handler: function (value) {
                                         _this.FB.generarLote();
                                         _this.loteActual = (_this.FB.ultimoLote.slice(_this.FB.ultimoLote.length - 1));
-                                        console.log("El nuevo lote ha sido creado", _this.loteActual.toString());
                                     }
                                 }
                             ]
@@ -418,6 +268,15 @@ var CardcomprasPage = /** @class */ (function () {
                 }
             });
         });
+    };
+    CardcomprasPage.prototype.irInicio = function () {
+        this.navCtrl.navigateBack(["main-menu"]);
+    };
+    CardcomprasPage.prototype.irCompras = function () {
+        this.navCtrl.navigateBack(["cardcompras"]);
+    };
+    CardcomprasPage.prototype.irEstado = function () {
+        this.navCtrl.navigateBack(["cardlistaproveedores"]);
     };
     CardcomprasPage = __decorate([
         core_1.Component({
