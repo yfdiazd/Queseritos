@@ -3,7 +3,7 @@
   <ion-toolbar>
     <ion-title class="titulo">LOTES DE COMPRAS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardlistaproveedores" color="danger"></ion-back-button>
+      <ion-back-button defaultHref="/cardlistaproveedores" color="success"></ion-back-button>
     </ion-buttons>
     <ion-button fill="clear" slot="end" (click)="saldarLotes()">
       <ion-icon name="calculator"></ion-icon>
@@ -12,6 +12,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content style="background-color: transparent;" pullingIcon="chevron-down-circle-outline"
+      pullingText="Arrastra para actualizar" refreshingSpinner="circles" refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
   <div class="div-principal">
     <div class="col_1">
       <p class="p1">Proveedor</p>

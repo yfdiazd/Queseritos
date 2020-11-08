@@ -75,8 +75,9 @@ export class CardventasPage implements OnInit {
   }
   irVender(input){
     console.log("Se envia este id cliente", this.idcliente);
-    this.navCtrl.navigateBack(["crearenviocliente/", this.idcliente]);
+    this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
   }
+  
 
   // async modalConfirmarPesada(card) {
   //   this.FB.getInfoCompra(this.idcliente, card.id)

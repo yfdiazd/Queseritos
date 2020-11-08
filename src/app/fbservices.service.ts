@@ -266,7 +266,7 @@ export class FBservicesService {
     async toastElimino() {
         const toast = await this.toastController.create({
             message: "Se ha eliminado correctamente",
-            color: "danger",
+            color: "success",
             duration: 7000
         });
         toast.present();
@@ -275,7 +275,7 @@ export class FBservicesService {
     async toastProductoCrado() {
         const toast = await this.toastController.create({
             message: "Se ha creado el producto correctamente",
-            color: "danger",
+            color: "success",
             duration: 7000
         });
         toast.present();
@@ -284,7 +284,7 @@ export class FBservicesService {
     async toastProveedorCrado() {
         const toast = await this.toastController.create({
             message: "Se ha creado el proveedor de manera correcta",
-            color: "danger",
+            color: "success",
             duration: 7000
         });
         toast.present();

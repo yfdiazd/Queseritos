@@ -3,10 +3,10 @@
   <ion-toolbar>
     <ion-title class="titulo">DETALLE VENTAS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
     </ion-buttons>
     <ion-button fill="clear" shape="round" slot="end" (click)="irVender()">
-      <ion-icon name="cart" color="success"></ion-icon>
+      <ion-icon name="bus" color= "success"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
@@ -17,7 +17,7 @@
     <div>
       <ion-item>
         <ion-label>Selecciona el año</ion-label>
-        <ion-datetime [pickerOptions]="customPickerOptions" placeholder="Selecciona el año" displayFormat="YYYY MMMM" min="2020" max="2100"  [(ngModel)]="fechafiltro" ></ion-datetime>
+        <ion-datetime [pickerOptions]="customPickerOptions"  displayFormat="YYYY MMMM" min="2020" max="2100"  [(ngModel)]="fechafiltro" ></ion-datetime>
       </ion-item>
     </div>
   </div>
