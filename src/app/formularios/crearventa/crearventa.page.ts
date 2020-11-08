@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+
 import { FBservicesService } from '../../fbservices.service';
 
 
+
 @Component({
-  selector: 'app-crearventa', 
+  selector: 'app-crearventa',
   templateUrl: './crearventa.page.html',
   styleUrls: ['./crearventa.page.scss'],
 })
@@ -26,11 +28,7 @@ export class CrearventaPage implements OnInit {
   ngOnInit() {
     this.FB.getProductos();
     this.FB.getEstadoProducto();
-
   }
-
-
-
   volver() {
     this.modalCtrl.dismiss();
   }
@@ -58,6 +56,7 @@ export class CrearventaPage implements OnInit {
       peso: this.valor
     });
     this.listaPesadas.push(this.objPesadas);
+    this.modalCtrl.dismiss(this.listaPesadas, "lista");
     console.log("La lista es ", this.listaPesadas);
 
 

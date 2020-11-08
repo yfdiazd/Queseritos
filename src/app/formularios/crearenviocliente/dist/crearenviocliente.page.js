@@ -47,6 +47,7 @@ var core_1 = require("@angular/core");
 var crearventa_page_1 = require("../crearventa/crearventa.page");
 var CrearenvioclientePage = /** @class */ (function () {
     function CrearenvioclientePage(FB, modalCtrl, alertController, toastController, route, navCtrl) {
+        var _this = this;
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.alertController = alertController;
@@ -57,19 +58,25 @@ var CrearenvioclientePage = /** @class */ (function () {
         this.nuevoRegistro = [];
         this.listaPesada = [];
         this.pesadaObj = null;
+        this.fecha = "2020-10-01";
+        //variables alejo
         this.pesoAcumulado = 0;
         this.input_limite = false;
         this.nombreArchLoaded = "Subir archivo";
         this.customAlertOptions = {
-            header: "Seleccione uno",
+            header: "Seleccione",
             translucent: true,
             keyboardClose: false,
             backdropDismiss: false
         };
+        this.pesadas = [];
         this.customPickerOptions = {
             buttons: [{
                     text: 'Aceptar',
-                    handler: function () { return console.log('Clicked Save!'); }
+                    handler: function (fecha) {
+                        _this.fecha = fecha.year.text + "-" + fecha.month.text + "-" + fecha.day.text;
+                        console.log("fecha", fecha, _this.fecha);
+                    }
                 }, {
                     text: 'Cancelar',
                     handler: function () {
@@ -92,9 +99,6 @@ var CrearenvioclientePage = /** @class */ (function () {
         else if (event.detail.checked == false) {
             this.input_limite = false;
         }
-    };
-    CrearenvioclientePage.prototype.removeRegister = function (index) {
-        this.listaPesada.splice(index, 1);
     };
     CrearenvioclientePage.prototype.agregarPesoLista = function () {
         this.presentAlertRadio();
@@ -157,28 +161,27 @@ var CrearenvioclientePage = /** @class */ (function () {
         });
     };
     CrearenvioclientePage.prototype.eliminarBulto = function (index) {
-        this.listaPesada.splice(index);
-        this.numpesada--;
-    };
-    CrearenvioclientePage.prototype.edit = function (index) {
-        this.listaPesada.forEach(function (element) {
-            if (element.index == index) {
-                console.log("Si lo encontro", element.peso);
-            }
-        });
+        console.log("index", index);
+        this.pesadas.splice(index);
+        this.num--;
     };
     CrearenvioclientePage.prototype.contarPeso = function () {
         var _this = this;
         this.contadorPeso = 0;
-        this.listaPesada.forEach(function (element) {
+        this.pesadas.forEach(function (element) {
             console.log("Peso de i: " + element.peso);
             _this.contadorPeso = _this.contadorPeso + parseInt(element.peso);
         });
         console.log("Total peso de los bultos: " + this.contadorPeso);
     };
+    CrearenvioclientePage.prototype.guardar = function () {
+        this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit);
+        this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
+    };
     CrearenvioclientePage.prototype.agregar = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var modal;
+            var modal, data;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalCtrl.create({
@@ -193,6 +196,21 @@ var CrearenvioclientePage = /** @class */ (function () {
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data != undefined) {
+                            console.log("Entro al if: ", data);
+                            data.forEach(function (element) {
+                                _this.pesadas.push({
+                                    estadoQueso: element.estadoQueso,
+                                    peso: element.peso,
+                                    tipoQueso: element.tipoQueso
+                                });
+                                _this.contarPeso();
+                            });
+                            console.log("esta es la lista para el front:", this.pesadas);
+                        }
                         return [2 /*return*/];
                 }
             });

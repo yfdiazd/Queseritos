@@ -41,8 +41,8 @@
       </ion-select>
 
       <p class="p-title_r">Fecha Envío</p>
-      <ion-datetime class="select" [pickerOptions]="customPickerOptions"  value="2020-11-01" displayFormat="YYYY/MM/DD"
-        min="2000-01-01" max="2050-12-31">
+      <ion-datetime class="select" [pickerOptions]="customPickerOptions" [(ngModel)]="fecha"  displayFormat="YYYY/MM/DD"
+        min="2020-10-01" max="2050-12-31">
       </ion-datetime>
 
 
@@ -75,15 +75,15 @@
             <th class="th4">Peso</th>
           </thead>
         </table>
-        <ion-item-sliding class="slider">
+        <ion-item-sliding class="slider" *ngFor="let lista of pesadas;let i=index">
           <ion-item class="item">
-            <label class="td1" (ngModel)="num">N°</label>
-            <label class="td2" (ngModel)="queso">Costeño</label>
-            <label class="td2" (ngModel)="Estado">Seco</label>
-            <label class="td4" (ngModel)="peso">4500kg</label>
+            <label class="td1" (ngModel)="num">{{i+1}}</label>
+            <label class="td2" (ngModel)="queso">{{lista.tipoQueso}}</label>
+            <label class="td2" (ngModel)="estado">{{lista.estadoQueso}}</label>
+            <label class="td4" (ngModel)="peso">{{lista.peso}}</label>
           </ion-item>
           <ion-item-options class="item-opt" side="end">
-            <ion-item-option color="danger" (click)="removeRegister(lista)">Eliminar</ion-item-option>
+            <ion-item-option color="danger" (click)="eliminarBulto(i)">Eliminar</ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
         <!-- <ion-chip class="btn-add" (click)="agregarPesoLista()">
@@ -93,11 +93,7 @@
         <ion-button (click)="guardar()" expand="full" color="success">
           <ion-icon name="save-outline"></ion-icon>
           <ion-label>Guardar</ion-label>
-<<<<<<< HEAD
-        </ion-button>
-=======
         </ion-button>  
->>>>>>> 216195a86a5c26327dd7855d0fd361ceab85c7d0
       </div>
     </div>
   </div>

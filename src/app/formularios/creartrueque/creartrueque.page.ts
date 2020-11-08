@@ -13,7 +13,6 @@ import { FBservicesService } from '../../fbservices.service';
   styleUrls: ['./creartrueque.page.scss'],
 })
 export class CreartruequePage implements OnInit {
-  cantidad: string;
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -23,9 +22,10 @@ export class CreartruequePage implements OnInit {
     //private model : NgModel,
     //private currencyPipe : CurrencyPipe,
     //private element : ElementRef
-  ) {}
+  ) { }
 
-  
+  cantidad: string;
+
   // ----------------VARIABLES-------------
   tipoAnticipoEdit: any;
   valor: any;
@@ -121,7 +121,7 @@ export class CreartruequePage implements OnInit {
 
   guardar() {
     console.log("imagennnnnnnnnnnnnn ", this.imagen);
-    
+
     console.log(" esto es ", this.card);
     if (this.card == "si") {
       if (this.idProveedor == null || this.id, this.lote == null || this.tipoAnticipoEdit == null || this.valor == null || this.imagen == undefined) {

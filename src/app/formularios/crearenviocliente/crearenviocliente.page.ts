@@ -19,11 +19,13 @@ export class CrearenvioclientePage implements OnInit {
   public contadorPeso: number;
   public tipoQueso;
   public lote;
-  public fecha;
+  public fecha = "2020-10-01";
   codigociudadEdit: any;
   idconductor: any;
   pesoLimite;
   placaEdit;
+  num;
+  
 
 
   //variables alejo
@@ -36,6 +38,7 @@ export class CrearenvioclientePage implements OnInit {
 
   nombreArchLoaded = "Subir archivo";
 
+
   constructor(
     private FB: FBservicesService,
     private modalCtrl: ModalController,
@@ -47,7 +50,10 @@ export class CrearenvioclientePage implements OnInit {
     this.customPickerOptions = {
       buttons: [{
         text: 'Aceptar',
-        handler: () => console.log('Clicked Save!')
+        handler: (fecha) => {
+          this.fecha = fecha.year.text + "-" + fecha.month.text + "-" + fecha.day.text;
+          console.log("fecha", fecha, this.fecha);
+        }
       }, {
         text: 'Cancelar',
         handler: () => {
@@ -74,15 +80,9 @@ export class CrearenvioclientePage implements OnInit {
       this.input_limite = false;
     }
   }
-
-  removeRegister(index) {
-    this.listaPesada.splice(index, 1);
-  }
-
   agregarPesoLista() {
     this.presentAlertRadio();
   }
-
   async presentAlertRadio() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -129,21 +129,14 @@ export class CrearenvioclientePage implements OnInit {
   }
 
   eliminarBulto(index) {
-    this.listaPesada.splice(index);
-    this.numpesada--;
-  }
-
-  edit(index) {
-    this.listaPesada.forEach(element => {
-      if (element.index == index) {
-        console.log("Si lo encontro", element.peso)
-      } 
-    })
+    console.log("index", index);
+    this.pesadas.splice(index);
+    this.num--;
   }
 
   contarPeso() {
     this.contadorPeso = 0;
-    this.listaPesada.forEach((element) => {
+    this.pesadas.forEach((element) => {
       console.log("Peso de i: " + element.peso);
       this.contadorPeso = this.contadorPeso + parseInt(element.peso);
     });
@@ -151,19 +144,17 @@ export class CrearenvioclientePage implements OnInit {
   }
 
   guardar() {
-    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, "2020-11-07", "", "", this.pesoLimite, this.placaEdit)
-    console.log("imprimo variables guardar venta", this.idcliente, this.codigociudadEdit, this.idconductor, "2020-11-07", "", "", this.pesoLimite, this.placaEdit);
-
-
-    
+    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit);
+    this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
   }
   customAlertOptions: any = {
-    header: "Seleccione uno",
+    header: "Seleccione",
     translucent: true,
     keyboardClose: false,
     backdropDismiss: false
   };
 
+  pesadas: any[] = [];
   async agregar() {
     const modal = await this.modalCtrl.create({
       component: CrearventaPage,
@@ -174,30 +165,23 @@ export class CrearenvioclientePage implements OnInit {
       },
     })
     await modal.present();
-    // const { data } = await modal.onWillDismiss();
-    // console.log("Esperando esto: ", data);
-    // if (data == "true") {
-    //   console.log("Entro al if: ", data);
-    //   this.cambiarHoja(true);
-    // }
+    const { data } = await modal.onWillDismiss();
+    if (data != undefined) {
+      console.log("Entro al if: ", data);
+      data.forEach(element => {
+        this.pesadas.push({
+          estadoQueso: element.estadoQueso,
+          peso: element.peso,
+          tipoQueso: element.tipoQueso
+        });
+        this.contarPeso();
+      });
+      console.log("esta es la lista para el front:", this.pesadas);
+    }
   }
 
 
-  // guardar() {
-  //   // this.listaBultos.pop();
-  //   this.contarPeso();
-  //   console.log("El id del tipo de queso es: ", this.tipoQueso)
-  //   console.log("Bultos enviados " + this.listaBultos.length);
-  //   console.log("Peso que enviamos es de " + this.contadorPeso);
-  //   console.log("Se envia el id del proveedor: ", this.idProveedor)
-  //   this.FB.agregarPesaje(
-  //     this.idProveedor,
-  //     this.tipoQueso,
-  //     this.listaBultos.length,
-  //     this.contadorPeso,
-  //     this.listaBultos
-  //   );
-  //   this.listaBultos = [];
+
 }
 
 

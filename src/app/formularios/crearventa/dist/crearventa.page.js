@@ -15,6 +15,8 @@ var CrearventaPage = /** @class */ (function () {
         this.activarBoton = false;
     }
     CrearventaPage.prototype.ngOnInit = function () {
+        this.FB.getProductos();
+        this.FB.getEstadoProducto();
     };
     CrearventaPage.prototype.volver = function () {
         this.modalCtrl.dismiss();
@@ -31,6 +33,16 @@ var CrearventaPage = /** @class */ (function () {
         }
     };
     CrearventaPage.prototype.guardar = function () {
+        this.listaPesadas = [];
+        this.objPesadas = null;
+        this.objPesadas = ({
+            tipoQueso: this.tipoQueso,
+            estadoQueso: this.estadoQueso,
+            peso: this.valor
+        });
+        this.listaPesadas.push(this.objPesadas);
+        this.modalCtrl.dismiss(this.listaPesadas, "lista");
+        console.log("La lista es ", this.listaPesadas);
     };
     CrearventaPage = __decorate([
         core_1.Component({
