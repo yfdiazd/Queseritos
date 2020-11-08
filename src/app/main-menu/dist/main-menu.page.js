@@ -54,7 +54,6 @@ var MainMenuPage = /** @class */ (function () {
         this.router = router;
         this.loadingCtrl = loadingCtrl;
         this.input = { data: [] };
-        this.FB.getLoteProveedor();
     }
     MainMenuPage.prototype.ngOnInit = function () {
         var _this = this;
@@ -64,9 +63,9 @@ var MainMenuPage = /** @class */ (function () {
         }, 1500);
     };
     MainMenuPage.prototype.comprar = function () {
-        this.navCtrl.navigateForward('cardcompras');
         this.FB.getProveedorCompra();
         this.FB.getAnticipoProveedor();
+        this.navCtrl.navigateForward('cardcompras');
     };
     MainMenuPage.prototype.presentLoading = function (message) {
         return __awaiter(this, void 0, void 0, function () {

@@ -72,7 +72,9 @@ getItems(ev:any){
       this.FB.clientesLista.forEach(element=>{
       if(element.nombres + " " + element.apellidos == input)
       {
-        this.navCtrl.navigateForward(['crearenviocliente/', element.id]);
+        this.FB.getVentaCliente(element.id);
+        this.FB.getVentaClienteMes(element.id);
+        this.navCtrl.navigateForward(['cardventas/', element.id]);
       }
       
       

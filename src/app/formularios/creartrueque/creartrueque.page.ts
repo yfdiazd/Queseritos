@@ -19,8 +19,13 @@ export class CreartruequePage implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router,
+    //private model : NgModel,
+    //private currencyPipe : CurrencyPipe,
+    //private element : ElementRef
+  ) {}
+
+  
   // ----------------VARIABLES-------------
   tipoAnticipoEdit: any;
   valor: any;

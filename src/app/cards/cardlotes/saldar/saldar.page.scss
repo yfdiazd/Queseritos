@@ -3,13 +3,10 @@ ion-toolbar {
 }
 
 ion-title {
-    font-size: 20px;
+    font-size: 3;
+    color: #fff;
 }
 
-.titulo {
-    color: white;
-
-}
 
 ion-content {
     padding: 0;
@@ -48,7 +45,7 @@ ion-content {
             }
 
             .select,
-            .input_peso {
+            .input_saldo {
                 background-color: white;
                 color: #1a1446;
                 border-style: solid;
@@ -63,6 +60,9 @@ ion-content {
                 --placeholder-color: #1a1446;
                 --placeholder-opacity: 1;
                 text-transform: uppercase;
+            }
+            .input_saldo:disabled{
+                background-color: grey;
             }
 
             input::-webkit-inner-spin-button,

@@ -61,7 +61,6 @@ var FBservicesService = /** @class */ (function () {
         this.saldocreditotal = 0;
         this.saldodebitototal = 0;
         this.anticiposPesajeCompraLista = [];
-        this.proveedorCompraLista = [];
         this.anticipoCompraLista = [];
         //Lista lotes
         this.listaLotes = [];
@@ -178,8 +177,6 @@ var FBservicesService = /** @class */ (function () {
                 _this.getClientes();
                 _this.getConductor();
                 _this.listaOrdenLotes();
-                _this.getLoteProveedor();
-                _this.recorreListas();
             }
             else {
                 _this.navCtrl.navigateBack(["login"]);
@@ -379,6 +376,43 @@ var FBservicesService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "El codigo que intenta agregar ya existe",
+                            color: "danger",
+                            duration: 5000
+                        })];
+                    case 1:
+                        toas = _a.sent();
+                        toas.present();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //toast para archivos
+    FBservicesService.prototype.toastArchivoImagen = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var toas;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.toastController.create({
+                            message: "El archivo que intenta subir no es de tipo imagen por favor intente de nuevo",
+                            color: "danger",
+                            duration: 5000
+                        })];
+                    case 1:
+                        toas = _a.sent();
+                        toas.present();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    FBservicesService.prototype.toastCamposBlanco = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var toas;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.toastController.create({
+                            message: "Por favor diligencie todos los campos del formulario.",
                             color: "danger",
                             duration: 5000
                         })];
@@ -1442,6 +1476,7 @@ var FBservicesService = /** @class */ (function () {
         var _this = this;
         this.listaPaVer = [];
         if (this.listaAnt.length != 0) {
+            this.listaPaVer = [];
             this.listaCard.forEach(function (element) {
                 _this.listaAnt.forEach(function (element2) {
                     if (element.idProvedor == element2.idProvee) {
@@ -1474,6 +1509,7 @@ var FBservicesService = /** @class */ (function () {
             });
         }
         else {
+            this.listaPaVer = [];
             this.listaCard.forEach(function (elementC) {
                 _this.obtPa = ({
                     idProvedor: elementC.idProvedor,
@@ -1492,6 +1528,7 @@ var FBservicesService = /** @class */ (function () {
     //Metodo para traer todos los funcionarios
     FBservicesService.prototype.getInfoCompra = function (idProveedor, idCompra) {
         var _this = this;
+        this.infoCompraUnica = [];
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
@@ -1602,6 +1639,180 @@ var FBservicesService = /** @class */ (function () {
                 anticiposLote: local
             });
         }
+    };
+    //saldar Deudas
+    FBservicesService.prototype.saldarDeudasProveedor = function (idProveedor, valor) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.agregarEstadoProveedor(idProveedor, valor);
+                this.getObjProveedor(idProveedor);
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.getObjProveedor = function (idProveedor) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                console.log("Entro al getObjeto");
+                this.moverHistoricoLista = [];
+                this.objMoverHistorico = null;
+                firebase
+                    .database()
+                    .ref("usuario/compras/" + idProveedor)
+                    .on("value", function (snapshot) {
+                    _this.moverHistoricoLista = [];
+                    _this.objMoverHistorico = null;
+                    _this.objMoverHistorico = ({
+                        objHistorico: snapshot.val()
+                    });
+                    _this.moverHistoricoLista.push(_this.objMoverHistorico);
+                    _this.agregarHistorico(idProveedor, _this.objMoverHistorico);
+                });
+                this.agregarHistorico(idProveedor, this.objMoverHistorico);
+                console.log("Salio del getOBJETO");
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.agregarHistorico = function (idProveedor, objeto) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                console.log("Entro al crear historico");
+                firebase
+                    .database()
+                    .ref("usuario/historico/" + idProveedor)
+                    .set({
+                    nodo: objeto
+                });
+                console.log("Salio del historico");
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.agregarEstadoProveedor = function (idProveedor, valor) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                console.log("Entra a crear el estado");
+                firebase
+                    .database()
+                    .ref("usuario/estadoProveedor/" + idProveedor)
+                    .set({
+                    valor: valor
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.getEstadoProveedor = function (idProveedor) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                console.log("Entra a consultar el estado del proveedor");
+                this.estadoSaldoProveedor = 0;
+                firebase
+                    .database()
+                    .ref("usuario/estadoProveedor/" + idProveedor)
+                    .on("value", function (snapshot) {
+                    if (snapshot.exists()) {
+                        snapshot.forEach(function (element) {
+                            _this.estadoSaldoProveedor = element.val();
+                        });
+                    }
+                    else {
+                        _this.estadoSaldoProveedor = 0;
+                        console.log("No existe el proveedor");
+                    }
+                });
+                return [2 /*return*/, this.estadoSaldoProveedor];
+            });
+        });
+    };
+    FBservicesService.prototype.eliminarNodoProveedor = function (idProveedor) {
+        firebase
+            .database()
+            .ref("usuario/compras/" + idProveedor)
+            .remove();
+        console.log("Eliminó");
+    };
+    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+        console.log("fechaenvio", fechaEnvio);
+        var nodo = fechaEnvio.split("-", 3);
+        var fechaNodo = (nodo[0] + "-" + nodo[1]);
+        this.idVenta = this.idGenerator();
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
+            .set({
+            id: this.idVenta,
+            idCliente: idCliente,
+            ciudad: ciudad,
+            conductor: conductor,
+            costoVenta: 0,
+            fechaEnvio: fechaEnvio,
+            pesadas: listaPesada,
+            pesoEnviado: pesoEnviado,
+            pesoLimite: pesoLimite,
+            placa: placa
+        });
+        this.toastOperacionExitosa();
+    };
+    FBservicesService.prototype.getFotoVenta = function (idCliente, idVenta) {
+        var _this = this;
+        this.imgVenta = null;
+        firebase
+            .storage()
+            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(function (imgUr) {
+            _this.imgVenta = imgUr;
+            return _this.imgVenta;
+        });
+    };
+    FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
+    };
+    FBservicesService.prototype.getVentaCliente = function (idCliente) {
+        var _this = this;
+        this.ventasclienteLista = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente)
+            .on("value", function (snapshot) {
+            _this.listaKey = [];
+            if (snapshot.exists()) {
+                snapshot.forEach(function (element) {
+                    _this.listaKey.push(element.key);
+                });
+                _this.listaKey.forEach(function (element) {
+                    firebase
+                        .database()
+                        .ref("usuario/ventas/" + idCliente + "/" + element)
+                        .on("value", function (snapshot) {
+                        snapshot.forEach(function (element) {
+                            _this.ventasclienteLista.push(element.val());
+                        });
+                    });
+                });
+            }
+            return _this.ventasclienteLista;
+        });
+    };
+    FBservicesService.prototype.getVentaClienteMes = function (idCliente) {
+        var _this = this;
+        var fechaSpl = this.fechaActual().split("-", 3);
+        var nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
+        this.ventasclienteListaMes = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodo)
+            .on("value", function (snapshot) {
+            _this.ventasclienteListaMes = [];
+            if (snapshot.exists()) {
+                snapshot.forEach(function (element) {
+                    _this.ventasclienteListaMes.push(element.val());
+                });
+            }
+            return _this.ventasclienteListaMes;
+        });
     };
     FBservicesService = __decorate([
         core_1.Injectable({

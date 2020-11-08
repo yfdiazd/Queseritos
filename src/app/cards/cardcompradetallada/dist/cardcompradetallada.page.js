@@ -182,6 +182,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                         _this.FB.getPesajeCompra(_this.idProveedor);
                                         _this.traerTipoQueso();
                                         _this.traerNombre();
+                                        _this.FB.getProveedorCompra();
+                                        _this.FB.getAnticipoProveedor();
                                     }
                                 }
                             ]
@@ -191,6 +193,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
                         return [4 /*yield*/, alert.present()];
                     case 2:
                         _a.sent();
+                        this.FB.getProveedorCompra();
+                        this.FB.getAnticipoProveedor();
                         return [2 /*return*/];
                 }
             });
@@ -238,10 +242,17 @@ var CardcompradetalladaPage = /** @class */ (function () {
             });
         });
     };
+    CardcompradetalladaPage.prototype.volver = function () {
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+        this.navCtrl.navigateRoot(["cardcompras"]);
+    };
     CardcompradetalladaPage.prototype.irInicio = function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     CardcompradetalladaPage.prototype.irCompras = function () {
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardcompradetalladaPage.prototype.irEstado = function () {

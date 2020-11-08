@@ -3,11 +3,8 @@ ion-toolbar {
 }
 
 ion-title {
-  font-size: 20px;
-}
-
-.titulo {
-  color: white;
+  font-size: 3;
+  color: #fff;
 }
 
 ion-content {
@@ -41,7 +38,7 @@ ion-content .content .div-principal .p-title_r::after {
   color: red;
 }
 ion-content .content .div-principal .select,
-ion-content .content .div-principal .input_peso {
+ion-content .content .div-principal .input_saldo {
   background-color: white;
   color: #1a1446;
   border-style: solid;
@@ -56,6 +53,9 @@ ion-content .content .div-principal .input_peso {
   --placeholder-color: #1a1446;
   --placeholder-opacity: 1;
   text-transform: uppercase;
+}
+ion-content .content .div-principal .input_saldo:disabled {
+  background-color: grey;
 }
 ion-content .content .div-principal input::-webkit-inner-spin-button,
 ion-content .content .div-principal input::-webkit-outer-spin-button {

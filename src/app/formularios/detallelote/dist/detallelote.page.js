@@ -82,11 +82,17 @@ var DetallelotePage = /** @class */ (function () {
                 this.cards_anticipos = false;
                 this.crearAnticipo = false;
                 this.generarData();
+                this.generarDataDirecta();
             }
-            else {
+            else if (valorSegment == "scompras") {
                 this.cards_Compras = false;
                 this.cards_anticipos = true;
                 this.crearAnticipo = true;
+                this.generarData();
+                this.generarDataDirecta();
+            }
+            else {
+                this.generarData();
                 this.generarDataDirecta();
             }
         }

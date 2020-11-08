@@ -78,7 +78,7 @@ export class FBservicesService {
     public pesajeCompraLista: any[];
     public pesajeCompraListaPorProveedor: any[];
     public anticiposPesajeCompraLista: any[] = [];
-    public proveedorCompraLista: any[] = [];
+    public proveedorCompraLista: any[];
     public anticipoCompraLista: any[] = [];
     public loteProveedorLista: any;
     //Lista lotes
@@ -229,9 +229,6 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.getLoteProveedor();
-                this.recorreListas();
-                this.getVentaClienteMes("1604279625604");
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -1041,12 +1038,12 @@ export class FBservicesService {
         this.proveedorCompraLista = [];
         this.lastLote = [];
         this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
-
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
                 .on("value", snapshot => {
+
                     if (snapshot.exists() && snapshot.val() !== null) {
 
                         this.proveedorCompraLista.push(snapshot.val());
@@ -1435,8 +1432,6 @@ export class FBservicesService {
 
         this.recorreListas();
         return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
-
-
     }
 
     public listaPaVer: any[];
@@ -1444,7 +1439,7 @@ export class FBservicesService {
     recorreListas() {
         this.listaPaVer = [];
         if (this.listaAnt.length != 0) {
-
+            this.listaPaVer = [];
             this.listaCard.forEach(element => {
                 this.listaAnt.forEach(element2 => {
                     if (element.idProvedor == element2.idProvee) {
@@ -1476,6 +1471,7 @@ export class FBservicesService {
                 });
             });
         } else {
+            this.listaPaVer = [];
             this.listaCard.forEach(elementC => {
                 this.obtPa = ({
                     idProvedor: elementC.idProvedor,
@@ -1488,14 +1484,13 @@ export class FBservicesService {
                 this.obtPa = null;
             });
         }
-
         return this.listaPaVer;
     }
 
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
     //Metodo para traer todos los funcionarios
     getInfoCompra(idProveedor, idCompra) {
-
+        this.infoCompraUnica = [];
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
@@ -1616,20 +1611,21 @@ export class FBservicesService {
 
 
     //saldar Deudas
-    saldarDeudasProveedor(idProveedor, valor) {
+    async saldarDeudasProveedor(idProveedor, valor) {
         this.agregarEstadoProveedor(idProveedor, valor);
-        this.getObjProveedor(idProveedor);
-
-
+        this.getObjProveedor(idProveedor,)
     }
 
-    getObjProveedor(idProveedor,) {
+    async getObjProveedor(idProveedor) {
+        console.log("Entro al getObjeto");
         this.moverHistoricoLista = [];
         this.objMoverHistorico = null;
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor)
             .on("value", snapshot => {
+                this.moverHistoricoLista = [];
+                this.objMoverHistorico = null;
                 this.objMoverHistorico = ({
                     objHistorico: snapshot.val()
                 });
@@ -1637,19 +1633,23 @@ export class FBservicesService {
                 this.moverHistoricoLista.push(this.objMoverHistorico);
                 this.agregarHistorico(idProveedor, this.objMoverHistorico);
             });
+        this.agregarHistorico(idProveedor, this.objMoverHistorico);
+        console.log("Salio del getOBJETO");
 
     }
-    agregarHistorico(idProveedor, objeto) {
-
+    async agregarHistorico(idProveedor, objeto) {
+        console.log("Entro al crear historico");
         firebase
             .database()
             .ref("usuario/historico/" + idProveedor)
             .set({
                 nodo: objeto
             });
+        console.log("Salio del historico");
     }
 
-    agregarEstadoProveedor(idProveedor, valor) {
+    async agregarEstadoProveedor(idProveedor, valor) {
+        console.log("Entra a crear el estado");
         firebase
             .database()
             .ref("usuario/estadoProveedor/" + idProveedor)
@@ -1657,26 +1657,41 @@ export class FBservicesService {
                 valor: valor
             });
     }
-
-    getEstadoProveedor(idProveedor) {
+    public estadoSaldoProveedor: number;
+    async getEstadoProveedor(idProveedor) {
+        console.log("Entra a consultar el estado del proveedor");
+        this.estadoSaldoProveedor = 0;
         firebase
             .database()
             .ref("usuario/estadoProveedor/" + idProveedor)
             .on("value", snapshot => {
-                snapshot.val();
+                if (snapshot.exists()) {
+                    snapshot.forEach(element => {
+                        this.estadoSaldoProveedor = element.val();
+                    })
+                } else {
+                    this.estadoSaldoProveedor = 0;
+                    console.log("No existe el proveedor");
+                }
             });
+        return this.estadoSaldoProveedor;
     }
 
+  
     eliminarNodoProveedor(idProveedor) {
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor)
             .remove();
+        console.log("Eliminó");
     }
 
-    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
-        let fecha = fechaEnvio.split("-", 3);
-        let fechaNodo = (fecha[0] + "-" + fecha[1])
+    agregarVenta(idCliente, ciudad, conductor,fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+        console.log("fechaenvio", fechaEnvio);
+        let nodo =fechaEnvio.split("-", 3);
+        
+        
+        let fechaNodo= (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
         firebase
             .database()
@@ -1695,7 +1710,13 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
+   
+  
+    upLoadImageVenta(idCliente, idVenta, file) {
 
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
+
+    }
     public ventasclienteLista: any[];
     listaKey: any[];
     getVentaCliente(idCliente) {
@@ -1732,7 +1753,7 @@ export class FBservicesService {
                 return this.ventasclienteLista;
             });
     }
-
+ 
     public ventasclienteListaMes: any[];
     getVentaClienteMes(idCliente) {
 
@@ -1754,24 +1775,6 @@ export class FBservicesService {
 
                 return this.ventasclienteListaMes;
             });
-    }
-
-    public imgVenta: any;
-    getFotoVenta(idCliente, idVenta) {
-        this.imgVenta = null;
-        firebase
-            .storage()
-            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
-                this.imgVenta = imgUr;
-
-                return this.imgVenta;
-            });
-    }
-
-    upLoadImageVenta(idCliente, idVenta, file) {
-
-        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
-
     }
 
 

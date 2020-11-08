@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ActionSheetController, AlertController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
+
 
 @Component({
   selector: 'app-cardcompradetallada',
@@ -15,8 +16,7 @@ export class CardcompradetalladaPage implements OnInit {
     private FB: FBservicesService,
     private modalController: ModalController,
     private alertController: AlertController,
-    private navCtrl: NavController,
-
+    private navCtrl: NavController
   ) { }
 
   //--------------VARIABLES
@@ -41,7 +41,6 @@ export class CardcompradetalladaPage implements OnInit {
     console.log("Se recibe el proveedor: ", this.idProveedor);
     console.log("listaParaElFront", this.listaCompras)
   }
-
   traerTipoQueso() {
     this.tipoQueso = [];
     this.FB.getProductos();
@@ -58,7 +57,7 @@ export class CardcompradetalladaPage implements OnInit {
     this.nombreProv = [];
     this.listaCompras = [];
     console.log("Lista comporassasssssssssssssss:", this.listaCompras);
-    
+
     this.FB.proveedoresLista.forEach(element => {
       this.FB.pesajeCompraLista.forEach(element2 => {
         if (element.id == element2.idProveedor) {
@@ -88,7 +87,6 @@ export class CardcompradetalladaPage implements OnInit {
     })
 
   }
-
   async modalConfirmarPesaje(card) {
     this.FB.getInfoCompra(this.idProveedor, card.id)
     this.FB.getPesajeConfirmado(this.idProveedor, card.id);
@@ -110,7 +108,6 @@ export class CardcompradetalladaPage implements OnInit {
     console.log("Se envia este id proveedor", this.idProveedor);
     this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
   }
-
   eliminarRegistro(lista) {
     if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
       this.removeRegister(lista);
@@ -140,11 +137,15 @@ export class CardcompradetalladaPage implements OnInit {
             this.FB.getPesajeCompra(this.idProveedor);
             this.traerTipoQueso();
             this.traerNombre();
+            this.FB.getProveedorCompra();
+            this.FB.getAnticipoProveedor();
           }
         }
       ]
     });
     await alert.present();
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
   }
   async alertRemove() {
     const alert = await this.alertController.create({
@@ -165,11 +166,18 @@ export class CardcompradetalladaPage implements OnInit {
     });
     await alert.present();
   }
+  volver() {
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
+    this.navCtrl.navigateRoot(["cardcompras"]);
+  }
 
   irInicio() {
     this.navCtrl.navigateBack(["main-menu"]);
   }
   irCompras() {
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
     this.navCtrl.navigateBack(["cardcompras"]);
   }
   irEstado() {

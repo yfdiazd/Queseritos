@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>SALDAR</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" color="danger">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content">
+    <div class="div-principal">
+      <label *ngIf="deuda">Le debes al proveedor {{tanto | currency:'USD':true: '2.0-0'}}</label>
+      <label *ngIf="cobro">El proveedor te debe {{tanto | currency:'USD':true: '2.0-0'}} </label>
+      <label *ngIf="deuda2"> pero recuerda que le debemos {{tanto2 | currency:'USD':true: '2.0-0'}} del saldo anterior. </label>
+      <label *ngIf="cobro2"> pero recuerda que él te debe {{tanto2 | currency:'USD':true: '2.0-0'}} del saldo anterior. </label>
+      <label *ngIf="conclusion">Entonces el valor a pagar es {{sumado | currency:'USD':true: '2.0-0'}}.</label>
+      <label *ngIf="conclusion2">Entonces el proveedor nos debe {{sumado | currency:'USD':true: '2.0-0'}}.</label>
+      <p class="p-title_r">Saldo</p>
+      <input [disabled]="input_saldo"  type="number" (ngModelChange)="permitirGuardar($event)" class="input_saldo" [(ngModel)]="valor" />
+      <ion-button *ngIf="activarBoton" class="btn_guardar" (click)="guardar()" expand="full">
+        <ion-icon name="save-outline"></ion-icon>
+        Guardar
+      </ion-button>
+    </div>
+
+  </div>
+
+</ion-content>

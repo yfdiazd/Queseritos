@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController ,PopoverController } from '@ionic/angular';
-
+import { Component, OnInit, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service';
 
 
@@ -13,9 +12,7 @@ export class CrearventaPage implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private FB: FBservicesService,
-    private navCtrl: NavController
-
+    private FB: FBservicesService
   ) {
 
   }
@@ -40,7 +37,9 @@ export class CrearventaPage implements OnInit {
 
   permitirGuardar(event) {
     console.log("cambiando", this.valor, event);
-    if (this.tipoQueso == undefined || this.estadoQueso == undefined || this.valor == undefined || this.tipoQueso == null || this.estadoQueso == null || this.valor == null || this.tipoQueso == "" || this.estadoQueso == "" || this.valor == "" || event == null) {
+    if (this.tipoQueso == undefined || this.estadoQueso == undefined || this.valor == undefined ||
+      this.tipoQueso == null || this.estadoQueso == null || this.valor == null ||
+      this.tipoQueso == "" || this.estadoQueso == "" || this.valor == "" || event == null) {
       this.activarBoton = false;
     } else {
       this.activarBoton = true;

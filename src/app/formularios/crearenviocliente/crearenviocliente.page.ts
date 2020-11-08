@@ -155,6 +155,7 @@ export class CrearenvioclientePage implements OnInit {
     console.log("imprimo variables guardar venta", this.idcliente, this.codigociudadEdit, this.idconductor, "2020-11-07", "", "", this.pesoLimite, this.placaEdit);
 
 
+    
   }
   customAlertOptions: any = {
     header: "Seleccione uno",

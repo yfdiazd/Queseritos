@@ -45,6 +45,10 @@ const routes: Routes = [
   },  {
     path: 'homepesajes',
     loadChildren: () => import('./homepesajes/homepesajes.module').then( m => m.HomepesajesPageModule)
+  },
+  {
+    path: 'homeventas',
+    loadChildren: () => import('./homeventas/homeventas.module').then( m => m.HomeventasPageModule)
   }
 
 
