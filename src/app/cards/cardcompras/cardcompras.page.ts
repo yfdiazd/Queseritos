@@ -39,6 +39,7 @@ export class CardcomprasPage implements OnInit {
   ngOnInit() {
     this.validacionLote();
     this.FB.getLoteProveedor();
+    this.FB.getAnticipoProveedor();
     this.traerNombre();
     this.cambioSaldo();
     this.presentLoading('Espere...');
@@ -75,6 +76,7 @@ export class CardcomprasPage implements OnInit {
 
   doRefresh(event) {
     this.validacionLote();
+    this.FB.getAnticipoProveedor()
     this.FB.getLoteProveedor();
     this.traerNombre();
     this.cambioSaldo();

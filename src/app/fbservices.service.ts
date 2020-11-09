@@ -1293,13 +1293,12 @@ export class FBservicesService {
                 .database()
                 .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/anticipos")
                 .on('value', snapshot => {
-                    this.anticipoCompraLista = [];
-                    if (snapshot.exists && snapshot.val() !== null) {
+                    if (snapshot.exists() && snapshot.val() !== null) {
                         this.anticipoCompraLista.push(snapshot.val());
-                    } else {
                     }
                 });
         });
+        console.log("se retorna la lista pa reo ", this.anticipoCompraLista);
         return this.anticipoCompraLista;
     }
     anticipoDirectoProveedorLista: any[];
@@ -1429,6 +1428,8 @@ export class FBservicesService {
             });
             this.listaCard.push(this.objImp);
         });
+
+
         this.anticipoCompraLista.forEach(element => {
             let totalAnt: number = 0;
             let keys = Object.keys(element);
@@ -1444,6 +1445,8 @@ export class FBservicesService {
             this.listaAnt.push(this.onbjAnt);
         });
 
+
+        console.log("el metodo que retorna mucho es ", this.listaAnt);
 
         this.recorreListas();
         return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
@@ -1499,6 +1502,8 @@ export class FBservicesService {
                 this.obtPa = null;
             });
         }
+        console.log("Vamos a ver esta lista ", this.listaPaVer);
+
         return this.listaPaVer;
     }
 
