@@ -39,7 +39,6 @@ export class CardcomprasPage implements OnInit {
   ngOnInit() {
     this.validacionLote();
     this.FB.getLoteProveedor();
-    this.FB.getAnticipoProveedor();
     this.traerNombre();
     this.cambioSaldo();
     this.presentLoading('Espere...');
@@ -51,7 +50,7 @@ export class CardcomprasPage implements OnInit {
   }  
 
   async presentLoading(message: string) {
-    this.loading = await this.loadingCtrl.create({
+    this.loading = await this.loadingCtrl.create({  
       message,
       cssClass: 'cssLoading',
       keyboardClose: false,
@@ -62,8 +61,12 @@ export class CardcomprasPage implements OnInit {
     return this.loading.present();
   }
   cambioSaldo() {
-    let valor1 = this.FB.saldodebitototal;
-    let valor2 = this.FB.saldocreditotal;
+    let valor1 = 0;
+    let valor2 = 0;
+    console.log("datos sumassssss ", this.FB.saldodebitototal, this.FB.saldocreditotal);
+    
+    valor1 = this.FB.saldodebitototal;
+    valor2 = this.FB.saldocreditotal;
     console.log("Sumas", valor1, " - ", valor2);
     if ((valor1 - valor2) < 0) {
       document.getElementById("valorCss").style.color = "crimson";
@@ -76,10 +79,12 @@ export class CardcomprasPage implements OnInit {
 
   doRefresh(event) {
     this.validacionLote();
-    this.FB.getAnticipoProveedor()
     this.FB.getLoteProveedor();
+    this.FB.getAnticipoProveedor();
     this.traerNombre();
     this.cambioSaldo();
+    
+    console.log("Esto es para ver", this.listaDatos);
     setTimeout(() => {
       event.target.complete();
     }, 1000);

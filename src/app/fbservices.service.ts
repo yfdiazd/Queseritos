@@ -1395,15 +1395,13 @@ export class FBservicesService {
     }
 
     getLoteProveedor() {
+        this.saldodebitototal = 0;
+        this.pesoacumulado = 0;
+        this.saldocreditotal = 0;
         this.objImp = [];
         this.onbjAnt = [];
         this.listaCard = [];
         this.listaAnt = [];
-        this.pesoacumulado = 0;
-        this.saldocreditotal = 0;
-        this.saldodebitototal = 0;
-
-
 
         this.proveedorCompraLista.forEach(element => {
             let total = 0;
