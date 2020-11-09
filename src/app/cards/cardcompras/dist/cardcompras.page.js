@@ -66,6 +66,7 @@ var CardcomprasPage = /** @class */ (function () {
         this.cambioSaldo();
         this.presentLoading('Espere...');
         console.log("Esto es para ver", this.listaDatos);
+        console.log("Esto debe imprimirse siempre. NGONINIT");
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -108,6 +109,7 @@ var CardcomprasPage = /** @class */ (function () {
         }
     };
     CardcomprasPage.prototype.doRefresh = function (event) {
+        console.log("event refresh", event);
         this.validacionLote();
         this.FB.getLoteProveedor();
         this.FB.getAnticipoProveedor();

@@ -369,6 +369,24 @@ var FBservicesService = /** @class */ (function () {
             });
         });
     };
+    FBservicesService.prototype.toastExistenPesajesDetale = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var toast;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.toastController.create({
+                            message: "Existen pesajes confirmados para esta compra",
+                            color: "danger",
+                            duration: 5000
+                        })];
+                    case 1:
+                        toast = _a.sent();
+                        toast.present();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     FBservicesService.prototype.toastElementoDuplicado = function () {
         return __awaiter(this, void 0, void 0, function () {
             var toas;
@@ -1803,16 +1821,30 @@ var FBservicesService = /** @class */ (function () {
             return _this.ventasclienteListaMes;
         });
     };
-    FBservicesService.prototype.updateBultoPesajeDetallado = function (idProveedor, idPesaje, listaBultos) {
+    FBservicesService.prototype.updateBultoPesajeDetallado = function (idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto) {
+        var _this = this;
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
-            .update({
-            bultoLista: listaBultos
+            .on("value", function (snapshot) {
+            if (snapshot.val().costoTotalCompra == 0) {
+                firebase
+                    .database()
+                    .ref("usuario/compras/" + idProveedor + "/" + _this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
+                    .update({
+                    bultoLista: listaBultos,
+                    pesoBultos: peso,
+                    totalBulto: totalBultos,
+                    idProducto: idProducto
+                });
+                _this.toastOperacionExitosa();
+            }
+            else {
+                _this.toastExistenPesajesDetale();
+            }
         });
-        this.toastOperacionExitosa();
     };
     FBservicesService = __decorate([
         core_1.Injectable({

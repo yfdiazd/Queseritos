@@ -45,9 +45,8 @@ exports.__esModule = true;
 exports.CrearcompraPage = void 0;
 var core_1 = require("@angular/core");
 var CrearcompraPage = /** @class */ (function () {
-    function CrearcompraPage(alertController, route, FB, navCtrl, modalCtrl) {
+    function CrearcompraPage(alertController, FB, navCtrl, modalCtrl) {
         this.alertController = alertController;
-        this.route = route;
         this.FB = FB;
         this.navCtrl = navCtrl;
         this.modalCtrl = modalCtrl;
@@ -62,6 +61,7 @@ var CrearcompraPage = /** @class */ (function () {
         this.fecha = this.FB.fechaActual();
         this.traerTipoQuesoDefault();
         this.traerNombre();
+        this.validacion();
         console.log("Se recibe id proveedor para editar: ", this.idProveedor);
         console.log("lista a mostrar", this.listaBultosEdit);
     };
@@ -178,16 +178,26 @@ var CrearcompraPage = /** @class */ (function () {
         console.log("Total peso de los bultos: " + this.contadorPeso);
     };
     CrearcompraPage.prototype.guardar = function () {
-        this.contarPeso();
-        console.log("El id del tipo de queso es: ", this.productoDefault);
-        console.log("Bultos enviados " + this.listaBultosEdit.length);
-        console.log("Peso que enviamos es de " + this.contadorPeso);
-        console.log("Se envia el id del proveedor: ", this.idProveedor);
-        this.FB.agregarPesaje(this.idProveedor, this.productoDefault, this.listaBultosEdit.length, this.contadorPeso, this.listaBultosEdit);
-        this.listaBultosEdit = [];
-        this.FB.getPesajeCompra(this.idProveedor);
-        this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
-        this.modalCtrl.dismiss("true", "actualizar");
+        if (this.idCompra == undefined) {
+            this.contarPeso();
+            this.FB.agregarPesaje(this.idProveedor, this.productoDefault, this.listaBultosEdit.length, this.contadorPeso, this.listaBultosEdit);
+            this.listaBultosEdit = [];
+            this.FB.getPesajeCompra(this.idProveedor);
+            this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+            this.modalCtrl.dismiss("true", "actualizar");
+            this.FB.getProveedorCompra();
+            this.FB.getAnticipoProveedor();
+        }
+        else {
+            this.contarPeso();
+            this.FB.updateBultoPesajeDetallado(this.idProveedor, this.idCompra, this.listaBultosEdit, this.contadorPeso, this.listaBultosEdit.length, this.productoDefault);
+            this.listaBultosEdit = [];
+            this.FB.getPesajeCompra(this.idProveedor);
+            this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+            this.modalCtrl.dismiss("true", "actualizar");
+            this.FB.getProveedorCompra();
+            this.FB.getAnticipoProveedor();
+        }
     };
     CrearcompraPage.prototype.volver = function () {
         this.modalCtrl.dismiss();

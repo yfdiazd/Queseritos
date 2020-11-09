@@ -5,6 +5,8 @@ import { FBservicesService } from 'src/app/fbservices.service';
 import { CrearcompraPage } from 'src/app/formularios/crearcompra/crearcompra.page';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 
+import { CardcomprasPage } from '../cardcompras/cardcompras.page';
+
 
 @Component({
   selector: 'app-cardcompradetallada',
@@ -17,7 +19,8 @@ export class CardcompradetalladaPage implements OnInit {
     private FB: FBservicesService,
     private modalController: ModalController,
     private alertController: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    public cp: CardcomprasPage
   ) { }
 
   //--------------VARIABLES
@@ -40,7 +43,7 @@ export class CardcompradetalladaPage implements OnInit {
     this.traerTipoQueso();
     this.traerNombre();
     console.log("Se recibe el proveedor: ", this.idProveedor);
-    console.log("listaParaElFront", this.listaCompras)
+    console.log("listaParaElFront", this.listaCompras);
   }
   traerTipoQueso() {
     this.tipoQueso = [];
@@ -101,7 +104,7 @@ export class CardcompradetalladaPage implements OnInit {
         idProv: this.idProveedor
       },
     });
-    await modal.present();
+    return await modal.present();
 
   }
 
@@ -184,15 +187,24 @@ export class CardcompradetalladaPage implements OnInit {
         idProveedor: this.idProveedor,
         idCompra: card.id,
         listaBultosEdit: card.bultoLista,
-        productoEdit: card.nompreProducto
+        productoEdit: card.idProducto
       },
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.FB.getPesajeCompra(this.idProveedor);
+      this.FB.getProductos();
+      this.traerTipoQueso();
+      this.traerNombre();
+      this.FB.getProveedorCompra();
+      this.FB.getAnticipoProveedor();
+    }
   }
   volver() {
     this.FB.getProveedorCompra();
     this.FB.getAnticipoProveedor();
-    this.navCtrl.navigateRoot(["cardcompras"]);
+    this.navCtrl.navigateBack(["cardcompras"]);
   }
 
   irInicio() {

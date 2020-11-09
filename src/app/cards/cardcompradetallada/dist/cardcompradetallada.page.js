@@ -47,12 +47,13 @@ var core_1 = require("@angular/core");
 var crearcompra_page_1 = require("src/app/formularios/crearcompra/crearcompra.page");
 var homepesajes_page_1 = require("src/app/home/homepesajes/homepesajes.page");
 var CardcompradetalladaPage = /** @class */ (function () {
-    function CardcompradetalladaPage(route, FB, modalController, alertController, navCtrl) {
+    function CardcompradetalladaPage(route, FB, modalController, alertController, navCtrl, cp) {
         this.route = route;
         this.FB = FB;
         this.modalController = modalController;
         this.alertController = alertController;
         this.navCtrl = navCtrl;
+        this.cp = cp;
         //Datos consolidados para la visualización
         this.listaCard = [];
         //lista de la compra que se recorre en el HTML
@@ -139,9 +140,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -253,7 +252,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
     };
     CardcompradetalladaPage.prototype.editarRegistro = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var modal;
+            var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -267,7 +266,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                     idProveedor: this.idProveedor,
                                     idCompra: card.id,
                                     listaBultosEdit: card.bultoLista,
-                                    productoEdit: card.nompreProducto
+                                    productoEdit: card.idProducto
                                 }
                             })];
                     case 1:
@@ -275,6 +274,17 @@ var CardcompradetalladaPage = /** @class */ (function () {
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getProductos();
+                            this.traerTipoQueso();
+                            this.traerNombre();
+                            this.FB.getProveedorCompra();
+                            this.FB.getAnticipoProveedor();
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -283,7 +293,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
     CardcompradetalladaPage.prototype.volver = function () {
         this.FB.getProveedorCompra();
         this.FB.getAnticipoProveedor();
-        this.navCtrl.navigateRoot(["cardcompras"]);
+        this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardcompradetalladaPage.prototype.irInicio = function () {
         this.navCtrl.navigateBack(["main-menu"]);

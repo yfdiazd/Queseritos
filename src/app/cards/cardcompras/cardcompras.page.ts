@@ -45,7 +45,7 @@ export class CardcomprasPage implements OnInit {
     this.cambioSaldo();
     this.presentLoading('Espere...');
     console.log("Esto es para ver", this.listaDatos);
-
+    console.log("Esto debe imprimirse siempre. NGONINIT");
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
@@ -80,6 +80,7 @@ export class CardcomprasPage implements OnInit {
   }
 
   doRefresh(event) {
+    console.log("event refresh", event);
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.FB.getAnticipoProveedor();

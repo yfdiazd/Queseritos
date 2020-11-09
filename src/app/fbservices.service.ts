@@ -229,6 +229,7 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -320,6 +321,15 @@ export class FBservicesService {
             message: "Operacion ejecutada con exito",
             color: "success",
             duration: 3000
+        });
+        toast.present();
+    }
+
+    async toastExistenPesajesDetale() {
+        const toast = await this.toastController.create({
+            message: "Existen pesajes confirmados para esta compra",
+            color: "danger",
+            duration: 5000
         });
         toast.present();
     }
@@ -1796,16 +1806,32 @@ export class FBservicesService {
     }
 
 
-    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos) {
+    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos,idProducto) {
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
-            .update({
-                bultoLista: listaBultos
+            .on("value", snapshot => {
+
+                if (snapshot.val().costoTotalCompra == 0) {
+
+                    firebase
+                        .database()
+                        .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
+                        .update({
+                            bultoLista: listaBultos,
+                            pesoBultos: peso,
+                            totalBulto: totalBultos,
+                            idProducto: idProducto
+                        });
+
+                    this.toastOperacionExitosa();
+                } else {
+                    this.toastExistenPesajesDetale();
+                }
             });
-        this.toastOperacionExitosa();
+
     }
 
 }
