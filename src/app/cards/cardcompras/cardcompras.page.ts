@@ -52,7 +52,7 @@ export class CardcomprasPage implements OnInit {
   }
 
   async presentLoading(message: string) {
-    this.loading = await this.loadingCtrl.create({  
+    this.loading = await this.loadingCtrl.create({
       message,
       cssClass: 'cssLoading',
       keyboardClose: false,
@@ -66,7 +66,7 @@ export class CardcomprasPage implements OnInit {
     let valor1 = 0;
     let valor2 = 0;
     console.log("datos sumassssss ", this.FB.saldodebitototal, this.FB.saldocreditotal);
-    
+
     valor1 = this.FB.saldodebitototal;
     valor2 = this.FB.saldocreditotal;
     console.log("Sumas", valor1, " - ", valor2);
@@ -85,7 +85,7 @@ export class CardcomprasPage implements OnInit {
     this.FB.getAnticipoProveedor();
     this.traerNombre();
     this.cambioSaldo();
-    
+
     console.log("Esto es para ver", this.listaDatos);
     setTimeout(() => {
       event.target.complete();
@@ -136,7 +136,7 @@ export class CardcomprasPage implements OnInit {
       keyboardClose: false,
       backdropDismiss: false,
       componentProps: {
-        idProveedor: card.idProv
+        idProveedor: card
       },
     });
     await modal.present();
@@ -176,7 +176,7 @@ export class CardcomprasPage implements OnInit {
         }, {
           text: 'Ok',
           handler: (value) => {
-            this.navCtrl.navigateForward(["crearcompra/", value]);
+            this.irCompra(value);
           }
         }
       ]

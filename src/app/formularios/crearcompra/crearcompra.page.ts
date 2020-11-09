@@ -50,12 +50,16 @@ export class CrearcompraPage implements OnInit {
   }
 
   traerTipoQuesoDefault() {
-    this.FB.productosLista.forEach(element => {
-      if (element.estado == 1 && element.predetermina == true) {
-        this.productoDefault = null;
-        this.productoDefault = element.id;
-      }
-    })
+    if (this.productoEdit == undefined) {
+      this.FB.productosLista.forEach(element => {
+        if (element.estado == 1 && element.predetermina == true) {
+          this.productoDefault = null;
+          this.productoDefault = element.id;
+        }
+      })
+    } else {
+      this.productoDefault = this.productoEdit;
+    }
   }
 
   async traerNombre() {
@@ -159,7 +163,7 @@ export class CrearcompraPage implements OnInit {
     this.listaBultosEdit = [];
     this.FB.getPesajeCompra(this.idProveedor);
     this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss("true", "actualizar");
   }
   volver() {
     this.modalCtrl.dismiss();

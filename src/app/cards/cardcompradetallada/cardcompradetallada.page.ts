@@ -116,6 +116,13 @@ export class CardcompradetalladaPage implements OnInit {
       },
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.FB.getPesajeCompra(this.idProveedor);
+      this.FB.getProductos();
+      this.traerTipoQueso();
+      this.traerNombre();
+    }
   }
   eliminarRegistro(lista) {
     if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {

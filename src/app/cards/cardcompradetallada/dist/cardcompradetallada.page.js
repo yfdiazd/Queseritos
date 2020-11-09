@@ -148,7 +148,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
     };
     CardcompradetalladaPage.prototype.irCompra = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var modal;
+            var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
@@ -165,6 +165,15 @@ var CardcompradetalladaPage = /** @class */ (function () {
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getProductos();
+                            this.traerTipoQueso();
+                            this.traerNombre();
+                        }
                         return [2 /*return*/];
                 }
             });

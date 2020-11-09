@@ -319,7 +319,7 @@ export class FBservicesService {
         const toast = await this.toastController.create({
             message: "Operacion ejecutada con exito",
             color: "success",
-            duration: 5000
+            duration: 3000
         });
         toast.present();
     }
@@ -916,6 +916,7 @@ export class FBservicesService {
                 codigo: codigoCiudad,
                 descripcion: describcionCiudad
             });
+        this.toastOperacionExitosa();
     }
     updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresCliente, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
 
@@ -978,10 +979,10 @@ export class FBservicesService {
             .ref("usuario/configuracion/lotes")
             .on("value", snapshot => {
                 if (snapshot.exists()) {
-                    
+
                     snapshot.forEach(element => {
                         if (element.val().lote.indexOf(this.fechaActual) <= 0) {
-                            
+
                             firebase
                                 .database()
                                 .ref("usuario/configuracion/lotes/" + this.idLote)
@@ -1109,13 +1110,13 @@ export class FBservicesService {
                     costoTotalCompra: totalLocal
                 });
         } else if (accion == "resta") {
-            
+
 
             let totalLocal = 0;
             this.getCostoCompra(idProveedor, idPesajeCompra);
             totalLocal = this.costoCompraTemp;
             totalLocal = (totalLocal - totalCompra);
-            
+
 
             firebase
                 .database()
@@ -1136,7 +1137,7 @@ export class FBservicesService {
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     if (element.key == idPesajeCompra) {
-                        
+
                         this.costoCompraTemp = element.val().costoTotalCompra;
                     }
 
@@ -1297,7 +1298,7 @@ export class FBservicesService {
                     }
                 });
         });
-        
+
         return this.anticipoCompraLista;
     }
     anticipoDirectoProveedorLista: any[];
@@ -1389,7 +1390,7 @@ export class FBservicesService {
                     this.listaLotesDelProveedor.push(this.objLotesDelProveedor);
                 });
             });
-        
+
 
         return this.listaLotesDelProveedor;
     }
@@ -1443,7 +1444,7 @@ export class FBservicesService {
         });
 
 
-        
+
 
         this.recorreListas();
         return this.listaCard, this.listaAnt, this.pesoacumulado, this.saldocreditotal, this.saldodebitototal;
@@ -1499,7 +1500,7 @@ export class FBservicesService {
                 this.obtPa = null;
             });
         }
-        
+
 
         return this.listaPaVer;
     }
@@ -1634,7 +1635,7 @@ export class FBservicesService {
     }
 
     async getObjProveedor(idProveedor) {
-        
+
         this.moverHistoricoLista = [];
         this.objMoverHistorico = null;
         firebase
@@ -1651,22 +1652,22 @@ export class FBservicesService {
                 this.agregarHistorico(idProveedor, this.objMoverHistorico);
             });
         this.agregarHistorico(idProveedor, this.objMoverHistorico);
-        
+
 
     }
     async agregarHistorico(idProveedor, objeto) {
-        
+
         firebase
             .database()
             .ref("usuario/historico/" + idProveedor)
             .set({
                 nodo: objeto
             });
-        
+
     }
 
     async agregarEstadoProveedor(idProveedor, valor) {
-        
+
         firebase
             .database()
             .ref("usuario/estadoProveedor/" + idProveedor)
@@ -1676,7 +1677,7 @@ export class FBservicesService {
     }
     public estadoSaldoProveedor: number;
     async getEstadoProveedor(idProveedor) {
-        
+
         this.estadoSaldoProveedor = 0;
         firebase
             .database()
@@ -1688,7 +1689,7 @@ export class FBservicesService {
                     })
                 } else {
                     this.estadoSaldoProveedor = 0;
-                    
+
                 }
             });
         return this.estadoSaldoProveedor;
@@ -1700,11 +1701,11 @@ export class FBservicesService {
             .database()
             .ref("usuario/compras/" + idProveedor)
             .remove();
-        
+
     }
 
     agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
-        
+
         let nodo = fechaEnvio.split("-", 3);
 
 
@@ -1795,15 +1796,15 @@ export class FBservicesService {
     }
 
 
-    eliminarBultoPesajeDetallado(idProveedor, idPesaje, listaBultos){
+    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos) {
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
-        .database()
-        .ref("usuario/compras/"+idProveedor+"/"+this.lastLote.toString()+"/pesajeCompra/"+idPesaje)
-        .update({
-            bultoLista: listaBultos
-        });
+            .database()
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
+            .update({
+                bultoLista: listaBultos
+            });
         this.toastOperacionExitosa();
     }
 

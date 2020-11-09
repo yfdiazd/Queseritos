@@ -67,12 +67,17 @@ var CrearcompraPage = /** @class */ (function () {
     };
     CrearcompraPage.prototype.traerTipoQuesoDefault = function () {
         var _this = this;
-        this.FB.productosLista.forEach(function (element) {
-            if (element.estado == 1 && element.predetermina == true) {
-                _this.productoDefault = null;
-                _this.productoDefault = element.id;
-            }
-        });
+        if (this.productoEdit == undefined) {
+            this.FB.productosLista.forEach(function (element) {
+                if (element.estado == 1 && element.predetermina == true) {
+                    _this.productoDefault = null;
+                    _this.productoDefault = element.id;
+                }
+            });
+        }
+        else {
+            this.productoDefault = this.productoEdit;
+        }
     };
     CrearcompraPage.prototype.traerNombre = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -182,7 +187,7 @@ var CrearcompraPage = /** @class */ (function () {
         this.listaBultosEdit = [];
         this.FB.getPesajeCompra(this.idProveedor);
         this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
     };
     CrearcompraPage.prototype.volver = function () {
         this.modalCtrl.dismiss();

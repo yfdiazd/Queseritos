@@ -93,8 +93,11 @@ var CardcomprasPage = /** @class */ (function () {
         });
     };
     CardcomprasPage.prototype.cambioSaldo = function () {
-        var valor1 = this.FB.saldodebitototal;
-        var valor2 = this.FB.saldocreditotal;
+        var valor1 = 0;
+        var valor2 = 0;
+        console.log("datos sumassssss ", this.FB.saldodebitototal, this.FB.saldocreditotal);
+        valor1 = this.FB.saldodebitototal;
+        valor2 = this.FB.saldocreditotal;
         console.log("Sumas", valor1, " - ", valor2);
         if ((valor1 - valor2) < 0) {
             document.getElementById("valorCss").style.color = "crimson";
@@ -107,8 +110,10 @@ var CardcomprasPage = /** @class */ (function () {
     CardcomprasPage.prototype.doRefresh = function (event) {
         this.validacionLote();
         this.FB.getLoteProveedor();
+        this.FB.getAnticipoProveedor();
         this.traerNombre();
         this.cambioSaldo();
+        console.log("Esto es para ver", this.listaDatos);
         setTimeout(function () {
             event.target.complete();
         }, 1000);
@@ -174,7 +179,7 @@ var CardcomprasPage = /** @class */ (function () {
                             keyboardClose: false,
                             backdropDismiss: false,
                             componentProps: {
-                                idProveedor: card.idProv
+                                idProveedor: card
                             }
                         })];
                     case 1:
@@ -233,7 +238,7 @@ var CardcomprasPage = /** @class */ (function () {
                                 }, {
                                     text: 'Ok',
                                     handler: function (value) {
-                                        _this.navCtrl.navigateForward(["crearcompra/", value]);
+                                        _this.irCompra(value);
                                     }
                                 }
                             ]
