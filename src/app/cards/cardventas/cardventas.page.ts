@@ -1,5 +1,5 @@
 import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, NavController, ToastController } from '@ionic/angular';
+import { ModalController, NavController, ToastController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
@@ -34,10 +34,12 @@ export class CardventasPage implements OnInit {
     private alertController: AlertController,
     private toastController: ToastController,
     private route: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
   ) { }
 
   public idcliente: any;
+  public loading: any;
   ngOnInit() {
 
     this.customPickerOptions = {
@@ -63,13 +65,36 @@ export class CardventasPage implements OnInit {
     }
 
     let id = this.route.snapshot.paramMap.get("id");
-    console.log("se recibe id solito", id);
     this.idcliente = id;
-    console.log("se recibe id listacliente", this.idcliente);
     this.traerNombre();
-    console.log("imprime lista de ventas de FB", this.FB.ventasclienteLista);
 
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 1500);
 
+  }
+
+  async presentLoading(message: string) {
+    this.loading = await this.loadingCtrl.create({
+      message,
+      cssClass: 'cssLoading',
+      keyboardClose: false,
+      backdropDismiss: false,
+      spinner: 'lines',
+      translucent: true
+    });
+    return this.loading.present();
+  }
+
+  doRefresh(event) {
+
+    this.traerNombre();
+    this.presentLoading('Espere...');
+    this.recorriendolista();
+
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 
   listaFiltrada: any;
@@ -77,48 +102,49 @@ export class CardventasPage implements OnInit {
   getListaFiltrada(event) {
     this.FB.ventasclienteLista;
     this.listaFiltrada = this.FB.ventasclienteLista;
-    console.log("esoto es la lista filtrada " , this.listaFiltrada);
+    console.log("esoto es la lista filtrada ", this.listaFiltrada);
     let varY = event.year.value
     let varM = event.month.value
-    let varym = (varY+"-"+varM);
+    let varym = (varY + "-" + varM);
     console.log("buscador   ---- ", varym);
-    if(varym && varym.trim() != ''){
+    if (varym && varym.trim() != '') {
 
       this.listaFiltrada = this.listaFiltrada.filter((item) => {
         return (item.fechaEnvio.indexOf(varym) > -1);
       })
 
-    }else{
-      if(varym == '' || varym == undefined){
+    } else {
+      if (varym == '' || varym == undefined) {
         this.listaFiltrada = this.FB.ventasclienteLista;
         return this.listaFiltrada;
       }
     }
 
-    
+
 
   }
   irVender(input) {
     console.log("Se envia este id cliente", this.idcliente);
-    this.navCtrl.navigateBack(["crearenviocliente/", this.idcliente]);
+    this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
   }
 
-  // async modalConfirmarPesada(card) {
-  //   this.FB.getInfoCompra(this.idcliente, card.id)
-  //   this.FB.getPesajeConfirmado(this.idcliente, card.id);
-  //   const modal = await this.modalController.create({
-  //     component: HomeventasPage,
-  //     cssClass: 'my-custom-class',
-  //     keyboardClose: false,
-  //     backdropDismiss: false,
-  //     componentProps: {
-  //       idVenta: card.id,
-  //       idClient: this.idcliente
-  //     },
-  //   });
-  //   await modal.present();
 
-  // }
+  async modalConfirmarPesada(card) {
+    // this.FB.getInfoCompra(this.idcliente, card.id)
+    // this.FB.getPesajeConfirmado(this.idcliente, card.id);
+    const modal = await this.modalController.create({
+      component: HomeventasPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idVenta: card.id,
+        idCliente: this.idcliente
+      },
+    });
+    await modal.present();
+
+  }
 
   recorriendolista() {
     this.FB.ventasclienteListaMes.forEach(element => {

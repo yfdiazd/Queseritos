@@ -9,7 +9,7 @@ import { CrearclientesPage } from 'src/app/formularios/crearclientes/crearclient
   styleUrls: ['./homeclientes.page.scss'],
 })
 export class HomeclientesPage implements OnInit {
-  listanombrecliente: any[]=[];
+  listanombrecliente: any[] = [];
   objclientes: any;
   constructor(
     private navCtrl: NavController,
@@ -17,16 +17,14 @@ export class HomeclientesPage implements OnInit {
     private modalCtrl: ModalController,
     private alertController: AlertController
   ) {
-     this.listarnombresciudades()
-   }
+    this.listarnombresclientes()
+  }
 
   ngOnInit() {
+    this.listarnombresclientes()
   }
 
   async editarModal(lista) {
-
-    console.log("Esta es la ciudad:", lista.idCiudad)
-    console.log("Esta es la identificación:", lista.idTipoIdentificacion)
     const modal = await this.modalCtrl.create({
       component: CrearclientesPage,
       cssClass: "my-custom-class",
@@ -43,16 +41,11 @@ export class HomeclientesPage implements OnInit {
         id: lista.id,
       },
     });
-    console.log("estos son los datos enviados codigoIdentificacionEdit:",
-      "\n tipo id:", lista.idTipoIdentificacion,
-      "\n numeroIdentificacionClienteEdit:", lista.numIndetificacion,
-      "\n nombresClienteEdit:", lista.nombres,
-      "\n apellidosClienteEdit:", lista.apellidos,
-      "\n empresaClienteEdit:", lista.empresa,
-      "\n celularClienteEdit:", lista.celular,
-      "\n direccionClienteEdit:", lista.direccion,
-      "\n correoClienteEdit:", lista.correo)
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarnombresclientes();
+    }
   }
 
   async crearModal() {
@@ -60,7 +53,11 @@ export class HomeclientesPage implements OnInit {
       component: CrearclientesPage,
       cssClass: "my-custom-class"
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarnombresclientes();
+    }
 
   }
 
@@ -85,6 +82,8 @@ export class HomeclientesPage implements OnInit {
           handler: () => {
             console.log("Confirm Okay");
             this.FB.deleteCliente(lista.id);
+            this.listarnombresclientes();
+
           },
         },
       ],
@@ -94,50 +93,51 @@ export class HomeclientesPage implements OnInit {
   }
 
   async cerrar() {
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
 
-  listarnombresciudades(){
+  listarnombresclientes() {
     this.listanombrecliente = [];
-    this.objclientes=null;
-    this.FB.clientesLista.forEach(element=>{
-      this.objclientes= ({
-        nombres: element.nombres, 
+    this.objclientes = null;
+    this.FB.clientesLista.forEach(element => {
+      this.objclientes = ({
         apellidos: element.apellidos,
-        numIndetificacion:element.numIndetificacion,
-        empresa: element.empresa,
         celular: element.celular,
         correo: element.correo,
-        direccion: element.direccion
+        direccion: element.direccion,
+        empresa: element.empresa,
+        id: element.id,
+        idCiudad: element.idCiudad,
+        idTipoIdentificacion: element.idTipoIdentificacion,
+        nombres: element.nombres,
+        numIndetificacion: element.numIndetificacion,
       })
       this.listanombrecliente.push(this.objclientes);
-      
+
     })
     return this.listanombrecliente;
   }
-  getItems(ev:any){
+  getItems(ev: any) {
     this.listanombrecliente;
     let val = ev.target.value;
-    if (val && val.trim() != '')
-    {
-      
-      this.listanombrecliente = this.listanombrecliente.filter((item)=>{
-        return (item.nombres.toLowerCase().indexOf(val.toLowerCase())> -1)
-        
+    if (val && val.trim() != '') {
+
+      this.listanombrecliente = this.listanombrecliente.filter((item) => {
+        return (item.nombres.toLowerCase().indexOf(val.toLowerCase()) > -1)
+
       })
-  
+
     }
-    
-      else if(val== '' || val == undefined)
-      {   
-          this.listanombrecliente= this.FB.clientesLista;
-          return this.listanombrecliente;
-      }
-        
-  
-      
-     
+
+    else if (val == '' || val == undefined) {
+      this.listanombrecliente = this.FB.clientesLista;
+      return this.listanombrecliente;
     }
+
+
+
+
+  }
 
 
 }

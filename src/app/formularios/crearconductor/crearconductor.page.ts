@@ -14,12 +14,12 @@ import { FBservicesService } from '../../fbservices.service';
 
 export class CrearconductorPage implements OnInit {
 
-  @Input() idTipoIdentificacionEdit;
-  @Input() numidentificacionEdit;
-  @Input() nombresEdit;
-  @Input() apellidosEdit;
-  @Input() celularEdit;
+  @Input() apellidosEdit = "";
+  @Input() celularEdit = "";
   @Input() id;
+  @Input() idTipoIdentificacionEdit = "";
+  @Input() nombresEdit = "";
+  @Input() numidentificacionEdit = "";
 
   constructor(
     private FB: FBservicesService,
@@ -31,7 +31,7 @@ export class CrearconductorPage implements OnInit {
   ngOnInit() {
   }
   customAlertOptions: any = {
-    header: "Seleccione uno",
+    header: "Seleccione",
     translucent: true,
   };
   guardarConductor() {

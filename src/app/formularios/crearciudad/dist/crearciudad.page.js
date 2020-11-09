@@ -42,54 +42,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CrearconductorPage = void 0;
+exports.CrearciudadPage = void 0;
 var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
-var CrearconductorPage = /** @class */ (function () {
-    function CrearconductorPage(FB, modalCtrl, toastController) {
+var CrearciudadPage = /** @class */ (function () {
+    function CrearciudadPage(FB, modalCtrl, toastController) {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
-        this.apellidosEdit = "";
-        this.celularEdit = "";
-        this.idTipoIdentificacionEdit = "";
-        this.nombresEdit = "";
-        this.numidentificacionEdit = "";
-        this.customAlertOptions = {
-            header: "Seleccione",
-            translucent: true
-        };
     }
-    CrearconductorPage.prototype.ngOnInit = function () {
-    };
-    CrearconductorPage.prototype.guardarConductor = function () {
-        console.log("Entro a guardar--->", this.id);
+    CrearciudadPage.prototype.ngOnInit = function () { };
+    CrearciudadPage.prototype.guardar = function () {
         if (this.id == undefined) {
-            console.log("Entro a crear");
-            if (this.idTipoIdentificacionEdit == undefined || this.numidentificacionEdit == undefined || this.nombresEdit == undefined || this.celularEdit == undefined) {
+            if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
                 this.toastCamposRequeridos();
             }
-            else {
-                this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-                this.modalCtrl.dismiss();
-            }
+            this.FB.agregarCiudad(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
+            this.modalCtrl.dismiss("true", "actualizar");
         }
         else {
-            console.log("Entro a MODIFICAR--->", this.id);
-            if (this.idTipoIdentificacionEdit == "" || this.numidentificacionEdit == "" || this.nombresEdit == "" || this.celularEdit == "") {
+            if (this.codigoEdit == "" || this.descripcionEdit == "") {
                 this.toastCamposRequeridos();
-                console.log("No modificaste nada");
             }
-            else {
-                this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-                this.modalCtrl.dismiss();
-            }
+            this.FB.updateCiudad(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
+            this.modalCtrl.dismiss("true", "actualizar");
         }
     };
-    CrearconductorPage.prototype.volver = function () {
+    CrearciudadPage.prototype.volver = function () {
         this.modalCtrl.dismiss();
     };
-    CrearconductorPage.prototype.toastCamposRequeridos = function () {
+    CrearciudadPage.prototype.toastCamposRequeridos = function () {
         return __awaiter(this, void 0, void 0, function () {
             var toast;
             return __generator(this, function (_a) {
@@ -98,7 +79,7 @@ var CrearconductorPage = /** @class */ (function () {
                             message: "Falta diligenciar campos requeridos.",
                             cssClass: "toast",
                             color: 'warning',
-                            position: 'middle',
+                            position: 'top',
                             duration: 5000
                         })];
                     case 1:
@@ -111,32 +92,20 @@ var CrearconductorPage = /** @class */ (function () {
     };
     __decorate([
         core_1.Input()
-    ], CrearconductorPage.prototype, "apellidosEdit");
+    ], CrearciudadPage.prototype, "codigoEdit");
     __decorate([
         core_1.Input()
-    ], CrearconductorPage.prototype, "celularEdit");
+    ], CrearciudadPage.prototype, "descripcionEdit");
     __decorate([
         core_1.Input()
-    ], CrearconductorPage.prototype, "id");
-    __decorate([
-        core_1.Input()
-    ], CrearconductorPage.prototype, "idTipoIdentificacionEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearconductorPage.prototype, "nombresEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearconductorPage.prototype, "numidentificacionEdit");
-    CrearconductorPage = __decorate([
+    ], CrearciudadPage.prototype, "id");
+    CrearciudadPage = __decorate([
         core_1.Component({
-            selector: 'app-crearconductor',
-            templateUrl: './crearconductor.page.html',
-            styleUrls: ['./crearconductor.page.scss']
-        }),
-        core_1.NgModule({
-            imports: [forms_1.ReactiveFormsModule]
+            selector: "app-crearciudad",
+            templateUrl: "./crearciudad.page.html",
+            styleUrls: ["./crearciudad.page.scss"]
         })
-    ], CrearconductorPage);
-    return CrearconductorPage;
+    ], CrearciudadPage);
+    return CrearciudadPage;
 }());
-exports.CrearconductorPage = CrearconductorPage;
+exports.CrearciudadPage = CrearciudadPage;

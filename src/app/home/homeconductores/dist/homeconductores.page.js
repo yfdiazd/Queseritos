@@ -42,114 +42,92 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.HomeciudadesPage = void 0;
+exports.HomeconductoresPage = void 0;
 var core_1 = require("@angular/core");
-var crearciudad_page_1 = require("src/app/formularios/crearciudad/crearciudad.page");
-var HomeciudadesPage = /** @class */ (function () {
-    function HomeciudadesPage(FB, alertController, router, navCtrl, modalController) {
+var crearconductor_page_1 = require("src/app/formularios/crearconductor/crearconductor.page");
+var HomeconductoresPage = /** @class */ (function () {
+    function HomeconductoresPage(navCtrl, FB, alertController, router, modalController) {
+        this.navCtrl = navCtrl;
         this.FB = FB;
         this.alertController = alertController;
         this.router = router;
-        this.navCtrl = navCtrl;
         this.modalController = modalController;
-        this.listanombreciudad = [];
-        this.listarnombresciudades();
-        this.FB.ciudadesLista;
+        this.listaconductores = [];
+        this.listarconductores();
     }
-    HomeciudadesPage.prototype.ngOnInit = function () {
-        this.listarnombresciudades();
-        this.FB.ciudadesLista;
+    HomeconductoresPage.prototype.ngOnInit = function () {
     };
-    HomeciudadesPage.prototype.editarModal = function (lista) {
+    HomeconductoresPage.prototype.editarModal = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
-            var modal, data;
+            var modal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("ciudad id", lista.id);
-                        return [4 /*yield*/, this.modalController.create({
-                                component: crearciudad_page_1.CrearciudadPage,
-                                cssClass: "my-custom-class",
-                                componentProps: {
-                                    codigoEdit: lista.codigo,
-                                    descripcionEdit: lista.descripcion,
-                                    id: lista.id
-                                }
-                            })];
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: crearconductor_page_1.CrearconductorPage,
+                            cssClass: "my-custom-class",
+                            componentProps: {
+                                idTipoIdentificacionEdit: lista.idTipoIdentificacion,
+                                numidentificacionEdit: lista.numIndetificacion,
+                                nombresEdit: lista.nombres,
+                                apellidosEdit: lista.apellidos,
+                                celularEdit: lista.celular,
+                                id: lista.id
+                            }
+                        })];
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, modal.onWillDismiss()];
-                    case 3:
-                        data = (_a.sent()).data;
-                        if (data == "true") {
-                            this.listarnombresciudades();
-                        }
-                        return [2 /*return*/];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    HomeciudadesPage.prototype.crearModal = function () {
+    HomeconductoresPage.prototype.crearModal = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var modal, data;
+            var modal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
-                            component: crearciudad_page_1.CrearciudadPage,
+                            component: crearconductor_page_1.CrearconductorPage,
                             cssClass: "my-custom-class"
                         })];
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, modal.onWillDismiss()];
-                    case 3:
-                        data = (_a.sent()).data;
-                        if (data == "true") {
-                            this.listarnombresciudades();
-                        }
-                        return [2 /*return*/];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    HomeciudadesPage.prototype.eliminar = function (lista) {
+    HomeconductoresPage.prototype.eliminar = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("ciudad id", lista.id);
-                        return [4 /*yield*/, this.alertController.create({
-                                cssClass: "my-custom-class",
-                                header: "Espera",
-                                keyboardClose: false,
-                                backdropDismiss: false,
-                                message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
-                                buttons: [
-                                    {
-                                        text: "CANCELAR",
-                                        role: "cancel",
-                                        cssClass: "secondary",
-                                        handler: function (blah) {
-                                            console.log("Confirm Cancel: blah");
-                                        }
-                                    },
-                                    {
-                                        text: "SI",
-                                        handler: function () {
-                                            console.log("Confirm Okay");
-                                            _this.FB.deleteCiudad(lista.id);
-                                            _this.listarnombresciudades();
-                                        }
-                                    },
-                                ]
-                            })];
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: "my-custom-class",
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            header: "Espera",
+                            message: "¿Esta seguro de eliminar " + lista.nombres + "?",
+                            buttons: [
+                                {
+                                    text: "CANCELAR",
+                                    role: "cancel",
+                                    cssClass: "secondary",
+                                    handler: function (blah) {
+                                        console.log("Confirm Cancel");
+                                    }
+                                },
+                                {
+                                    text: "SI",
+                                    handler: function () {
+                                        _this.FB.deleteConductor(lista.id);
+                                    }
+                                },
+                            ]
+                        })];
                     case 1:
                         alert = _a.sent();
                         return [4 /*yield*/, alert.present()];
@@ -160,49 +138,51 @@ var HomeciudadesPage = /** @class */ (function () {
             });
         });
     };
-    HomeciudadesPage.prototype.cerrar = function () {
+    HomeconductoresPage.prototype.cerrar = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.navCtrl.navigateBack('main-menu');
+                this.navCtrl.navigateForward('main-menu');
                 return [2 /*return*/];
             });
         });
     };
-    HomeciudadesPage.prototype.listarnombresciudades = function () {
+    HomeconductoresPage.prototype.listarconductores = function () {
         var _this = this;
-        this.listanombreciudad = [];
-        this.objciudad = null;
-        this.FB.ciudadesLista.forEach(function (element) {
-            _this.objciudad = ({
+        this.listaconductores = [];
+        this.objconductores = null;
+        this.FB.conductoresLista.forEach(function (element) {
+            _this.objconductores = ({
+                apellidos: element.apellidos,
+                celular: element.celular,
                 id: element.id,
-                codigo: element.codigo,
-                descripcion: element.descripcion
+                idTipoIdentificacion: element.idTipoIdentificacion,
+                nombres: element.nombres,
+                numIndetificacion: element.numIndetificacion
             });
-            _this.listanombreciudad.push(_this.objciudad);
+            _this.listaconductores.push(_this.objconductores);
         });
-        return this.listanombreciudad;
+        return this.listaconductores;
     };
-    HomeciudadesPage.prototype.getItems = function (ev) {
-        this.listanombreciudad = [];
+    HomeconductoresPage.prototype.getItems = function (ev) {
+        this.listaconductores;
         var val = ev.target.value;
-        console.log("imprime val", val);
         if (val && val.trim() != '') {
-            this.listanombreciudad = this.listanombreciudad.filter(function (item) {
-                return (item.descripcion.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            this.listaconductores = this.listaconductores.filter(function (item) {
+                return (item.nombres.toLowerCase().indexOf(val.toLowerCase()) > -1);
             });
         }
         else if (val == '' || val == undefined) {
-            this.listanombreciudad = this.FB.ciudadesLista;
-            return this.listanombreciudad;
+            this.listaconductores = this.FB.conductoresLista;
+            return this.listaconductores;
         }
     };
-    HomeciudadesPage = __decorate([
+    HomeconductoresPage = __decorate([
         core_1.Component({
-            selector: "app-homeciudades",
-            templateUrl: "./homeciudades.page.html",
-            styleUrls: ["./homeciudades.page.scss"]
+            selector: 'app-homeconductores',
+            templateUrl: './homeconductores.page.html',
+            styleUrls: ['./homeconductores.page.scss']
         })
-    ], HomeciudadesPage);
-    return HomeciudadesPage;
+    ], HomeconductoresPage);
+    return HomeconductoresPage;
 }());
-exports.HomeciudadesPage = HomeciudadesPage;
+exports.HomeconductoresPage = HomeconductoresPage;

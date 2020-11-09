@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, LoadingController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { SaldarPage } from './saldar/saldar.page';
@@ -16,12 +16,14 @@ export class CardlotesPage implements OnInit {
     private FB: FBservicesService,
     private alertController: AlertController,
     private modalCtrl: ModalController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
   ) {
 
   }
   public nombreProv: any;
   public idProveedorRecibido: any;
+  public loading: any;
 
   public ultimoSaldo;
 
@@ -35,7 +37,32 @@ export class CardlotesPage implements OnInit {
     this.validarSaldo();
     this.FB.getEstadoProveedor(this.idProveedorRecibido);
     this.ultimoSaldo = this.FB.estadoSaldoProveedor;
+
+    setTimeout(() => {
+      this.loading.dismiss();
+    }, 1500);
   }
+
+  async presentLoading(message: string) {
+    this.loading = await this.loadingCtrl.create({
+      message,
+      cssClass: 'cssLoading',
+      keyboardClose: false,
+      backdropDismiss: false,
+      spinner: 'lines',
+      translucent: true
+    });
+    return this.loading.present();
+  }
+
+  doRefresh(event) {
+   
+    this.ngOnInit();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
+
 
   validarSaldo() {
     if (this.saldoGeneral < 0) {

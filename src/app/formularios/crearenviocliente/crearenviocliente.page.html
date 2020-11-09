@@ -2,7 +2,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+      <ion-button (click)="volver()" color="success">X</ion-button>
     </ion-buttons>
     <ion-title class="titulo">ENVIOS NACIONALES</ion-title>
   </ion-toolbar>
@@ -93,7 +93,7 @@
         <ion-button (click)="guardar()" expand="full" color="success">
           <ion-icon name="save-outline"></ion-icon>
           <ion-label>Guardar</ion-label>
-        </ion-button>  
+        </ion-button>
       </div>
     </div>
   </div>

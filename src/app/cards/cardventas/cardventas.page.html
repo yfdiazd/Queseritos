@@ -3,21 +3,26 @@
   <ion-toolbar>
     <ion-title class="titulo">DETALLE VENTAS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+      <ion-back-button defaultHref="/main-menu" color="success"></ion-back-button>
     </ion-buttons>
     <ion-button fill="clear" shape="round" slot="end" (click)="irVender()">
-      <ion-icon name="cart" color="success"></ion-icon>
+      <ion-icon name="bus" color= "success"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content style="background-color: transparent;" pullingIcon="chevron-down-circle-outline"
+      pullingText="Arrastra para actualizar" refreshingSpinner="circles" refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
   <div class="div-principal">
     <ion-title class="title">{{nombreCliente}}</ion-title>
     <div>
       <ion-item>
         <ion-label>Selecciona el año</ion-label>
-        <ion-datetime [pickerOptions]="customPickerOptions" placeholder="Selecciona el año" displayFormat="YYYY MMMM" min="2020" max="2100"  [(ngModel)]="fechafiltro" ></ion-datetime>
+        <ion-datetime [pickerOptions]="customPickerOptions"  displayFormat="YYYY MMMM" min="2020" max="2100"  [(ngModel)]="fechafiltro" ></ion-datetime>
       </ion-item>
     </div>
   </div>
@@ -93,7 +98,6 @@
      </ion-item-sliding> 
   </div>
   <div class ="ventasmes" *ngIf="hiden">
-    <h2>Hola, esto son filtros</h2>
     <ion-item-sliding class="slider" *ngFor="let card of listaFiltrada">
     <ion-item class="item" >
       <div class="div-card">
@@ -122,7 +126,7 @@
                 <th class="th1">Pesada</th>
                 <th class="th2">Queso</th>
                 <th class="th3">Estado</th>
-                <th class="th4">Peso (Kg)</th>
+                <th class="th4">Peso</th>
                 <th class="th5">Valor</th>
                 <th class="th6">Total</th>
               </thead>
