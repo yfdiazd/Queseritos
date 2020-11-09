@@ -56,7 +56,11 @@ const routes: Routes = [
   {
     path: 'cardventas/:id',
     loadChildren: () => import('./cards/cardventas/cardventas.module').then( m => m.CardventasPageModule)
+  },  {
+    path: 'crearventa',
+    loadChildren: () => import('./formularios/crearventa/crearventa.module').then( m => m.CrearventaPageModule)
   }
+
 
 
 

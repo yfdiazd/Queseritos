@@ -978,14 +978,29 @@ export class FBservicesService {
             .database()
             .ref("usuario/configuracion/lotes")
             .on("value", snapshot => {
-
-                firebase
-                    .database()
-                    .ref("usuario/configuracion/lotes/" + this.idLote)
-                    .set({
-                        id: this.idLote,
-                        lote: (this.fechaActual() + "-L" + snapshot.numChildren())
+                if (snapshot.exists()) {
+                    console.log("generaLote", snapshot.val());
+                    snapshot.forEach(element => {
+                        if (element.val().lote.indexOf(this.fechaActual) <= 0) {
+                            console.log("Entro a crear un lote por que sí");
+                            firebase
+                                .database()
+                                .ref("usuario/configuracion/lotes/" + this.idLote)
+                                .set({
+                                    id: this.idLote,
+                                    lote: (this.fechaActual() + "-L" + snapshot.numChildren())
+                                });
+                        }
                     });
+                } else {
+                    firebase
+                        .database()
+                        .ref("usuario/configuracion/lotes/" + this.idLote)
+                        .set({
+                            id: this.idLote,
+                            lote: (this.fechaActual() + "-L" + snapshot.numChildren())
+                        });
+                }
 
             });
     }
@@ -1677,7 +1692,7 @@ export class FBservicesService {
         return this.estadoSaldoProveedor;
     }
 
-  
+
     eliminarNodoProveedor(idProveedor) {
         firebase
             .database()
@@ -1686,12 +1701,12 @@ export class FBservicesService {
         console.log("Eliminó");
     }
 
-    agregarVenta(idCliente, ciudad, conductor,fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
         console.log("fechaenvio", fechaEnvio);
-        let nodo =fechaEnvio.split("-", 3);
-        
-        
-        let fechaNodo= (nodo[0] + "-" + nodo[1]);
+        let nodo = fechaEnvio.split("-", 3);
+
+
+        let fechaNodo = (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
         firebase
             .database()
@@ -1710,8 +1725,8 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-   
-  
+
+
     upLoadImageVenta(idCliente, idVenta, file) {
 
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
@@ -1753,7 +1768,7 @@ export class FBservicesService {
                 return this.ventasclienteLista;
             });
     }
- 
+
     public ventasclienteListaMes: any[];
     getVentaClienteMes(idCliente) {
 

@@ -1014,13 +1014,30 @@ var FBservicesService = /** @class */ (function () {
             .database()
             .ref("usuario/configuracion/lotes")
             .on("value", function (snapshot) {
-            firebase
-                .database()
-                .ref("usuario/configuracion/lotes/" + _this.idLote)
-                .set({
-                id: _this.idLote,
-                lote: (_this.fechaActual() + "-L" + snapshot.numChildren())
-            });
+            if (snapshot.exists()) {
+                console.log("generaLote", snapshot.val());
+                snapshot.forEach(function (element) {
+                    if (element.val().lote.indexOf(_this.fechaActual) <= 0) {
+                        console.log("Entro a crear un lote por que sí");
+                        firebase
+                            .database()
+                            .ref("usuario/configuracion/lotes/" + _this.idLote)
+                            .set({
+                            id: _this.idLote,
+                            lote: (_this.fechaActual() + "-L" + snapshot.numChildren())
+                        });
+                    }
+                });
+            }
+            else {
+                firebase
+                    .database()
+                    .ref("usuario/configuracion/lotes/" + _this.idLote)
+                    .set({
+                    id: _this.idLote,
+                    lote: (_this.fechaActual() + "-L" + snapshot.numChildren())
+                });
+            }
         });
     };
     //Obtiene los lotes del mas antiguo al mas nuevo
@@ -1756,16 +1773,6 @@ var FBservicesService = /** @class */ (function () {
             placa: placa
         });
         this.toastOperacionExitosa();
-    };
-    FBservicesService.prototype.getFotoVenta = function (idCliente, idVenta) {
-        var _this = this;
-        this.imgVenta = null;
-        firebase
-            .storage()
-            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(function (imgUr) {
-            _this.imgVenta = imgUr;
-            return _this.imgVenta;
-        });
     };
     FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);

@@ -143,6 +143,7 @@ var CardlotesPage = /** @class */ (function () {
                             console.log("Entro al if: ", data);
                             // this.ngOnInit();
                             this.navCtrl.navigateBack(["main-menu"]);
+                            this.FB.eliminarNodoProveedor(this.idProveedorRecibido);
                         }
                         return [2 /*return*/];
                 }
