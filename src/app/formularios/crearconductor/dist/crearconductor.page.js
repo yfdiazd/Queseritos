@@ -71,7 +71,7 @@ var CrearconductorPage = /** @class */ (function () {
             }
             else {
                 this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-                this.modalCtrl.dismiss();
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
         else {
@@ -82,7 +82,7 @@ var CrearconductorPage = /** @class */ (function () {
             }
             else {
                 this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-                this.modalCtrl.dismiss();
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
     };
@@ -99,7 +99,7 @@ var CrearconductorPage = /** @class */ (function () {
                             cssClass: "toast",
                             color: 'warning',
                             position: 'middle',
-                            duration: 5000
+                            duration: 3000
                         })];
                     case 1:
                         toast = _a.sent();

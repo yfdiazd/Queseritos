@@ -42,7 +42,7 @@ export class CrearconductorPage implements OnInit {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
       }
 
     } else {
@@ -52,7 +52,7 @@ export class CrearconductorPage implements OnInit {
         console.log("No modificaste nada")
       } else {
         this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
       }
     }
   }
@@ -67,7 +67,7 @@ export class CrearconductorPage implements OnInit {
       cssClass: "toast",
       color: 'warning',
       position: 'middle',
-      duration: 5000
+      duration: 3000
     });
     toast.present();
   }

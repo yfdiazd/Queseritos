@@ -1,15 +1,8 @@
-import { listLazyRoutes } from "@angular/compiler/src/aot/lazy_routes";
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import {
-  AlertController,
-  ModalController,
-  NavController,
-
-} from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 import { CrearproveedorPage } from 'src/app/formularios/crearproveedor/crearproveedor.page';
-import { __values } from "tslib";
+
 @Component({
   selector: 'app-homeproveedores',
   templateUrl: './homeproveedores.page.html',
@@ -22,7 +15,6 @@ export class HomeproveedoresPage implements OnInit {
     private navCtrl: NavController,
     private FB: FBservicesService,
     public alertController: AlertController,
-    private router: Router,
     public modalController: ModalController) { }
 
   nombre: string;
@@ -33,7 +25,7 @@ export class HomeproveedoresPage implements OnInit {
 
 
   ngOnInit() {
-    this.listarnombresproveedores()
+    this.listarnombresproveedores();
   }
 
   async editarModal(lista) {
@@ -49,10 +41,13 @@ export class HomeproveedoresPage implements OnInit {
         direccionEdit: lista.direccion,
         correoEdit: lista.correo,
         id: lista.id
-
       },
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarnombresproveedores();
+    }
   }
 
   async crearModal() {
@@ -60,7 +55,11 @@ export class HomeproveedoresPage implements OnInit {
       component: CrearproveedorPage,
       cssClass: "my-custom-class"
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarnombresproveedores();
+    }
   }
 
   async eliminar(lista) {
@@ -69,7 +68,7 @@ export class HomeproveedoresPage implements OnInit {
       keyboardClose: false,
       backdropDismiss: false,
       header: "Espera",
-      message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
+      message: "¿Esta seguro de eliminar " + lista.nombre + "?",
       buttons: [
         {
           text: "CANCELAR",
@@ -84,6 +83,7 @@ export class HomeproveedoresPage implements OnInit {
           handler: () => {
             console.log("Confirm Okay");
             this.FB.deleteProveedor(lista.id);
+            this.listarnombresproveedores();
           },
         },
       ],
@@ -93,19 +93,21 @@ export class HomeproveedoresPage implements OnInit {
   }
 
   async cerrar() {
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
   listarnombresproveedores(){
     this.listanomproveedores = [];
     this.objproveedor=null;
     this.FB.proveedoresLista.forEach(element=>{
       this.objproveedor= ({
-        nombre: element.nombre, 
         apellido: element.apellido,
+        correo: element.correo,
+        direccion: element.direccion,
+        id: element.id,
+        idTipoIdentificacion: element.idTipoIdentificacion,
+        nombre: element.nombre, 
         numIndetificacion:element.numIndetificacion,
         telefono: element.telefono,
-        direccion: element.direccion,
-        correo: element.correo
         
       })
       this.listanomproveedores.push(this.objproveedor);

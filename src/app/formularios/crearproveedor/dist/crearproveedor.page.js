@@ -44,13 +44,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CrearproveedorPage = void 0;
 var core_1 = require("@angular/core");
+var forms_1 = require("@angular/forms");
 var CrearproveedorPage = /** @class */ (function () {
     function CrearproveedorPage(FB, modalCtrl, toastController) {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
+        this.apellidoEdit = "";
+        this.correoEdit = "";
+        this.direccionEdit = "";
+        this.idTipoIdentificacionEdit = "";
+        this.nombreEdit = "";
+        this.numIndetificacionEdit = "";
+        this.telefonoEdit = "";
         this.customAlertOptions = {
-            header: "Seleccione uno",
+            header: "Seleccione",
             translucent: true
         };
     }
@@ -58,12 +66,12 @@ var CrearproveedorPage = /** @class */ (function () {
     CrearproveedorPage.prototype.crearProveedor = function () {
         if (this.id == undefined) {
             console.log("Entro a crear");
-            if (this.idTipoIdentificacionEdit == undefined || this.numIndetificacionEdit == undefined || this.nombreEdit == undefined || this.telefonoEdit == undefined) {
+            if (this.idTipoIdentificacionEdit == "" || this.numIndetificacionEdit == "" || this.nombreEdit == "" || this.telefonoEdit == "") {
                 this.toastCamposRequeridos();
             }
             else {
-                this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
-                this.modalCtrl.dismiss();
+                this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit.toUpperCase(), this.apellidoEdit.toUpperCase(), this.telefonoEdit, this.direccionEdit.toUpperCase(), this.correoEdit.toUpperCase());
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
         else {
@@ -73,8 +81,8 @@ var CrearproveedorPage = /** @class */ (function () {
                 console.log("No modificaste nada");
             }
             else {
-                this.FB.updateProveedor(this.id, this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit, this.apellidoEdit, this.telefonoEdit, this.direccionEdit, this.correoEdit);
-                this.modalCtrl.dismiss();
+                this.FB.updateProveedor(this.id, this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit.toUpperCase(), this.apellidoEdit.toUpperCase(), this.telefonoEdit, this.direccionEdit.toUpperCase(), this.correoEdit.toUpperCase());
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
     };
@@ -91,7 +99,7 @@ var CrearproveedorPage = /** @class */ (function () {
                             cssClass: "toast",
                             color: 'warning',
                             position: 'middle',
-                            duration: 5000
+                            duration: 3000
                         })];
                     case 1:
                         toast = _a.sent();
@@ -103,25 +111,25 @@ var CrearproveedorPage = /** @class */ (function () {
     };
     __decorate([
         core_1.Input()
-    ], CrearproveedorPage.prototype, "idTipoIdentificacionEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearproveedorPage.prototype, "numIndetificacionEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearproveedorPage.prototype, "nombreEdit");
-    __decorate([
-        core_1.Input()
     ], CrearproveedorPage.prototype, "apellidoEdit");
     __decorate([
         core_1.Input()
-    ], CrearproveedorPage.prototype, "telefonoEdit");
+    ], CrearproveedorPage.prototype, "correoEdit");
     __decorate([
         core_1.Input()
     ], CrearproveedorPage.prototype, "direccionEdit");
     __decorate([
         core_1.Input()
-    ], CrearproveedorPage.prototype, "correoEdit");
+    ], CrearproveedorPage.prototype, "idTipoIdentificacionEdit");
+    __decorate([
+        core_1.Input()
+    ], CrearproveedorPage.prototype, "nombreEdit");
+    __decorate([
+        core_1.Input()
+    ], CrearproveedorPage.prototype, "numIndetificacionEdit");
+    __decorate([
+        core_1.Input()
+    ], CrearproveedorPage.prototype, "telefonoEdit");
     __decorate([
         core_1.Input()
     ], CrearproveedorPage.prototype, "id");
@@ -130,6 +138,9 @@ var CrearproveedorPage = /** @class */ (function () {
             selector: 'app-crearproveedor',
             templateUrl: './crearproveedor.page.html',
             styleUrls: ['./crearproveedor.page.scss']
+        }),
+        core_1.NgModule({
+            imports: [forms_1.ReactiveFormsModule]
         })
     ], CrearproveedorPage);
     return CrearproveedorPage;

@@ -42,80 +42,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.HomeconductoresPage = void 0;
+exports.HomeestadoquesoPage = void 0;
 var core_1 = require("@angular/core");
-var crearconductor_page_1 = require("src/app/formularios/crearconductor/crearconductor.page");
-var HomeconductoresPage = /** @class */ (function () {
-    function HomeconductoresPage(navCtrl, FB, alertController, router, modalController) {
+var crearestadoproducto_page_1 = require("src/app/formularios/crearestadoproducto/crearestadoproducto.page");
+var HomeestadoquesoPage = /** @class */ (function () {
+    function HomeestadoquesoPage(navCtrl, FB, alertController, router, modalController) {
         this.navCtrl = navCtrl;
         this.FB = FB;
         this.alertController = alertController;
         this.router = router;
         this.modalController = modalController;
-        this.listaconductores = [];
-        this.listarconductores();
     }
-    HomeconductoresPage.prototype.ngOnInit = function () {
+    HomeestadoquesoPage.prototype.ngOnInit = function () {
     };
-    HomeconductoresPage.prototype.editarModal = function (lista) {
+    HomeestadoquesoPage.prototype.editarModal = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
-            var modal, data;
+            var modal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
-                            component: crearconductor_page_1.CrearconductorPage,
+                            component: crearestadoproducto_page_1.CrearestadoproductoPage,
                             cssClass: "my-custom-class",
                             componentProps: {
-                                idTipoIdentificacionEdit: lista.idTipoIdentificacion,
-                                numidentificacionEdit: lista.numIndetificacion,
-                                nombresEdit: lista.nombres,
-                                apellidosEdit: lista.apellidos,
-                                celularEdit: lista.celular,
+                                codigoEdit: lista.codigo,
+                                descripcionEdit: lista.descripcion,
                                 id: lista.id
                             }
                         })];
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, modal.onWillDismiss()];
-                    case 3:
-                        data = (_a.sent()).data;
-                        if (data == "true") {
-                            this.listarconductores();
-                        }
-                        return [2 /*return*/];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    HomeconductoresPage.prototype.crearModal = function () {
+    HomeestadoquesoPage.prototype.crearModal = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var modal, data;
+            var modal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
-                            component: crearconductor_page_1.CrearconductorPage,
+                            component: crearestadoproducto_page_1.CrearestadoproductoPage,
                             cssClass: "my-custom-class"
                         })];
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, modal.onWillDismiss()];
-                    case 3:
-                        data = (_a.sent()).data;
-                        if (data == "true") {
-                            this.listarconductores();
-                        }
-                        return [2 /*return*/];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    HomeconductoresPage.prototype.eliminar = function (lista) {
+    HomeestadoquesoPage.prototype.eliminar = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
@@ -126,21 +105,21 @@ var HomeconductoresPage = /** @class */ (function () {
                             keyboardClose: false,
                             backdropDismiss: false,
                             header: "Espera",
-                            message: "¿Esta seguro de eliminar " + lista.nombres + "?",
+                            message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
                             buttons: [
                                 {
                                     text: "CANCELAR",
                                     role: "cancel",
                                     cssClass: "secondary",
                                     handler: function (blah) {
-                                        console.log("Confirm Cancel");
+                                        console.log("Confirm Cancel: blah");
                                     }
                                 },
                                 {
                                     text: "SI",
                                     handler: function () {
-                                        _this.FB.deleteConductor(lista.id);
-                                        _this.listarconductores();
+                                        console.log("Confirm Okay");
+                                        _this.FB.deleteEstadoProducto(lista.id);
                                     }
                                 },
                             ]
@@ -155,7 +134,7 @@ var HomeconductoresPage = /** @class */ (function () {
             });
         });
     };
-    HomeconductoresPage.prototype.cerrar = function () {
+    HomeestadoquesoPage.prototype.cerrar = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.navCtrl.navigateBack('main-menu');
@@ -163,43 +142,13 @@ var HomeconductoresPage = /** @class */ (function () {
             });
         });
     };
-    HomeconductoresPage.prototype.listarconductores = function () {
-        var _this = this;
-        this.listaconductores = [];
-        this.objconductores = null;
-        this.FB.conductoresLista.forEach(function (element) {
-            _this.objconductores = ({
-                apellidos: element.apellidos,
-                celular: element.celular,
-                id: element.id,
-                idTipoIdentificacion: element.idTipoIdentificacion,
-                nombres: element.nombres,
-                numIndetificacion: element.numIndetificacion
-            });
-            _this.listaconductores.push(_this.objconductores);
-        });
-        return this.listaconductores;
-    };
-    HomeconductoresPage.prototype.getItems = function (ev) {
-        this.listaconductores;
-        var val = ev.target.value;
-        if (val && val.trim() != '') {
-            this.listaconductores = this.listaconductores.filter(function (item) {
-                return (item.nombres.toLowerCase().indexOf(val.toLowerCase()) > -1);
-            });
-        }
-        else if (val == '' || val == undefined) {
-            this.listaconductores = this.FB.conductoresLista;
-            return this.listaconductores;
-        }
-    };
-    HomeconductoresPage = __decorate([
+    HomeestadoquesoPage = __decorate([
         core_1.Component({
-            selector: 'app-homeconductores',
-            templateUrl: './homeconductores.page.html',
-            styleUrls: ['./homeconductores.page.scss']
+            selector: 'app-homeestadoqueso',
+            templateUrl: './homeestadoqueso.page.html',
+            styleUrls: ['./homeestadoqueso.page.scss']
         })
-    ], HomeconductoresPage);
-    return HomeconductoresPage;
+    ], HomeestadoquesoPage);
+    return HomeestadoquesoPage;
 }());
-exports.HomeconductoresPage = HomeconductoresPage;
+exports.HomeestadoquesoPage = HomeestadoquesoPage;

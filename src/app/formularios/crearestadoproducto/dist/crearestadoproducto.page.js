@@ -42,60 +42,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CrearproductoPage = void 0;
+exports.CrearestadoproductoPage = void 0;
 var core_1 = require("@angular/core");
-var CrearproductoPage = /** @class */ (function () {
-    function CrearproductoPage(FB, modalCtrl, toastController) {
+var CrearestadoproductoPage = /** @class */ (function () {
+    function CrearestadoproductoPage(FB, modalCtrl, toastController) {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
-        this.codigoEdit = "";
-        this.descripcionEdit = "";
-        this.defaultEdit = false;
     }
-    CrearproductoPage.prototype.ngOnInit = function () { };
-    CrearproductoPage.prototype.agregarProducto = function () {
-        var _this = this;
+    CrearestadoproductoPage.prototype.ngOnInit = function () { };
+    CrearestadoproductoPage.prototype.guardarEstadoProducto = function () {
         if (this.id == undefined) {
+            if (this.codigoEdit == undefined || this.descripcionEdit == undefined || this.descripcionEdit == "" || this.codigoEdit == "") {
+                this.toastCamposRequeridos();
+            }
+            else {
+                this.FB.agregarEstadoProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
+                this.modalCtrl.dismiss();
+            }
+        }
+        else {
             if (this.codigoEdit == "" || this.descripcionEdit == "") {
                 this.toastCamposRequeridos();
             }
             else {
-                if (this.defaultEdit == true) {
-                    this.FB.productosLista.forEach(function (element) {
-                        if (element.predetermina == true) {
-                            _this.FB.updateProdcuto(element.id, element.codigo, element.descripcion, false);
-                        }
-                    });
-                    this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
-                    this.modalCtrl.dismiss();
-                }
-                else {
-                    this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
-                    this.modalCtrl.dismiss();
-                }
-            }
-        }
-        else {
-            if (this.defaultEdit == true) {
-                this.FB.productosLista.forEach(function (element) {
-                    if (element.predetermina == true) {
-                        _this.FB.updateProdcuto(element.id, element.codigo, element.descripcion, false);
-                    }
-                });
-                this.FB.updateProdcuto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
-                this.modalCtrl.dismiss();
-            }
-            else {
-                this.FB.updateProdcuto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
+                this.FB.updateEstadoProducto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
                 this.modalCtrl.dismiss();
             }
         }
     };
-    CrearproductoPage.prototype.volver = function () {
+    CrearestadoproductoPage.prototype.volver = function () {
         this.modalCtrl.dismiss();
     };
-    CrearproductoPage.prototype.toastCamposRequeridos = function () {
+    CrearestadoproductoPage.prototype.toastCamposRequeridos = function () {
         return __awaiter(this, void 0, void 0, function () {
             var toast;
             return __generator(this, function (_a) {
@@ -105,7 +84,7 @@ var CrearproductoPage = /** @class */ (function () {
                             cssClass: "toast",
                             color: 'warning',
                             position: 'top',
-                            duration: 3000
+                            duration: 5000
                         })];
                     case 1:
                         toast = _a.sent();
@@ -117,23 +96,20 @@ var CrearproductoPage = /** @class */ (function () {
     };
     __decorate([
         core_1.Input()
-    ], CrearproductoPage.prototype, "codigoEdit");
+    ], CrearestadoproductoPage.prototype, "codigoEdit");
     __decorate([
         core_1.Input()
-    ], CrearproductoPage.prototype, "descripcionEdit");
+    ], CrearestadoproductoPage.prototype, "descripcionEdit");
     __decorate([
         core_1.Input()
-    ], CrearproductoPage.prototype, "defaultEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearproductoPage.prototype, "id");
-    CrearproductoPage = __decorate([
+    ], CrearestadoproductoPage.prototype, "id");
+    CrearestadoproductoPage = __decorate([
         core_1.Component({
-            selector: 'app-crearproducto',
-            templateUrl: './crearproducto.page.html',
-            styleUrls: ['./crearproducto.page.scss']
+            selector: 'app-crearestadoproducto',
+            templateUrl: './crearestadoproducto.page.html',
+            styleUrls: ['./crearestadoproducto.page.scss']
         })
-    ], CrearproductoPage);
-    return CrearproductoPage;
+    ], CrearestadoproductoPage);
+    return CrearestadoproductoPage;
 }());
-exports.CrearproductoPage = CrearproductoPage;
+exports.CrearestadoproductoPage = CrearestadoproductoPage;

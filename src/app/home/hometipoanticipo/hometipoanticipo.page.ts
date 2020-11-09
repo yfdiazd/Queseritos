@@ -78,9 +78,8 @@ export class HometipoanticipoPage implements OnInit {
 
     await alert.present();
   }
-
   async cerrar() {
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
 
 
