@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { CrearcompraPage } from 'src/app/formularios/crearcompra/crearcompra.page';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 
 
@@ -104,9 +105,17 @@ export class CardcompradetalladaPage implements OnInit {
 
   }
 
-  irCompra() {
-    console.log("Se envia este id proveedor", this.idProveedor);
-    this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
+  async irCompra() {
+    const modal = await this.modalController.create({
+      component: CrearcompraPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idProveedor: this.idProveedor
+      },
+    });
+    await modal.present();
   }
   eliminarRegistro(lista) {
     if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
@@ -157,14 +166,21 @@ export class CardcompradetalladaPage implements OnInit {
     await alert.present();
   }
 
-  async alertEditar() {
-    const alert = await this.alertController.create({
+  async editarRegistro(card) {
+    console.log("esta es la data a editar", card);
+    const modal = await this.modalController.create({
+      component: CrearcompraPage,
       cssClass: 'my-custom-class',
-      header: 'Esta en desarrollo',
-      message: 'Aún no esta disponible esta opción',
-      buttons: ['Aceptar']
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idProveedor: this.idProveedor,
+        idCompra: card.id,
+        listaBultosEdit: card.bultoLista,
+        productoEdit: card.nompreProducto
+      },
     });
-    await alert.present();
+    await modal.present();
   }
   volver() {
     this.FB.getProveedorCompra();

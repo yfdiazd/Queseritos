@@ -312,6 +312,8 @@ var DetallelotePage = /** @class */ (function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     DetallelotePage.prototype.irCompras = function () {
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     DetallelotePage.prototype.irEstado = function () {

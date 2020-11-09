@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Routes } from '@angular/router';
-import { ActionSheetController, AlertController, LoadingController, NavController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { CrearcompraPage } from 'src/app/formularios/crearcompra/crearcompra.page';
 
 @Component({
   selector: 'app-cardcompras',
@@ -30,11 +31,12 @@ export class CardcomprasPage implements OnInit {
     private FB: FBservicesService,
     private alertController: AlertController,
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private modalController: ModalController
 
   ) {
     console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
-   }
+  }
 
   ngOnInit() {
     this.validacionLote();
@@ -47,7 +49,7 @@ export class CardcomprasPage implements OnInit {
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
-  }  
+  }
 
   async presentLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
@@ -88,8 +90,8 @@ export class CardcomprasPage implements OnInit {
     this.objProv = null;
     let proveedoresLista = this.FB.proveedoresLista;
     let listaPaVer = this.FB.listaPaVer;
-    console.log("Esto se ve: ", proveedoresLista, " y " , listaPaVer);
-    
+    console.log("Esto se ve: ", proveedoresLista, " y ", listaPaVer);
+
     proveedoresLista.forEach(element => {
       listaPaVer.forEach(element2 => {
         if (element.id == element2.idProvedor) {
@@ -106,7 +108,7 @@ export class CardcomprasPage implements OnInit {
       })
     })
     console.log("lista datos", this.listaDatos);
-    
+
     return this.listaDatos;
   }
 
@@ -121,7 +123,16 @@ export class CardcomprasPage implements OnInit {
   }
 
   async irCompra(card) {
-    this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
+    const modal = await this.modalController.create({
+      component: CrearcompraPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idProveedor: card.idProv
+      },
+    });
+    await modal.present();
   }
 
   async irCompraDetallada(card) {

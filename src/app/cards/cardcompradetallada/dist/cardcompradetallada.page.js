@@ -44,6 +44,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CardcompradetalladaPage = void 0;
 var core_1 = require("@angular/core");
+var crearcompra_page_1 = require("src/app/formularios/crearcompra/crearcompra.page");
 var homepesajes_page_1 = require("src/app/home/homepesajes/homepesajes.page");
 var CardcompradetalladaPage = /** @class */ (function () {
     function CardcompradetalladaPage(route, FB, modalController, alertController, navCtrl) {
@@ -146,8 +147,28 @@ var CardcompradetalladaPage = /** @class */ (function () {
         });
     };
     CardcompradetalladaPage.prototype.irCompra = function () {
-        console.log("Se envia este id proveedor", this.idProveedor);
-        this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: crearcompra_page_1.CrearcompraPage,
+                            cssClass: 'my-custom-class',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idProveedor: this.idProveedor
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     CardcompradetalladaPage.prototype.eliminarRegistro = function (lista) {
         if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
@@ -221,20 +242,28 @@ var CardcompradetalladaPage = /** @class */ (function () {
             });
         });
     };
-    CardcompradetalladaPage.prototype.alertEditar = function () {
+    CardcompradetalladaPage.prototype.editarRegistro = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var alert;
+            var modal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.alertController.create({
-                            cssClass: 'my-custom-class',
-                            header: 'Esta en desarrollo',
-                            message: 'Aún no esta disponible esta opción',
-                            buttons: ['Aceptar']
-                        })];
+                    case 0:
+                        console.log("esta es la data a editar", card);
+                        return [4 /*yield*/, this.modalController.create({
+                                component: crearcompra_page_1.CrearcompraPage,
+                                cssClass: 'my-custom-class',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {
+                                    idProveedor: this.idProveedor,
+                                    idCompra: card.id,
+                                    listaBultosEdit: card.bultoLista,
+                                    productoEdit: card.nompreProducto
+                                }
+                            })];
                     case 1:
-                        alert = _a.sent();
-                        return [4 /*yield*/, alert.present()];
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];

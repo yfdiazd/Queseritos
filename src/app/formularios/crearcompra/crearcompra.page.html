@@ -1,9 +1,9 @@
-<ion-router-outlet main></ion-router-outlet>
+
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
-    </ion-buttons>
+    <ion-button fill="clear" shape="round" slot="start" (click)="volver()">
+      <ion-icon name="arrow-back" color="success"></ion-icon>
+    </ion-button>
     <ion-title class="titulo">PESAJE COMPRA</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -36,7 +36,7 @@
           </th>
         </thead>
         <tbody class="tbody">
-          <tr class="tr" *ngFor="let lista of listaBultos; let i=index">
+          <tr class="tr" *ngFor="let lista of listaBultosEdit; let i=index">
             <td class="td1">
               <label  (ngModel)="numbulto">{{i+1}}</label>
             </td>
@@ -45,7 +45,7 @@
             </td>
             <td class="td3">
               <div class="div_toggle">
-                <ion-chip class="btn-remove" (click)="removeRegister()">
+                <ion-chip class="btn-remove" (click)="removeRegister(lista)">
                   <ion-icon name="close" color="danger"></ion-icon>
                 </ion-chip>
               </div>
