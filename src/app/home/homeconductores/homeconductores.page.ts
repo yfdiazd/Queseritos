@@ -49,10 +49,14 @@ export class HomeconductoresPage implements OnInit {
         apellidosEdit: lista.apellidos,
         celularEdit: lista.celular,
         id: lista.id
-
       },
     });
-    return await modal.present();
+
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarconductores();
+    }
   }
 
   async crearModal() {
@@ -60,7 +64,11 @@ export class HomeconductoresPage implements OnInit {
       component: CrearconductorPage,
       cssClass: "my-custom-class"
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarconductores();
+    }
   }
 
   async eliminar(lista) {
@@ -83,6 +91,7 @@ export class HomeconductoresPage implements OnInit {
           text: "SI",
           handler: () => {
             this.FB.deleteConductor(lista.id);
+            this.listarconductores();
           },
         },
       ],
@@ -92,7 +101,7 @@ export class HomeconductoresPage implements OnInit {
   }
 
   async cerrar() {
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
 
   listarconductores() {

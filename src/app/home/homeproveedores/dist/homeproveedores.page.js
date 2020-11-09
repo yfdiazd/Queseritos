@@ -42,35 +42,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.HomeconductoresPage = void 0;
+exports.HomeproveedoresPage = void 0;
 var core_1 = require("@angular/core");
-var crearconductor_page_1 = require("src/app/formularios/crearconductor/crearconductor.page");
-var HomeconductoresPage = /** @class */ (function () {
-    function HomeconductoresPage(navCtrl, FB, alertController, router, modalController) {
+var crearproveedor_page_1 = require("src/app/formularios/crearproveedor/crearproveedor.page");
+var HomeproveedoresPage = /** @class */ (function () {
+    function HomeproveedoresPage(navCtrl, FB, alertController, modalController) {
         this.navCtrl = navCtrl;
         this.FB = FB;
         this.alertController = alertController;
-        this.router = router;
         this.modalController = modalController;
-        this.listaconductores = [];
-        this.listarconductores();
+        this.listanomproveedores = [];
     }
-    HomeconductoresPage.prototype.ngOnInit = function () {
+    HomeproveedoresPage.prototype.ngOnInit = function () {
+        this.listarnombresproveedores();
     };
-    HomeconductoresPage.prototype.editarModal = function (lista) {
+    HomeproveedoresPage.prototype.editarModal = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
-                            component: crearconductor_page_1.CrearconductorPage,
+                            component: crearproveedor_page_1.CrearproveedorPage,
                             cssClass: "my-custom-class",
                             componentProps: {
                                 idTipoIdentificacionEdit: lista.idTipoIdentificacion,
-                                numidentificacionEdit: lista.numIndetificacion,
-                                nombresEdit: lista.nombres,
-                                apellidosEdit: lista.apellidos,
-                                celularEdit: lista.celular,
+                                numIndetificacionEdit: lista.numIndetificacion,
+                                nombreEdit: lista.nombre,
+                                apellidoEdit: lista.apellido,
+                                telefonoEdit: lista.telefono,
+                                direccionEdit: lista.direccion,
+                                correoEdit: lista.correo,
                                 id: lista.id
                             }
                         })];
@@ -83,20 +84,20 @@ var HomeconductoresPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.listarconductores();
+                            this.listarnombresproveedores();
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    HomeconductoresPage.prototype.crearModal = function () {
+    HomeproveedoresPage.prototype.crearModal = function () {
         return __awaiter(this, void 0, void 0, function () {
             var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
-                            component: crearconductor_page_1.CrearconductorPage,
+                            component: crearproveedor_page_1.CrearproveedorPage,
                             cssClass: "my-custom-class"
                         })];
                     case 1:
@@ -108,14 +109,14 @@ var HomeconductoresPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.listarconductores();
+                            this.listarnombresproveedores();
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    HomeconductoresPage.prototype.eliminar = function (lista) {
+    HomeproveedoresPage.prototype.eliminar = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
@@ -126,21 +127,22 @@ var HomeconductoresPage = /** @class */ (function () {
                             keyboardClose: false,
                             backdropDismiss: false,
                             header: "Espera",
-                            message: "¿Esta seguro de eliminar " + lista.nombres + "?",
+                            message: "¿Esta seguro de eliminar " + lista.nombre + "?",
                             buttons: [
                                 {
                                     text: "CANCELAR",
                                     role: "cancel",
                                     cssClass: "secondary",
                                     handler: function (blah) {
-                                        console.log("Confirm Cancel");
+                                        console.log("Confirm Cancel: blah");
                                     }
                                 },
                                 {
                                     text: "SI",
                                     handler: function () {
-                                        _this.FB.deleteConductor(lista.id);
-                                        _this.listarconductores();
+                                        console.log("Confirm Okay");
+                                        _this.FB.deleteProveedor(lista.id);
+                                        _this.listarnombresproveedores();
                                     }
                                 },
                             ]
@@ -155,7 +157,7 @@ var HomeconductoresPage = /** @class */ (function () {
             });
         });
     };
-    HomeconductoresPage.prototype.cerrar = function () {
+    HomeproveedoresPage.prototype.cerrar = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.navCtrl.navigateBack('main-menu');
@@ -163,43 +165,45 @@ var HomeconductoresPage = /** @class */ (function () {
             });
         });
     };
-    HomeconductoresPage.prototype.listarconductores = function () {
+    HomeproveedoresPage.prototype.listarnombresproveedores = function () {
         var _this = this;
-        this.listaconductores = [];
-        this.objconductores = null;
-        this.FB.conductoresLista.forEach(function (element) {
-            _this.objconductores = ({
-                apellidos: element.apellidos,
-                celular: element.celular,
+        this.listanomproveedores = [];
+        this.objproveedor = null;
+        this.FB.proveedoresLista.forEach(function (element) {
+            _this.objproveedor = ({
+                apellido: element.apellido,
+                correo: element.correo,
+                direccion: element.direccion,
                 id: element.id,
                 idTipoIdentificacion: element.idTipoIdentificacion,
-                nombres: element.nombres,
-                numIndetificacion: element.numIndetificacion
+                nombre: element.nombre,
+                numIndetificacion: element.numIndetificacion,
+                telefono: element.telefono
             });
-            _this.listaconductores.push(_this.objconductores);
+            _this.listanomproveedores.push(_this.objproveedor);
         });
-        return this.listaconductores;
+        return this.listanomproveedores;
     };
-    HomeconductoresPage.prototype.getItems = function (ev) {
-        this.listaconductores;
+    HomeproveedoresPage.prototype.getItems = function (ev) {
+        this.listanomproveedores;
         var val = ev.target.value;
         if (val && val.trim() != '') {
-            this.listaconductores = this.listaconductores.filter(function (item) {
-                return (item.nombres.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            this.listanomproveedores = this.listanomproveedores.filter(function (item) {
+                return (item.nombre.toLowerCase().indexOf(val.toLowerCase()) > -1);
             });
         }
         else if (val == '' || val == undefined) {
-            this.listaconductores = this.FB.conductoresLista;
-            return this.listaconductores;
+            this.listanomproveedores = this.FB.proveedoresLista;
+            return this.listanomproveedores;
         }
     };
-    HomeconductoresPage = __decorate([
+    HomeproveedoresPage = __decorate([
         core_1.Component({
-            selector: 'app-homeconductores',
-            templateUrl: './homeconductores.page.html',
-            styleUrls: ['./homeconductores.page.scss']
+            selector: 'app-homeproveedores',
+            templateUrl: './homeproveedores.page.html',
+            styleUrls: ['./homeproveedores.page.scss']
         })
-    ], HomeconductoresPage);
-    return HomeconductoresPage;
+    ], HomeproveedoresPage);
+    return HomeproveedoresPage;
 }());
-exports.HomeconductoresPage = HomeconductoresPage;
+exports.HomeproveedoresPage = HomeproveedoresPage;

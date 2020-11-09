@@ -42,60 +42,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CrearproductoPage = void 0;
+exports.CreartiposanticipoPage = void 0;
 var core_1 = require("@angular/core");
-var CrearproductoPage = /** @class */ (function () {
-    function CrearproductoPage(FB, modalCtrl, toastController) {
+var CreartiposanticipoPage = /** @class */ (function () {
+    function CreartiposanticipoPage(FB, modalCtrl, toastController) {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
         this.codigoEdit = "";
         this.descripcionEdit = "";
-        this.defaultEdit = false;
     }
-    CrearproductoPage.prototype.ngOnInit = function () { };
-    CrearproductoPage.prototype.agregarProducto = function () {
-        var _this = this;
+    CreartiposanticipoPage.prototype.ngOnInit = function () {
+    };
+    CreartiposanticipoPage.prototype.guardarTipoAnticipo = function () {
         if (this.id == undefined) {
             if (this.codigoEdit == "" || this.descripcionEdit == "") {
                 this.toastCamposRequeridos();
             }
             else {
-                if (this.defaultEdit == true) {
-                    this.FB.productosLista.forEach(function (element) {
-                        if (element.predetermina == true) {
-                            _this.FB.updateProdcuto(element.id, element.codigo, element.descripcion, false);
-                        }
-                    });
-                    this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
-                    this.modalCtrl.dismiss();
-                }
-                else {
-                    this.FB.crearProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
-                    this.modalCtrl.dismiss();
-                }
+                this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
+                this.modalCtrl.dismiss();
             }
         }
         else {
-            if (this.defaultEdit == true) {
-                this.FB.productosLista.forEach(function (element) {
-                    if (element.predetermina == true) {
-                        _this.FB.updateProdcuto(element.id, element.codigo, element.descripcion, false);
-                    }
-                });
-                this.FB.updateProdcuto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
-                this.modalCtrl.dismiss();
-            }
-            else {
-                this.FB.updateProdcuto(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase(), this.defaultEdit);
-                this.modalCtrl.dismiss();
-            }
+            this.FB.updateTipoAnticipo(this.id, this.codigoEdit, this.descripcionEdit);
+            this.modalCtrl.dismiss();
         }
     };
-    CrearproductoPage.prototype.volver = function () {
+    CreartiposanticipoPage.prototype.volver = function () {
         this.modalCtrl.dismiss();
     };
-    CrearproductoPage.prototype.toastCamposRequeridos = function () {
+    CreartiposanticipoPage.prototype.toastCamposRequeridos = function () {
         return __awaiter(this, void 0, void 0, function () {
             var toast;
             return __generator(this, function (_a) {
@@ -117,23 +94,20 @@ var CrearproductoPage = /** @class */ (function () {
     };
     __decorate([
         core_1.Input()
-    ], CrearproductoPage.prototype, "codigoEdit");
+    ], CreartiposanticipoPage.prototype, "codigoEdit");
     __decorate([
         core_1.Input()
-    ], CrearproductoPage.prototype, "descripcionEdit");
+    ], CreartiposanticipoPage.prototype, "descripcionEdit");
     __decorate([
         core_1.Input()
-    ], CrearproductoPage.prototype, "defaultEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearproductoPage.prototype, "id");
-    CrearproductoPage = __decorate([
+    ], CreartiposanticipoPage.prototype, "id");
+    CreartiposanticipoPage = __decorate([
         core_1.Component({
-            selector: 'app-crearproducto',
-            templateUrl: './crearproducto.page.html',
-            styleUrls: ['./crearproducto.page.scss']
+            selector: 'app-creartiposanticipo',
+            templateUrl: './creartiposanticipo.page.html',
+            styleUrls: ['./creartiposanticipo.page.scss']
         })
-    ], CrearproductoPage);
-    return CrearproductoPage;
+    ], CreartiposanticipoPage);
+    return CreartiposanticipoPage;
 }());
-exports.CrearproductoPage = CrearproductoPage;
+exports.CreartiposanticipoPage = CreartiposanticipoPage;

@@ -9,25 +9,25 @@ import { FBservicesService } from '../../fbservices.service'
 export class CreartiposanticipoPage implements OnInit {
 
 
-  @Input() codigoEdit;
-  @Input() descripcionEdit;
+  @Input() codigoEdit = "";
+  @Input() descripcionEdit = "";
   @Input() id;
 
-  constructor( 
+  constructor(
 
-    private FB:FBservicesService,
+    private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController
 
-   ) { }
+  ) { }
 
   ngOnInit() {
   }
 
-  guardarTipoAnticipo(){
+  guardarTipoAnticipo() {
 
     if (this.id == undefined) {
-      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarTipoAnticipo(this.codigoEdit, this.descripcionEdit);
@@ -36,11 +36,11 @@ export class CreartiposanticipoPage implements OnInit {
       }
 
     } else {
-     
-        this.FB.updateTipoAnticipo(this.id, this.codigoEdit, this.descripcionEdit);
 
-        this.modalCtrl.dismiss();
-      
+      this.FB.updateTipoAnticipo(this.id, this.codigoEdit, this.descripcionEdit);
+
+      this.modalCtrl.dismiss();
+
     }
   }
 
@@ -54,7 +54,7 @@ export class CreartiposanticipoPage implements OnInit {
       cssClass: "toast",
       color: 'warning',
       position: 'top',
-      duration: 5000
+      duration: 3000
     });
     toast.present();
   }

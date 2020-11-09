@@ -8,11 +8,11 @@ import { FBservicesService } from '../../fbservices.service'
   styleUrls: ['./creartiposidentificacion.page.scss'],
 })
 export class CreartiposidentificacionPage implements OnInit {
-  
- 
 
-  @Input() codigoEdit;
-  @Input() descripcionEdit;
+
+
+  @Input() codigoEdit = "";
+  @Input() descripcionEdit = "";
   @Input() id;
 
   constructor(
@@ -20,15 +20,15 @@ export class CreartiposidentificacionPage implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController
 
-  ) {}
+  ) { }
 
   ngOnInit() {
   }
 
   guardarTipoIdentificacion() {
-  
+
     if (this.id == undefined) {
-      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarTipoIdentificacion(this.codigoEdit, this.descripcionEdit);
@@ -37,11 +37,11 @@ export class CreartiposidentificacionPage implements OnInit {
       }
 
     } else {
-     
-        this.FB.updateTipoIdentificacion(this.id, this.codigoEdit, this.descripcionEdit);
 
-        this.modalCtrl.dismiss();
-      
+      this.FB.updateTipoIdentificacion(this.id, this.codigoEdit, this.descripcionEdit);
+
+      this.modalCtrl.dismiss();
+
     }
   }
 
@@ -55,7 +55,7 @@ export class CreartiposidentificacionPage implements OnInit {
       cssClass: "toast",
       color: 'warning',
       position: 'top',
-      duration: 5000
+      duration: 3000
     });
     toast.present();
   }

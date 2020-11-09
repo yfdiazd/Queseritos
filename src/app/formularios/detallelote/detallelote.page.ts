@@ -214,8 +214,6 @@ export class DetallelotePage implements OnInit {
       console.log("Entro al if: ", data);
       this.cambiarHoja(true);
     }
-
-
   }
 
   irInicio() {
