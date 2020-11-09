@@ -261,7 +261,7 @@ var FBservicesService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "Se ha eliminado correctamente",
-                            color: "danger",
+                            color: "success",
                             duration: 7000
                         })];
                     case 1:
@@ -280,7 +280,7 @@ var FBservicesService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "Se ha creado el producto correctamente",
-                            color: "danger",
+                            color: "success",
                             duration: 7000
                         })];
                     case 1:
@@ -299,7 +299,7 @@ var FBservicesService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "Se ha creado el proveedor de manera correcta",
-                            color: "danger",
+                            color: "success",
                             duration: 7000
                         })];
                     case 1:
@@ -319,7 +319,7 @@ var FBservicesService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "El numero de identificacion ingresado ya existe.",
                             color: "danger",
-                            duration: 7000
+                            duration: 5000
                         })];
                     case 1:
                         toast = _a.sent();

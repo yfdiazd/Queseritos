@@ -42,33 +42,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.CardlotesPage = void 0;
+exports.CardventasPage = void 0;
 var core_1 = require("@angular/core");
-var saldar_page_1 = require("./saldar/saldar.page");
-var CardlotesPage = /** @class */ (function () {
-    function CardlotesPage(route, FB, alertController, modalCtrl, navCtrl, loadingCtrl) {
-        this.route = route;
+var homeventas_page_1 = require("src/app/home/homeventas/homeventas.page");
+var CardventasPage = /** @class */ (function () {
+    function CardventasPage(FB, modalController, alertController, toastController, route, navCtrl, loadingCtrl) {
         this.FB = FB;
+        this.modalController = modalController;
         this.alertController = alertController;
-        this.modalCtrl = modalCtrl;
+        this.toastController = toastController;
+        this.route = route;
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
+        this.anofecha = new Date();
+        this.show = true;
+        this.hiden = false;
+        //Datos consolidados para la visualización
+        this.listaCard = [];
+        //lista de la venta que se recorre en el HTML
+        this.listaVentas = [];
     }
-    CardlotesPage.prototype.ngOnInit = function () {
+    CardventasPage.prototype.ngOnInit = function () {
         var _this = this;
+        this.customPickerOptions = {
+            buttons: [{
+                    text: 'Aceptar',
+                    handler: function (evento) {
+                        _this.show = false;
+                        _this.hiden = true;
+                        console.log("imprime event", evento);
+                        _this.getListaFiltrada(evento);
+                    }
+                }, {
+                    text: 'Cancelar',
+                    handler: function () {
+                        console.log('Clicked Log. Do not Dismiss.');
+                        return true;
+                    }
+                }]
+        };
         var id = this.route.snapshot.paramMap.get("id");
-        this.idProveedorRecibido = id;
-        this.FB.getLotesDelProveedor(this.idProveedorRecibido);
+        this.idcliente = id;
         this.traerNombre();
-        this.estadoGeneral();
-        this.validarSaldo();
-        this.FB.getEstadoProveedor(this.idProveedorRecibido);
-        this.ultimoSaldo = this.FB.estadoSaldoProveedor;
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
     };
-    CardlotesPage.prototype.presentLoading = function (message) {
+    CardventasPage.prototype.presentLoading = function (message) {
         return __awaiter(this, void 0, void 0, function () {
             var _a;
             return __generator(this, function (_b) {
@@ -90,77 +110,51 @@ var CardlotesPage = /** @class */ (function () {
             });
         });
     };
-    CardlotesPage.prototype.doRefresh = function (event) {
-        this.ngOnInit();
+    CardventasPage.prototype.doRefresh = function (event) {
+        this.traerNombre();
+        this.presentLoading('Espere...');
+        this.recorriendolista();
         setTimeout(function () {
             event.target.complete();
         }, 1000);
     };
-    CardlotesPage.prototype.validarSaldo = function () {
-        if (this.saldoGeneral < 0) {
-            document.getElementById("saldo").style.color = "red";
+    CardventasPage.prototype.getListaFiltrada = function (event) {
+        this.FB.ventasclienteLista;
+        this.listaFiltrada = this.FB.ventasclienteLista;
+        console.log("esoto es la lista filtrada ", this.listaFiltrada);
+        var varY = event.year.value;
+        var varM = event.month.value;
+        var varym = (varY + "-" + varM);
+        console.log("buscador   ---- ", varym);
+        if (varym && varym.trim() != '') {
+            this.listaFiltrada = this.listaFiltrada.filter(function (item) {
+                return (item.fechaEnvio.indexOf(varym) > -1);
+            });
         }
         else {
-            document.getElementById("saldo").style.color = "lime";
+            if (varym == '' || varym == undefined) {
+                this.listaFiltrada = this.FB.ventasclienteLista;
+                return this.listaFiltrada;
+            }
         }
     };
-    CardlotesPage.prototype.traerNombre = function () {
+    CardventasPage.prototype.irVender = function (input) {
+        console.log("Se envia este id cliente", this.idcliente);
+        this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
+    };
+    CardventasPage.prototype.modalConfirmarPesada = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_a) {
-                this.nombreProv = [];
-                this.FB.proveedoresLista.forEach(function (element) {
-                    if (element.id == _this.idProveedorRecibido) {
-                        _this.nombreProv = element.nombre;
-                    }
-                });
-                return [2 /*return*/];
-            });
-        });
-    };
-    CardlotesPage.prototype.irDetalleLote = function (item) {
-        this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);
-        this.FB.getAnticipoDirectoProveedor(this.idProveedorRecibido, item.lote);
-        this.navCtrl.navigateForward(["detallelote/", item.lote, this.idProveedorRecibido]);
-    };
-    CardlotesPage.prototype.irInicio = function () {
-        this.navCtrl.navigateBack(["main-menu"]);
-    };
-    CardlotesPage.prototype.irCompras = function () {
-        this.navCtrl.navigateBack(["cardcompras"]);
-    };
-    CardlotesPage.prototype.irEstado = function () {
-        this.navCtrl.navigateBack(["cardlistaproveedores"]);
-    };
-    CardlotesPage.prototype.estadoGeneral = function () {
-        var _this = this;
-        this.creditoGeneral = 0;
-        this.debitoGeneral = 0;
-        this.saldoGeneral = 0;
-        console.log("this.FB.listaLotesDelProveedor ", this.FB.listaLotesDelProveedor);
-        this.FB.listaLotesDelProveedor.forEach(function (element) {
-            _this.creditoGeneral += element.compra;
-            _this.debitoGeneral += element.anticipo;
-        });
-        this.saldoGeneral = (this.debitoGeneral - this.creditoGeneral);
-        console.log("object", this.debitoGeneral, this.creditoGeneral, this.saldoGeneral);
-        return this.debitoGeneral, this.creditoGeneral, this.saldoGeneral;
-    };
-    CardlotesPage.prototype.saldarLotes = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var modal, data;
+            var modal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.modalCtrl.create({
-                            component: saldar_page_1.SaldarPage,
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: homeventas_page_1.HomeventasPage,
                             cssClass: 'my-custom-class',
                             keyboardClose: false,
                             backdropDismiss: false,
                             componentProps: {
-                                idProv: this.idProveedorRecibido,
-                                creditoGeneral: this.creditoGeneral,
-                                debitoGeneral: this.debitoGeneral,
-                                saldoGeneral: this.saldoGeneral
+                                idVenta: card.id,
+                                idCliente: this.idcliente
                             }
                         })];
                     case 1:
@@ -168,29 +162,40 @@ var CardlotesPage = /** @class */ (function () {
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, modal.onWillDismiss()];
-                    case 3:
-                        data = (_a.sent()).data;
-                        console.log("Esperando esto: ", data);
-                        if (data == "true") {
-                            console.log("Entro al if: ", data);
-                            // this.ngOnInit();
-                            this.navCtrl.navigateBack(["main-menu"]);
-                            this.FB.eliminarNodoProveedor(this.idProveedorRecibido);
-                        }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    CardlotesPage.prototype.saldar = function () { };
-    CardlotesPage = __decorate([
+    CardventasPage.prototype.recorriendolista = function () {
+        this.FB.ventasclienteListaMes.forEach(function (element) {
+            console.log("elementttttt", element);
+        });
+    };
+    CardventasPage.prototype.traerNombre = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.nombreCliente = [];
+                //this.listaVentas = [];
+                console.log("idcliente traer nombre:", this.idcliente);
+                this.FB.clientesLista.forEach(function (element) {
+                    if (element.id == _this.idcliente) {
+                        _this.nombreCliente = element.nombres;
+                    }
+                });
+                console.log("imprime nombre del cliente", this.nombreCliente);
+                return [2 /*return*/, this.nombreCliente];
+            });
+        });
+    };
+    CardventasPage = __decorate([
         core_1.Component({
-            selector: 'app-cardlotes',
-            templateUrl: './cardlotes.page.html',
-            styleUrls: ['./cardlotes.page.scss']
+            selector: 'app-cardventas',
+            templateUrl: './cardventas.page.html',
+            styleUrls: ['./cardventas.page.scss']
         })
-    ], CardlotesPage);
-    return CardlotesPage;
+    ], CardventasPage);
+    return CardventasPage;
 }());
-exports.CardlotesPage = CardlotesPage;
+exports.CardventasPage = CardventasPage;

@@ -42,40 +42,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.HomeciudadesPage = void 0;
+exports.HomeclientesPage = void 0;
 var core_1 = require("@angular/core");
-var crearciudad_page_1 = require("src/app/formularios/crearciudad/crearciudad.page");
-var HomeciudadesPage = /** @class */ (function () {
-    function HomeciudadesPage(FB, alertController, router, navCtrl, modalController) {
-        this.FB = FB;
-        this.alertController = alertController;
-        this.router = router;
+var crearclientes_page_1 = require("src/app/formularios/crearclientes/crearclientes.page");
+var HomeclientesPage = /** @class */ (function () {
+    function HomeclientesPage(navCtrl, FB, modalCtrl, alertController) {
         this.navCtrl = navCtrl;
-        this.modalController = modalController;
-        this.listanombreciudad = [];
-        this.listarnombresciudades();
-        this.FB.ciudadesLista;
+        this.FB = FB;
+        this.modalCtrl = modalCtrl;
+        this.alertController = alertController;
+        this.listanombrecliente = [];
+        this.listarnombresclientes();
     }
-    HomeciudadesPage.prototype.ngOnInit = function () {
-        this.listarnombresciudades();
-        this.FB.ciudadesLista;
+    HomeclientesPage.prototype.ngOnInit = function () {
+        this.listarnombresclientes();
     };
-    HomeciudadesPage.prototype.editarModal = function (lista) {
+    HomeclientesPage.prototype.editarModal = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("ciudad id", lista.id);
-                        return [4 /*yield*/, this.modalController.create({
-                                component: crearciudad_page_1.CrearciudadPage,
-                                cssClass: "my-custom-class",
-                                componentProps: {
-                                    codigoEdit: lista.codigo,
-                                    descripcionEdit: lista.descripcion,
-                                    id: lista.id
-                                }
-                            })];
+                    case 0: return [4 /*yield*/, this.modalCtrl.create({
+                            component: crearclientes_page_1.CrearclientesPage,
+                            cssClass: "my-custom-class",
+                            componentProps: {
+                                tipoIdentificacionEdit: lista.idTipoIdentificacion,
+                                numeroIdentificacionClienteEdit: lista.numIndetificacion,
+                                nombresClienteEdit: lista.nombres,
+                                apellidosClienteEdit: lista.apellidos,
+                                empresaClienteEdit: lista.empresa,
+                                codigociudadEdit: lista.idCiudad,
+                                celularClienteEdit: lista.celular,
+                                direccionClienteEdit: lista.direccion,
+                                correoClienteEdit: lista.correo,
+                                id: lista.id
+                            }
+                        })];
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
@@ -85,20 +87,20 @@ var HomeciudadesPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.listarnombresciudades();
+                            this.listarnombresclientes();
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    HomeciudadesPage.prototype.crearModal = function () {
+    HomeclientesPage.prototype.crearModal = function () {
         return __awaiter(this, void 0, void 0, function () {
             var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.modalController.create({
-                            component: crearciudad_page_1.CrearciudadPage,
+                    case 0: return [4 /*yield*/, this.modalCtrl.create({
+                            component: crearclientes_page_1.CrearclientesPage,
                             cssClass: "my-custom-class"
                         })];
                     case 1:
@@ -110,46 +112,44 @@ var HomeciudadesPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.listarnombresciudades();
+                            this.listarnombresclientes();
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
-    HomeciudadesPage.prototype.eliminar = function (lista) {
+    HomeclientesPage.prototype.eliminar = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("ciudad id", lista.id);
-                        return [4 /*yield*/, this.alertController.create({
-                                cssClass: "my-custom-class",
-                                header: "Espera",
-                                keyboardClose: false,
-                                backdropDismiss: false,
-                                message: "¿Esta seguro de eliminar " + lista.descripcion + "?",
-                                buttons: [
-                                    {
-                                        text: "CANCELAR",
-                                        role: "cancel",
-                                        cssClass: "secondary",
-                                        handler: function (blah) {
-                                            console.log("Confirm Cancel: blah");
-                                        }
-                                    },
-                                    {
-                                        text: "SI",
-                                        handler: function () {
-                                            console.log("Confirm Okay");
-                                            _this.FB.deleteCiudad(lista.id);
-                                            _this.listarnombresciudades();
-                                        }
-                                    },
-                                ]
-                            })];
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: "my-custom-class",
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            header: "Espera",
+                            message: "¿Esta seguro de eliminar " + lista.nombres + "?",
+                            buttons: [
+                                {
+                                    text: "CANCELAR",
+                                    role: "cancel",
+                                    cssClass: "secondary",
+                                    handler: function (blah) {
+                                        console.log("Confirm Cancel: blah");
+                                    }
+                                },
+                                {
+                                    text: "SI",
+                                    handler: function () {
+                                        console.log("Confirm Okay");
+                                        _this.FB.deleteCliente(lista.id);
+                                        _this.listarnombresclientes();
+                                    }
+                                },
+                            ]
+                        })];
                     case 1:
                         alert = _a.sent();
                         return [4 /*yield*/, alert.present()];
@@ -160,7 +160,7 @@ var HomeciudadesPage = /** @class */ (function () {
             });
         });
     };
-    HomeciudadesPage.prototype.cerrar = function () {
+    HomeclientesPage.prototype.cerrar = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.navCtrl.navigateBack('main-menu');
@@ -168,41 +168,47 @@ var HomeciudadesPage = /** @class */ (function () {
             });
         });
     };
-    HomeciudadesPage.prototype.listarnombresciudades = function () {
+    HomeclientesPage.prototype.listarnombresclientes = function () {
         var _this = this;
-        this.listanombreciudad = [];
-        this.objciudad = null;
-        this.FB.ciudadesLista.forEach(function (element) {
-            _this.objciudad = ({
+        this.listanombrecliente = [];
+        this.objclientes = null;
+        this.FB.clientesLista.forEach(function (element) {
+            _this.objclientes = ({
+                apellidos: element.apellidos,
+                celular: element.celular,
+                correo: element.correo,
+                direccion: element.direccion,
+                empresa: element.empresa,
                 id: element.id,
-                codigo: element.codigo,
-                descripcion: element.descripcion
+                idCiudad: element.idCiudad,
+                idTipoIdentificacion: element.idTipoIdentificacion,
+                nombres: element.nombres,
+                numIndetificacion: element.numIndetificacion
             });
-            _this.listanombreciudad.push(_this.objciudad);
+            _this.listanombrecliente.push(_this.objclientes);
         });
-        return this.listanombreciudad;
+        return this.listanombrecliente;
     };
-    HomeciudadesPage.prototype.getItems = function (ev) {
-        this.listanombreciudad = [];
+    HomeclientesPage.prototype.getItems = function (ev) {
+        this.listanombrecliente;
         var val = ev.target.value;
-        console.log("imprime val", val);
         if (val && val.trim() != '') {
-            this.listanombreciudad = this.listanombreciudad.filter(function (item) {
-                return (item.descripcion.toLowerCase().indexOf(val.toLowerCase()) > -1);
+            this.listanombrecliente = this.listanombrecliente.filter(function (item) {
+                return (item.nombres.toLowerCase().indexOf(val.toLowerCase()) > -1);
             });
         }
         else if (val == '' || val == undefined) {
-            this.listanombreciudad = this.FB.ciudadesLista;
-            return this.listanombreciudad;
+            this.listanombrecliente = this.FB.clientesLista;
+            return this.listanombrecliente;
         }
     };
-    HomeciudadesPage = __decorate([
+    HomeclientesPage = __decorate([
         core_1.Component({
-            selector: "app-homeciudades",
-            templateUrl: "./homeciudades.page.html",
-            styleUrls: ["./homeciudades.page.scss"]
+            selector: 'app-homeclientes',
+            templateUrl: './homeclientes.page.html',
+            styleUrls: ['./homeclientes.page.scss']
         })
-    ], HomeciudadesPage);
-    return HomeciudadesPage;
+    ], HomeclientesPage);
+    return HomeclientesPage;
 }());
-exports.HomeciudadesPage = HomeciudadesPage;
+exports.HomeclientesPage = HomeclientesPage;

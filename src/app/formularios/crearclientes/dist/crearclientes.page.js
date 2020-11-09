@@ -49,12 +49,21 @@ var CrearclientesPage = /** @class */ (function () {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
+        //estos son los que se envian en el formulario
+        this.tipoIdentificacionEdit = "";
+        this.numeroIdentificacionClienteEdit = "";
+        this.nombresClienteEdit = "";
+        this.apellidosClienteEdit = "";
+        this.empresaClienteEdit = "";
+        this.codigociudadEdit = "";
+        this.celularClienteEdit = "";
+        this.direccionClienteEdit = "";
+        this.correoClienteEdit = "";
         this.customAlertOptions = {
             header: "Seleccione uno",
             translucent: true
         };
     }
-    CrearclientesPage.prototype.ngOnInit = function () { };
     CrearclientesPage.prototype.guardar = function () {
         if (this.id == undefined) {
             console.log("Entro a crear");
@@ -62,19 +71,18 @@ var CrearclientesPage = /** @class */ (function () {
                 this.toastCamposRequeridos();
             }
             else {
-                this.FB.agregarCliente(this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit, this.apellidosClienteEdit, this.empresaClienteEdit, this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit, this.correoClienteEdit);
-                this.modalCtrl.dismiss();
+                this.FB.agregarCliente(this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
         else {
             console.log("Entro a MODIFICAR---");
             if (this.tipoIdentificacionEdit == "" || this.numeroIdentificacionClienteEdit == "" || this.nombresClienteEdit == "" || this.codigociudadEdit == "" || this.celularClienteEdit == "" || this.direccionClienteEdit == "" || this.empresaClienteEdit == "") {
                 this.toastCamposRequeridos();
-                console.log("No modificaste nada");
             }
             else {
-                this.FB.updateCliente(this.id, this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit, this.apellidosClienteEdit, this.empresaClienteEdit, this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit, this.correoClienteEdit);
-                this.modalCtrl.dismiss();
+                this.FB.updateCliente(this.id, this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
     };
@@ -91,7 +99,7 @@ var CrearclientesPage = /** @class */ (function () {
                             cssClass: "toast",
                             color: 'warning',
                             position: 'middle',
-                            duration: 5000
+                            duration: 3000
                         })];
                     case 1:
                         toast = _a.sent();

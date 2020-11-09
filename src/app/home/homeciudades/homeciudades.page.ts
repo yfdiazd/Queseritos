@@ -31,10 +31,14 @@ export class HomeciudadesPage implements OnInit {
   codigoCiudad: string;
   descripcionCiudad: string;
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.listarnombresciudades();
+    this.FB.ciudadesLista;
+  }
 
 
   async editarModal(lista) {
+    console.log("ciudad id", lista.id);
     const modal = await this.modalController.create({
       component: CrearciudadPage,
       cssClass: "my-custom-class",
@@ -44,7 +48,11 @@ export class HomeciudadesPage implements OnInit {
         id: lista.id,
       },
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarnombresciudades();
+    }
   }
 
   async crearModal() {
@@ -52,10 +60,15 @@ export class HomeciudadesPage implements OnInit {
       component: CrearciudadPage,
       cssClass: "my-custom-class"
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarnombresciudades();
+    }
   }
 
   async eliminar(lista) {
+    console.log("ciudad id", lista.id);
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
       header: "Espera",
@@ -76,6 +89,7 @@ export class HomeciudadesPage implements OnInit {
           handler: () => {
             console.log("Confirm Okay");
             this.FB.deleteCiudad(lista.id);
+            this.listarnombresciudades();
           },
         },
       ],
@@ -85,7 +99,7 @@ export class HomeciudadesPage implements OnInit {
   }
 
   async cerrar() {
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
 
   listarnombresciudades() {
@@ -93,6 +107,7 @@ export class HomeciudadesPage implements OnInit {
     this.objciudad = null;
     this.FB.ciudadesLista.forEach(element => {
       this.objciudad = ({
+        id: element.id,
         codigo: element.codigo,
         descripcion: element.descripcion
       })

@@ -72,6 +72,9 @@ export class CrearenvioclientePage implements OnInit {
 
 
   }
+  volver() {
+    this.navCtrl.navigateBack(['cardventas/', this.idcliente])
+  }
 
   bloquearInputLimite(event) {
     if (event.detail.checked == true) {

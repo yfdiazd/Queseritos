@@ -43,7 +43,7 @@ export class MainMenuPage implements OnInit {
       message,
       cssClass: 'cssLoading',
       keyboardClose: false,
-      backdropDismiss: false,
+      //backdropDismiss: false,
       spinner: 'lines',
       translucent: true
     });
