@@ -25,7 +25,7 @@ export class CrearestadoproductoPage implements OnInit {
 
   guardarEstadoProducto() {
     if (this.id == undefined) {
-      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+      if (this.codigoEdit == undefined || this.descripcionEdit == undefined || this.descripcionEdit == "" || this.codigoEdit == "") {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarEstadoProducto(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());

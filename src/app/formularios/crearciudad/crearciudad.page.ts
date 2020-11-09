@@ -28,14 +28,14 @@ export class CrearciudadPage implements OnInit {
         this.toastCamposRequeridos();
       }
       this.FB.agregarCiudad(this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
-      this.modalCtrl.dismiss();
+      this.modalCtrl.dismiss("true", "actualizar");
 
     } else {
       if (this.codigoEdit == "" || this.descripcionEdit == "") {
         this.toastCamposRequeridos();
       }
       this.FB.updateCiudad(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit.toUpperCase());
-      this.modalCtrl.dismiss();
+      this.modalCtrl.dismiss("true", "actualizar");
     }
   }
 

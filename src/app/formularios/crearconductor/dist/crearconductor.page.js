@@ -44,38 +44,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CrearconductorPage = void 0;
 var core_1 = require("@angular/core");
+var forms_1 = require("@angular/forms");
 var CrearconductorPage = /** @class */ (function () {
     function CrearconductorPage(FB, modalCtrl, toastController) {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
+        this.apellidosEdit = "";
+        this.celularEdit = "";
+        this.idTipoIdentificacionEdit = "";
+        this.nombresEdit = "";
+        this.numidentificacionEdit = "";
         this.customAlertOptions = {
-            header: "Seleccione uno",
+            header: "Seleccione",
             translucent: true
         };
     }
     CrearconductorPage.prototype.ngOnInit = function () {
     };
     CrearconductorPage.prototype.guardarConductor = function () {
+        console.log("Entro a guardar--->", this.id);
         if (this.id == undefined) {
             console.log("Entro a crear");
             if (this.idTipoIdentificacionEdit == undefined || this.numidentificacionEdit == undefined || this.nombresEdit == undefined || this.celularEdit == undefined) {
                 this.toastCamposRequeridos();
             }
             else {
-                this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit, this.apellidosEdit, this.celularEdit);
-                this.modalCtrl.dismiss();
+                this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
         else {
-            console.log("Entro a MODIFICAR---");
+            console.log("Entro a MODIFICAR--->", this.id);
             if (this.idTipoIdentificacionEdit == "" || this.numidentificacionEdit == "" || this.nombresEdit == "" || this.celularEdit == "") {
                 this.toastCamposRequeridos();
                 console.log("No modificaste nada");
             }
             else {
-                this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit, this.apellidosEdit, this.celularEdit);
-                this.modalCtrl.dismiss();
+                this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
+                this.modalCtrl.dismiss("true", "actualizar");
             }
         }
     };
@@ -92,7 +99,7 @@ var CrearconductorPage = /** @class */ (function () {
                             cssClass: "toast",
                             color: 'warning',
                             position: 'middle',
-                            duration: 5000
+                            duration: 3000
                         })];
                     case 1:
                         toast = _a.sent();
@@ -104,15 +111,6 @@ var CrearconductorPage = /** @class */ (function () {
     };
     __decorate([
         core_1.Input()
-    ], CrearconductorPage.prototype, "idTipoIdentificacionEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearconductorPage.prototype, "numidentificacionEdit");
-    __decorate([
-        core_1.Input()
-    ], CrearconductorPage.prototype, "nombresEdit");
-    __decorate([
-        core_1.Input()
     ], CrearconductorPage.prototype, "apellidosEdit");
     __decorate([
         core_1.Input()
@@ -120,11 +118,23 @@ var CrearconductorPage = /** @class */ (function () {
     __decorate([
         core_1.Input()
     ], CrearconductorPage.prototype, "id");
+    __decorate([
+        core_1.Input()
+    ], CrearconductorPage.prototype, "idTipoIdentificacionEdit");
+    __decorate([
+        core_1.Input()
+    ], CrearconductorPage.prototype, "nombresEdit");
+    __decorate([
+        core_1.Input()
+    ], CrearconductorPage.prototype, "numidentificacionEdit");
     CrearconductorPage = __decorate([
         core_1.Component({
             selector: 'app-crearconductor',
             templateUrl: './crearconductor.page.html',
             styleUrls: ['./crearconductor.page.scss']
+        }),
+        core_1.NgModule({
+            imports: [forms_1.ReactiveFormsModule]
         })
     ], CrearconductorPage);
     return CrearconductorPage;

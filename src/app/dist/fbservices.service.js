@@ -261,7 +261,7 @@ var FBservicesService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "Se ha eliminado correctamente",
-                            color: "danger",
+                            color: "success",
                             duration: 7000
                         })];
                     case 1:
@@ -280,7 +280,7 @@ var FBservicesService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "Se ha creado el producto correctamente",
-                            color: "danger",
+                            color: "success",
                             duration: 7000
                         })];
                     case 1:
@@ -299,7 +299,7 @@ var FBservicesService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "Se ha creado el proveedor de manera correcta",
-                            color: "danger",
+                            color: "success",
                             duration: 7000
                         })];
                     case 1:
@@ -319,7 +319,7 @@ var FBservicesService = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.toastController.create({
                             message: "El numero de identificacion ingresado ya existe.",
                             color: "danger",
-                            duration: 7000
+                            duration: 5000
                         })];
                     case 1:
                         toast = _a.sent();
@@ -1014,13 +1014,30 @@ var FBservicesService = /** @class */ (function () {
             .database()
             .ref("usuario/configuracion/lotes")
             .on("value", function (snapshot) {
-            firebase
-                .database()
-                .ref("usuario/configuracion/lotes/" + _this.idLote)
-                .set({
-                id: _this.idLote,
-                lote: (_this.fechaActual() + "-L" + snapshot.numChildren())
-            });
+            if (snapshot.exists()) {
+                console.log("generaLote", snapshot.val());
+                snapshot.forEach(function (element) {
+                    if (element.val().lote.indexOf(_this.fechaActual) <= 0) {
+                        console.log("Entro a crear un lote por que sí");
+                        firebase
+                            .database()
+                            .ref("usuario/configuracion/lotes/" + _this.idLote)
+                            .set({
+                            id: _this.idLote,
+                            lote: (_this.fechaActual() + "-L" + snapshot.numChildren())
+                        });
+                    }
+                });
+            }
+            else {
+                firebase
+                    .database()
+                    .ref("usuario/configuracion/lotes/" + _this.idLote)
+                    .set({
+                    id: _this.idLote,
+                    lote: (_this.fechaActual() + "-L" + snapshot.numChildren())
+                });
+            }
         });
     };
     //Obtiene los lotes del mas antiguo al mas nuevo
@@ -1756,16 +1773,6 @@ var FBservicesService = /** @class */ (function () {
             placa: placa
         });
         this.toastOperacionExitosa();
-    };
-    FBservicesService.prototype.getFotoVenta = function (idCliente, idVenta) {
-        var _this = this;
-        this.imgVenta = null;
-        firebase
-            .storage()
-            .ref("anticipos/" + idCliente + "/" + idVenta).getDownloadURL().then(function (imgUr) {
-            _this.imgVenta = imgUr;
-            return _this.imgVenta;
-        });
     };
     FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);

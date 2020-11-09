@@ -46,14 +46,16 @@ exports.CardlotesPage = void 0;
 var core_1 = require("@angular/core");
 var saldar_page_1 = require("./saldar/saldar.page");
 var CardlotesPage = /** @class */ (function () {
-    function CardlotesPage(route, FB, alertController, modalCtrl, navCtrl) {
+    function CardlotesPage(route, FB, alertController, modalCtrl, navCtrl, loadingCtrl) {
         this.route = route;
         this.FB = FB;
         this.alertController = alertController;
         this.modalCtrl = modalCtrl;
         this.navCtrl = navCtrl;
+        this.loadingCtrl = loadingCtrl;
     }
     CardlotesPage.prototype.ngOnInit = function () {
+        var _this = this;
         var id = this.route.snapshot.paramMap.get("id");
         this.idProveedorRecibido = id;
         this.FB.getLotesDelProveedor(this.idProveedorRecibido);
@@ -62,6 +64,37 @@ var CardlotesPage = /** @class */ (function () {
         this.validarSaldo();
         this.FB.getEstadoProveedor(this.idProveedorRecibido);
         this.ultimoSaldo = this.FB.estadoSaldoProveedor;
+        setTimeout(function () {
+            _this.loading.dismiss();
+        }, 1500);
+    };
+    CardlotesPage.prototype.presentLoading = function (message) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.loadingCtrl.create({
+                                message: message,
+                                cssClass: 'cssLoading',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                spinner: 'lines',
+                                translucent: true
+                            })];
+                    case 1:
+                        _a.loading = _b.sent();
+                        return [2 /*return*/, this.loading.present()];
+                }
+            });
+        });
+    };
+    CardlotesPage.prototype.doRefresh = function (event) {
+        this.ngOnInit();
+        setTimeout(function () {
+            event.target.complete();
+        }, 1000);
     };
     CardlotesPage.prototype.validarSaldo = function () {
         if (this.saldoGeneral < 0) {
@@ -143,6 +176,7 @@ var CardlotesPage = /** @class */ (function () {
                             console.log("Entro al if: ", data);
                             // this.ngOnInit();
                             this.navCtrl.navigateBack(["main-menu"]);
+                            this.FB.eliminarNodoProveedor(this.idProveedorRecibido);
                         }
                         return [2 /*return*/];
                 }

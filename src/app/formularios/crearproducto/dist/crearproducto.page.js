@@ -49,14 +49,15 @@ var CrearproductoPage = /** @class */ (function () {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
+        this.codigoEdit = "";
+        this.descripcionEdit = "";
         this.defaultEdit = false;
-        console.log("Estos son los valores", this.codigoEdit, this.descripcionEdit, this.defaultEdit);
     }
     CrearproductoPage.prototype.ngOnInit = function () { };
     CrearproductoPage.prototype.agregarProducto = function () {
         var _this = this;
         if (this.id == undefined) {
-            if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+            if (this.codigoEdit == "" || this.descripcionEdit == "") {
                 this.toastCamposRequeridos();
             }
             else {
@@ -104,7 +105,7 @@ var CrearproductoPage = /** @class */ (function () {
                             cssClass: "toast",
                             color: 'warning',
                             position: 'top',
-                            duration: 5000
+                            duration: 3000
                         })];
                     case 1:
                         toast = _a.sent();

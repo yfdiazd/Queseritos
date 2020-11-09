@@ -10,8 +10,8 @@ import { FBservicesService } from 'src/app/fbservices.service';
 })
 export class CrearproductoPage {
 
-  @Input() codigoEdit;
-  @Input() descripcionEdit;
+  @Input() codigoEdit = "";
+  @Input() descripcionEdit = "";
   @Input() defaultEdit = false;
   @Input() id;
 
@@ -20,20 +20,14 @@ export class CrearproductoPage {
     private FB: FBservicesService,
     private modalCtrl: ModalController,
     private toastController: ToastController
-  ) {
-    console.log("Estos son los valores",
-      this.codigoEdit,
-      this.descripcionEdit,
-      this.defaultEdit
-    )
-  }
+  ) { }
   ngOnInit() { }
 
 
   agregarProducto() {
 
     if (this.id == undefined) {
-      if (this.codigoEdit == undefined || this.descripcionEdit == undefined) {
+      if (this.codigoEdit == "" || this.descripcionEdit == "") {
         this.toastCamposRequeridos();
       } else {
         if (this.defaultEdit == true) {
@@ -74,7 +68,7 @@ export class CrearproductoPage {
       cssClass: "toast",
       color: 'warning',
       position: 'top',
-      duration: 5000
+      duration: 3000
     });
     toast.present();
   }

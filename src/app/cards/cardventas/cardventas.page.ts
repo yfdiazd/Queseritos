@@ -67,7 +67,7 @@ export class CardventasPage implements OnInit {
     let id = this.route.snapshot.paramMap.get("id");
     this.idcliente = id;
     this.traerNombre();
-    
+
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
@@ -87,7 +87,7 @@ export class CardventasPage implements OnInit {
   }
 
   doRefresh(event) {
-   
+
     this.traerNombre();
     this.presentLoading('Espere...');
     this.recorriendolista();
@@ -102,49 +102,49 @@ export class CardventasPage implements OnInit {
   getListaFiltrada(event) {
     this.FB.ventasclienteLista;
     this.listaFiltrada = this.FB.ventasclienteLista;
-    console.log("esoto es la lista filtrada " , this.listaFiltrada);
+    console.log("esoto es la lista filtrada ", this.listaFiltrada);
     let varY = event.year.value
     let varM = event.month.value
-    let varym = (varY+"-"+varM);
+    let varym = (varY + "-" + varM);
     console.log("buscador   ---- ", varym);
-    if(varym && varym.trim() != ''){
+    if (varym && varym.trim() != '') {
 
       this.listaFiltrada = this.listaFiltrada.filter((item) => {
         return (item.fechaEnvio.indexOf(varym) > -1);
       })
 
-    }else{
-      if(varym == '' || varym == undefined){
+    } else {
+      if (varym == '' || varym == undefined) {
         this.listaFiltrada = this.FB.ventasclienteLista;
         return this.listaFiltrada;
       }
     }
 
-    
+
 
   }
   irVender(input) {
     console.log("Se envia este id cliente", this.idcliente);
     this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
   }
-  
 
-  // async modalConfirmarPesada(card) {
-  //   this.FB.getInfoCompra(this.idcliente, card.id)
-  //   this.FB.getPesajeConfirmado(this.idcliente, card.id);
-  //   const modal = await this.modalController.create({
-  //     component: HomeventasPage,
-  //     cssClass: 'my-custom-class',
-  //     keyboardClose: false,
-  //     backdropDismiss: false,
-  //     componentProps: {
-  //       idVenta: card.id,
-  //       idClient: this.idcliente
-  //     },
-  //   });
-  //   await modal.present();
 
-  // }
+  async modalConfirmarPesada(card) {
+    // this.FB.getInfoCompra(this.idcliente, card.id)
+    // this.FB.getPesajeConfirmado(this.idcliente, card.id);
+    const modal = await this.modalController.create({
+      component: HomeventasPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idVenta: card.id,
+        idCliente: this.idcliente
+      },
+    });
+    await modal.present();
+
+  }
 
   recorriendolista() {
     this.FB.ventasclienteListaMes.forEach(element => {

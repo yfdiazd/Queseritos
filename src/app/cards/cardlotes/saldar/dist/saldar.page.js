@@ -116,7 +116,6 @@ var SaldarPage = /** @class */ (function () {
     SaldarPage.prototype.alerta = function () {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
-            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
@@ -127,8 +126,6 @@ var SaldarPage = /** @class */ (function () {
                                 {
                                     text: 'Aceptar',
                                     handler: function () {
-                                        // this.FB.getEstadoProveedor(this.idProv);
-                                        _this.FB.eliminarNodoProveedor(_this.idProv);
                                     }
                                 }
                             ]

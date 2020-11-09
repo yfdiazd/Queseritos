@@ -48,7 +48,7 @@ export class HomeestadoquesoPage implements OnInit {
       component: CrearestadoproductoPage,
       cssClass: "my-custom-class"
     });
-    return await modal.present();
+    return await modal.present();    
   }
   async eliminar(lista) {
     const alert = await this.alertController.create({
@@ -79,6 +79,6 @@ export class HomeestadoquesoPage implements OnInit {
     await alert.present();
   }
   async cerrar() {
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
 }

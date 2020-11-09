@@ -16,16 +16,16 @@ import { __values } from "tslib";
   styleUrls: ['./homeconductores.page.scss'],
 })
 export class HomeconductoresPage implements OnInit {
- listaconductores: any[]=[];
- objconductores: any;
+  listaconductores: any[] = [];
+  objconductores: any;
   constructor(
     private navCtrl: NavController,
     private FB: FBservicesService,
     public alertController: AlertController,
     private router: Router,
     public modalController: ModalController
-  ) { 
-      
+  ) {
+
     this.listarconductores()
 
   }
@@ -49,10 +49,14 @@ export class HomeconductoresPage implements OnInit {
         apellidosEdit: lista.apellidos,
         celularEdit: lista.celular,
         id: lista.id
-
       },
     });
-    return await modal.present();
+
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarconductores();
+    }
   }
 
   async crearModal() {
@@ -60,7 +64,11 @@ export class HomeconductoresPage implements OnInit {
       component: CrearconductorPage,
       cssClass: "my-custom-class"
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.listarconductores();
+    }
   }
 
   async eliminar(lista) {
@@ -83,6 +91,7 @@ export class HomeconductoresPage implements OnInit {
           text: "SI",
           handler: () => {
             this.FB.deleteConductor(lista.id);
+            this.listarconductores();
           },
         },
       ],
@@ -92,47 +101,47 @@ export class HomeconductoresPage implements OnInit {
   }
 
   async cerrar() {
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
 
-  listarconductores(){
+  listarconductores() {
     this.listaconductores = [];
-    this.objconductores=null;
-    this.FB.conductoresLista.forEach(element=>{
-      this.objconductores= ({
-        nombres: element.nombres, 
+    this.objconductores = null;
+    this.FB.conductoresLista.forEach(element => {
+      this.objconductores = ({
         apellidos: element.apellidos,
-        numIndetificacion:element.numIndetificacion,
         celular: element.celular,
-  
+        id: element.id,
+        idTipoIdentificacion: element.idTipoIdentificacion,
+        nombres: element.nombres,
+        numIndetificacion: element.numIndetificacion,
+
       })
       this.listaconductores.push(this.objconductores);
-      
+
     })
     return this.listaconductores;
   }
-  getItems(ev:any){
+  getItems(ev: any) {
     this.listaconductores;
     let val = ev.target.value;
-    if (val && val.trim() != '')
-    {
-      
-      this.listaconductores = this.listaconductores.filter((item)=>{
-        return (item.nombres.toLowerCase().indexOf(val.toLowerCase())> -1)
-        
+    if (val && val.trim() != '') {
+
+      this.listaconductores = this.listaconductores.filter((item) => {
+        return (item.nombres.toLowerCase().indexOf(val.toLowerCase()) > -1)
+
       })
-  
+
     }
-    
-      else if(val== '' || val == undefined)
-      {   
-          this.listaconductores= this.FB.conductoresLista;
-          return this.listaconductores;
-      }
-        
-  
-      
-     
+
+    else if (val == '' || val == undefined) {
+      this.listaconductores = this.FB.conductoresLista;
+      return this.listaconductores;
     }
+
+
+
+
+  }
 
 }

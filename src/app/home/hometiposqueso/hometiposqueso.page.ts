@@ -78,7 +78,7 @@ export class HometiposquesoPage implements OnInit {
   }
 
   async cerrar(){
-    this.navCtrl.navigateForward('main-menu');
+    this.navCtrl.navigateBack('main-menu');
   }
  
 }

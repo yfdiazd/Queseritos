@@ -35,15 +35,15 @@ export class CrearclientesPage {
   @Input() nombreIdentificacionEdit;
   @Input() nombreCiudadEdit;
   //estos son los que se envian en el formulario
-  @Input() tipoIdentificacionEdit;
-  @Input() numeroIdentificacionClienteEdit;
-  @Input() nombresClienteEdit;
-  @Input() apellidosClienteEdit;
-  @Input() empresaClienteEdit;
-  @Input() codigociudadEdit;
-  @Input() celularClienteEdit;
-  @Input() direccionClienteEdit;
-  @Input() correoClienteEdit;
+  @Input() tipoIdentificacionEdit = "";
+  @Input() numeroIdentificacionClienteEdit = "";
+  @Input() nombresClienteEdit = "";
+  @Input() apellidosClienteEdit = "";
+  @Input() empresaClienteEdit = "";
+  @Input() codigociudadEdit = "";
+  @Input() celularClienteEdit = "";
+  @Input() direccionClienteEdit = "";
+  @Input() correoClienteEdit = "";
   @Input() id;
 
 
@@ -60,17 +60,16 @@ export class CrearclientesPage {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarCliente(this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
       }
 
     } else {
       console.log("Entro a MODIFICAR---")
       if (this.tipoIdentificacionEdit == "" || this.numeroIdentificacionClienteEdit == "" || this.nombresClienteEdit == "" || this.codigociudadEdit == "" || this.celularClienteEdit == "" || this.direccionClienteEdit == "" || this.empresaClienteEdit == "") {
         this.toastCamposRequeridos();
-        console.log("No modificaste nada")
       } else {
         this.FB.updateCliente(this.id, this.tipoIdentificacionEdit, this.numeroIdentificacionClienteEdit, this.nombresClienteEdit.toUpperCase(), this.apellidosClienteEdit.toUpperCase(), this.empresaClienteEdit.toUpperCase(), this.codigociudadEdit, this.celularClienteEdit, this.direccionClienteEdit.toUpperCase(), this.correoClienteEdit.toUpperCase());
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
       }
     }
   }
@@ -85,7 +84,7 @@ export class CrearclientesPage {
       cssClass: "toast",
       color: 'warning',
       position: 'middle',
-      duration: 5000
+      duration: 3000
     });
     toast.present();
   }

@@ -14,12 +14,12 @@ import { FBservicesService } from '../../fbservices.service';
 
 export class CrearconductorPage implements OnInit {
 
-  @Input() idTipoIdentificacionEdit;
-  @Input() numidentificacionEdit;
-  @Input() nombresEdit;
-  @Input() apellidosEdit;
-  @Input() celularEdit;
+  @Input() apellidosEdit = "";
+  @Input() celularEdit = "";
   @Input() id;
+  @Input() idTipoIdentificacionEdit = "";
+  @Input() nombresEdit = "";
+  @Input() numidentificacionEdit = "";
 
   constructor(
     private FB: FBservicesService,
@@ -31,7 +31,7 @@ export class CrearconductorPage implements OnInit {
   ngOnInit() {
   }
   customAlertOptions: any = {
-    header: "Seleccione uno",
+    header: "Seleccione",
     translucent: true,
   };
   guardarConductor() {
@@ -42,7 +42,7 @@ export class CrearconductorPage implements OnInit {
         this.toastCamposRequeridos();
       } else {
         this.FB.agregarConductor(this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
       }
 
     } else {
@@ -52,7 +52,7 @@ export class CrearconductorPage implements OnInit {
         console.log("No modificaste nada")
       } else {
         this.FB.updateConductor(this.id, this.idTipoIdentificacionEdit, this.numidentificacionEdit, this.nombresEdit.toUpperCase(), this.apellidosEdit.toUpperCase(), this.celularEdit);
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
       }
     }
   }
@@ -67,7 +67,7 @@ export class CrearconductorPage implements OnInit {
       cssClass: "toast",
       color: 'warning',
       position: 'middle',
-      duration: 5000
+      duration: 3000
     });
     toast.present();
   }

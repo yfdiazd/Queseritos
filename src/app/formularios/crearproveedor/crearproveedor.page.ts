@@ -1,5 +1,5 @@
 import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { ModalController,ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FBservicesService } from "../../fbservices.service";
 
@@ -14,14 +14,14 @@ import { FBservicesService } from "../../fbservices.service";
 })
 
 export class CrearproveedorPage {
-  
-  @Input() idTipoIdentificacionEdit;
-  @Input() numIndetificacionEdit;
-  @Input() nombreEdit;
-  @Input() apellidoEdit;
-  @Input() telefonoEdit;
-  @Input() direccionEdit;
-  @Input() correoEdit;
+
+  @Input() apellidoEdit = "";
+  @Input() correoEdit = "";
+  @Input() direccionEdit = "";
+  @Input() idTipoIdentificacionEdit = "";
+  @Input() nombreEdit = "";
+  @Input() numIndetificacionEdit = "";
+  @Input() telefonoEdit = "";
   @Input() id;
 
   constructor(
@@ -33,28 +33,29 @@ export class CrearproveedorPage {
   ngOnInit() { }
 
   customAlertOptions: any = {
-    header: "Seleccione uno",
+    header: "Seleccione",
     translucent: true,
   };
 
   crearProveedor() {
     if (this.id == undefined) {
       console.log("Entro a crear")
-      if (this.idTipoIdentificacionEdit == undefined || this.numIndetificacionEdit == undefined || this.nombreEdit == undefined || this.telefonoEdit == undefined) {
+      if (this.idTipoIdentificacionEdit == "" || this.numIndetificacionEdit == "" || this.nombreEdit == "" || this.telefonoEdit == "") {
         this.toastCamposRequeridos();
       } else {
         this.FB.crearProveedor(this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit.toUpperCase(), this.apellidoEdit.toUpperCase(), this.telefonoEdit, this.direccionEdit.toUpperCase(), this.correoEdit.toUpperCase());
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
+
       }
 
     } else {
       console.log("Entro a MODIFICAR---")
-      if (this.idTipoIdentificacionEdit == "" || this.numIndetificacionEdit == "" || this.nombreEdit == "" || this.telefonoEdit == "" ) {
+      if (this.idTipoIdentificacionEdit == "" || this.numIndetificacionEdit == "" || this.nombreEdit == "" || this.telefonoEdit == "") {
         this.toastCamposRequeridos();
         console.log("No modificaste nada")
       } else {
         this.FB.updateProveedor(this.id, this.idTipoIdentificacionEdit, this.numIndetificacionEdit, this.nombreEdit.toUpperCase(), this.apellidoEdit.toUpperCase(), this.telefonoEdit, this.direccionEdit.toUpperCase(), this.correoEdit.toUpperCase());
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss("true", "actualizar");
       }
     }
   }
@@ -69,7 +70,7 @@ export class CrearproveedorPage {
       cssClass: "toast",
       color: 'warning',
       position: 'middle',
-      duration: 5000
+      duration: 3000
     });
     toast.present();
   }

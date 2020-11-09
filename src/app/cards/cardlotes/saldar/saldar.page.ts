@@ -95,8 +95,7 @@ export class SaldarPage implements OnInit {
         {
         text: 'Aceptar',
         handler: () => {        
-          // this.FB.getEstadoProveedor(this.idProv);
-          this.FB.eliminarNodoProveedor(this.idProv);  
+         
         }
       }
     ]
