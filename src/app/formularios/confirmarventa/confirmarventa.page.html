@@ -2,29 +2,17 @@
   <ion-toolbar>
     <ion-title class="titulo">CONFIRMAR VENTA</ion-title>
     <ion-buttons slot="start">
-      <ion-button (click)="volver()" color="success">X</ion-button>
+      <ion-button (click)="volver()" color="danger">X</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="div-principal">
-    <ion-title class="title">{{nombreCliente}}</ion-title>
+    <ion-title class="title">Precio de Venta</ion-title>
   </div>
   <div class="div-formulario">
-    <div class="div_fila_1">
-      <p><span>Tipo de queso: </span><span class="tipo_queso">{{tipoqueso}}</span></p>
-    </div>
-    <div class="div_fila_1">
-      <p><span>Estado de queso: </span><span class="tipo_queso">{{estadoproducto}}</span></p>
-    </div>
-    <div class="div_fila_1">
-      <p><span>Pesadas: </span><span class="tipo_queso">{{pesadas}}</span></p>
-    </div>
-    <div class="div_fila_1">
-      <p><span>Cantidad Kilos: </span><span class="tipo_queso">{{cantidadkilos}}</span></p>
-    </div>
-    <div class="div_fila_1">
+       <div class="div_fila_1">
       <input max="10" type="number" [(ngModel)]="Valor" />
     </div>
     <ion-button (click)="guardar()" expand="full">
