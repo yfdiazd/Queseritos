@@ -229,7 +229,6 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
-
             } else {
 
                 this.navCtrl.navigateBack(["login"]);

@@ -91,10 +91,14 @@ export class DetallelotePage implements OnInit {
       productos.forEach(producto => {
         if (compra.idProducto == producto.id) {
           let sumaAnticipos = 0;
-          compra.anticipos.forEach(sumaAnt => {
-            console.log("Sumando anticipos", sumaAnt.valorAnticipo);
-            sumaAnticipos += sumaAnt.valorAnticipo;
-          });
+          if (compra.anticipos !== 0) {
+            compra.anticipos.forEach(sumaAnt => {
+              console.log("Sumando anticipos", sumaAnt.valorAnticipo);
+              sumaAnticipos += sumaAnt.valorAnticipo;
+            });
+          } else {
+            sumaAnticipos = 0;
+          }
           this.dataFront.push({
             anticipos: compra.anticipos,
             bultoLista: compra.bultoLista,
