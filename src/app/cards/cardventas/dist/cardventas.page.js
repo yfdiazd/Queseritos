@@ -64,10 +64,16 @@ var CardventasPage = /** @class */ (function () {
     }
     CardventasPage.prototype.ngOnInit = function () {
         var _this = this;
+        var id = this.route.snapshot.paramMap.get("id");
+        this.idcliente = id;
+        this.presentLoading('Espere...');
+        this.traerNombre();
+        console.log("Esta es la lista para ver en el front:", this.FB.ventasclienteListaMes);
         this.customPickerOptions = {
             buttons: [{
                     text: 'Aceptar',
                     handler: function (evento) {
+                        _this.valueDate = evento;
                         _this.show = false;
                         _this.hiden = true;
                         console.log("imprime event", evento);
@@ -81,9 +87,6 @@ var CardventasPage = /** @class */ (function () {
                     }
                 }]
         };
-        var id = this.route.snapshot.paramMap.get("id");
-        this.idcliente = id;
-        this.traerNombre();
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -112,7 +115,6 @@ var CardventasPage = /** @class */ (function () {
     };
     CardventasPage.prototype.doRefresh = function (event) {
         this.traerNombre();
-        this.presentLoading('Espere...');
         this.recorriendolista();
         setTimeout(function () {
             event.target.complete();
@@ -176,15 +178,12 @@ var CardventasPage = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                this.nombreCliente = [];
-                //this.listaVentas = [];
-                console.log("idcliente traer nombre:", this.idcliente);
+                this.nombreCliente = "";
                 this.FB.clientesLista.forEach(function (element) {
                     if (element.id == _this.idcliente) {
                         _this.nombreCliente = element.nombres;
                     }
                 });
-                console.log("imprime nombre del cliente", this.nombreCliente);
                 return [2 /*return*/, this.nombreCliente];
             });
         });

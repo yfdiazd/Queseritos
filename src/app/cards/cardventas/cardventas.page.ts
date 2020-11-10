@@ -18,8 +18,7 @@ export class CardventasPage implements OnInit {
   public listaPesadas: any;
   public listaPesadasVenta: any;
   anofecha: Date = new Date();
-  customPickerOptions;
-  fechafiltro;
+  customPickerOptions: any;
   show: boolean = true;
   hiden: boolean = false;
   //Datos consolidados para la visualización
@@ -40,21 +39,23 @@ export class CardventasPage implements OnInit {
 
   public idcliente: any;
   public loading: any;
+  valueDate;
   ngOnInit() {
-
+    let id = this.route.snapshot.paramMap.get("id");
+    this.idcliente = id;
+    this.presentLoading('Espere...');
+    this.traerNombre();
+    console.log("Esta es la lista para ver en el front:", this.FB.ventasclienteListaMes);
     this.customPickerOptions = {
       buttons: [{
         text: 'Aceptar',
         handler: (evento) => {
+          this.valueDate = evento;
           this.show = false;
           this.hiden = true;
           console.log("imprime event", evento);
           this.getListaFiltrada(evento);
-
         }
-
-
-
       }, {
         text: 'Cancelar',
         handler: () => {
@@ -64,9 +65,6 @@ export class CardventasPage implements OnInit {
       }]
     }
 
-    let id = this.route.snapshot.paramMap.get("id");
-    this.idcliente = id;
-    this.traerNombre();
 
     setTimeout(() => {
       this.loading.dismiss();
@@ -87,9 +85,7 @@ export class CardventasPage implements OnInit {
   }
 
   doRefresh(event) {
-
     this.traerNombre();
-    this.presentLoading('Espere...');
     this.recorriendolista();
 
     setTimeout(() => {
@@ -127,8 +123,6 @@ export class CardventasPage implements OnInit {
     console.log("Se envia este id cliente", this.idcliente);
     this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
   }
-
-
   async modalConfirmarPesada(card) {
     // this.FB.getInfoCompra(this.idcliente, card.id)
     // this.FB.getPesajeConfirmado(this.idcliente, card.id);
@@ -145,23 +139,18 @@ export class CardventasPage implements OnInit {
     await modal.present();
 
   }
-
   recorriendolista() {
     this.FB.ventasclienteListaMes.forEach(element => {
       console.log("elementttttt", element)
     })
   }
   async traerNombre() {
-    this.nombreCliente = [];
-    //this.listaVentas = [];
-    console.log("idcliente traer nombre:", this.idcliente);
-
+    this.nombreCliente = "";
     this.FB.clientesLista.forEach(element => {
       if (element.id == this.idcliente) {
         this.nombreCliente = element.nombres;
       }
-    })
-    console.log("imprime nombre del cliente", this.nombreCliente);
+    });
     return this.nombreCliente;
     // this.FB.ventasclienteLista.forEach(pesaje => {
     //   this.FB.productosLista.forEach(producto => {

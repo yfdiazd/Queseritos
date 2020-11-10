@@ -65,8 +65,6 @@ var CardcomprasPage = /** @class */ (function () {
         this.traerNombre();
         this.cambioSaldo();
         this.presentLoading('Espere...');
-        console.log("Esto es para ver", this.listaDatos);
-        console.log("Esto debe imprimirse siempre. NGONINIT");
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -93,13 +91,21 @@ var CardcomprasPage = /** @class */ (function () {
             });
         });
     };
+    CardcomprasPage.prototype.doRefresh = function (event) {
+        this.validacionLote();
+        this.FB.getLoteProveedor();
+        this.FB.getAnticipoProveedor();
+        this.traerNombre();
+        this.cambioSaldo();
+        setTimeout(function () {
+            event.target.complete();
+        }, 1000);
+    };
     CardcomprasPage.prototype.cambioSaldo = function () {
         var valor1 = 0;
         var valor2 = 0;
-        console.log("datos sumassssss ", this.FB.saldodebitototal, this.FB.saldocreditotal);
         valor1 = this.FB.saldodebitototal;
         valor2 = this.FB.saldocreditotal;
-        console.log("Sumas", valor1, " - ", valor2);
         if ((valor1 - valor2) < 0) {
             document.getElementById("valorCss").style.color = "crimson";
             document.getElementById("valorCss").style.textShadow = "#500707 1px 1px 1px";
@@ -107,18 +113,6 @@ var CardcomprasPage = /** @class */ (function () {
         else {
             document.getElementById("valorCss").style.color = "lime";
         }
-    };
-    CardcomprasPage.prototype.doRefresh = function (event) {
-        console.log("event refresh", event);
-        this.validacionLote();
-        this.FB.getLoteProveedor();
-        this.FB.getAnticipoProveedor();
-        this.traerNombre();
-        this.cambioSaldo();
-        console.log("Esto es para ver", this.listaDatos);
-        setTimeout(function () {
-            event.target.complete();
-        }, 1000);
     };
     CardcomprasPage.prototype.traerNombre = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -145,7 +139,6 @@ var CardcomprasPage = /** @class */ (function () {
                         }
                     });
                 });
-                console.log("lista datos", this.listaDatos);
                 return [2 /*return*/, this.listaDatos];
             });
         });
