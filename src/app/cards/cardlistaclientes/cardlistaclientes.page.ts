@@ -14,9 +14,9 @@ import { element } from 'protractor';
 })
 export class CardlistaclientesPage implements OnInit {
   listanombres: any[] = [];
-  nombres:string;
-  cont:number =0;
-  items:any;
+  nombres: string;
+  cont: number = 0;
+  items: any;
   objlistanombres: any
   constructor(
     private modalCtrl: ModalController,
@@ -24,63 +24,61 @@ export class CardlistaclientesPage implements OnInit {
     private FB: FBservicesService,
     private navCtrl: NavController,
     private alertController: AlertController,
-    private route : ActivatedRoute,
+    private route: ActivatedRoute,
 
-  ) { 
+  ) {
     this.listarnombresclientes();
-  
+
   }
 
   ngOnInit() {
-    
-  }
-
-
-getItems(ev:any){
-  this.listanombres;
-  let val = ev.target.value;
-  if (val && val.trim() != '')
-  {
-    
-    this.listanombres = this.listanombres.filter((item)=>{
-      return (item.toLowerCase().indexOf(val.toLowerCase())> -1)
-      
-    })
 
   }
-  else{
-    if (val== '' || val == undefined){    
-      return this.listarnombresclientes();
-      
+
+
+  getItems(ev: any) {
+    this.listanombres;
+    let val = ev.target.value;
+    if (val && val.trim() != '') {
+
+      this.listanombres = this.listanombres.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1)
+
+      })
 
     }
-   
-  }
-}
+    else {
+      if (val == '' || val == undefined) {
+        return this.listarnombresclientes();
 
-  listarnombresclientes(){
+
+      }
+
+    }
+  }
+
+  listarnombresclientes() {
     this.listanombres = [];
-    this.FB.clientesLista.forEach(element=>{
+    this.FB.clientesLista.forEach(element => {
       this.listanombres.push((element.nombres + " " + element.apellidos))
-      
+
     })
     return this.listanombres;
   }
-  
 
-  irCardListaClientes(input){
-      this.FB.clientesLista.forEach(element=>{
-      if(element.nombres + " " + element.apellidos == input)
-      {
+
+  irCardListaClientes(input) {
+    this.FB.clientesLista.forEach(element => {
+      if (element.nombres + " " + element.apellidos == input) {
         this.FB.getVentaCliente(element.id);
         this.FB.getVentaClienteMes(element.id);
         this.navCtrl.navigateForward(['cardventas/', element.id]);
       }
-      
-      
+
+
     })
-    
-    
+
+
   }
 
 
