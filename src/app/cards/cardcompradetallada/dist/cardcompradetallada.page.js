@@ -236,7 +236,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
-                            header: 'Restricción',
+                            header: 'No se puede eliminar',
                             message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
                             buttons: ['Aceptar']
                         })];
@@ -252,10 +252,11 @@ var CardcompradetalladaPage = /** @class */ (function () {
     };
     CardcompradetalladaPage.prototype.editarRegistro = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var modal, data;
+            var modal, data, alert;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (!(card.costoTotalCompra == 0)) return [3 /*break*/, 4];
                         console.log("esta es la data a editar", card);
                         return [4 /*yield*/, this.modalController.create({
                                 component: crearcompra_page_1.CrearcompraPage,
@@ -285,7 +286,20 @@ var CardcompradetalladaPage = /** @class */ (function () {
                             this.FB.getProveedorCompra();
                             this.FB.getAnticipoProveedor();
                         }
-                        return [2 /*return*/];
+                        return [3 /*break*/, 7];
+                    case 4: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'No se puede editar',
+                            message: 'Esta compra ya tiene pesajes confirmados.',
+                            buttons: ['ACEPTAR']
+                        })];
+                    case 5:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 6:
+                        _a.sent();
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });

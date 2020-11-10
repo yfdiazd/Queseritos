@@ -150,6 +150,12 @@ ion-content .div-secundario .div-card2 {
   border-radius: 5px;
   background-color: #fff;
 }
+ion-content .div-secundario .div-card2 .h3 {
+  display: inline-block;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
 ion-content .div-secundario .div-card2 .div_tabla {
   width: 100%;
   margin: auto;

@@ -45,12 +45,10 @@ exports.__esModule = true;
 exports.CreartruequePage = void 0;
 var core_1 = require("@angular/core");
 var CreartruequePage = /** @class */ (function () {
-    function CreartruequePage(FB, modalCtrl, toastController, route, router) {
+    function CreartruequePage(FB, modalCtrl, toastController) {
         this.FB = FB;
         this.modalCtrl = modalCtrl;
         this.toastController = toastController;
-        this.route = route;
-        this.router = router;
         //   @Pipe({
         //     name: 'thousandsPipe'
         // })
@@ -90,9 +88,7 @@ var CreartruequePage = /** @class */ (function () {
     CreartruequePage.prototype.traerNombre = function () {
         var _this = this;
         this.nombreProv = [];
-        console.log("antes de validar datosssssssss ", this.card);
         if (this.card == "si") {
-            console.log("Nombre prov sin lista", this.idProveedor);
             this.FB.proveedoresLista.forEach(function (element) {
                 if (element.id == _this.idProveedor) {
                     _this.nombreProv = element.nombre;
@@ -100,7 +96,6 @@ var CreartruequePage = /** @class */ (function () {
             });
         }
         else {
-            console.log("Nombre prov con lista", this.datos.idProveedor);
             this.FB.proveedoresLista.forEach(function (element) {
                 if (element.id == _this.datos.idProveedor) {
                     _this.nombreProv = element.nombre;
@@ -121,7 +116,6 @@ var CreartruequePage = /** @class */ (function () {
         }
     };
     CreartruequePage.prototype.guardar = function () {
-        console.log("imagennnnnnnnnnnnnn ", this.imagen);
         console.log(" esto es ", this.card);
         if (this.card == "si") {
             if (this.idProveedor == null || this.id, this.lote == null || this.tipoAnticipoEdit == null || this.valor == null || this.imagen == undefined) {
@@ -130,7 +124,7 @@ var CreartruequePage = /** @class */ (function () {
             console.log("Cuando viene sin compra pepaa ", this.idProveedor, this.id, this.lote);
             this.FB.crearBalanceLote(this.idProveedor, this.lote);
             this.FB.registrarAnticiposApesajeCompra(this.idProveedor, this.id, this.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
-            this.FB.getPesajeLoteProveedor(this.datos.idProveedor, this.datos.lote);
+            this.FB.getPesajeLoteProveedor(this.idProveedor, this.lote);
             this.FB.getAnticipoDirectoProveedor(this.idProveedor, this.lote);
             this.modalCtrl.dismiss("true", "actualizar");
         }
@@ -142,7 +136,7 @@ var CreartruequePage = /** @class */ (function () {
             this.FB.crearBalanceLote(this.datos.idProveedor, this.datos.lote);
             this.FB.registrarAnticiposApesajeCompra(this.datos.idProveedor, this.datos.id, this.datos.lote, this.tipoAnticipoEdit, this.valor, this.imagen);
             this.FB.getPesajeLoteProveedor(this.datos.idProveedor, this.datos.lote);
-            this.FB.getAnticipoDirectoProveedor(this.idProveedor, this.lote);
+            this.FB.getAnticipoDirectoProveedor(this.datos.idProveedor, this.datos.lote);
             this.modalCtrl.dismiss("true", "actualizar");
         }
     };
@@ -159,7 +153,7 @@ var CreartruequePage = /** @class */ (function () {
                             cssClass: "toast",
                             color: 'warning',
                             position: 'middle',
-                            duration: 5000
+                            duration: 3000
                         })];
                     case 1:
                         toast = _a.sent();

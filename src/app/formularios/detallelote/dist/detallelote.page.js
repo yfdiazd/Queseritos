@@ -55,10 +55,14 @@ var DetallelotePage = /** @class */ (function () {
         this.navCtrl = navCtrl;
         this.Lotenum = "17-10-2020-L1";
         this.proveedor = "fernanda";
+        //Lista de anticipos para mostrar de la compra
+        this.dataFront = [];
+        this.dataFrontDirecta = [];
         //Controladores para visualizar el segment
         this.cards_Compras = true;
         this.cards_anticipos = false;
         this.crearAnticipo = false;
+        this.sumaAnticiposDirecto = 0;
     }
     DetallelotePage.prototype.ngOnInit = function () {
         var idLote = this.route.snapshot.paramMap.get("id");
@@ -111,9 +115,15 @@ var DetallelotePage = /** @class */ (function () {
                         return [4 /*yield*/, this.FB.productosLista];
                     case 2:
                         productos = _a.sent();
+                        console.log("imprimir lista", lista, "::: y productos", productos);
                         lista.forEach(function (compra) {
                             productos.forEach(function (producto) {
                                 if (compra.idProducto == producto.id) {
+                                    var sumaAnticipos_1 = 0;
+                                    compra.anticipos.forEach(function (sumaAnt) {
+                                        console.log("Sumando anticipos", sumaAnt.valorAnticipo);
+                                        sumaAnticipos_1 += sumaAnt.valorAnticipo;
+                                    });
                                     _this.dataFront.push({
                                         anticipos: compra.anticipos,
                                         bultoLista: compra.bultoLista,
@@ -125,11 +135,16 @@ var DetallelotePage = /** @class */ (function () {
                                         lote: compra.lote,
                                         pesoBultos: compra.pesoBultos,
                                         totalBulto: compra.totalBulto,
-                                        nompreProducto: producto.descripcion
+                                        nompreProducto: producto.descripcion,
+                                        valorSumaAnticipos: sumaAnticipos_1
                                     });
+                                }
+                                else {
+                                    console.log("no entro al generar data");
                                 }
                             });
                         });
+                        console.log("DATAFRONT: ", this.dataFront);
                         return [2 /*return*/, this.dataFront];
                 }
             });
@@ -149,9 +164,11 @@ var DetallelotePage = /** @class */ (function () {
                         return [4 /*yield*/, this.FB.tipoAnticipoLista];
                     case 2:
                         productos = _a.sent();
+                        this.sumaAnticiposDirecto = 0;
                         lista.forEach(function (anticipo) {
                             productos.forEach(function (tipoAnt) {
                                 if (anticipo.idTipoAnticipo == tipoAnt.descripcion) {
+                                    _this.sumaAnticiposDirecto += anticipo.valorAnticipo;
                                     _this.dataFrontDirecta.push({
                                         valorAnticipo: anticipo.valorAnticipo,
                                         fechaAnticipo: anticipo.fechaAnticipo,
@@ -163,7 +180,7 @@ var DetallelotePage = /** @class */ (function () {
                                 }
                             });
                         });
-                        return [2 /*return*/, this.dataFrontDirecta];
+                        return [2 /*return*/, (this.dataFrontDirecta, this.sumaAnticiposDirecto)];
                 }
             });
         });

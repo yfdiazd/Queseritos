@@ -28,8 +28,8 @@ export class DetallelotePage implements OnInit {
   public nombreProv: any;
 
   //Lista de anticipos para mostrar de la compra
-  dataFront: any;
-  dataFrontDirecta: any;
+  dataFront: any[] = [];
+  dataFrontDirecta: any[] = [];
 
   //Controladores para visualizar el segment
   cards_Compras: boolean = true;
@@ -60,13 +60,13 @@ export class DetallelotePage implements OnInit {
         this.crearAnticipo = false;
         this.generarData();
         this.generarDataDirecta();
-      } else if(valorSegment =="scompras"){
+      } else if (valorSegment == "scompras") {
         this.cards_Compras = false;
         this.cards_anticipos = true;
         this.crearAnticipo = true;
         this.generarData();
         this.generarDataDirecta();
-      }else{
+      } else {
         this.generarData();
         this.generarDataDirecta();
       }
@@ -79,9 +79,15 @@ export class DetallelotePage implements OnInit {
     this.dataFront = [];
     let lista = await this.FB.pesajeLoteProveedorLista;
     let productos = await this.FB.productosLista;
+    console.log("imprimir lista", lista, "::: y productos", productos);
     lista.forEach(compra => {
       productos.forEach(producto => {
         if (compra.idProducto == producto.id) {
+          let sumaAnticipos = 0;
+          compra.anticipos.forEach(sumaAnt => {
+            console.log("Sumando anticipos", sumaAnt.valorAnticipo);
+            sumaAnticipos += sumaAnt.valorAnticipo;
+          });
           this.dataFront.push({
             anticipos: compra.anticipos,
             bultoLista: compra.bultoLista,
@@ -93,22 +99,30 @@ export class DetallelotePage implements OnInit {
             lote: compra.lote,
             pesoBultos: compra.pesoBultos,
             totalBulto: compra.totalBulto,
-            nompreProducto: producto.descripcion
+            nompreProducto: producto.descripcion,
+            valorSumaAnticipos: sumaAnticipos
           })
+        }
+        else {
+          console.log("no entro al generar data");
         }
       })
     })
+    console.log("DATAFRONT: ", this.dataFront);
     return this.dataFront;
 
   }
 
+  sumaAnticiposDirecto = 0;
   async generarDataDirecta() {
     this.dataFrontDirecta = [];
     let lista = await this.FB.anticipoDirectoProveedorLista;
     let productos = await this.FB.tipoAnticipoLista;
+    this.sumaAnticiposDirecto = 0;
     lista.forEach(anticipo => {
       productos.forEach(tipoAnt => {
         if (anticipo.idTipoAnticipo == tipoAnt.descripcion) {
+          this.sumaAnticiposDirecto += anticipo.valorAnticipo;
           this.dataFrontDirecta.push({
             valorAnticipo: anticipo.valorAnticipo,
             fechaAnticipo: anticipo.fechaAnticipo,
@@ -120,7 +134,7 @@ export class DetallelotePage implements OnInit {
         }
       })
     })
-    return this.dataFrontDirecta;
+    return this.dataFrontDirecta, this.sumaAnticiposDirecto;
 
   }
 

@@ -169,7 +169,7 @@ export class CardcompradetalladaPage implements OnInit {
   async alertRemove() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Restricción',
+      header: 'No se puede eliminar',
       message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
       buttons: ['Aceptar']
     });
@@ -177,28 +177,39 @@ export class CardcompradetalladaPage implements OnInit {
   }
 
   async editarRegistro(card) {
-    console.log("esta es la data a editar", card);
-    const modal = await this.modalController.create({
-      component: CrearcompraPage,
-      cssClass: 'my-custom-class',
-      keyboardClose: false,
-      backdropDismiss: false,
-      componentProps: {
-        idProveedor: this.idProveedor,
-        idCompra: card.id,
-        listaBultosEdit: card.bultoLista,
-        productoEdit: card.idProducto
-      },
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    if (data == "true") {
-      this.FB.getPesajeCompra(this.idProveedor);
-      this.FB.getProductos();
-      this.traerTipoQueso();
-      this.traerNombre();
-      this.FB.getProveedorCompra();
-      this.FB.getAnticipoProveedor();
+    if (card.costoTotalCompra == 0) {
+      console.log("esta es la data a editar", card);
+      const modal = await this.modalController.create({
+        component: CrearcompraPage,
+        cssClass: 'my-custom-class',
+        keyboardClose: false,
+        backdropDismiss: false,
+        componentProps: {
+          idProveedor: this.idProveedor,
+          idCompra: card.id,
+          listaBultosEdit: card.bultoLista,
+          productoEdit: card.idProducto
+        },
+      });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      if (data == "true") {
+        this.FB.getPesajeCompra(this.idProveedor);
+        this.FB.getProductos();
+        this.traerTipoQueso();
+        this.traerNombre();
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+      }
+    } else {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'No se puede editar',
+        message: 'Esta compra ya tiene pesajes confirmados.',
+        buttons: ['ACEPTAR']
+      });
+
+      await alert.present();
     }
   }
   volver() {
