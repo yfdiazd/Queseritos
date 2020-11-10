@@ -21,11 +21,14 @@ export class DetallelotePage implements OnInit {
     private modalController: ModalController,
     private alertController: AlertController,
     private navCtrl: NavController
+   
   ) { }
 
   public loteRecibido: any;
   public provRecibido: any;
   public nombreProv: any;
+  public idcliente: any;
+  public loading: any;
 
   //Lista de anticipos para mostrar de la compra
   dataFront: any[] = [];
@@ -45,6 +48,10 @@ export class DetallelotePage implements OnInit {
     this.traerNombre();
     this.cambiarHoja(true);
   }
+
+ 
+
+
 
   cambiarHoja(event) {
     if (event == true) {
