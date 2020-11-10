@@ -76,7 +76,7 @@ export class CardcompradetalladaPage implements OnInit {
           this.listaCompras.push({
             anticipos: pesaje.anticipos,
             bultoLista: pesaje.bultoLista,
-            costoTotalCompra: pesaje.costoTotalCompra,
+            costoTotalCompra: pesaje.costoTotalCompra, 
             fechaCompra: pesaje.fechaCompra,
             id: pesaje.id,
             idProducto: pesaje.idProducto,
@@ -151,7 +151,8 @@ export class CardcompradetalladaPage implements OnInit {
         }, {
           text: 'SI',
           handler: () => {
-
+            console.log("datos de la lista cuando elimina ", lista);
+            
             this.FB.deletePesajeCompra(this.idProveedor, lista.id);
             this.FB.getPesajeCompra(this.idProveedor);
             this.traerTipoQueso();

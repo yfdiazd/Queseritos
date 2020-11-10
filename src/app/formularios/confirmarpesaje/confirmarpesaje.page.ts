@@ -74,6 +74,8 @@ export class ConfirmarpesajePage implements OnInit {
       this.presentAlert();
     } else if (parseInt(this.peso) <= 0 || (parseInt(this.costoKilo) <= 0)) {
       this.presentAlert2();
+    }else if(this.idEstadoProducto == undefined || this.idEstadoProducto == ""){
+      this.presentAlert3()
     }
     else {
       this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado);
@@ -101,6 +103,16 @@ export class ConfirmarpesajePage implements OnInit {
       cssClass: 'my-custom-class',
       header: 'Restricción',
       message: 'El peso y/o valor registrado no puede ser negativo.',
+      buttons: ['Aceptar']
+    });
+
+    await alert.present();
+  }
+  async presentAlert3() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Restricción',
+      message: 'Seleccione un estado de queso para registrar',
       buttons: ['Aceptar']
     });
 
