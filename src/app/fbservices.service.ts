@@ -1119,14 +1119,14 @@ export class FBservicesService {
                     costoTotalCompra: totalLocal
                 });
         } else if (accion == "resta") {
-
-
             let totalLocal = 0;
             this.getCostoCompra(idProveedor, idPesajeCompra);
             totalLocal = this.costoCompraTemp;
+            console.log("esto es la db en compra balance ", totalLocal);
+            console.log("esto es local lo que se quita de balance ", totalCompra);
             totalLocal = (totalLocal - totalCompra);
-
-
+            console.log("esto queda se actualziara en la base de taos ", totalLocal);
+            
             firebase
                 .database()
                 .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
@@ -1640,7 +1640,8 @@ export class FBservicesService {
     //saldar Deudas
     async saldarDeudasProveedor(idProveedor, valor) {
         this.agregarEstadoProveedor(idProveedor, valor);
-        this.getObjProveedor(idProveedor,)
+        this.getObjProveedor(idProveedor);
+        this.eliminarNodoProveedor(idProveedor);  
     }
 
     async getObjProveedor(idProveedor) {
