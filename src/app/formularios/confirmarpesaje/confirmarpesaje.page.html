@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title class="titulo">CONFIRMAR COMPRA</ion-title>
     <ion-buttons slot="start">
-      <ion-button (click)="volver()" color="success">X</ion-button>
+      <ion-button (click)="volver()" color="danger">X</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -39,7 +39,7 @@
       </ion-button>
     </div>
     <div>
-      <h2 *ngIf="noPuede" style="color: black;"> No puedes confirmar mas pesajes, has llegado al limite.</h2>
+      <h2 *ngIf="noPuede" style="color: black;"> No puedes confirmar mas pesajes, has llegado al límite.</h2>
     </div>
   </div>
 </ion-content>

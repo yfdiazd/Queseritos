@@ -319,7 +319,7 @@ export class FBservicesService {
         const toast = await this.toastController.create({
             message: "Operacion ejecutada con exito",
             color: "success",
-            duration: 5000
+            duration: 3000
         });
         toast.present();
     }
@@ -327,7 +327,7 @@ export class FBservicesService {
     async toastExistenPesajesDetale() {
         const toast = await this.toastController.create({
             message: "Existen pesajes confirmados para esta compra",
-            color: "success",
+            color: "danger",
             duration: 5000
         });
         toast.present();
@@ -925,6 +925,7 @@ export class FBservicesService {
                 codigo: codigoCiudad,
                 descripcion: describcionCiudad
             });
+        this.toastOperacionExitosa();
     }
     updateCliente(idCliente, tipoIdentificacion, numeroIdentificacionCliente, nombresCliente, apellidosCliente, empresaCliente, codigoCiudad, celularCliente, direccionCliente, correoCliente) {
 
@@ -1804,15 +1805,15 @@ export class FBservicesService {
     }
 
 
-    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos) {
+    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos,idProducto) {
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + "08-11-2020-L1" + "/pesajeCompra/" + idPesaje)
+            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
             .on("value", snapshot => {
 
-                if (snapshot.val().costoTotalCompra !== 0) {
+                if (snapshot.val().costoTotalCompra == 0) {
 
                     firebase
                         .database()
@@ -1820,11 +1821,12 @@ export class FBservicesService {
                         .update({
                             bultoLista: listaBultos,
                             pesoBultos: peso,
-                            totalBulto: totalBultos
+                            totalBulto: totalBultos,
+                            idProducto: idProducto
                         });
-                        
-                        this.toastOperacionExitosa();
-                }else{
+
+                    this.toastOperacionExitosa();
+                } else {
                     this.toastExistenPesajesDetale();
                 }
             });

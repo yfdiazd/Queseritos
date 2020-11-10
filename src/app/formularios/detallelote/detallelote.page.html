@@ -3,7 +3,7 @@
   <ion-toolbar>
     <ion-title class="titulo">DETALLE LOTE</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/cardcompras" color="success"></ion-back-button>
+      <ion-back-button defaultHref="/cardcompras" color="danger"></ion-back-button>
     </ion-buttons>
     <ion-button *ngIf="crearAnticipo" fill="clear" shape="round" slot="end" (click)="irHomeAnticipo2()">
       <ion-icon name="cash" color="success">+</ion-icon>
@@ -36,8 +36,8 @@
       <ion-card class="card" *ngFor="let item of dataFront">
         <div class="div_info">
           <p>Producto: {{item.nompreProducto}}</p>
-          <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
-          <p>Costo total: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
+          <p>Costo T.Compra: {{item.costoTotalCompra | currency:'USD':true: '2.0-0'}} </p>
+          <p>Valor T.Anticipo: {{item.valorSumaAnticipos | currency:'USD':true: '2.0-0'}} </p>
           <ion-button (click)="irHomeAnticipo(item)" class="btn_crearAnt" expand="block" fill="clear" shape="round">
             <ion-icon slot="end" name="cash" color="success"></ion-icon>+
           </ion-button>
@@ -68,6 +68,7 @@
       </ion-card>
     </div>
     <div class="div-card2" *ngIf="cards_anticipos">
+      <h3 class="h3">{{sumaAnticiposDirecto | currency:'USD':true: '2.0-0'}}</h3>
       <div class="div_tabla">
         <table class="table">
           <thead class="thead">

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { FBservicesService } from 'src/app/fbservices.service';
 })
 export class CrearcompraPage implements OnInit {
 
-  public idProveedor;
+
   public fecha;
 
   public mostrar: boolean = false;
@@ -18,39 +18,48 @@ export class CrearcompraPage implements OnInit {
   //Variables para los bultos
   public numbulto = 1;
   public nuevoRegistro: any[] = [];
-  public listaBultos: any[] = [];
   public bultoObj: any = null;
   public contadorPeso: number;
   public lote;
   //Nombre el proveedor
   public nombreProv: any;
 
+  @Input() idProveedor;
+  //Estas variables se llenan cuando viene a editar
+  @Input() idCompra;
+  @Input() listaBultosEdit: any[] = [];
+  @Input() productoEdit;
+
+
   constructor(
     private alertController: AlertController,
-    private route: ActivatedRoute,
     private FB: FBservicesService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private modalCtrl: ModalController
   ) {
 
   }
-  
+
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get("id");
-    this.idProveedor = id;
     this.fecha = this.FB.fechaActual();
     this.traerTipoQuesoDefault();
     this.traerNombre();
-    console.log(" se recibe id: ", this.idProveedor);
+    this.validacion();
+    console.log("Se recibe id proveedor para editar: ", this.idProveedor);
+    console.log("lista a mostrar", this.listaBultosEdit);
   }
 
   traerTipoQuesoDefault() {
-    this.FB.productosLista.forEach(element => {
-      if (element.estado == 1 && element.predetermina == true) {
-        this.productoDefault = null;
-        this.productoDefault = element.id;
-      }
-      console.log("No hay predeterminado");
-    })
+    if (this.productoEdit == undefined) {
+      this.FB.productosLista.forEach(element => {
+        if (element.estado == 1 && element.predetermina == true) {
+          this.productoDefault = null;
+          this.productoDefault = element.id;
+        }
+      })
+    } else {
+      this.productoDefault = this.productoEdit;
+    }
   }
 
   async traerNombre() {
@@ -63,12 +72,12 @@ export class CrearcompraPage implements OnInit {
   }
 
   removeRegister(index) {
-    this.listaBultos.splice(index, 1);
+    this.listaBultosEdit.splice(index, 1);
     this.validacion();
   }
 
   validacion() {
-    if (this.listaBultos.length > 0) {
+    if (this.listaBultosEdit.length > 0) {
       this.mostrar = true;
     } else {
       this.mostrar = false;
@@ -79,7 +88,7 @@ export class CrearcompraPage implements OnInit {
 
     const alert = await this.alertController.create({
       cssClass: 'alertAddPeso',
-      header: 'Creando bulto ' + (this.listaBultos.length + 1) + '.',
+      header: 'Creando bulto ' + (this.listaBultosEdit.length + 1) + '.',
       keyboardClose: false,
       backdropDismiss: false,
       inputs: [
@@ -104,15 +113,11 @@ export class CrearcompraPage implements OnInit {
           text: 'Ok',
           handler: (value) => {
             if (value != 0) {
-              console.log("El campo peso si se modificó")
               this.bultoObj = {
                 peso: value.peso,
               };
-              console.log("Bulto: " + this.bultoObj.bulto);
-              console.log("Peso: " + this.bultoObj.peso);
-              this.listaBultos.push(this.bultoObj);
-              console.log("lista: ", this.listaBultos);
-              console.log('Confirm Ok', value);
+              this.listaBultosEdit.push(this.bultoObj);
+
             } else {
               console.log("El peso no fue modificado");
             }
@@ -125,13 +130,8 @@ export class CrearcompraPage implements OnInit {
     await alert.present();
   }
 
-  eliminarBulto(index) {
-    this.listaBultos.splice(index);
-    this.numbulto--;
-  }
-
   edit(index) {
-    this.listaBultos.forEach(element => {
+    this.listaBultosEdit.forEach(element => {
       if (element.index == index) {
         console.log("Si lo encontro", element.peso)
       }
@@ -140,7 +140,7 @@ export class CrearcompraPage implements OnInit {
 
   contarPeso() {
     this.contadorPeso = 0;
-    this.listaBultos.forEach((element) => {
+    this.listaBultosEdit.forEach((element) => {
       console.log("Peso de i: " + element.peso);
       this.contadorPeso = this.contadorPeso + parseInt(element.peso);
     });
@@ -148,21 +148,41 @@ export class CrearcompraPage implements OnInit {
   }
 
   guardar() {
-    // this.listaBultos.pop();
-    this.contarPeso();
-    console.log("El id del tipo de queso es: ", this.productoDefault)
-    console.log("Bultos enviados " + this.listaBultos.length);
-    console.log("Peso que enviamos es de " + this.contadorPeso);
-    console.log("Se envia el id del proveedor: ", this.idProveedor)
-    this.FB.agregarPesaje(
-      this.idProveedor,
-      this.productoDefault,
-      this.listaBultos.length,
-      this.contadorPeso,
-      this.listaBultos
-    );
-    this.listaBultos = [];
-    this.FB.getPesajeCompra(this.idProveedor);
-    this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+    if (this.idCompra == undefined) {
+
+      this.contarPeso();
+      this.FB.agregarPesaje(
+        this.idProveedor,
+        this.productoDefault,
+        this.listaBultosEdit.length,
+        this.contadorPeso,
+        this.listaBultosEdit
+      );
+      this.listaBultosEdit = [];
+      this.FB.getPesajeCompra(this.idProveedor);
+      this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+      this.modalCtrl.dismiss("true", "actualizar");
+      this.FB.getProveedorCompra();
+      this.FB.getAnticipoProveedor();
+    } else {
+      this.contarPeso();
+      this.FB.updateBultoPesajeDetallado(
+        this.idProveedor,
+        this.idCompra,
+        this.listaBultosEdit,
+        this.contadorPeso,
+        this.listaBultosEdit.length,
+        this.productoDefault
+      );
+      this.listaBultosEdit = [];
+      this.FB.getPesajeCompra(this.idProveedor);
+      this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+      this.modalCtrl.dismiss("true", "actualizar");
+      this.FB.getProveedorCompra();
+      this.FB.getAnticipoProveedor();
+    }
+  }
+  volver() {
+    this.modalCtrl.dismiss();
   }
 }

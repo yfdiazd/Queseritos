@@ -12,6 +12,7 @@ ion-content {
     --background: #c8f7f3;
     --color: #1a1446;
 
+
     .div-principal {
         width: 100%;
         height: 10%;
@@ -184,6 +185,13 @@ ion-content {
             border: #1a1446 solid 3px;
             border-radius: 5px;
             background-color: #fff;
+
+            .h3 {
+                display: inline-block;
+                width: 100%;
+                margin: auto;
+                text-align: center;
+            }
 
             .div_tabla {
                 width: 100%;

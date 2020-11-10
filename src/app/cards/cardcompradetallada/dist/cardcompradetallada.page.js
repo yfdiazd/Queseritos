@@ -44,14 +44,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CardcompradetalladaPage = void 0;
 var core_1 = require("@angular/core");
+var crearcompra_page_1 = require("src/app/formularios/crearcompra/crearcompra.page");
 var homepesajes_page_1 = require("src/app/home/homepesajes/homepesajes.page");
 var CardcompradetalladaPage = /** @class */ (function () {
-    function CardcompradetalladaPage(route, FB, modalController, alertController, navCtrl) {
+    function CardcompradetalladaPage(route, FB, modalController, alertController, navCtrl, cp) {
         this.route = route;
         this.FB = FB;
         this.modalController = modalController;
         this.alertController = alertController;
         this.navCtrl = navCtrl;
+        this.cp = cp;
         //Datos consolidados para la visualización
         this.listaCard = [];
         //lista de la compra que se recorre en el HTML
@@ -138,16 +140,43 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
+                    case 2: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
     CardcompradetalladaPage.prototype.irCompra = function () {
-        console.log("Se envia este id proveedor", this.idProveedor);
-        this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
+        return __awaiter(this, void 0, void 0, function () {
+            var modal, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: crearcompra_page_1.CrearcompraPage,
+                            cssClass: 'my-custom-class',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idProveedor: this.idProveedor
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getProductos();
+                            this.traerTipoQueso();
+                            this.traerNombre();
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     CardcompradetalladaPage.prototype.eliminarRegistro = function (lista) {
         if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
@@ -207,7 +236,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
-                            header: 'Restricción',
+                            header: 'No se puede eliminar',
                             message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
                             buttons: ['Aceptar']
                         })];
@@ -221,23 +250,56 @@ var CardcompradetalladaPage = /** @class */ (function () {
             });
         });
     };
-    CardcompradetalladaPage.prototype.alertEditar = function () {
+    CardcompradetalladaPage.prototype.editarRegistro = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var alert;
+            var modal, data, alert;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.alertController.create({
-                            cssClass: 'my-custom-class',
-                            header: 'Esta en desarrollo',
-                            message: 'Aún no esta disponible esta opción',
-                            buttons: ['Aceptar']
-                        })];
+                    case 0:
+                        if (!(card.costoTotalCompra == 0)) return [3 /*break*/, 4];
+                        console.log("esta es la data a editar", card);
+                        return [4 /*yield*/, this.modalController.create({
+                                component: crearcompra_page_1.CrearcompraPage,
+                                cssClass: 'my-custom-class',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {
+                                    idProveedor: this.idProveedor,
+                                    idCompra: card.id,
+                                    listaBultosEdit: card.bultoLista,
+                                    productoEdit: card.idProducto
+                                }
+                            })];
                     case 1:
-                        alert = _a.sent();
-                        return [4 /*yield*/, alert.present()];
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
-                        return [2 /*return*/];
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getProductos();
+                            this.traerTipoQueso();
+                            this.traerNombre();
+                            this.FB.getProveedorCompra();
+                            this.FB.getAnticipoProveedor();
+                        }
+                        return [3 /*break*/, 7];
+                    case 4: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'No se puede editar',
+                            message: 'Esta compra ya tiene pesajes confirmados.',
+                            buttons: ['ACEPTAR']
+                        })];
+                    case 5:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 6:
+                        _a.sent();
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -245,7 +307,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
     CardcompradetalladaPage.prototype.volver = function () {
         this.FB.getProveedorCompra();
         this.FB.getAnticipoProveedor();
-        this.navCtrl.navigateRoot(["cardcompras"]);
+        this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardcompradetalladaPage.prototype.irInicio = function () {
         this.navCtrl.navigateBack(["main-menu"]);

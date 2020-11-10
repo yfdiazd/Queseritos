@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { CrearcompraPage } from 'src/app/formularios/crearcompra/crearcompra.page';
 import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
+
+import { CardcomprasPage } from '../cardcompras/cardcompras.page';
 
 
 @Component({
@@ -16,7 +19,8 @@ export class CardcompradetalladaPage implements OnInit {
     private FB: FBservicesService,
     private modalController: ModalController,
     private alertController: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    public cp: CardcomprasPage
   ) { }
 
   //--------------VARIABLES
@@ -39,7 +43,7 @@ export class CardcompradetalladaPage implements OnInit {
     this.traerTipoQueso();
     this.traerNombre();
     console.log("Se recibe el proveedor: ", this.idProveedor);
-    console.log("listaParaElFront", this.listaCompras)
+    console.log("listaParaElFront", this.listaCompras);
   }
   traerTipoQueso() {
     this.tipoQueso = [];
@@ -100,13 +104,28 @@ export class CardcompradetalladaPage implements OnInit {
         idProv: this.idProveedor
       },
     });
-    await modal.present();
+    return await modal.present();
 
   }
 
-  irCompra() {
-    console.log("Se envia este id proveedor", this.idProveedor);
-    this.navCtrl.navigateBack(["crearcompra/", this.idProveedor]);
+  async irCompra() {
+    const modal = await this.modalController.create({
+      component: CrearcompraPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idProveedor: this.idProveedor
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.FB.getPesajeCompra(this.idProveedor);
+      this.FB.getProductos();
+      this.traerTipoQueso();
+      this.traerNombre();
+    }
   }
   eliminarRegistro(lista) {
     if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
@@ -150,26 +169,53 @@ export class CardcompradetalladaPage implements OnInit {
   async alertRemove() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Restricción',
+      header: 'No se puede eliminar',
       message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
       buttons: ['Aceptar']
     });
     await alert.present();
   }
 
-  async alertEditar() {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Esta en desarrollo',
-      message: 'Aún no esta disponible esta opción',
-      buttons: ['Aceptar']
-    });
-    await alert.present();
+  async editarRegistro(card) {
+    if (card.costoTotalCompra == 0) {
+      console.log("esta es la data a editar", card);
+      const modal = await this.modalController.create({
+        component: CrearcompraPage,
+        cssClass: 'my-custom-class',
+        keyboardClose: false,
+        backdropDismiss: false,
+        componentProps: {
+          idProveedor: this.idProveedor,
+          idCompra: card.id,
+          listaBultosEdit: card.bultoLista,
+          productoEdit: card.idProducto
+        },
+      });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      if (data == "true") {
+        this.FB.getPesajeCompra(this.idProveedor);
+        this.FB.getProductos();
+        this.traerTipoQueso();
+        this.traerNombre();
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+      }
+    } else {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'No se puede editar',
+        message: 'Esta compra ya tiene pesajes confirmados.',
+        buttons: ['ACEPTAR']
+      });
+
+      await alert.present();
+    }
   }
   volver() {
     this.FB.getProveedorCompra();
     this.FB.getAnticipoProveedor();
-    this.navCtrl.navigateRoot(["cardcompras"]);
+    this.navCtrl.navigateBack(["cardcompras"]);
   }
 
   irInicio() {

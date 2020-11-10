@@ -44,13 +44,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CardcomprasPage = void 0;
 var core_1 = require("@angular/core");
+var crearcompra_page_1 = require("src/app/formularios/crearcompra/crearcompra.page");
 var CardcomprasPage = /** @class */ (function () {
-    function CardcomprasPage(actionSheetController, FB, alertController, navCtrl, loadingCtrl) {
+    function CardcomprasPage(actionSheetController, FB, alertController, navCtrl, loadingCtrl, modalController) {
         this.actionSheetController = actionSheetController;
         this.FB = FB;
         this.alertController = alertController;
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
+        this.modalController = modalController;
         this.input = { data: [] };
         //Lista de nombres a mostrar
         this.listaDatos = [];
@@ -64,6 +66,7 @@ var CardcomprasPage = /** @class */ (function () {
         this.cambioSaldo();
         this.presentLoading('Espere...');
         console.log("Esto es para ver", this.listaDatos);
+        console.log("Esto debe imprimirse siempre. NGONINIT");
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -91,8 +94,11 @@ var CardcomprasPage = /** @class */ (function () {
         });
     };
     CardcomprasPage.prototype.cambioSaldo = function () {
-        var valor1 = this.FB.saldodebitototal;
-        var valor2 = this.FB.saldocreditotal;
+        var valor1 = 0;
+        var valor2 = 0;
+        console.log("datos sumassssss ", this.FB.saldodebitototal, this.FB.saldocreditotal);
+        valor1 = this.FB.saldodebitototal;
+        valor2 = this.FB.saldocreditotal;
         console.log("Sumas", valor1, " - ", valor2);
         if ((valor1 - valor2) < 0) {
             document.getElementById("valorCss").style.color = "crimson";
@@ -103,10 +109,13 @@ var CardcomprasPage = /** @class */ (function () {
         }
     };
     CardcomprasPage.prototype.doRefresh = function (event) {
+        console.log("event refresh", event);
         this.validacionLote();
         this.FB.getLoteProveedor();
+        this.FB.getAnticipoProveedor();
         this.traerNombre();
         this.cambioSaldo();
+        console.log("Esto es para ver", this.listaDatos);
         setTimeout(function () {
             event.target.complete();
         }, 1000);
@@ -163,9 +172,25 @@ var CardcomprasPage = /** @class */ (function () {
     };
     CardcomprasPage.prototype.irCompra = function (card) {
         return __awaiter(this, void 0, void 0, function () {
+            var modal;
             return __generator(this, function (_a) {
-                this.navCtrl.navigateForward(["crearcompra/", card.idProv]);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: crearcompra_page_1.CrearcompraPage,
+                            cssClass: 'my-custom-class',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idProveedor: card
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -215,7 +240,7 @@ var CardcomprasPage = /** @class */ (function () {
                                 }, {
                                     text: 'Ok',
                                     handler: function (value) {
-                                        _this.navCtrl.navigateForward(["crearcompra/", value]);
+                                        _this.irCompra(value);
                                     }
                                 }
                             ]

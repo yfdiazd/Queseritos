@@ -127,6 +127,8 @@ var CardlotesPage = /** @class */ (function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     CardlotesPage.prototype.irCompras = function () {
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardlotesPage.prototype.irEstado = function () {

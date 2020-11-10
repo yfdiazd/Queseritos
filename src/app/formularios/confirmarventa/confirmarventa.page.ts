@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { element } from 'protractor';
 import { ActivatedRoute } from '@angular/router';
+import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { FBservicesService } from '../../fbservices.service'
+import { HomeventasPage } from '../../home/homeventas/homeventas.page';
 @Component({
   selector: 'app-confirmarventa',
   templateUrl: './confirmarventa.page.html',
@@ -18,7 +20,9 @@ export class ConfirmarventaPage implements OnInit {
   total = 0;
   valor = 0; 
   constructor(
-    private FB: FBservicesService
+    private FB: FBservicesService,
+    private popover: PopoverController,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -63,5 +67,8 @@ export class ConfirmarventaPage implements OnInit {
       }
 
     });
+  }
+  volver() {
+    this.popover.dismiss();
   }
 }
