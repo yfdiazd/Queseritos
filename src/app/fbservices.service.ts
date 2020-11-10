@@ -229,7 +229,6 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
-                this.updateBultoPesajeDetallado("1604885865399", "1604890367591", "listaBultos", "peso", "totalBultos");
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
