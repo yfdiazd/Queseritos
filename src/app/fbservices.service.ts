@@ -1126,7 +1126,7 @@ export class FBservicesService {
             console.log("esto es local lo que se quita de balance ", totalCompra);
             totalLocal = (totalLocal - totalCompra);
             console.log("esto queda se actualziara en la base de taos ", totalLocal);
-            
+
             firebase
                 .database()
                 .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
@@ -1641,7 +1641,7 @@ export class FBservicesService {
     async saldarDeudasProveedor(idProveedor, valor) {
         this.agregarEstadoProveedor(idProveedor, valor);
         this.getObjProveedor(idProveedor);
-        this.eliminarNodoProveedor(idProveedor);  
+        this.eliminarNodoProveedor(idProveedor);
     }
 
     async getObjProveedor(idProveedor) {
@@ -1750,7 +1750,9 @@ export class FBservicesService {
     }
     public ventasclienteLista: any[];
     listaKey: any[];
+    sumaVentas: number;
     getVentaCliente(idCliente) {
+        this.sumaVentas = 0;
         this.ventasclienteLista = [];
         firebase
             .database()
@@ -1770,8 +1772,8 @@ export class FBservicesService {
                             .ref("usuario/ventas/" + idCliente + "/" + element)
                             .on("value", snapshot => {
                                 snapshot.forEach(element => {
-
-                                    this.ventasclienteLista.push(element.val());
+                                    this.sumaVentas += element.val().
+                                    this.ventasclienteLista.push(element.val().costoVenta);
                                 });
                             });
 
@@ -1781,18 +1783,20 @@ export class FBservicesService {
                 }
 
 
-                return this.ventasclienteLista;
+                return this.ventasclienteLista, this.sumaVentas;
             });
     }
 
     public ventasclienteListaMes: any[];
+    sumaVentaMes: number;
     getVentaClienteMes(idCliente) {
-
+        this.sumaVentaMes = 0;
         let fechaSpl = this.fechaActual().split("-", 3);
         let nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
 
 
         this.ventasclienteListaMes = [];
+
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodo)
@@ -1800,16 +1804,19 @@ export class FBservicesService {
                 this.ventasclienteListaMes = [];
                 if (snapshot.exists()) {
                     snapshot.forEach(element => {
+                        console.log("elemesdsadasd as", element.val().costoVenta);
+                        
                         this.ventasclienteListaMes.push(element.val());
+                        this.sumaVentaMes += element.val().costoVenta
                     });
                 }
 
-                return this.ventasclienteListaMes;
+                return this.ventasclienteListaMes, this.sumaVentaMes;
             });
     }
 
 
-    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos,idProducto) {
+    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto) {
         this.lastLote = [];
         this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
@@ -1835,6 +1842,13 @@ export class FBservicesService {
                 }
             });
 
+    }
+
+    eliminarVenta(idCliente, fechaNodo, idVenta) {
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .remove();
     }
 
 }
