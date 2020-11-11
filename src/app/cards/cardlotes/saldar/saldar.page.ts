@@ -78,9 +78,18 @@ export class SaldarPage implements OnInit {
     let sumado = this.saldoGeneral + this.FB.estadoSaldoProveedor;
     if (sumado < 0) {
       valorEnviar = (sumado + this.valor);
+      console.log("se sumaaaaa es igual ? ", valorEnviar);
+      
     } else {
       valorEnviar = (sumado - this.valor);
+      console.log("se resta es ifual = ", valorEnviar);
+      if(valorEnviar < 0){
+        valorEnviar = (valorEnviar * -1);
+      }
+      
     }
+    console.log("esto se envia al metodo para saldar ", valorEnviar);
+    
     this.FB.saldarDeudasProveedor(this.idProv, valorEnviar);
     this.valorMensaje = valorEnviar;
     this.modalCtrl.dismiss("true", "actualizar");
