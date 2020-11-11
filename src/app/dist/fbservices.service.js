@@ -1178,7 +1178,10 @@ var FBservicesService = /** @class */ (function () {
             var totalLocal = 0;
             this.getCostoCompra(idProveedor, idPesajeCompra);
             totalLocal = this.costoCompraTemp;
+            console.log("esto es la db en compra balance ", totalLocal);
+            console.log("esto es local lo que se quita de balance ", totalCompra);
             totalLocal = (totalLocal - totalCompra);
+            console.log("esto queda se actualziara en la base de taos ", totalLocal);
             firebase
                 .database()
                 .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
@@ -1672,6 +1675,7 @@ var FBservicesService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.agregarEstadoProveedor(idProveedor, valor);
                 this.getObjProveedor(idProveedor);
+                this.eliminarNodoProveedor(idProveedor);
                 return [2 /*return*/];
             });
         });
@@ -1773,6 +1777,8 @@ var FBservicesService = /** @class */ (function () {
             placa: placa
         });
         this.toastOperacionExitosa();
+    };
+    FBservicesService.prototype.updateVenta = function () {
     };
     FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);

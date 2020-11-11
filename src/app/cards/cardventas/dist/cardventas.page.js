@@ -45,11 +45,12 @@ exports.__esModule = true;
 exports.CardventasPage = void 0;
 var core_1 = require("@angular/core");
 var homeventas_page_1 = require("src/app/home/homeventas/homeventas.page");
+var agregarvalorventa_page_1 = require("src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page");
 var CardventasPage = /** @class */ (function () {
-    function CardventasPage(FB, modalController, alertController, toastController, route, navCtrl, loadingCtrl) {
+    function CardventasPage(FB, modalController, PopoverController, toastController, route, navCtrl, loadingCtrl) {
         this.FB = FB;
         this.modalController = modalController;
-        this.alertController = alertController;
+        this.PopoverController = PopoverController;
         this.toastController = toastController;
         this.route = route;
         this.navCtrl = navCtrl;
@@ -185,6 +186,31 @@ var CardventasPage = /** @class */ (function () {
                     }
                 });
                 return [2 /*return*/, this.nombreCliente];
+            });
+        });
+    };
+    CardventasPage.prototype.agregarValorVenta = function (lista) {
+        return __awaiter(this, void 0, void 0, function () {
+            var popover;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("lsita:", lista);
+                        return [4 /*yield*/, this.PopoverController.create({
+                                component: agregarvalorventa_page_1.AgregarvalorventaPage,
+                                cssClass: 'popover_style',
+                                translucent: true,
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {}
+                            })];
+                    case 1:
+                        popover = _a.sent();
+                        return [4 /*yield*/, popover.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };

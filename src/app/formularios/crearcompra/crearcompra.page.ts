@@ -126,7 +126,6 @@ export class CrearcompraPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
 

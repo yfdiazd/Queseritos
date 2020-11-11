@@ -1,10 +1,11 @@
 import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, NavController, ToastController, LoadingController } from '@ionic/angular';
+import { ModalController, NavController, ToastController, LoadingController, PopoverController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { FBservicesService } from "../../fbservices.service";
 import { HomeventasPage } from 'src/app/home/homeventas/homeventas.page';
+import { AgregarvalorventaPage } from 'src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page';
 
 @Component({
   selector: 'app-cardventas',
@@ -25,12 +26,13 @@ export class CardventasPage implements OnInit {
   listaCard: any[] = [];
   //lista de la venta que se recorre en el HTML
   public listaVentas: any[] = [];
-
+  //lista de datos para el front cuando se filtra
+  listaFiltrada: any;
 
   constructor(
     private FB: FBservicesService,
     private modalController: ModalController,
-    private alertController: AlertController,
+    private PopoverController: PopoverController,
     private toastController: ToastController,
     private route: ActivatedRoute,
     private navCtrl: NavController,
@@ -71,7 +73,6 @@ export class CardventasPage implements OnInit {
     }, 1500);
 
   }
-
   async presentLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
       message,
@@ -83,7 +84,6 @@ export class CardventasPage implements OnInit {
     });
     return this.loading.present();
   }
-
   doRefresh(event) {
     this.traerNombre();
     this.recorriendolista();
@@ -92,9 +92,6 @@ export class CardventasPage implements OnInit {
       event.target.complete();
     }, 1000);
   }
-
-  listaFiltrada: any;
-
   getListaFiltrada(event) {
     this.FB.ventasclienteLista;
     this.listaFiltrada = this.FB.ventasclienteLista;
@@ -174,12 +171,19 @@ export class CardventasPage implements OnInit {
     // })
 
   }
+  async agregarValorVenta(lista) {
+    console.log("lsita:", lista);
+    const popover = await this.PopoverController.create({
+      component: AgregarvalorventaPage,
+      cssClass: 'popover_style',
+      translucent: true,
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+      
+      },
+    });
+    await popover.present();
 
-  // cambioFecha(event){
-  //   console.log("imprimo evento recibido en campo fecha", event);
-  //   console.log('Date', new Date(event.detail.value));
-
-
-  // }
-
+  }
 }

@@ -25,18 +25,19 @@ export class CrearenvioclientePage implements OnInit {
   pesoLimite;
   placaEdit;
   num;
-  
+
 
 
   //variables alejo
 
   pesoAcumulado = 0;
-
   input_limite: boolean = false;
-
   customPickerOptions: any;
-
   nombreArchLoaded = "Subir archivo";
+  bultoObj: any;
+  toggle: boolean = false;
+
+  pesadas: any[] = [];
 
 
   constructor(
@@ -68,14 +69,66 @@ export class CrearenvioclientePage implements OnInit {
     let id = this.route.snapshot.paramMap.get("id");
     console.log("se recibe id solito", id);
     this.idcliente = id;
-    console.log("se recibe id listacliente", this.idcliente);
-
-
+    this.agregarPesoLimite();
+    this.validacion();
   }
   volver() {
     this.navCtrl.navigateBack(['cardventas/', this.idcliente])
   }
 
+  async agregarPesoLimite() {
+    const alert = await this.alertController.create({
+      cssClass: 'alertAddPeso',
+      header: 'Ingrese el peso límite.',
+      keyboardClose: false,
+      backdropDismiss: false,
+      inputs: [
+        {
+          cssClass: 'inputAddPeso',
+          name: 'peso',
+          type: 'number',
+          value: "",
+          min: "1"
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Aceptar',
+          handler: (value) => {
+            console.log("vlue", value.peso);
+            if (value.peso == "" || value.peso == null || value.peso < 0 || value.peso == 0 || value.peso == undefined) {
+              this.limiteSinIngresar();
+              this.toggle = false;
+              this.input_limite = false;
+            }
+            else {
+              this.toggle = true;
+              this.input_limite = true;
+              this.pesoLimite = value.peso;
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  async limiteSinIngresar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'No ingresaste un peso límite',
+      message: 'Por favor agregalo mas tarde',
+      buttons: ['ACEPTAR']
+    });
+
+    await alert.present();
+  }
   bloquearInputLimite(event) {
     if (event.detail.checked == true) {
       this.input_limite = true;
@@ -83,10 +136,7 @@ export class CrearenvioclientePage implements OnInit {
       this.input_limite = false;
     }
   }
-  agregarPesoLista() {
-    this.presentAlertRadio();
-  }
-  async presentAlertRadio() {
+  async agregarPesoLista() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       keyboardClose: false,
@@ -130,13 +180,11 @@ export class CrearenvioclientePage implements OnInit {
 
     await alert.present();
   }
-
   eliminarBulto(index) {
-    console.log("index", index);
-    this.pesadas.splice(index);
-    this.num--;
+    this.pesadas.splice(index, 1);
+    this.sumarPesoAcumulado();
+    this.validarPesos();
   }
-
   contarPeso() {
     this.contadorPeso = 0;
     this.pesadas.forEach((element) => {
@@ -145,11 +193,24 @@ export class CrearenvioclientePage implements OnInit {
     });
     console.log("Total peso de los bultos: " + this.contadorPeso);
   }
-
   guardar() {
-    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
-    this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
+    let pesadaGuardar: any[] = [];
+    let i = 1;
+    this.pesadas.forEach(element => {
+      pesadaGuardar.push({
+        estadoQueso: element.estadoQueso,
+        peso: element.peso,
+        tipoQueso: element.tipoQueso,
+        valor: 0,
+        valorTotal: 0,
+        id: i++
+      })
+      console.log("lista recorrida", pesadaGuardar);
+      // this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
+      // this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
+    });
   }
+
   customAlertOptions: any = {
     header: "Seleccione",
     translucent: true,
@@ -157,7 +218,6 @@ export class CrearenvioclientePage implements OnInit {
     backdropDismiss: false
   };
 
-  pesadas: any[] = [];
   async agregar() {
     const modal = await this.modalCtrl.create({
       component: CrearventaPage,
@@ -175,11 +235,38 @@ export class CrearenvioclientePage implements OnInit {
         this.pesadas.push({
           estadoQueso: element.estadoQueso,
           peso: element.peso,
-          tipoQueso: element.tipoQueso
+          tipoQueso: element.tipoQueso,
+          valor: 0,
+          valorTotal: 0
         });
         this.contarPeso();
       });
       console.log("esta es la lista para el front:", this.pesadas);
+      this.sumarPesoAcumulado();
+      this.validacion();
+      this.validarPesos();
+    }
+  }
+  sumarPesoAcumulado() {
+    this.pesoAcumulado = 0;
+    this.pesadas.forEach(pesada => {
+      this.pesoAcumulado += pesada.peso;
+    })
+    return this.pesoAcumulado;
+  }
+  btn_guardar: boolean = false;
+  validacion() {
+    if (this.pesadas.length > 0) {
+      this.btn_guardar = true;
+    } else {
+      this.btn_guardar = false;
+    }
+  }
+  validarPesos() {
+    if (this.pesoAcumulado >= this.pesoLimite) {
+      document.getElementById("pesoAcumulado").style.color = "red";
+    } else {
+      document.getElementById("pesoAcumulado").style.color = "lime";
     }
   }
 

@@ -14,10 +14,11 @@
       <div class="div-fila-1">
         <ion-item class="item">
           <ion-label position="floating">Límite</ion-label>
-          <ion-input class="input_limite" [disabled]="input_limite" type="number" [(ngModel)]="pesoLimite"> </ion-input>
+          <ion-input class="input_limite" [disabled]="input_limite" type="number" [(ngModel)]="pesoLimite"></ion-input>
           <div class="div_toggle">
             <ion-icon class="icon" name="lock-open-outline" color="success"></ion-icon>
-            <ion-toggle (ionChange)="bloquearInputLimite($event)" class="ion_toggle" color="danger"></ion-toggle>
+            <ion-toggle [(ngModel)]="toggle" (ionChange)="bloquearInputLimite($event)" class="ion_toggle"
+              color="danger"></ion-toggle>
             <ion-icon class="icon" name="lock-closed-outline" color="danger"></ion-icon>
           </div>
         </ion-item>
@@ -25,7 +26,7 @@
       <div class="div-fila-2">
         <ion-item class="item">
           <ion-label position="floating">Peso Actual</ion-label>
-          <ion-input disabled type="number" [(ngModel)]="pesoAcumulado"></ion-input>
+          <ion-input id="pesoAcumulado" disabled type="number" [(ngModel)]="pesoAcumulado"></ion-input>
         </ion-item>
       </div>
     </div>
@@ -41,7 +42,7 @@
       </ion-select>
 
       <p class="p-title_r">Fecha Envío</p>
-      <ion-datetime class="select" [pickerOptions]="customPickerOptions" [(ngModel)]="fecha"  displayFormat="YYYY/MM/DD"
+      <ion-datetime class="select" [pickerOptions]="customPickerOptions" [(ngModel)]="fecha" displayFormat="YYYY/MM/DD"
         min="2020-10-01" max="2050-12-31">
       </ion-datetime>
 
@@ -61,11 +62,11 @@
         <input class="file-upload" id="file-upload" type="file" (change)="subirImg($event)" />
       </div>
       <div class="div_table">
-        <p>Lista de Pesadas</p>
         <div class="div_toggle">
-          <ion-chip class="btn-add" (click)="agregar()">
-            <ion-icon name="add" color="success"></ion-icon>
-          </ion-chip>
+          <label class="label">Lista de Pesadas</label>
+          <ion-icon class="btn-add" (click)="agregar()" name="add" color="success"></ion-icon>
+          <!-- <ion-button fill="clear" class="btn-add" (click)="agregar()">
+          </ion-button> -->
         </div>
         <table class="table">
           <thead class="thead">
@@ -86,15 +87,11 @@
             <ion-item-option color="danger" (click)="eliminarBulto(i)">Eliminar</ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
-        <!-- <ion-chip class="btn-add" (click)="agregarPesoLista()">
-          <ion-icon name="add" color="success"></ion-icon>
-          <ion-label color="dark">Agregar</ion-label>
-        </ion-chip> -->
-        <ion-button (click)="guardar()" expand="full" color="success">
-          <ion-icon name="save-outline"></ion-icon>
-          <ion-label>Guardar</ion-label>
-        </ion-button>
       </div>
+      <ion-button *ngIf="btn_guardar" (click)="guardar()" expand="full" color="success">
+        <ion-icon name="save-outline"></ion-icon>
+        <ion-label>Guardar</ion-label>
+      </ion-button>
     </div>
   </div>
 </ion-content>

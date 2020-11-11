@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()" color="danger">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>VALOR VENTA</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <p>Ingrese el valor</p>
+    <input [(ngModel)]="valor" class="select" type="number" required>
+    <ion-button class="btn_guardar" (click)="guardar()" expand="block" fill="clear">
+      Guardar
+    </ion-button>
+  </div>
+</ion-content>

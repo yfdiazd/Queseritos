@@ -121,7 +121,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
     };
     CardcompradetalladaPage.prototype.modalConfirmarPesaje = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var modal;
+            var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -140,7 +140,18 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 1:
                         modal = _a.sent();
                         return [4 /*yield*/, modal.present()];
-                    case 2: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getProductos();
+                            this.traerTipoQueso();
+                            this.traerNombre();
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
@@ -207,6 +218,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                 }, {
                                     text: 'SI',
                                     handler: function () {
+                                        console.log("datos de la lista cuando elimina ", lista);
                                         _this.FB.deletePesajeCompra(_this.idProveedor, lista.id);
                                         _this.FB.getPesajeCompra(_this.idProveedor);
                                         _this.traerTipoQueso();

@@ -1738,6 +1738,9 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
+    updateVenta(){
+        
+    }
 
 
     upLoadImageVenta(idCliente, idVenta, file) {

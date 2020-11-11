@@ -1,0 +1,50 @@
+ion-toolbar {
+    --background: #1a1446;
+}
+
+ion-content {
+
+    padding: 0;
+    margin: auto;
+    --background: #c8f7f3;
+    --color: #1a1446;
+
+    div {
+        padding: 5px;
+
+        .select {
+            background-color: white;
+            color: #1a1446;
+            border-style: solid;
+            border-width: 2px;
+            border-color: #1a1446;
+            font-size: medium;
+            padding-left: 10px;
+            border-radius: 5px;
+            height: 40px;
+            width: 100%;
+            margin-bottom: 20px;
+            --placeholder-color: #1a1446;
+            --placeholder-opacity: 1;
+            text-transform: uppercase;
+        }
+
+        input::-webkit-inner-spin-button,
+        input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input {
+            -moz-appearance: textfield;
+        }
+
+        .btn_guardar {
+            --background: #1a1446;
+            font-size: 20px;
+            height: 60px;
+            width: 100%;
+            color: white;
+        }
+    }
+}

@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: CrearenvioclientePage
+  },  {
+    path: 'agregarvalorventa',
+    loadChildren: () => import('./agregarvalorventa/agregarvalorventa.module').then( m => m.AgregarvalorventaPageModule)
   }
+
 ];
 
 @NgModule({
