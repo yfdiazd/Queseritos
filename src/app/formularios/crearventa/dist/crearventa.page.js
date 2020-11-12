@@ -23,13 +23,25 @@ var CrearventaPage = /** @class */ (function () {
     };
     CrearventaPage.prototype.permitirGuardar = function (event) {
         console.log("cambiando", this.valor, event);
-        if (this.tipoQueso == undefined || this.estadoQueso == undefined || this.valor == undefined ||
-            this.tipoQueso == null || this.estadoQueso == null || this.valor == null ||
-            this.tipoQueso == "" || this.estadoQueso == "" || this.valor == "" || event == null) {
+        if (this.tipoQueso == undefined
+            || this.estadoQueso == undefined
+            || this.tipoQueso == null
+            || this.estadoQueso == null
+            || this.tipoQueso == ""
+            || this.estadoQueso == ""
+            || event == undefined
+            || event == null
+            || event == ""
+            || this.valor <= 0
+            || event <= 0) {
             this.activarBoton = false;
         }
-        else {
+        else if (this.valor > 0 || event > 0) {
             this.activarBoton = true;
+            console.log("enviara el valor", this.valor);
+        }
+        else {
+            this.activarBoton = false;
         }
     };
     CrearventaPage.prototype.guardar = function () {

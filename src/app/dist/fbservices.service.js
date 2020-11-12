@@ -78,6 +78,12 @@ var FBservicesService = /** @class */ (function () {
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE
         };
+        this.ventasclienteLista = [];
+        this.sumaCompras = 0;
+        this.sumanticipo = 0;
+        this.credito = 0;
+        this.debito = 0;
+        this.saldo = 0;
         firebase.initializeApp(this.config);
         this.verificarsesion();
     }
@@ -779,6 +785,7 @@ var FBservicesService = /** @class */ (function () {
             });
             return _this.proveedoresLista;
         });
+        // this.getTodo();
     };
     FBservicesService.prototype.getTipoAnticipos = function () {
         var _this = this;
@@ -1124,7 +1131,7 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     // Traer los pesajes del proveedor seleccionado
-    FBservicesService.prototype.getPesajeCompra = function (idProveedor) {
+    FBservicesService.prototype.getPesajeCompra = function (idProveedor, lote) {
         return __awaiter(this, void 0, void 0, function () {
             var ordenLotes;
             var _this = this;
@@ -1138,7 +1145,7 @@ var FBservicesService = /** @class */ (function () {
                         this.lastLote = (ordenLotes.slice(this.listaOrdenLotes().length - 1));
                         firebase
                             .database()
-                            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+                            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
                             .on("value", function (snapshot) {
                             _this.pesajeCompraLista = [];
                             snapshot.forEach(function (element) {
@@ -1178,7 +1185,10 @@ var FBservicesService = /** @class */ (function () {
             var totalLocal = 0;
             this.getCostoCompra(idProveedor, idPesajeCompra);
             totalLocal = this.costoCompraTemp;
+            console.log("esto es la db en compra balance ", totalLocal);
+            console.log("esto es local lo que se quita de balance ", totalCompra);
             totalLocal = (totalLocal - totalCompra);
+            console.log("esto queda se actualziara en la base de taos ", totalLocal);
             firebase
                 .database()
                 .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
@@ -1672,6 +1682,7 @@ var FBservicesService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.agregarEstadoProveedor(idProveedor, valor);
                 this.getObjProveedor(idProveedor);
+                this.eliminarNodoProveedor(idProveedor);
                 return [2 /*return*/];
             });
         });
@@ -1774,17 +1785,22 @@ var FBservicesService = /** @class */ (function () {
         });
         this.toastOperacionExitosa();
     };
+    FBservicesService.prototype.updateVenta = function () {
+    };
     FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
     };
     FBservicesService.prototype.getVentaCliente = function (idCliente) {
         var _this = this;
+        this.sumaVentas = 0;
         this.ventasclienteLista = [];
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente)
             .on("value", function (snapshot) {
+            _this.ventasclienteLista = [];
             _this.listaKey = [];
+            _this.sumaVentas = 0;
             if (snapshot.exists()) {
                 snapshot.forEach(function (element) {
                     _this.listaKey.push(element.key);
@@ -1795,16 +1811,18 @@ var FBservicesService = /** @class */ (function () {
                         .ref("usuario/ventas/" + idCliente + "/" + element)
                         .on("value", function (snapshot) {
                         snapshot.forEach(function (element) {
+                            _this.sumaVentas += element.val().costoVenta;
                             _this.ventasclienteLista.push(element.val());
                         });
                     });
                 });
             }
-            return _this.ventasclienteLista;
+            return _this.ventasclienteLista, _this.sumaVentas;
         });
     };
     FBservicesService.prototype.getVentaClienteMes = function (idCliente) {
         var _this = this;
+        this.sumaVentaMes = 0;
         var fechaSpl = this.fechaActual().split("-", 3);
         var nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
         this.ventasclienteListaMes = [];
@@ -1813,12 +1831,15 @@ var FBservicesService = /** @class */ (function () {
             .ref("usuario/ventas/" + idCliente + "/" + nodo)
             .on("value", function (snapshot) {
             _this.ventasclienteListaMes = [];
+            _this.sumaVentaMes = 0;
             if (snapshot.exists()) {
                 snapshot.forEach(function (element) {
+                    console.log("elemesdsadasd as", element.val().costoVenta);
                     _this.ventasclienteListaMes.push(element.val());
+                    _this.sumaVentaMes += element.val().costoVenta;
                 });
             }
-            return _this.ventasclienteListaMes;
+            return _this.ventasclienteListaMes, _this.sumaVentaMes;
         });
     };
     FBservicesService.prototype.updateBultoPesajeDetallado = function (idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto) {
@@ -1844,6 +1865,113 @@ var FBservicesService = /** @class */ (function () {
             else {
                 _this.toastExistenPesajesDetale();
             }
+        });
+    };
+    FBservicesService.prototype.eliminarVenta = function (idCliente, fechaNodo, idVenta) {
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .remove();
+    };
+    FBservicesService.prototype.eliminarPesada = function (idCliente, fechaNodo, idVenta, idPesada) {
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .on("value", function (snapshot) {
+            snapshot.val().pesada.forEach(function (element) {
+            });
+        });
+    };
+    FBservicesService.prototype.updatecostoVenta = function (idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
+        return __awaiter(this, void 0, void 0, function () {
+            var nodo, nodoEnv, a;
+            return __generator(this, function (_a) {
+                nodo = fechaNodo.split("-", 3);
+                nodoEnv = (nodo[0] + "-" + nodo[1]);
+                console.log("fecha:", nodoEnv);
+                a = (pesoPesada * valorPesada);
+                a = (a + costoAnterior);
+                firebase
+                    .database()
+                    .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                    .update({
+                    costoVenta: a
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.updatePesadas = function (idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        var nodo = fechaNodo.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
+        var a = (pesoPesada * valorPesada);
+        console.log("fecha update:", nodoEnv);
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", function (snapshot) {
+            console.log(" pesadasdsdasdasdasda ", snapshot.val());
+            snapshot.forEach(function (element) {
+                console.log("id bultos de pesadas ", element.val().id);
+                console.log("KEY bultos de pesadas ", element.key);
+                if (element.val().id == idPesada && element.val().valor == 0) {
+                    console.log("ingresamos");
+                    firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
+                        .update({
+                        valor: valorPesada,
+                        valorTotal: a
+                    });
+                }
+            });
+        });
+    };
+    FBservicesService.prototype.getTodo = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var lista, a, b;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("entro a get Todo");
+                        return [4 /*yield*/, this.proveedoresLista];
+                    case 1:
+                        lista = _a.sent();
+                        this.sumaTodo = [];
+                        a = 0;
+                        b = 0;
+                        this.credito = 0;
+                        this.debito = 0;
+                        this.saldo = 0;
+                        // let d = 0;
+                        // let c = 0;
+                        lista.forEach(function (element) {
+                            firebase
+                                .database()
+                                .ref()
+                                .child("usuario/compras/" + element.id)
+                                .on("value", function (snapshot) {
+                                snapshot.forEach(function (element) {
+                                    // lote: element.key,
+                                    _this.sumaCompras = (a + element.val().balance.comprasLote);
+                                    _this.sumanticipo = (b + element.val().balance.anticiposLote);
+                                    _this.credito += _this.sumaCompras;
+                                    _this.debito += _this.sumanticipo;
+                                    // this.sumaTodo.push({
+                                    //     compras: this.sumaCompras,
+                                    //     anticipos: this.sumanticipo
+                                    // });
+                                });
+                            });
+                        });
+                        // this.sumaTodo.forEach(element => {
+                        //     this.credito = (d + element.compras);
+                        //     this.debito = (c + element.anticipos);
+                        // });
+                        this.saldo = (this.credito - this.debito);
+                        console.log("object getTodo", this.credito, this.debito, this.saldo);
+                        return [2 /*return*/, (this.sumaTodo, this.credito, this.debito, this.saldo)];
+                }
+            });
         });
     };
     FBservicesService = __decorate([

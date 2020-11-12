@@ -44,12 +44,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CardventasPage = void 0;
 var core_1 = require("@angular/core");
-var homeventas_page_1 = require("src/app/home/homeventas/homeventas.page");
+var agregarvalorventa_page_1 = require("src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page");
 var CardventasPage = /** @class */ (function () {
-    function CardventasPage(FB, modalController, alertController, toastController, route, navCtrl, loadingCtrl) {
+    function CardventasPage(FB, modalController, PopoverController, toastController, route, navCtrl, loadingCtrl) {
         this.FB = FB;
         this.modalController = modalController;
-        this.alertController = alertController;
+        this.PopoverController = PopoverController;
         this.toastController = toastController;
         this.route = route;
         this.navCtrl = navCtrl;
@@ -64,10 +64,16 @@ var CardventasPage = /** @class */ (function () {
     }
     CardventasPage.prototype.ngOnInit = function () {
         var _this = this;
+        var id = this.route.snapshot.paramMap.get("id");
+        this.idcliente = id;
+        this.presentLoading('Espere...');
+        this.traerNombre();
+        console.log("Esta es la lista para ver en el front:", this.FB.ventasclienteListaMes);
         this.customPickerOptions = {
             buttons: [{
                     text: 'Aceptar',
                     handler: function (evento) {
+                        _this.valueDate = evento;
                         _this.show = false;
                         _this.hiden = true;
                         console.log("imprime event", evento);
@@ -81,9 +87,6 @@ var CardventasPage = /** @class */ (function () {
                     }
                 }]
         };
-        var id = this.route.snapshot.paramMap.get("id");
-        this.idcliente = id;
-        this.traerNombre();
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -112,18 +115,22 @@ var CardventasPage = /** @class */ (function () {
     };
     CardventasPage.prototype.doRefresh = function (event) {
         this.traerNombre();
-        this.presentLoading('Espere...');
         this.recorriendolista();
         setTimeout(function () {
             event.target.complete();
         }, 1000);
     };
     CardventasPage.prototype.getListaFiltrada = function (event) {
+        this.listaFiltrada = [];
+        console.log("evebt fecha filter", event);
         this.FB.ventasclienteLista;
         this.listaFiltrada = this.FB.ventasclienteLista;
         console.log("esoto es la lista filtrada ", this.listaFiltrada);
         var varY = event.year.value;
         var varM = event.month.value;
+        if (varM < 10) {
+            varM = ("0" + varM);
+        }
         var varym = (varY + "-" + varM);
         console.log("buscador   ---- ", varym);
         if (varym && varym.trim() != '') {
@@ -142,31 +149,6 @@ var CardventasPage = /** @class */ (function () {
         console.log("Se envia este id cliente", this.idcliente);
         this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
     };
-    CardventasPage.prototype.modalConfirmarPesada = function (card) {
-        return __awaiter(this, void 0, void 0, function () {
-            var modal;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.modalController.create({
-                            component: homeventas_page_1.HomeventasPage,
-                            cssClass: 'my-custom-class',
-                            keyboardClose: false,
-                            backdropDismiss: false,
-                            componentProps: {
-                                idVenta: card.id,
-                                idCliente: this.idcliente
-                            }
-                        })];
-                    case 1:
-                        modal = _a.sent();
-                        return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
     CardventasPage.prototype.recorriendolista = function () {
         this.FB.ventasclienteListaMes.forEach(function (element) {
             console.log("elementttttt", element);
@@ -176,16 +158,48 @@ var CardventasPage = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                this.nombreCliente = [];
-                //this.listaVentas = [];
-                console.log("idcliente traer nombre:", this.idcliente);
+                this.nombreCliente = "";
                 this.FB.clientesLista.forEach(function (element) {
                     if (element.id == _this.idcliente) {
                         _this.nombreCliente = element.nombres;
                     }
                 });
-                console.log("imprime nombre del cliente", this.nombreCliente);
                 return [2 /*return*/, this.nombreCliente];
+            });
+        });
+    };
+    CardventasPage.prototype.agregarValorVenta = function (lista, card) {
+        return __awaiter(this, void 0, void 0, function () {
+            var popover, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("lsita:", lista, " y tambien ", card);
+                        return [4 /*yield*/, this.PopoverController.create({
+                                component: agregarvalorventa_page_1.AgregarvalorventaPage,
+                                cssClass: 'popover_style',
+                                translucent: true,
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {
+                                    dataBulto: lista,
+                                    dataVenta: card
+                                }
+                            })];
+                    case 1:
+                        popover = _a.sent();
+                        return [4 /*yield*/, popover.present()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, popover.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.traerNombre();
+                            this.recorriendolista();
+                        }
+                        return [2 /*return*/];
+                }
             });
         });
     };

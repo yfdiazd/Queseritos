@@ -22,6 +22,36 @@ ion-content .content {
   max-width: 700px;
   margin: auto;
 }
+ion-content .content .totales {
+  width: 100%;
+  max-width: 700px;
+  position: fixed;
+  z-index: 50;
+  background-color: #c8f7f3;
+}
+ion-content .content .totales .label {
+  display: inline-block;
+  width: 30%;
+  max-width: 700px;
+  color: #1a1446;
+}
+ion-content .content .totales .valor {
+  display: inline-block;
+  width: 70%;
+  max-width: 700px;
+  color: #ff2f73;
+  font-family: monospace;
+}
+ion-content .content .totales .search {
+  display: inline-block;
+  width: 100%;
+  max-width: 700px;
+}
+ion-content .content .div__lista {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 700px;
+}
 
 .lista {
   --background-activated: red;

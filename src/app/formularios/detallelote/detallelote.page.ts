@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
 import { FBservicesService } from 'src/app/fbservices.service';
+import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
+import { CrearcompraPage } from '../crearcompra/crearcompra.page';
 
 import { CreartruequePage } from '../creartrueque/creartrueque.page';
 import { VistaimgPage } from './vistaimg/vistaimg.page';
@@ -21,11 +23,14 @@ export class DetallelotePage implements OnInit {
     private modalController: ModalController,
     private alertController: AlertController,
     private navCtrl: NavController
+   
   ) { }
 
   public loteRecibido: any;
   public provRecibido: any;
   public nombreProv: any;
+  public idcliente: any;
+  public loading: any;
 
   //Lista de anticipos para mostrar de la compra
   dataFront: any[] = [];
@@ -34,6 +39,7 @@ export class DetallelotePage implements OnInit {
   //Controladores para visualizar el segment
   cards_Compras: boolean = true;
   cards_anticipos: boolean = false;
+  cards_detalle: boolean = false;
   crearAnticipo: boolean = false;
 
 
@@ -43,14 +49,20 @@ export class DetallelotePage implements OnInit {
     this.loteRecibido = idLote;
     this.provRecibido = idProv;
     this.traerNombre();
+    this.traerDataDetallada();
     this.cambiarHoja(true);
   }
+
+ 
+
+
 
   cambiarHoja(event) {
     if (event == true) {
       console.log("entro desde onInit");
       this.generarData();
       this.generarDataDirecta();
+      this.traerDataDetallada();
     } else {
       console.log("Entro desde el html");
       const valorSegment = event.detail.value;
@@ -58,22 +70,125 @@ export class DetallelotePage implements OnInit {
         this.cards_Compras = true;
         this.cards_anticipos = false;
         this.crearAnticipo = false;
+        this.cards_detalle = false;
         this.generarData();
         this.generarDataDirecta();
+        this.traerDataDetallada();
       } else if (valorSegment == "scompras") {
         this.cards_Compras = false;
         this.cards_anticipos = true;
         this.crearAnticipo = true;
+        this.cards_detalle = false;
         this.generarData();
         this.generarDataDirecta();
+        this.traerDataDetallada();
+      }
+      else if (valorSegment == "detalle") {
+        this.cards_Compras = false;
+        this.cards_anticipos = false;
+        this.crearAnticipo = false;
+        this.cards_detalle = true;
       } else {
         this.generarData();
         this.generarDataDirecta();
+        this.traerDataDetallada();
       }
     }
 
   }
+  listaDataDetallada: any[] = [];
+  traerDataDetallada() {
+    this.nombreProv = [];
+    this.listaDataDetallada = [];
 
+    this.FB.pesajeCompraLista.forEach(pesaje => {
+      this.FB.productosLista.forEach(producto => {
+        if (pesaje.idProducto == producto.id) {
+
+          this.listaDataDetallada.push({
+            anticipos: pesaje.anticipos,
+            bultoLista: pesaje.bultoLista,
+            costoTotalCompra: pesaje.costoTotalCompra,
+            fechaCompra: pesaje.fechaCompra,
+            id: pesaje.id,
+            idProducto: pesaje.idProducto,
+            idProveedor: pesaje.idProveedor,
+            lote: pesaje.lote,
+            pesoBultos: pesaje.pesoBultos,
+            totalBulto: pesaje.totalBulto,
+            nompreProducto: producto.descripcion
+          })
+        }
+      })
+    })
+  }
+
+  async modalConfirmarPesaje(card) {
+    this.FB.getInfoCompra(this.provRecibido, card.id)
+    this.FB.getPesajeConfirmado(this.provRecibido, card.id);
+    const modal = await this.modalController.create({
+      component: HomepesajesPage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idCompra: card.id,
+        idProv: this.provRecibido
+      },
+    });
+    await modal.present();
+  }
+  eliminarRegistro(lista) {
+    if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
+      this.removeRegister(lista);
+    } else {
+      this.alertRemove();
+    }
+  }
+  async alertRemove() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'No se puede eliminar',
+      message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
+      buttons: ['Aceptar']
+    });
+    await alert.present();
+  }
+  async editarRegistro(card) {
+    if (card.costoTotalCompra == 0) {
+      console.log("esta es la data a editar", card);
+      const modal = await this.modalController.create({
+        component: CrearcompraPage,
+        cssClass: 'my-custom-class',
+        keyboardClose: false,
+        backdropDismiss: false,
+        componentProps: {
+          idProveedor: this.provRecibido,
+          idCompra: card.id,
+          listaBultosEdit: card.bultoLista,
+          productoEdit: card.idProducto
+        },
+      });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      if (data == "true") {
+        this.FB.getPesajeCompra(this.provRecibido, this.loteRecibido);
+        this.FB.getProductos();
+        this.traerDataDetallada();
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+      }
+    } else {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'No se puede editar',
+        message: 'Esta compra ya tiene pesajes confirmados.',
+        buttons: ['ACEPTAR']
+      });
+
+      await alert.present();
+    }
+  }
 
   async generarData() {
     this.dataFront = [];

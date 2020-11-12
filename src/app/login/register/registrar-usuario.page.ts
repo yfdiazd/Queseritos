@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FBservicesService } from "../../fbservices.service";
-import { AlertController, ToastController } from "@ionic/angular";
+import { AlertController, ToastController, NavController } from "@ionic/angular";
 
 
 
@@ -17,12 +17,16 @@ export class RegistrarUsuarioPage {
   constructor(
     public alertController: AlertController,
     private FB: FBservicesService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private navCtrl: NavController
 
   ) {}
 
   crearUsuario(){
     this.FB.crearUsuario(this.email, this.password, this.user, this.password2);
+  }
+  irTerminos(){
+    this.navCtrl.navigateForward(["terminos"]);
   }
 
 }

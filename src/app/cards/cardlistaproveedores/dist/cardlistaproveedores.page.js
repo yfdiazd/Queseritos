@@ -55,11 +55,19 @@ var CardlistaproveedoresPage = /** @class */ (function () {
         this.router = router;
         this.route = route;
         this.cont = 0;
+        this.credito = 0;
+        this.debito = 0;
+        this.saldo = 0;
     }
     CardlistaproveedoresPage.prototype.ngOnInit = function () {
         this.FB.getProveedoresCompra();
         this.listarproveedores();
         this.listadoproveedores();
+        this.FB.getTodo();
+        console.log("totales:", this.FB.credito, this.FB.debito, this.FB.saldo);
+        this.credito = this.FB.credito;
+        this.debito = this.FB.debito;
+        this.saldo = this.FB.saldo;
     };
     CardlistaproveedoresPage.prototype.listarproveedores = function () {
         var _this = this;

@@ -37,15 +37,15 @@ export class CardcomprasPage implements OnInit {
   ) {
     console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
   }
-
+  lastLote = [];
   ngOnInit() {
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.traerNombre();
     this.cambioSaldo();
     this.presentLoading('Espere...');
-    console.log("Esto es para ver", this.listaDatos);
-    console.log("Esto debe imprimirse siempre. NGONINIT");
+    this.lastLote = [];
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
@@ -62,14 +62,27 @@ export class CardcomprasPage implements OnInit {
     });
     return this.loading.present();
   }
+  doRefresh(event) {
+    this.lastLote = [];
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
+    this.validacionLote();
+    this.FB.getLoteProveedor();
+    this.FB.getAnticipoProveedor();
+    this.traerNombre();
+    this.cambioSaldo();
+
+
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
   cambioSaldo() {
     let valor1 = 0;
     let valor2 = 0;
-    console.log("datos sumassssss ", this.FB.saldodebitototal, this.FB.saldocreditotal);
 
     valor1 = this.FB.saldodebitototal;
     valor2 = this.FB.saldocreditotal;
-    console.log("Sumas", valor1, " - ", valor2);
+
     if ((valor1 - valor2) < 0) {
       document.getElementById("valorCss").style.color = "crimson";
       document.getElementById("valorCss").style.textShadow = "#500707 1px 1px 1px";
@@ -78,21 +91,6 @@ export class CardcomprasPage implements OnInit {
       document.getElementById("valorCss").style.color = "lime";
     }
   }
-
-  doRefresh(event) {
-    console.log("event refresh", event);
-    this.validacionLote();
-    this.FB.getLoteProveedor();
-    this.FB.getAnticipoProveedor();
-    this.traerNombre();
-    this.cambioSaldo();
-
-    console.log("Esto es para ver", this.listaDatos);
-    setTimeout(() => {
-      event.target.complete();
-    }, 1000);
-  }
-
   async traerNombre() {
     this.listaDatos = [];
     this.objProv = null;
@@ -115,11 +113,10 @@ export class CardcomprasPage implements OnInit {
         }
       })
     })
-    console.log("lista datos", this.listaDatos);
+
 
     return this.listaDatos;
   }
-
   //Validación del ultimo lote con el día en que ingresa a cardcompras: Muestra el alert
   async validacionLote() {
     const ordenLotes = await this.FB.listaOrdenLotes();
@@ -129,7 +126,6 @@ export class CardcomprasPage implements OnInit {
       this.alertConfirmarNuevoLote();
     }
   }
-
   async irCompra(card) {
     const modal = await this.modalController.create({
       component: CrearcompraPage,
@@ -142,12 +138,10 @@ export class CardcomprasPage implements OnInit {
     });
     await modal.present();
   }
-
   async irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProv);
+    this.FB.getPesajeCompra(card.idProv,this.lastLote.toString());
     this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
   }
-
   async opciones() {
 
     this.input = { data: [] };
@@ -159,7 +153,6 @@ export class CardcomprasPage implements OnInit {
     this.alertProveedores();
 
   }
-
   async alertProveedores() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -185,7 +178,6 @@ export class CardcomprasPage implements OnInit {
 
     await alert.present();
   }
-
   async alertConfirmarNuevoLote() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',

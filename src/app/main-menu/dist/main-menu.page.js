@@ -58,6 +58,7 @@ var MainMenuPage = /** @class */ (function () {
     MainMenuPage.prototype.ngOnInit = function () {
         var _this = this;
         this.presentLoading('Espere...');
+        // this.FB.getTodo();
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -78,7 +79,7 @@ var MainMenuPage = /** @class */ (function () {
                                 message: message,
                                 cssClass: 'cssLoading',
                                 keyboardClose: false,
-                                backdropDismiss: false,
+                                //backdropDismiss: false,
                                 spinner: 'lines',
                                 translucent: true
                             })];
@@ -96,6 +97,8 @@ var MainMenuPage = /** @class */ (function () {
         this.navCtrl.navigateForward(["cardlistaclientes"]);
     };
     MainMenuPage.prototype.irCardListaProveedores = function () {
+        // this.FB.getTodo();
+        this.FB.getProveedores();
         this.navCtrl.navigateForward(["cardlistaproveedores"]);
     };
     MainMenuPage.prototype.lista = function () {

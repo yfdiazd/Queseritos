@@ -22,7 +22,7 @@ export class CrearventaPage implements OnInit {
   //variables del form
   tipoQueso;
   estadoQueso;
-  valor;
+  valor: number;
   activarBoton: boolean = false;
 
   ngOnInit() {
@@ -35,12 +35,23 @@ export class CrearventaPage implements OnInit {
 
   permitirGuardar(event) {
     console.log("cambiando", this.valor, event);
-    if (this.tipoQueso == undefined || this.estadoQueso == undefined || this.valor == undefined ||
-      this.tipoQueso == null || this.estadoQueso == null || this.valor == null ||
-      this.tipoQueso == "" || this.estadoQueso == "" || this.valor == "" || event == null) {
+    if (this.tipoQueso == undefined
+      || this.estadoQueso == undefined
+      || this.tipoQueso == null
+      || this.estadoQueso == null
+      || this.tipoQueso == ""
+      || this.estadoQueso == ""
+      || event == undefined
+      || event == null
+      || event == ""
+      || this.valor <= 0
+      || event <= 0) {
       this.activarBoton = false;
-    } else {
+    } else if (this.valor > 0 || event > 0) {
       this.activarBoton = true;
+      console.log("enviara el valor", this.valor);
+    } else {
+      this.activarBoton = false;
     }
   }
 
@@ -58,10 +69,6 @@ export class CrearventaPage implements OnInit {
     this.listaPesadas.push(this.objPesadas);
     this.modalCtrl.dismiss(this.listaPesadas, "lista");
     console.log("La lista es ", this.listaPesadas);
-
-
-
-
   }
 
 }

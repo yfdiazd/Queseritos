@@ -29,7 +29,7 @@ export class CrearcompraPage implements OnInit {
   @Input() idCompra;
   @Input() listaBultosEdit: any[] = [];
   @Input() productoEdit;
-
+  lastLote = [];
 
   constructor(
     private alertController: AlertController,
@@ -45,6 +45,8 @@ export class CrearcompraPage implements OnInit {
     this.traerTipoQuesoDefault();
     this.traerNombre();
     this.validacion();
+    this.lastLote = [];
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
     console.log("Se recibe id proveedor para editar: ", this.idProveedor);
     console.log("lista a mostrar", this.listaBultosEdit);
   }
@@ -126,7 +128,6 @@ export class CrearcompraPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
 
@@ -159,7 +160,7 @@ export class CrearcompraPage implements OnInit {
         this.listaBultosEdit
       );
       this.listaBultosEdit = [];
-      this.FB.getPesajeCompra(this.idProveedor);
+      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
       this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
       this.modalCtrl.dismiss("true", "actualizar");
       this.FB.getProveedorCompra();
@@ -175,7 +176,7 @@ export class CrearcompraPage implements OnInit {
         this.productoDefault
       );
       this.listaBultosEdit = [];
-      this.FB.getPesajeCompra(this.idProveedor);
+      this.FB.getPesajeCompra(this.idProveedor,this.lastLote.toString());
       this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
       this.modalCtrl.dismiss("true", "actualizar");
       this.FB.getProveedorCompra();
