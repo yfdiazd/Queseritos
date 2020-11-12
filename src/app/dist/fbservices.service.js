@@ -1785,6 +1785,7 @@ var FBservicesService = /** @class */ (function () {
     };
     FBservicesService.prototype.getVentaCliente = function (idCliente) {
         var _this = this;
+        this.sumaVentas = 0;
         this.ventasclienteLista = [];
         firebase
             .database()
@@ -1801,16 +1802,17 @@ var FBservicesService = /** @class */ (function () {
                         .ref("usuario/ventas/" + idCliente + "/" + element)
                         .on("value", function (snapshot) {
                         snapshot.forEach(function (element) {
-                            _this.ventasclienteLista.push(element.val());
+                            _this.sumaVentas += element.val()["this"].ventasclienteLista.push(element.val().costoVenta);
                         });
                     });
                 });
             }
-            return _this.ventasclienteLista;
+            return _this.ventasclienteLista, _this.sumaVentas;
         });
     };
     FBservicesService.prototype.getVentaClienteMes = function (idCliente) {
         var _this = this;
+        this.sumaVentaMes = 0;
         var fechaSpl = this.fechaActual().split("-", 3);
         var nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
         this.ventasclienteListaMes = [];
@@ -1821,10 +1823,12 @@ var FBservicesService = /** @class */ (function () {
             _this.ventasclienteListaMes = [];
             if (snapshot.exists()) {
                 snapshot.forEach(function (element) {
+                    console.log("elemesdsadasd as", element.val().costoVenta);
                     _this.ventasclienteListaMes.push(element.val());
+                    _this.sumaVentaMes += element.val().costoVenta;
                 });
             }
-            return _this.ventasclienteListaMes;
+            return _this.ventasclienteListaMes, _this.sumaVentaMes;
         });
     };
     FBservicesService.prototype.updateBultoPesajeDetallado = function (idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto) {
@@ -1851,6 +1855,12 @@ var FBservicesService = /** @class */ (function () {
                 _this.toastExistenPesajesDetale();
             }
         });
+    };
+    FBservicesService.prototype.eliminarVenta = function (idCliente, fechaNodo, idVenta) {
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .remove();
     };
     FBservicesService = __decorate([
         core_1.Injectable({

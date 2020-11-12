@@ -18,9 +18,6 @@ import { Direct } from 'protractor/built/driverProviders';
 })
 
 export class FBservicesService {
-
-
-
     //Variable para paths de validacion
     pathPush: any;
     //flag 
@@ -1738,8 +1735,8 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    updateVenta(){
-        
+    updateVenta() {
+
     }
 
 
@@ -1773,7 +1770,7 @@ export class FBservicesService {
                             .on("value", snapshot => {
                                 snapshot.forEach(element => {
                                     this.sumaVentas += element.val().
-                                    this.ventasclienteLista.push(element.val().costoVenta);
+                                        this.ventasclienteLista.push(element.val().costoVenta);
                                 });
                             });
 
@@ -1805,7 +1802,7 @@ export class FBservicesService {
                 if (snapshot.exists()) {
                     snapshot.forEach(element => {
                         console.log("elemesdsadasd as", element.val().costoVenta);
-                        
+
                         this.ventasclienteListaMes.push(element.val());
                         this.sumaVentaMes += element.val().costoVenta
                     });
