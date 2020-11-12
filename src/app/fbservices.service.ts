@@ -229,6 +229,8 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+                
+
 
             } else {
 
@@ -1855,8 +1857,47 @@ export class FBservicesService {
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
             .on("value", snapshot => {
-                snapshot.val()
+                snapshot.val().pesada.forEach(element => {
+
+                });
             });
+    }
+    ventaCos:number;
+   
+   async updatecostoVenta(idCliente, fechaNodo, idVenta, peso, costoVenta,costoAnterior) {
+       let a = (peso * costoVenta);
+       a = (a + costoAnterior)
+      
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .update({
+                costoVenta: a
+            });
+    }
+
+    updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        let a = (pesoPesada * valorPesada);
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta + "/pesadas")
+            .on("value", snapshot => {
+                console.log(" pesadasdsdasdasdasda ", snapshot.val());
+                snapshot.forEach(element => {
+                    console.log("id bultos de pesadas ", element.val().id);
+                    console.log("KEY bultos de pesadas ", element.key);
+                    if (element.val().id == idPesada) {
+
+                        console.log("ingresamos");
+                        firebase.database().ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta + "/pesadas/" + element.key)
+                            .update({
+                                valor: valorPesada,
+                                valorTotal: a
+                            })
+                    }
+                });
+
+            })
     }
 
     sumaCompras = 0;
@@ -1884,7 +1925,7 @@ export class FBservicesService {
                     });
                 });
         });
-        
+
         return this.sumaTodo;
     }
 }
