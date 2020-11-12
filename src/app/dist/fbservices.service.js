@@ -78,6 +78,11 @@ var FBservicesService = /** @class */ (function () {
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE
         };
+        this.sumaCompras = 0;
+        this.sumanticipo = 0;
+        this.credito = 0;
+        this.debito = 0;
+        this.saldo = 0;
         firebase.initializeApp(this.config);
         this.verificarsesion();
     }
@@ -779,6 +784,7 @@ var FBservicesService = /** @class */ (function () {
             });
             return _this.proveedoresLista;
         });
+        // this.getTodo();
     };
     FBservicesService.prototype.getTipoAnticipos = function () {
         var _this = this;
@@ -1861,6 +1867,55 @@ var FBservicesService = /** @class */ (function () {
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
             .remove();
+    };
+    FBservicesService.prototype.getTodo = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var lista, a, b;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("entro a get Todo");
+                        return [4 /*yield*/, this.proveedoresLista];
+                    case 1:
+                        lista = _a.sent();
+                        this.sumaTodo = [];
+                        a = 0;
+                        b = 0;
+                        this.credito = 0;
+                        this.debito = 0;
+                        this.saldo = 0;
+                        // let d = 0;
+                        // let c = 0;
+                        lista.forEach(function (element) {
+                            firebase
+                                .database()
+                                .ref()
+                                .child("usuario/compras/" + element.id)
+                                .on("value", function (snapshot) {
+                                snapshot.forEach(function (element) {
+                                    // lote: element.key,
+                                    _this.sumaCompras = (a + element.val().balance.comprasLote);
+                                    _this.sumanticipo = (b + element.val().balance.anticiposLote);
+                                    _this.credito += _this.sumaCompras;
+                                    _this.debito += _this.sumanticipo;
+                                    // this.sumaTodo.push({
+                                    //     compras: this.sumaCompras,
+                                    //     anticipos: this.sumanticipo
+                                    // });
+                                });
+                            });
+                        });
+                        // this.sumaTodo.forEach(element => {
+                        //     this.credito = (d + element.compras);
+                        //     this.debito = (c + element.anticipos);
+                        // });
+                        this.saldo = (this.credito - this.debito);
+                        console.log("object getTodo", this.credito, this.debito, this.saldo);
+                        return [2 /*return*/, (this.sumaTodo, this.credito, this.debito, this.saldo)];
+                }
+            });
+        });
     };
     FBservicesService = __decorate([
         core_1.Injectable({

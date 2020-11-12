@@ -120,22 +120,7 @@ export class CardventasPage implements OnInit {
     console.log("Se envia este id cliente", this.idcliente);
     this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
   }
-  async modalConfirmarPesada(card) {
-    // this.FB.getInfoCompra(this.idcliente, card.id)
-    // this.FB.getPesajeConfirmado(this.idcliente, card.id);
-    const modal = await this.modalController.create({
-      component: HomeventasPage,
-      cssClass: 'my-custom-class',
-      keyboardClose: false,
-      backdropDismiss: false,
-      componentProps: {
-        idVenta: card.id,
-        idCliente: this.idcliente
-      },
-    });
-    await modal.present();
 
-  }
   recorriendolista() {
     this.FB.ventasclienteListaMes.forEach(element => {
       console.log("elementttttt", element)
@@ -180,7 +165,7 @@ export class CardventasPage implements OnInit {
       keyboardClose: false,
       backdropDismiss: false,
       componentProps: {
-      
+        data: lista
       },
     });
     await popover.present();

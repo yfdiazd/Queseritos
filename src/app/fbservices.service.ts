@@ -226,6 +226,7 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -707,6 +708,7 @@ export class FBservicesService {
                 });
                 return this.proveedoresLista;
             });
+        // this.getTodo();
     }
     getTipoAnticipos() {
         firebase
@@ -1672,7 +1674,6 @@ export class FBservicesService {
             });
 
     }
-
     async agregarEstadoProveedor(idProveedor, valor) {
 
         firebase
@@ -1701,8 +1702,6 @@ export class FBservicesService {
             });
         return this.estadoSaldoProveedor;
     }
-
-
     eliminarNodoProveedor(idProveedor) {
         firebase
             .database()
@@ -1710,7 +1709,6 @@ export class FBservicesService {
             .remove();
 
     }
-
     agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
 
         let nodo = fechaEnvio.split("-", 3);
@@ -1738,8 +1736,6 @@ export class FBservicesService {
     updateVenta() {
 
     }
-
-
     upLoadImageVenta(idCliente, idVenta, file) {
 
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
@@ -1844,6 +1840,52 @@ export class FBservicesService {
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
             .remove();
+    }
+    sumaCompras = 0;
+    sumanticipo = 0;
+    credito = 0;
+    debito = 0;
+    saldo = 0;
+    public sumaTodo: any[];
+    async getTodo() {
+        console.log("entro a get Todo");
+        let lista = await this.proveedoresLista;
+        this.sumaTodo = [];
+        let a = 0;
+        let b = 0;
+        this.credito = 0;
+        this.debito = 0;
+        this.saldo = 0;
+        // let d = 0;
+        // let c = 0;
+
+        lista.forEach(element => {
+            firebase
+                .database()
+                .ref()
+                .child("usuario/compras/" + element.id)
+                .on("value", snapshot => {
+                    snapshot.forEach(element => {
+                        // lote: element.key,
+                        this.sumaCompras = (a + element.val().balance.comprasLote);
+                        this.sumanticipo = (b + element.val().balance.anticiposLote);
+
+                        this.credito += this.sumaCompras;
+                        this.debito += this.sumanticipo;
+                        // this.sumaTodo.push({
+                        //     compras: this.sumaCompras,
+                        //     anticipos: this.sumanticipo
+                        // });
+                    });
+                });
+        });
+        // this.sumaTodo.forEach(element => {
+        //     this.credito = (d + element.compras);
+        //     this.debito = (c + element.anticipos);
+        // });
+        this.saldo = (this.credito - this.debito);
+        console.log("object getTodo", this.credito, this.debito, this.saldo);
+        return this.sumaTodo, this.credito, this.debito, this.saldo;
     }
 
 }

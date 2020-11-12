@@ -10,22 +10,24 @@
 
 <ion-content>
   <div class="content">
-    <div>
-      <label>Crédito</label>
-      <label></label>
-      <label>Débito</label>
-      <label></label>
-      <label>Saldo</label>
-      <label></label>
+    <div class="totales">
+      <label class="label">Crédito</label>
+      <label class="valor">{{FB.credito | currency:'USD':true: '2.0-0'}}</label>
+      <label class="label">Débito</label>
+      <label class="valor">{{FB.debito | currency:'USD':true: '2.0-0'}}</label>
+      <label class="label">Saldo</label>
+      <label class="valor">{{(FB.debito - FB.credito) | currency:'USD':true: '2.0-0'}}</label>
+      <ion-searchbar class="search" placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
     </div>
-    <ion-searchbar class="search" placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
-    <ion-list class="lista">
-      <ion-item *ngFor="let input of listanombres1">
-        <ion-icon slot="start" name="chevron-forward"></ion-icon>
-        <ion-label class="lista" (click)="irCardLote(input)">{{input}}</ion-label>
-        <ion-reorder slot="end"></ion-reorder>
-      </ion-item>
-    </ion-list>
+    <div class="div__lista">
+      <ion-list class="lista">
+        <ion-item *ngFor="let input of listanombres1">
+          <ion-icon slot="start" name="chevron-forward"></ion-icon>
+          <ion-label class="lista" (click)="irCardLote(input)">{{input}}</ion-label>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      </ion-list>
+    </div>
   </div>
 
 </ion-content>

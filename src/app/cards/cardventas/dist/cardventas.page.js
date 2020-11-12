@@ -44,7 +44,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.CardventasPage = void 0;
 var core_1 = require("@angular/core");
-var homeventas_page_1 = require("src/app/home/homeventas/homeventas.page");
 var agregarvalorventa_page_1 = require("src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page");
 var CardventasPage = /** @class */ (function () {
     function CardventasPage(FB, modalController, PopoverController, toastController, route, navCtrl, loadingCtrl) {
@@ -145,31 +144,6 @@ var CardventasPage = /** @class */ (function () {
         console.log("Se envia este id cliente", this.idcliente);
         this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
     };
-    CardventasPage.prototype.modalConfirmarPesada = function (card) {
-        return __awaiter(this, void 0, void 0, function () {
-            var modal;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.modalController.create({
-                            component: homeventas_page_1.HomeventasPage,
-                            cssClass: 'my-custom-class',
-                            keyboardClose: false,
-                            backdropDismiss: false,
-                            componentProps: {
-                                idVenta: card.id,
-                                idCliente: this.idcliente
-                            }
-                        })];
-                    case 1:
-                        modal = _a.sent();
-                        return [4 /*yield*/, modal.present()];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
     CardventasPage.prototype.recorriendolista = function () {
         this.FB.ventasclienteListaMes.forEach(function (element) {
             console.log("elementttttt", element);
@@ -202,7 +176,9 @@ var CardventasPage = /** @class */ (function () {
                                 translucent: true,
                                 keyboardClose: false,
                                 backdropDismiss: false,
-                                componentProps: {}
+                                componentProps: {
+                                    data: lista
+                                }
                             })];
                     case 1:
                         popover = _a.sent();

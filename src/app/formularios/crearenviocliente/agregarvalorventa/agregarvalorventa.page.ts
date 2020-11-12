@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { FBservicesService } from 'src/app/fbservices.service';
 
@@ -9,6 +9,7 @@ import { FBservicesService } from 'src/app/fbservices.service';
 })
 export class AgregarvalorventaPage implements OnInit {
   valor: number;
+  @Input() data;
   constructor(private FB: FBservicesService,
     private alertController: AlertController,
     private popover: PopoverController) { }
@@ -18,8 +19,11 @@ export class AgregarvalorventaPage implements OnInit {
   guardar() {
     if (this.valor <= 0 || this.valor == undefined) {
       this.notificacionValorInvalido();
+    } else {
+      // this.FB.updatePesadas();
     }
   }
+
   volver() {
     this.popover.dismiss();
   }

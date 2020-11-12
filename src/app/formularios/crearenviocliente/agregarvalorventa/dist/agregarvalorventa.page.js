@@ -56,6 +56,9 @@ var AgregarvalorventaPage = /** @class */ (function () {
         if (this.valor <= 0 || this.valor == undefined) {
             this.notificacionValorInvalido();
         }
+        else {
+            // this.FB.updatePesadas();
+        }
     };
     AgregarvalorventaPage.prototype.volver = function () {
         this.popover.dismiss();
@@ -81,6 +84,9 @@ var AgregarvalorventaPage = /** @class */ (function () {
             });
         });
     };
+    __decorate([
+        core_1.Input()
+    ], AgregarvalorventaPage.prototype, "data");
     AgregarvalorventaPage = __decorate([
         core_1.Component({
             selector: 'app-agregarvalorventa',

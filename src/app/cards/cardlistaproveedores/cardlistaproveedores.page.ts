@@ -27,12 +27,22 @@ export class CardlistaproveedoresPage implements OnInit {
   listanombres: any[];
   listanombres1: any[];
   cont: number = 0;
+  sumaTodo;
+  credito = 0;
+  debito = 0;
+  saldo = 0;
 
   ngOnInit() {
     this.FB.getProveedoresCompra();
     this.listarproveedores();
     this.listadoproveedores();
+    this.FB.getTodo();
+    console.log("totales:",this.FB.credito,this.FB.debito,this.FB.saldo);
+    this.credito = this.FB.credito;
+    this.debito = this.FB.debito;
+    this.saldo = this.FB.saldo;
   }
+
 
   listarproveedores() {
     this.listanombres = [];

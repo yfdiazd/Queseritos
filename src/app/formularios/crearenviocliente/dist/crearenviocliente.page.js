@@ -267,9 +267,9 @@ var CrearenvioclientePage = /** @class */ (function () {
                 id: i++
             });
             console.log("lista recorrida", pesadaGuardar);
-            // this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
-            // this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
         });
+        this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
+        this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
     };
     CrearenvioclientePage.prototype.agregar = function () {
         return __awaiter(this, void 0, void 0, function () {
