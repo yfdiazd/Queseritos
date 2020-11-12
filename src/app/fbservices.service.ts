@@ -226,6 +226,7 @@ export class FBservicesService {
                 this.getClientes();
                 this.getConductor();
                 this.listaOrdenLotes();
+
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -1394,6 +1395,7 @@ export class FBservicesService {
                         anticipo: element.val().balance.anticiposLote
                     })
                     this.listaLotesDelProveedor.push(this.objLotesDelProveedor);
+
                 });
             });
 
@@ -1848,4 +1850,41 @@ export class FBservicesService {
             .remove();
     }
 
+    eliminarPesada(idCliente, fechaNodo, idVenta, idPesada) {
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .on("value", snapshot => {
+                snapshot.val()
+            });
+    }
+
+    sumaCompras = 0;
+    sumanticipo = 0;
+    public sumaTodo: any[];
+    getTodo() {
+        this.sumaTodo = [];
+        let a = 0;
+        let b = 0;
+        this.proveedoresLista.forEach(element => {
+            firebase
+                .database()
+                .ref()
+                .child("usuario/compras/" + element.id)
+                .on("value", snapshot => {
+                    snapshot.forEach(element => {
+                        // lote: element.key,
+                        this.sumaCompras = (a + element.val().balance.comprasLote);
+                        this.sumanticipo = (b + element.val().balance.anticiposLote);
+
+                        this.sumaTodo.push({
+                            compras: this.sumaCompras,
+                            anticipos: this.sumanticipo
+                        });
+                    });
+                });
+        });
+        
+        return this.sumaTodo;
+    }
 }
