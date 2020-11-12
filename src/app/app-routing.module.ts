@@ -60,7 +60,12 @@ const routes: Routes = [
   {
     path: 'crearventa',
     loadChildren: () => import('./formularios/crearventa/crearventa.module').then( m => m.CrearventaPageModule)
+  },
+  {
+    path:'terminos',
+    loadChildren: () =>import('./login/register/terminos/terminos.module').then(m => m.TerminosPageModule )
   }
+
 
 
 
