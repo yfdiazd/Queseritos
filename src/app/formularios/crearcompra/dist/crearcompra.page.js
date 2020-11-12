@@ -56,12 +56,15 @@ var CrearcompraPage = /** @class */ (function () {
         this.nuevoRegistro = [];
         this.bultoObj = null;
         this.listaBultosEdit = [];
+        this.lastLote = [];
     }
     CrearcompraPage.prototype.ngOnInit = function () {
         this.fecha = this.FB.fechaActual();
         this.traerTipoQuesoDefault();
         this.traerNombre();
         this.validacion();
+        this.lastLote = [];
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
         console.log("Se recibe id proveedor para editar: ", this.idProveedor);
         console.log("lista a mostrar", this.listaBultosEdit);
     };
@@ -182,7 +185,7 @@ var CrearcompraPage = /** @class */ (function () {
             this.contarPeso();
             this.FB.agregarPesaje(this.idProveedor, this.productoDefault, this.listaBultosEdit.length, this.contadorPeso, this.listaBultosEdit);
             this.listaBultosEdit = [];
-            this.FB.getPesajeCompra(this.idProveedor);
+            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
             this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
             this.modalCtrl.dismiss("true", "actualizar");
             this.FB.getProveedorCompra();
@@ -192,7 +195,7 @@ var CrearcompraPage = /** @class */ (function () {
             this.contarPeso();
             this.FB.updateBultoPesajeDetallado(this.idProveedor, this.idCompra, this.listaBultosEdit, this.contadorPeso, this.listaBultosEdit.length, this.productoDefault);
             this.listaBultosEdit = [];
-            this.FB.getPesajeCompra(this.idProveedor);
+            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
             this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
             this.modalCtrl.dismiss("true", "actualizar");
             this.FB.getProveedorCompra();

@@ -58,12 +58,15 @@ var CardcompradetalladaPage = /** @class */ (function () {
         this.listaCard = [];
         //lista de la compra que se recorre en el HTML
         this.listaCompras = [];
+        this.lastLote = [];
         this.cantidadConfirmaciones = 0;
     }
     CardcompradetalladaPage.prototype.ngOnInit = function () {
         var id = this.route.snapshot.paramMap.get("id");
         this.idProveedor = id;
-        this.FB.getPesajeCompra(this.idProveedor);
+        this.lastLote = [];
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
+        this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
         this.FB.getProductos();
         this.traerTipoQueso();
         this.traerNombre();
@@ -146,7 +149,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
                             this.FB.getProductos();
                             this.traerTipoQueso();
                             this.traerNombre();
@@ -179,7 +182,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
                             this.FB.getProductos();
                             this.traerTipoQueso();
                             this.traerNombre();
@@ -220,7 +223,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                     handler: function () {
                                         console.log("datos de la lista cuando elimina ", lista);
                                         _this.FB.deletePesajeCompra(_this.idProveedor, lista.id);
-                                        _this.FB.getPesajeCompra(_this.idProveedor);
+                                        _this.FB.getPesajeCompra(_this.idProveedor, _this.lastLote.toString());
                                         _this.traerTipoQueso();
                                         _this.traerNombre();
                                         _this.FB.getProveedorCompra();
@@ -291,7 +294,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.FB.getPesajeCompra(this.idProveedor);
+                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
                             this.FB.getProductos();
                             this.traerTipoQueso();
                             this.traerNombre();

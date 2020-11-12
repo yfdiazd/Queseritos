@@ -31,6 +31,9 @@
       <ion-segment-button value="scompras">
         <ion-label>Directa</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="detalle">
+        <ion-label>Detalle</ion-label>
+      </ion-segment-button>
     </ion-segment>
     <div class="div-card1" *ngIf="cards_Compras">
       <ion-card class="card" *ngFor="let item of dataFront">
@@ -92,6 +95,60 @@
           </ion-item-options>
         </ion-item-sliding>
       </div>
+    </div>
+    <div class="div-card3" *ngIf="cards_detalle">
+      <ion-item-sliding class="slider" *ngFor="let card of listaDataDetallada">
+        <ion-item class="item">
+          <div class="div-card">
+            <ion-card class="card">
+              <div class="div_info">
+                <div class="div_fila_1">
+                  <p><span>Tipo de queso: </span><span class="tipo_queso">{{card.nompreProducto}}</span></p>
+                  <p><span>Fecha:</span> {{card.fechaCompra}}</p>
+                </div>
+                <div class="div_fila_2">
+                  <div class="div_fila_2_part_left">
+                    <p class="p"><span>Peso total:</span> {{card.pesoBultos}} </p>
+                    <p class="p"><span>Lista de bultos:</span> {{card.totalBulto}}</p>
+                  </div>
+                  <div class="div_fila_2_part_right">
+                    <ion-button class="btn_modal" (click)="modalConfirmarPesaje(card)" fill="outline" expand="full"
+                      shape="round">
+                      <ion-icon class="icon" name="bar-chart" color="tertiary"></ion-icon>
+                    </ion-button>
+                    <!-- <ion-badge class="badge" slot="end" color="tertiary">33</ion-badge> -->
+                  </div>
+                </div>
+              </div>
+              <div class="div_tabla">
+                <table class="table">
+                  <thead class="thead">
+                    <th class="th1">Bulto</th>
+                    <th class="th2">Peso (Kg)</th>
+                  </thead>
+                  <tbody class="tbody">
+                    <tr class="tr" *ngFor="let lista of card.bultoLista ,let i=index">
+                      <td class="td1">
+                        <label (ngModel)="numbulto">{{i+1}}</label>
+                      </td>
+                      <td class="td2">
+                        <label (ngModel)="peso">{{lista.peso}}</label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ion-card>
+          </div>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="eliminarRegistro(card)">Eliminar</ion-item-option>
+        </ion-item-options>
+        <!-- Opción para editar el registro -->
+        <ion-item-options side="start">
+          <ion-item-option color="warning" (click)="editarRegistro(card)">Editar</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
     </div>
   </div>
 </ion-content>

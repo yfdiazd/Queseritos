@@ -6,11 +6,19 @@
     </ion-buttons>
     <ion-title class="titulo">PROVEEDORES</ion-title>
   </ion-toolbar>
-  <ion-searchbar class="search" placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>
   <div class="content">
+    <div>
+      <label>Crédito</label>
+      <label></label>
+      <label>Débito</label>
+      <label></label>
+      <label>Saldo</label>
+      <label></label>
+    </div>
+    <ion-searchbar class="search" placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
     <ion-list class="lista">
       <ion-item *ngFor="let input of listanombres1">
         <ion-icon slot="start" name="chevron-forward"></ion-icon>

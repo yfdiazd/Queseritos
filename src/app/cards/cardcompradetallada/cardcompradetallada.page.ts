@@ -34,11 +34,13 @@ export class CardcompradetalladaPage implements OnInit {
   listaCard: any[] = [];
   //lista de la compra que se recorre en el HTML
   public listaCompras: any[] = [];
-
+  lastLote = [];
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedor = id;
-    this.FB.getPesajeCompra(this.idProveedor);
+    this.lastLote = [];
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
+    this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
     this.FB.getProductos();
     this.traerTipoQueso();
     this.traerNombre();
@@ -107,7 +109,7 @@ export class CardcompradetalladaPage implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data == "true") {
-      this.FB.getPesajeCompra(this.idProveedor);
+      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
       this.FB.getProductos();
       this.traerTipoQueso();
       this.traerNombre();
@@ -128,7 +130,7 @@ export class CardcompradetalladaPage implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data == "true") {
-      this.FB.getPesajeCompra(this.idProveedor);
+      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
       this.FB.getProductos();
       this.traerTipoQueso();
       this.traerNombre();
@@ -161,7 +163,7 @@ export class CardcompradetalladaPage implements OnInit {
             console.log("datos de la lista cuando elimina ", lista);
 
             this.FB.deletePesajeCompra(this.idProveedor, lista.id);
-            this.FB.getPesajeCompra(this.idProveedor);
+            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
             this.traerTipoQueso();
             this.traerNombre();
             this.FB.getProveedorCompra();
@@ -202,7 +204,7 @@ export class CardcompradetalladaPage implements OnInit {
       await modal.present();
       const { data } = await modal.onWillDismiss();
       if (data == "true") {
-        this.FB.getPesajeCompra(this.idProveedor);
+        this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
         this.FB.getProductos();
         this.traerTipoQueso();
         this.traerNombre();

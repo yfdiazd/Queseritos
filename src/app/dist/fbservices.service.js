@@ -1124,7 +1124,7 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     // Traer los pesajes del proveedor seleccionado
-    FBservicesService.prototype.getPesajeCompra = function (idProveedor) {
+    FBservicesService.prototype.getPesajeCompra = function (idProveedor, lote) {
         return __awaiter(this, void 0, void 0, function () {
             var ordenLotes;
             var _this = this;
@@ -1138,7 +1138,7 @@ var FBservicesService = /** @class */ (function () {
                         this.lastLote = (ordenLotes.slice(this.listaOrdenLotes().length - 1));
                         firebase
                             .database()
-                            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+                            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
                             .on("value", function (snapshot) {
                             _this.pesajeCompraLista = [];
                             snapshot.forEach(function (element) {

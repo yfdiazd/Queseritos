@@ -1,11 +1,8 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { FBservicesService } from 'src/app/fbservices.service';
-import { MenuController, ModalController } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { identifierModuleUrl } from '@angular/compiler';
+import { AlertController, MenuController, ModalController, NavController } from '@ionic/angular';
 import { element } from 'protractor';
+import { FBservicesService } from 'src/app/fbservices.service';
 import { CreartruequePage } from 'src/app/formularios/creartrueque/creartrueque.page';
 
 @Component({

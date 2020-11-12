@@ -56,6 +56,7 @@ var CardcomprasPage = /** @class */ (function () {
         this.input = { data: [] };
         //Lista de nombres a mostrar
         this.listaDatos = [];
+        this.lastLote = [];
         console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
     }
     CardcomprasPage.prototype.ngOnInit = function () {
@@ -65,6 +66,8 @@ var CardcomprasPage = /** @class */ (function () {
         this.traerNombre();
         this.cambioSaldo();
         this.presentLoading('Espere...');
+        this.lastLote = [];
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -92,6 +95,8 @@ var CardcomprasPage = /** @class */ (function () {
         });
     };
     CardcomprasPage.prototype.doRefresh = function (event) {
+        this.lastLote = [];
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
         this.validacionLote();
         this.FB.getLoteProveedor();
         this.FB.getAnticipoProveedor();
@@ -190,7 +195,7 @@ var CardcomprasPage = /** @class */ (function () {
     CardcomprasPage.prototype.irCompraDetallada = function (card) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.FB.getPesajeCompra(card.idProv);
+                this.FB.getPesajeCompra(card.idProv, this.lastLote.toString());
                 this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
                 return [2 /*return*/];
             });

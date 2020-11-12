@@ -37,13 +37,15 @@ export class CardcomprasPage implements OnInit {
   ) {
     console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
   }
-
+  lastLote = [];
   ngOnInit() {
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.traerNombre();
     this.cambioSaldo();
     this.presentLoading('Espere...');
+    this.lastLote = [];
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
@@ -61,7 +63,8 @@ export class CardcomprasPage implements OnInit {
     return this.loading.present();
   }
   doRefresh(event) {
-
+    this.lastLote = [];
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.FB.getAnticipoProveedor();
@@ -136,7 +139,7 @@ export class CardcomprasPage implements OnInit {
     await modal.present();
   }
   async irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProv);
+    this.FB.getPesajeCompra(card.idProv,this.lastLote.toString());
     this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
   }
   async opciones() {
