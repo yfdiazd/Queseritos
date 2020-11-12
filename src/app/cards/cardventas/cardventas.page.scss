@@ -60,6 +60,13 @@ ion-content {
         position: absolute;
         z-index: 0;
 
+        .valorVentas {
+            display: inline-block;
+            width: 100%;
+            max-width: 700%;
+            text-align: center;
+        }
+
         .slider {
             width: 100%;
             max-width: 700px;

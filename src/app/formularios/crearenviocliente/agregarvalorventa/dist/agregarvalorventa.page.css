@@ -1,6 +1,10 @@
 ion-toolbar {
   --background: #1a1446;
 }
+ion-toolbar .titulo {
+  font-size: 20px;
+  color: white;
+}
 
 ion-content {
   padding: 0;

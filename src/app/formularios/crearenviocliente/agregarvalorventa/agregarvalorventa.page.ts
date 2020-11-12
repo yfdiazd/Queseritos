@@ -9,7 +9,9 @@ import { FBservicesService } from 'src/app/fbservices.service';
 })
 export class AgregarvalorventaPage implements OnInit {
   valor: number;
-  @Input() data;
+  @Input() dataBulto;
+  @Input() dataVenta;
+
   constructor(private FB: FBservicesService,
     private alertController: AlertController,
     private popover: PopoverController) { }
@@ -20,7 +22,10 @@ export class AgregarvalorventaPage implements OnInit {
     if (this.valor <= 0 || this.valor == undefined) {
       this.notificacionValorInvalido();
     } else {
-      // this.FB.updatePesadas();
+      // console.log("Se updateará esto:", this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
+      this.FB.updatePesadas(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
+      this.FB.updatecostoVenta(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.peso, this.valor, this.dataVenta.costoVenta);
+      this.popover.dismiss("true", "actualizar");
     }
   }
 

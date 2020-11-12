@@ -227,6 +227,8 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
 
+
+
             } else {
 
                 this.navCtrl.navigateBack(["login"]);
@@ -1741,7 +1743,7 @@ export class FBservicesService {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
 
     }
-    public ventasclienteLista: any[];
+    public ventasclienteLista: any[] = [];
     listaKey: any[];
     sumaVentas: number;
     getVentaCliente(idCliente) {
@@ -1751,13 +1753,12 @@ export class FBservicesService {
             .database()
             .ref("usuario/ventas/" + idCliente)
             .on("value", snapshot => {
+                this.ventasclienteLista = [];
                 this.listaKey = [];
+                this.sumaVentas = 0;
                 if (snapshot.exists()) {
                     snapshot.forEach(element => {
-
-
                         this.listaKey.push(element.key);
-
                     });
                     this.listaKey.forEach(element => {
                         firebase
@@ -1765,8 +1766,8 @@ export class FBservicesService {
                             .ref("usuario/ventas/" + idCliente + "/" + element)
                             .on("value", snapshot => {
                                 snapshot.forEach(element => {
-                                    this.sumaVentas += element.val().
-                                        this.ventasclienteLista.push(element.val().costoVenta);
+                                    this.sumaVentas += element.val().costoVenta;
+                                    this.ventasclienteLista.push(element.val());
                                 });
                             });
 
@@ -1774,8 +1775,6 @@ export class FBservicesService {
 
 
                 }
-
-
                 return this.ventasclienteLista, this.sumaVentas;
             });
     }
@@ -1785,24 +1784,20 @@ export class FBservicesService {
         this.sumaVentaMes = 0;
         let fechaSpl = this.fechaActual().split("-", 3);
         let nodo = (fechaSpl[2] + "-" + fechaSpl[1]);
-
-
         this.ventasclienteListaMes = [];
-
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodo)
             .on("value", snapshot => {
                 this.ventasclienteListaMes = [];
+                this.sumaVentaMes = 0;
                 if (snapshot.exists()) {
                     snapshot.forEach(element => {
                         console.log("elemesdsadasd as", element.val().costoVenta);
-
                         this.ventasclienteListaMes.push(element.val());
                         this.sumaVentaMes += element.val().costoVenta
                     });
                 }
-
                 return this.ventasclienteListaMes, this.sumaVentaMes;
             });
     }
@@ -1841,6 +1836,63 @@ export class FBservicesService {
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
             .remove();
     }
+
+    eliminarPesada(idCliente, fechaNodo, idVenta, idPesada) {
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .on("value", snapshot => {
+                snapshot.val().pesada.forEach(element => {
+
+                });
+            });
+    }
+    ventaCos: number;
+
+    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        console.log("fecha:", nodoEnv);
+        let a = (pesoPesada * valorPesada);
+        a = (a + costoAnterior)
+
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+            .update({
+                costoVenta: a
+            });
+    }
+
+    updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        let a = (pesoPesada * valorPesada);
+        console.log("fecha update:", nodoEnv);
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", snapshot => {
+                console.log(" pesadasdsdasdasdasda ", snapshot.val());
+                snapshot.forEach(element => {
+                    console.log("id bultos de pesadas ", element.val().id);
+                    console.log("KEY bultos de pesadas ", element.key);
+                    if (element.val().id == idPesada && element.val().valor == 0) {
+
+                        console.log("ingresamos");
+                        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
+                            .update({
+                                valor: valorPesada,
+                                valorTotal: a
+                            })
+                    }
+                });
+
+            });
+
+
+    }
+
     sumaCompras = 0;
     sumanticipo = 0;
     credito = 0;

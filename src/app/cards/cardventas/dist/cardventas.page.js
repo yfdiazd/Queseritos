@@ -121,11 +121,16 @@ var CardventasPage = /** @class */ (function () {
         }, 1000);
     };
     CardventasPage.prototype.getListaFiltrada = function (event) {
+        this.listaFiltrada = [];
+        console.log("evebt fecha filter", event);
         this.FB.ventasclienteLista;
         this.listaFiltrada = this.FB.ventasclienteLista;
         console.log("esoto es la lista filtrada ", this.listaFiltrada);
         var varY = event.year.value;
         var varM = event.month.value;
+        if (varM < 10) {
+            varM = ("0" + varM);
+        }
         var varym = (varY + "-" + varM);
         console.log("buscador   ---- ", varym);
         if (varym && varym.trim() != '') {
@@ -163,13 +168,13 @@ var CardventasPage = /** @class */ (function () {
             });
         });
     };
-    CardventasPage.prototype.agregarValorVenta = function (lista) {
+    CardventasPage.prototype.agregarValorVenta = function (lista, card) {
         return __awaiter(this, void 0, void 0, function () {
-            var popover;
+            var popover, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log("lsita:", lista);
+                        console.log("lsita:", lista, " y tambien ", card);
                         return [4 /*yield*/, this.PopoverController.create({
                                 component: agregarvalorventa_page_1.AgregarvalorventaPage,
                                 cssClass: 'popover_style',
@@ -177,7 +182,8 @@ var CardventasPage = /** @class */ (function () {
                                 keyboardClose: false,
                                 backdropDismiss: false,
                                 componentProps: {
-                                    data: lista
+                                    dataBulto: lista,
+                                    dataVenta: card
                                 }
                             })];
                     case 1:
@@ -185,6 +191,13 @@ var CardventasPage = /** @class */ (function () {
                         return [4 /*yield*/, popover.present()];
                     case 2:
                         _a.sent();
+                        return [4 /*yield*/, popover.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.traerNombre();
+                            this.recorriendolista();
+                        }
                         return [2 /*return*/];
                 }
             });

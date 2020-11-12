@@ -1,5 +1,10 @@
 ion-toolbar {
     --background: #1a1446;
+
+    .titulo {
+        font-size: 20px;
+        color: white;
+    }
 }
 
 ion-content {

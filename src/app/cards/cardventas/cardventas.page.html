@@ -28,6 +28,7 @@
   </div>
   <div class="div-secundario">
     <div class="ventasmes" *ngIf="show">
+      <h2 class="valorVentas">Valor de las ventas: {{FB.sumaVentaMes | currency:'USD':true: '2.0-0'}}</h2>
       <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteListaMes">
         <ion-item class="item">
           <div class="div-card">
@@ -37,12 +38,13 @@
                   <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
                   <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
                   <p><span>Peso total:</span> {{card.pesoEnviado}} </p>
-                  <p>Valor T.Venta: $999.000.000</p>
+                  <p>Valor T.Venta: {{card.costoVenta  | currency:'USD':true: '2.0-0'}}</p>
                 </div>
               </div>
               <div class="div_tabla">
                 <ion-list class="lista_item_ventas">
-                  <ion-item class="item" (click)="agregarValorVenta(lista)" *ngFor="let lista of card.pesadas ,let i=index">
+                  <ion-item class="item" (click)="agregarValorVenta(lista,card)"
+                    *ngFor="let lista of card.pesadas ,let i=index">
                     <ion-label class="num">
                       <ion-icon class="icon" slot="start" name="cube-outline"></ion-icon>
                       <p class="valor">{{i+1}}</p>
@@ -52,15 +54,15 @@
                       <p class="valor" id="valorPeso">{{lista.peso}}</p>
                     </ion-label>
                     <ion-label>
-                      
+
                       <!-- currency:'USD':true: '2.0-0' -->
                       <p>Queso: {{lista.tipoQueso}}</p>
                       <p>Estado: {{lista.estadoQueso}}</p>
-                      <h4>Valor: {{lista.valor}}</h4>
-                      <h3>Total: {{lista.valorTotal}}</h3>
+                      <h4>Valor: {{lista.valor  | currency:'USD':true: '2.0-0'}}</h4>
+                      <h3>Total: {{lista.valorTotal  | currency:'USD':true: '2.0-0'}}</h3>
                     </ion-label>
                   </ion-item>
-                </ion-list>               
+                </ion-list>
               </div>
             </ion-card>
           </div>
@@ -75,22 +77,24 @@
         </ion-item-options>
       </ion-item-sliding>
     </div>
-    <div class="ventasmes" *ngIf="hiden">
+    <div class="ventas" *ngIf="hiden">
+      <!-- <h2>Valor de las ventas: {{FB.sumaVentas}}</h2> -->
       <ion-item-sliding class="slider" *ngFor="let card of listaFiltrada">
         <ion-item class="item">
           <div class="div-card">
-            <ion-card class="card" >
+            <ion-card class="card">
               <div class="div_info">
                 <div class="div_fila_1">
                   <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
                   <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
                   <p><span>Peso total:</span> {{card.pesoEnviado}} </p>
-                  <p>Valor T.Venta: $999.000.000</p>
+                  <p>Valor T.Venta: {{card.costoVenta | currency:'USD':true: '2.0-0'}}</p>
                 </div>
               </div>
               <div class="div_tabla">
                 <ion-list class="lista_item_ventas">
-                  <ion-item (click)="agregarValorVenta(lista)" class="item" *ngFor="let lista of card.pesadas ,let i=index">
+                  <ion-item (click)="agregarValorVenta(lista)" class="item"
+                    *ngFor="let lista of card.pesadas ,let i=index">
                     <ion-label class="num">
                       <ion-icon class="icon" slot="start" name="cube-outline"></ion-icon>
                       <p class="valor">{{i+1}}</p>
@@ -100,15 +104,15 @@
                       <p class="valor" id="valorPeso">{{lista.peso}}</p>
                     </ion-label>
                     <ion-label>
-                      
+
                       <!-- currency:'USD':true: '2.0-0' -->
                       <p>Queso: {{lista.tipoQueso}}</p>
                       <p>Estado: {{lista.estadoQueso}}</p>
-                      <h4>Valor: $15.000</h4>
-                      <h3>Total: $99.000.000</h3>
+                      <h4>Valor: {{lista.valor | currency:'USD':true: '2.0-0'}}</h4>
+                      <h3>Total: {{lista.valorTotal | currency:'USD':true: '2.0-0'}}</h3>
                     </ion-label>
                   </ion-item>
-                </ion-list>               
+                </ion-list>
               </div>
             </ion-card>
           </div>

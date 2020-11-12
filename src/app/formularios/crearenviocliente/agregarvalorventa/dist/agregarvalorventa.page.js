@@ -57,7 +57,10 @@ var AgregarvalorventaPage = /** @class */ (function () {
             this.notificacionValorInvalido();
         }
         else {
-            // this.FB.updatePesadas();
+            // console.log("Se updateará esto:", this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
+            this.FB.updatePesadas(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
+            this.FB.updatecostoVenta(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.peso, this.valor, this.dataVenta.costoVenta);
+            this.popover.dismiss("true", "actualizar");
         }
     };
     AgregarvalorventaPage.prototype.volver = function () {
@@ -86,7 +89,10 @@ var AgregarvalorventaPage = /** @class */ (function () {
     };
     __decorate([
         core_1.Input()
-    ], AgregarvalorventaPage.prototype, "data");
+    ], AgregarvalorventaPage.prototype, "dataBulto");
+    __decorate([
+        core_1.Input()
+    ], AgregarvalorventaPage.prototype, "dataVenta");
     AgregarvalorventaPage = __decorate([
         core_1.Component({
             selector: 'app-agregarvalorventa',

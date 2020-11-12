@@ -93,11 +93,16 @@ export class CardventasPage implements OnInit {
     }, 1000);
   }
   getListaFiltrada(event) {
+    this.listaFiltrada = [];
+    console.log("evebt fecha filter", event);
     this.FB.ventasclienteLista;
     this.listaFiltrada = this.FB.ventasclienteLista;
     console.log("esoto es la lista filtrada ", this.listaFiltrada);
     let varY = event.year.value
     let varM = event.month.value
+    if (varM < 10) {
+      varM = ("0" + varM);
+    }
     let varym = (varY + "-" + varM);
     console.log("buscador   ---- ", varym);
     if (varym && varym.trim() != '') {
@@ -156,8 +161,8 @@ export class CardventasPage implements OnInit {
     // })
 
   }
-  async agregarValorVenta(lista) {
-    console.log("lsita:", lista);
+  async agregarValorVenta(lista, card) {
+    console.log("lsita:", lista, " y tambien ", card);
     const popover = await this.PopoverController.create({
       component: AgregarvalorventaPage,
       cssClass: 'popover_style',
@@ -165,10 +170,15 @@ export class CardventasPage implements OnInit {
       keyboardClose: false,
       backdropDismiss: false,
       componentProps: {
-        data: lista
+        dataBulto: lista,
+        dataVenta: card
       },
     });
     await popover.present();
-
+    const { data } = await popover.onWillDismiss();
+    if (data == "true") {
+      this.traerNombre();
+      this.recorriendolista();
+    }
   }
 }

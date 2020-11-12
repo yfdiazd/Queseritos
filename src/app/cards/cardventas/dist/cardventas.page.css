@@ -53,6 +53,12 @@ ion-content .div-secundario {
   position: absolute;
   z-index: 0;
 }
+ion-content .div-secundario .valorVentas {
+  display: inline-block;
+  width: 100%;
+  max-width: 700%;
+  text-align: center;
+}
 ion-content .div-secundario .slider {
   width: 100%;
   max-width: 700px;
