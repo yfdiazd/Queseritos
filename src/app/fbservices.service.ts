@@ -1773,8 +1773,8 @@ export class FBservicesService {
                             .ref("usuario/ventas/" + idCliente + "/" + element)
                             .on("value", snapshot => {
                                 snapshot.forEach(element => {
-                                    this.sumaVentas += element.val().
-                                        this.ventasclienteLista.push(element.val().costoVenta);
+                                    this.sumaVentas += element.val().costoVenta;
+                                        this.ventasclienteLista.push(element.val());
                                 });
                             });
 
@@ -1865,22 +1865,26 @@ export class FBservicesService {
     ventaCos:number;
    
    async updatecostoVenta(idCliente, fechaNodo, idVenta, peso, costoVenta,costoAnterior) {
+       let nodo = fechaNodo.split("-",3);
+       let nodoEnv = (nodo[0]+"-"+nodo[1]);
        let a = (peso * costoVenta);
        a = (a + costoAnterior)
       
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .update({
                 costoVenta: a
             });
     }
 
     updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        let nodo = fechaNodo.split("-",3);
+        let nodoEnv = (nodo[0]+"-"+nodo[1]);
         let a = (pesoPesada * valorPesada);
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta + "/pesadas")
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
             .on("value", snapshot => {
                 console.log(" pesadasdsdasdasdasda ", snapshot.val());
                 snapshot.forEach(element => {
