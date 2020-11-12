@@ -27,6 +27,7 @@ export class MainMenuPage implements OnInit {
 
   ngOnInit() {
     this.presentLoading('Espere...');
+    // this.FB.getTodo();
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
@@ -57,6 +58,8 @@ export class MainMenuPage implements OnInit {
     this.navCtrl.navigateForward(["cardlistaclientes"]);
   }
   irCardListaProveedores() {
+    // this.FB.getTodo();
+    this.FB.getProveedores();
     this.navCtrl.navigateForward(["cardlistaproveedores"]);
   }
 

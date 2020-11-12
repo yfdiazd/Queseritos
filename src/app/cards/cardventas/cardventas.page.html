@@ -28,6 +28,7 @@
   </div>
   <div class="div-secundario">
     <div class="ventasmes" *ngIf="show">
+      <h2 class="valorVentas">Valor de las ventas: {{FB.sumaVentaMes | currency:'USD':true: '2.0-0'}}</h2>
       <ion-item-sliding class="slider" *ngFor="let card of FB.ventasclienteListaMes">
         <ion-item class="item">
           <div class="div-card">
@@ -37,12 +38,13 @@
                   <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
                   <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
                   <p><span>Peso total:</span> {{card.pesoEnviado}} </p>
-                  <p>Valor T.Venta: $999.000.000</p>
+                  <p>Valor T.Venta: {{card.costoVenta  | currency:'USD':true: '2.0-0'}}</p>
                 </div>
               </div>
               <div class="div_tabla">
                 <ion-list class="lista_item_ventas">
-                  <ion-item class="item" *ngFor="let lista of card.pesadas ,let i=index">
+                  <ion-item class="item" (click)="agregarValorVenta(lista,card)"
+                    *ngFor="let lista of card.pesadas ,let i=index">
                     <ion-label class="num">
                       <ion-icon class="icon" slot="start" name="cube-outline"></ion-icon>
                       <p class="valor">{{i+1}}</p>
@@ -52,46 +54,15 @@
                       <p class="valor" id="valorPeso">{{lista.peso}}</p>
                     </ion-label>
                     <ion-label>
+
                       <!-- currency:'USD':true: '2.0-0' -->
                       <p>Queso: {{lista.tipoQueso}}</p>
                       <p>Estado: {{lista.estadoQueso}}</p>
-                      <h4>Valor: $15.000</h4>
-                      <h3>Total: $99.000.000</h3>
+                      <h4>Valor: {{lista.valor  | currency:'USD':true: '2.0-0'}}</h4>
+                      <h3>Total: {{lista.valorTotal  | currency:'USD':true: '2.0-0'}}</h3>
                     </ion-label>
                   </ion-item>
                 </ion-list>
-                <!-- <table class="table">
-                  <thead class="thead">
-                    <th class="th1">N°</th>
-                    <th class="th2">Queso</th>
-                    <th class="th3">Estado</th>
-                    <th class="th4">Peso</th>
-                    <th class="th5">Valor</th>
-                    <th class="th6">Total</th>
-                  </thead>
-                  <tbody class="tbody">
-                    <tr class="tr" *ngFor="let lista of card.pesadas ,let i=index">
-                      <td class="td1">
-                        <label (ngModel)="numpesada">{{i+1}}</label>
-                      </td>
-                      <td class="td2">
-                        <label (ngModel)="queso">{{lista.tipoQueso}}</label>
-                      </td>
-                      <td class="td3">
-                        <label (ngModel)="estado">{{lista.estadoQueso}}</label>
-                      </td>
-                      <td class="td4">
-                        <label (ngModel)="peso">{{lista.peso}}</label>
-                      </td>
-                      <td class="td5">
-                        <label (ngModel)="valor">{{valor}}</label>
-                      </td>
-                      <td class="td6">
-                        <label (ngModel)="total">{{total}} </label>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> -->
               </div>
             </ion-card>
           </div>
@@ -105,10 +76,9 @@
           <ion-item-option color="warning" (click)="alertEditar(lista)">Editar</ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
-
-
     </div>
-    <div class="ventasmes" *ngIf="hiden">
+    <div class="ventas" *ngIf="hiden">
+      <!-- <h2>Valor de las ventas: {{FB.sumaVentas}}</h2> -->
       <ion-item-sliding class="slider" *ngFor="let card of listaFiltrada">
         <ion-item class="item">
           <div class="div-card">
@@ -117,53 +87,32 @@
                 <div class="div_fila_1">
                   <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
                   <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
-                </div>
-                <div class="div_fila_2">
-                  <div class="div_fila_2_part_left">
-                    <p class="p"><span>Peso total:</span> {{card.pesoEnviado}} </p>
-                    <!-- <p class="p"><span>Pesadas:</span> {{card.totalPesada}}</p> -->
-                  </div>
-                  <div class="div_fila_2_part_right">
-                    <ion-button class="btn_modal" (click)="modalConfirmarPesada(card)" fill="outline" expand="full"
-                      shape="round">
-                      <ion-icon class="icon" name="bar-chart" color="tertiary"></ion-icon>
-                    </ion-button>
-                  </div>
+                  <p><span>Peso total:</span> {{card.pesoEnviado}} </p>
+                  <p>Valor T.Venta: {{card.costoVenta | currency:'USD':true: '2.0-0'}}</p>
                 </div>
               </div>
               <div class="div_tabla">
-                <table class="table">
-                  <thead class="thead">
-                    <th class="th1">Pesada</th>
-                    <th class="th2">Queso</th>
-                    <th class="th3">Estado</th>
-                    <th class="th4">Peso</th>
-                    <th class="th5">Valor</th>
-                    <th class="th6">Total</th>
-                  </thead>
-                  <!-- <tbody class="tbody">
-                <tr class="tr" *ngFor="let lista of bultoPesada ,let i=index">
-                  <td class="td1">
-                    <label (ngModel)="numpesada">{{i+1}}</label>
-                  </td>
-                  <td class="td2">
-                    <label (ngModel)="queso">{{queso}}</label>
-                  </td>
-                  <td class="td3">
-                    <label (ngModel)="estado">{{estado}}</label>
-                  </td>
-                  <td class="td4">
-                    <label (ngModel)="peso">{{peso}}</label>
-                  </td>
-                  <td class="td5">
-                    <label (ngModel)="valor">{{valor}} <span>Kg</span></label>
-                  </td>
-                  <td class="td6">
-                    <label (ngModel)="total">{{total}} </label>
-                  </td>
-                </tr>
-              </tbody> -->
-                </table>
+                <ion-list class="lista_item_ventas">
+                  <ion-item (click)="agregarValorVenta(lista)" class="item"
+                    *ngFor="let lista of card.pesadas ,let i=index">
+                    <ion-label class="num">
+                      <ion-icon class="icon" slot="start" name="cube-outline"></ion-icon>
+                      <p class="valor">{{i+1}}</p>
+                    </ion-label>
+                    <ion-label class="peso">
+                      <ion-icon class="icon" slot="end" name="pie-chart-outline" color="tertiary"></ion-icon>
+                      <p class="valor" id="valorPeso">{{lista.peso}}</p>
+                    </ion-label>
+                    <ion-label>
+
+                      <!-- currency:'USD':true: '2.0-0' -->
+                      <p>Queso: {{lista.tipoQueso}}</p>
+                      <p>Estado: {{lista.estadoQueso}}</p>
+                      <h4>Valor: {{lista.valor | currency:'USD':true: '2.0-0'}}</h4>
+                      <h3>Total: {{lista.valorTotal | currency:'USD':true: '2.0-0'}}</h3>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
               </div>
             </ion-card>
           </div>

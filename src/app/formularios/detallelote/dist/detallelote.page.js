@@ -44,6 +44,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.DetallelotePage = void 0;
 var core_1 = require("@angular/core");
+var homepesajes_page_1 = require("src/app/home/homepesajes/homepesajes.page");
+var crearcompra_page_1 = require("../crearcompra/crearcompra.page");
 var creartrueque_page_1 = require("../creartrueque/creartrueque.page");
 var vistaimg_page_1 = require("./vistaimg/vistaimg.page");
 var DetallelotePage = /** @class */ (function () {
@@ -61,7 +63,9 @@ var DetallelotePage = /** @class */ (function () {
         //Controladores para visualizar el segment
         this.cards_Compras = true;
         this.cards_anticipos = false;
+        this.cards_detalle = false;
         this.crearAnticipo = false;
+        this.listaDataDetallada = [];
         this.sumaAnticiposDirecto = 0;
     }
     DetallelotePage.prototype.ngOnInit = function () {
@@ -70,6 +74,7 @@ var DetallelotePage = /** @class */ (function () {
         this.loteRecibido = idLote;
         this.provRecibido = idProv;
         this.traerNombre();
+        this.traerDataDetallada();
         this.cambiarHoja(true);
     };
     DetallelotePage.prototype.cambiarHoja = function (event) {
@@ -77,6 +82,7 @@ var DetallelotePage = /** @class */ (function () {
             console.log("entro desde onInit");
             this.generarData();
             this.generarDataDirecta();
+            this.traerDataDetallada();
         }
         else {
             console.log("Entro desde el html");
@@ -85,21 +91,166 @@ var DetallelotePage = /** @class */ (function () {
                 this.cards_Compras = true;
                 this.cards_anticipos = false;
                 this.crearAnticipo = false;
+                this.cards_detalle = false;
                 this.generarData();
                 this.generarDataDirecta();
+                this.traerDataDetallada();
             }
             else if (valorSegment == "scompras") {
                 this.cards_Compras = false;
                 this.cards_anticipos = true;
                 this.crearAnticipo = true;
+                this.cards_detalle = false;
                 this.generarData();
                 this.generarDataDirecta();
+                this.traerDataDetallada();
+            }
+            else if (valorSegment == "detalle") {
+                this.cards_Compras = false;
+                this.cards_anticipos = false;
+                this.crearAnticipo = false;
+                this.cards_detalle = true;
             }
             else {
                 this.generarData();
                 this.generarDataDirecta();
+                this.traerDataDetallada();
             }
         }
+    };
+    DetallelotePage.prototype.traerDataDetallada = function () {
+        var _this = this;
+        this.nombreProv = [];
+        this.listaDataDetallada = [];
+        this.FB.pesajeCompraLista.forEach(function (pesaje) {
+            _this.FB.productosLista.forEach(function (producto) {
+                if (pesaje.idProducto == producto.id) {
+                    _this.listaDataDetallada.push({
+                        anticipos: pesaje.anticipos,
+                        bultoLista: pesaje.bultoLista,
+                        costoTotalCompra: pesaje.costoTotalCompra,
+                        fechaCompra: pesaje.fechaCompra,
+                        id: pesaje.id,
+                        idProducto: pesaje.idProducto,
+                        idProveedor: pesaje.idProveedor,
+                        lote: pesaje.lote,
+                        pesoBultos: pesaje.pesoBultos,
+                        totalBulto: pesaje.totalBulto,
+                        nompreProducto: producto.descripcion
+                    });
+                }
+            });
+        });
+    };
+    DetallelotePage.prototype.modalConfirmarPesaje = function (card) {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.FB.getInfoCompra(this.provRecibido, card.id);
+                        this.FB.getPesajeConfirmado(this.provRecibido, card.id);
+                        return [4 /*yield*/, this.modalController.create({
+                                component: homepesajes_page_1.HomepesajesPage,
+                                cssClass: 'my-custom-class',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {
+                                    idCompra: card.id,
+                                    idProv: this.provRecibido
+                                }
+                            })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DetallelotePage.prototype.eliminarRegistro = function (lista) {
+        if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
+            this.removeRegister(lista);
+        }
+        else {
+            this.alertRemove();
+        }
+    };
+    DetallelotePage.prototype.alertRemove = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'No se puede eliminar',
+                            message: 'El pesaje ya tiene un anticipo y/o un peso confirmado.',
+                            buttons: ['Aceptar']
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DetallelotePage.prototype.editarRegistro = function (card) {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal, data, alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(card.costoTotalCompra == 0)) return [3 /*break*/, 4];
+                        console.log("esta es la data a editar", card);
+                        return [4 /*yield*/, this.modalController.create({
+                                component: crearcompra_page_1.CrearcompraPage,
+                                cssClass: 'my-custom-class',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {
+                                    idProveedor: this.provRecibido,
+                                    idCompra: card.id,
+                                    listaBultosEdit: card.bultoLista,
+                                    productoEdit: card.idProducto
+                                }
+                            })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.FB.getPesajeCompra(this.provRecibido, this.loteRecibido);
+                            this.FB.getProductos();
+                            this.traerDataDetallada();
+                            this.FB.getProveedorCompra();
+                            this.FB.getAnticipoProveedor();
+                        }
+                        return [3 /*break*/, 7];
+                    case 4: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'No se puede editar',
+                            message: 'Esta compra ya tiene pesajes confirmados.',
+                            buttons: ['ACEPTAR']
+                        })];
+                    case 5:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 6:
+                        _a.sent();
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
+                }
+            });
+        });
     };
     DetallelotePage.prototype.generarData = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -120,10 +271,15 @@ var DetallelotePage = /** @class */ (function () {
                             productos.forEach(function (producto) {
                                 if (compra.idProducto == producto.id) {
                                     var sumaAnticipos_1 = 0;
-                                    compra.anticipos.forEach(function (sumaAnt) {
-                                        console.log("Sumando anticipos", sumaAnt.valorAnticipo);
-                                        sumaAnticipos_1 += sumaAnt.valorAnticipo;
-                                    });
+                                    if (compra.anticipos !== 0) {
+                                        compra.anticipos.forEach(function (sumaAnt) {
+                                            console.log("Sumando anticipos", sumaAnt.valorAnticipo);
+                                            sumaAnticipos_1 += sumaAnt.valorAnticipo;
+                                        });
+                                    }
+                                    else {
+                                        sumaAnticipos_1 = 0;
+                                    }
                                     _this.dataFront.push({
                                         anticipos: compra.anticipos,
                                         bultoLista: compra.bultoLista,

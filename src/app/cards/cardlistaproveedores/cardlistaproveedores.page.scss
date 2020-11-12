@@ -23,10 +23,49 @@ ion-content {
     --background: #c8f7f3;
     --color: black;
 
+
+
     .content {
         width: 100%;
         max-width: 700px;
         margin: auto;
+
+        .totales {
+            width: 100%;
+            max-width: 700px;
+            position: fixed;
+            z-index: 50;
+            background-color: #c8f7f3;
+
+            .label {
+                display: inline-block;
+                width: 30%;
+                max-width: 700px;
+                color: #1a1446;
+            }
+
+            .valor {
+                display: inline-block;
+                width: 70%;
+                max-width: 700px;
+
+                color: #ff2f73;
+                font-family: monospace;
+            }
+
+            .search {
+                display: inline-block;
+                width: 100%;
+                max-width: 700px;
+
+            }
+        }
+
+        .div__lista {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 700px;
+        }
     }
 
 }

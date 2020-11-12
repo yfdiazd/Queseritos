@@ -75,7 +75,7 @@ export class HomepesajesPage implements OnInit {
     this.traerPeso();
   }  
   volver() {
-    this.modalController.dismiss();
+    this.modalController.dismiss("true", "actualizar");
   }
   async removeRegister(lista) {
     console.log("valores", this.idProv, this.idCompra, lista);

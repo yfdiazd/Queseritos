@@ -1,10 +1,11 @@
 import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, NavController, ToastController, LoadingController } from '@ionic/angular';
+import { ModalController, NavController, ToastController, LoadingController, PopoverController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { FBservicesService } from "../../fbservices.service";
 import { HomeventasPage } from 'src/app/home/homeventas/homeventas.page';
+import { AgregarvalorventaPage } from 'src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page';
 
 @Component({
   selector: 'app-cardventas',
@@ -25,12 +26,13 @@ export class CardventasPage implements OnInit {
   listaCard: any[] = [];
   //lista de la venta que se recorre en el HTML
   public listaVentas: any[] = [];
-
+  //lista de datos para el front cuando se filtra
+  listaFiltrada: any;
 
   constructor(
     private FB: FBservicesService,
     private modalController: ModalController,
-    private alertController: AlertController,
+    private PopoverController: PopoverController,
     private toastController: ToastController,
     private route: ActivatedRoute,
     private navCtrl: NavController,
@@ -71,7 +73,6 @@ export class CardventasPage implements OnInit {
     }, 1500);
 
   }
-
   async presentLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
       message,
@@ -83,7 +84,6 @@ export class CardventasPage implements OnInit {
     });
     return this.loading.present();
   }
-
   doRefresh(event) {
     this.traerNombre();
     this.recorriendolista();
@@ -92,15 +92,17 @@ export class CardventasPage implements OnInit {
       event.target.complete();
     }, 1000);
   }
-
-  listaFiltrada: any;
-
   getListaFiltrada(event) {
+    this.listaFiltrada = [];
+    console.log("evebt fecha filter", event);
     this.FB.ventasclienteLista;
     this.listaFiltrada = this.FB.ventasclienteLista;
     console.log("esoto es la lista filtrada ", this.listaFiltrada);
     let varY = event.year.value
     let varM = event.month.value
+    if (varM < 10) {
+      varM = ("0" + varM);
+    }
     let varym = (varY + "-" + varM);
     console.log("buscador   ---- ", varym);
     if (varym && varym.trim() != '') {
@@ -123,22 +125,7 @@ export class CardventasPage implements OnInit {
     console.log("Se envia este id cliente", this.idcliente);
     this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
   }
-  async modalConfirmarPesada(card) {
-    // this.FB.getInfoCompra(this.idcliente, card.id)
-    // this.FB.getPesajeConfirmado(this.idcliente, card.id);
-    const modal = await this.modalController.create({
-      component: HomeventasPage,
-      cssClass: 'my-custom-class',
-      keyboardClose: false,
-      backdropDismiss: false,
-      componentProps: {
-        idVenta: card.id,
-        idCliente: this.idcliente
-      },
-    });
-    await modal.present();
 
-  }
   recorriendolista() {
     this.FB.ventasclienteListaMes.forEach(element => {
       console.log("elementttttt", element)
@@ -174,12 +161,24 @@ export class CardventasPage implements OnInit {
     // })
 
   }
-
-  // cambioFecha(event){
-  //   console.log("imprimo evento recibido en campo fecha", event);
-  //   console.log('Date', new Date(event.detail.value));
-
-
-  // }
-
+  async agregarValorVenta(lista, card) {
+    console.log("lsita:", lista, " y tambien ", card);
+    const popover = await this.PopoverController.create({
+      component: AgregarvalorventaPage,
+      cssClass: 'popover_style',
+      translucent: true,
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        dataBulto: lista,
+        dataVenta: card
+      },
+    });
+    await popover.present();
+    const { data } = await popover.onWillDismiss();
+    if (data == "true") {
+      this.traerNombre();
+      this.recorriendolista();
+    }
+  }
 }

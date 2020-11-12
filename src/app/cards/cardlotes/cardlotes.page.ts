@@ -56,7 +56,7 @@ export class CardlotesPage implements OnInit {
   }
 
   doRefresh(event) {
-   
+
     this.ngOnInit();
     setTimeout(() => {
       event.target.complete();
@@ -84,6 +84,7 @@ export class CardlotesPage implements OnInit {
   irDetalleLote(item) {
     this.FB.getPesajeLoteProveedor(this.idProveedorRecibido, item.lote);
     this.FB.getAnticipoDirectoProveedor(this.idProveedorRecibido, item.lote);
+    this.FB.getPesajeCompra(this.idProveedorRecibido, item.lote);
     this.navCtrl.navigateForward(["detallelote/", item.lote, this.idProveedorRecibido]);
   }
 
@@ -136,7 +137,7 @@ export class CardlotesPage implements OnInit {
       console.log("Entro al if: ", data);
       // this.ngOnInit();
       this.navCtrl.navigateBack(["main-menu"]);
-      this.FB.eliminarNodoProveedor(this.idProveedorRecibido);  
+      this.FB.eliminarNodoProveedor(this.idProveedorRecibido);
     }
   }
 

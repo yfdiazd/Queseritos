@@ -60,6 +60,13 @@ ion-content {
         position: absolute;
         z-index: 0;
 
+        .valorVentas {
+            display: inline-block;
+            width: 100%;
+            max-width: 700%;
+            text-align: center;
+        }
+
         .slider {
             width: 100%;
             max-width: 700px;
@@ -67,143 +74,110 @@ ion-content {
             margin-right: auto;
             padding: 0;
             margin-top: 10px;
-        }
 
-        .item {
-            --background: transparent;
-            --border-style: none;
-        }
+            .item {
+                --background: transparent;
+                --border-style: none;
 
-        .div-card {
-            width: 100%;
-            border: #1a1446 solid 3px;
-            border-radius: 5px;
-
-
-            .card {
-                width: 100%;
-                margin: auto;
-                background-color: white;
-
-                .div_info {
-                    padding: 15px;
-                    border-bottom: #1a1446 solid 1px;
-
-                    .badge {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                    }
-
-
-                    .div_fila_1 {
-                        width: 100%;
-
-                        .ciudad {
-                            color: #ff2f73;
-                            font-weight: bold;
-                        }
-                    }
-
-                    .div_fila_2 {
-                        width: 100%;
-
-                        .div_fila_2_part_left {
-                            position: flex;
-                            width: 70%;
-                            height: 100%;
-                            display: inline-block;
-                        }
-
-                        .div_fila_2_part_right {
-                            position: flex;
-                            width: 30%;
-                            height: 100%;
-                            display: inline-block;
-
-                            .btn_modal {
-                                margin: 0;
-                                --width: 100%;
-                                --height: 100%;
-                                --border-color: #8170ff;
-                                --border-style: dashed;
-                                --opacity: 0.8;
-
-                                .icon {
-                                    position: absolute;
-                                    float: left;
-                                }
-
-                            }
-                        }
-                    }
-
-                    p {
-                        padding: 0;
-                        margin: 0;
-                        width: 100%;
-                        color: #1a1446;
-                    }
-
-                    p>span {
-                        font-weight: bold;
-                    }
-                }
-
-                .div_tabla {
+                .div-card {
                     width: 100%;
-                    margin: auto;
-                    padding: 0;
+                    border: #1a1446 solid 3px;
+                    border-radius: 5px;
 
-                    .lista_item_ventas {
-                        padding: 0;
+                    .card {
+                        width: 100%;
+                        margin: auto;
+                        background-color: white;
 
-                        .item {
+                        .div_info {
+                            padding: 15px;
                             border-bottom: #1a1446 solid 1px;
 
-                            p {
-                                padding: 0;
-                                margin: 0;
-                            }
-
-                            .num,
-                            .peso {
-                                width: 80px;
-                                height: 15px;
+                            .badge {
                                 position: absolute;
-                                display: inline-block;
-
-                                .icon {
-                                    width: 30%;
-                                    height: 100%;
-                                    display: inline-block;
-                                }
-
-                                .valor {
-                                    height: 100%;
-                                    width: 70%;
-                                    display: inline-block;
-                                    color: #1a1446;
-                                }
-
-                                #valorPeso::after {
-                                    content: 'Kg';
-                                    font-size: 10px;
-                                    color: #1a1446;
-
-                                }
-                            }
-
-                            .num {
                                 top: 0;
                                 right: 0;
                             }
 
-                            .peso {
-                                bottom: 0;
-                                right: 0;
+
+                            .div_fila_1 {
+                                width: 100%;
+
+                                .ciudad {
+                                    color: #ff2f73;
+                                    font-weight: bold;
+                                }
+
+                                p {
+                                    padding: 0;
+                                    margin: 0;
+                                    width: 100%;
+                                    color: #1a1446;
+                                }
+
+                                p>span {
+                                    font-weight: bold;
+                                }
                             }
 
+                        }
+
+                        .div_tabla {
+                            width: 100%;
+                            margin: auto;
+                            padding: 0;
+
+                            .lista_item_ventas {
+                                padding: 0;
+
+                                .item {
+                                    border-bottom: #1a1446 solid 1px;
+
+                                    p {
+                                        padding: 0;
+                                        margin: 0;
+                                    }
+
+                                    .num,
+                                    .peso {
+                                        width: 80px;
+                                        height: 15px;
+                                        position: absolute;
+                                        display: inline-block;
+
+                                        .icon {
+                                            width: 30%;
+                                            height: 100%;
+                                            display: inline-block;
+                                        }
+
+                                        .valor {
+                                            height: 100%;
+                                            width: 70%;
+                                            display: inline-block;
+                                            color: #1a1446;
+                                        }
+
+                                        #valorPeso::after {
+                                            content: 'Kg';
+                                            font-size: 10px;
+                                            color: #1a1446;
+
+                                        }
+                                    }
+
+                                    .num {
+                                        top: 0;
+                                        right: 0;
+                                    }
+
+                                    .peso {
+                                        bottom: 0;
+                                        right: 0;
+                                    }
+
+                                }
+                            }
                         }
                     }
                 }

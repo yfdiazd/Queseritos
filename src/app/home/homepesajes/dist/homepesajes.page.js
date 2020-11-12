@@ -123,7 +123,7 @@ var HomepesajesPage = /** @class */ (function () {
         });
     };
     HomepesajesPage.prototype.volver = function () {
-        this.modalController.dismiss();
+        this.modalController.dismiss("true", "actualizar");
     };
     HomepesajesPage.prototype.removeRegister = function (lista) {
         return __awaiter(this, void 0, void 0, function () {

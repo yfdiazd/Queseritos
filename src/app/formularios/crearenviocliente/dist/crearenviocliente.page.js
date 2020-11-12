@@ -63,13 +63,15 @@ var CrearenvioclientePage = /** @class */ (function () {
         this.pesoAcumulado = 0;
         this.input_limite = false;
         this.nombreArchLoaded = "Subir archivo";
+        this.toggle = false;
+        this.pesadas = [];
         this.customAlertOptions = {
             header: "Seleccione",
             translucent: true,
             keyboardClose: false,
             backdropDismiss: false
         };
-        this.pesadas = [];
+        this.btn_guardar = false;
         this.customPickerOptions = {
             buttons: [{
                     text: 'Aceptar',
@@ -90,7 +92,88 @@ var CrearenvioclientePage = /** @class */ (function () {
         var id = this.route.snapshot.paramMap.get("id");
         console.log("se recibe id solito", id);
         this.idcliente = id;
-        console.log("se recibe id listacliente", this.idcliente);
+        this.agregarPesoLimite();
+        this.validacion();
+    };
+    CrearenvioclientePage.prototype.volver = function () {
+        this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
+    };
+    CrearenvioclientePage.prototype.agregarPesoLimite = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'alertAddPeso',
+                            header: 'Ingrese el peso límite.',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            inputs: [
+                                {
+                                    cssClass: 'inputAddPeso',
+                                    name: 'peso',
+                                    type: 'number',
+                                    value: "",
+                                    min: "1"
+                                }
+                            ],
+                            buttons: [
+                                {
+                                    text: 'Cancelar',
+                                    role: 'cancel',
+                                    cssClass: 'secondary',
+                                    handler: function () {
+                                        console.log('Confirm Cancel');
+                                    }
+                                }, {
+                                    text: 'Aceptar',
+                                    handler: function (value) {
+                                        console.log("vlue", value.peso);
+                                        if (value.peso == "" || value.peso == null || value.peso < 0 || value.peso == 0 || value.peso == undefined) {
+                                            _this.limiteSinIngresar();
+                                            _this.toggle = false;
+                                            _this.input_limite = false;
+                                        }
+                                        else {
+                                            _this.toggle = true;
+                                            _this.input_limite = true;
+                                            _this.pesoLimite = value.peso;
+                                        }
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CrearenvioclientePage.prototype.limiteSinIngresar = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'No ingresaste un peso límite',
+                            message: 'Por favor agregalo mas tarde',
+                            buttons: ['ACEPTAR']
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     CrearenvioclientePage.prototype.bloquearInputLimite = function (event) {
         if (event.detail.checked == true) {
@@ -101,9 +184,6 @@ var CrearenvioclientePage = /** @class */ (function () {
         }
     };
     CrearenvioclientePage.prototype.agregarPesoLista = function () {
-        this.presentAlertRadio();
-    };
-    CrearenvioclientePage.prototype.presentAlertRadio = function () {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
@@ -161,9 +241,9 @@ var CrearenvioclientePage = /** @class */ (function () {
         });
     };
     CrearenvioclientePage.prototype.eliminarBulto = function (index) {
-        console.log("index", index);
-        this.pesadas.splice(index);
-        this.num--;
+        this.pesadas.splice(index, 1);
+        this.sumarPesoAcumulado();
+        this.validarPesos();
     };
     CrearenvioclientePage.prototype.contarPeso = function () {
         var _this = this;
@@ -175,7 +255,20 @@ var CrearenvioclientePage = /** @class */ (function () {
         console.log("Total peso de los bultos: " + this.contadorPeso);
     };
     CrearenvioclientePage.prototype.guardar = function () {
-        this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, this.pesadas, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
+        var pesadaGuardar = [];
+        var i = 1;
+        this.pesadas.forEach(function (element) {
+            pesadaGuardar.push({
+                estadoQueso: element.estadoQueso,
+                peso: element.peso,
+                tipoQueso: element.tipoQueso,
+                valor: 0,
+                valorTotal: 0,
+                id: i++
+            });
+            console.log("lista recorrida", pesadaGuardar);
+        });
+        this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
         this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
     };
     CrearenvioclientePage.prototype.agregar = function () {
@@ -205,16 +298,45 @@ var CrearenvioclientePage = /** @class */ (function () {
                                 _this.pesadas.push({
                                     estadoQueso: element.estadoQueso,
                                     peso: element.peso,
-                                    tipoQueso: element.tipoQueso
+                                    tipoQueso: element.tipoQueso,
+                                    valor: 0,
+                                    valorTotal: 0
                                 });
                                 _this.contarPeso();
                             });
                             console.log("esta es la lista para el front:", this.pesadas);
+                            this.sumarPesoAcumulado();
+                            this.validacion();
+                            this.validarPesos();
                         }
                         return [2 /*return*/];
                 }
             });
         });
+    };
+    CrearenvioclientePage.prototype.sumarPesoAcumulado = function () {
+        var _this = this;
+        this.pesoAcumulado = 0;
+        this.pesadas.forEach(function (pesada) {
+            _this.pesoAcumulado += pesada.peso;
+        });
+        return this.pesoAcumulado;
+    };
+    CrearenvioclientePage.prototype.validacion = function () {
+        if (this.pesadas.length > 0) {
+            this.btn_guardar = true;
+        }
+        else {
+            this.btn_guardar = false;
+        }
+    };
+    CrearenvioclientePage.prototype.validarPesos = function () {
+        if (this.pesoAcumulado >= this.pesoLimite) {
+            document.getElementById("pesoAcumulado").style.color = "red";
+        }
+        else {
+            document.getElementById("pesoAcumulado").style.color = "lime";
+        }
     };
     CrearenvioclientePage = __decorate([
         core_1.Component({
