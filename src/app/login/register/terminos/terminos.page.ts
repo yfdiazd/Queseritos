@@ -18,7 +18,7 @@ export class TerminosPage implements OnInit {
   }
 
   volver() {
-    this.navCtrl.navigateBack(["register"]);
+    this.navCtrl.navigateBack(["registrar-usuario"]);
   }
 
 }

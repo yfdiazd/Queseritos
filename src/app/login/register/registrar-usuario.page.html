@@ -29,7 +29,7 @@
       [(ngModel)]="password2"></ion-input>
 
     <p>
-      <ion-checkbox aria-required="true"></ion-checkbox> Terminos y condiciones <a href="terminos">contrato</a>
+      <ion-checkbox aria-required="true"></ion-checkbox> Terminos y condiciones <a (click)="irTerminos()">contrato</a>
     </p>
     
     <ion-button (click)="crearUsuario()" expand="full">

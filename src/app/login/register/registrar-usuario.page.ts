@@ -25,5 +25,8 @@ export class RegistrarUsuarioPage {
   crearUsuario(){
     this.FB.crearUsuario(this.email, this.password, this.user, this.password2);
   }
+  irTerminos(){
+    this.navCtrl.navigateForward(["terminos"]);
+  }
 
 }
