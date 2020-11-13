@@ -1897,7 +1897,7 @@ export class FBservicesService {
                 })
 
         } else {
-            img = "No se adjunto imagen.";
+
             firebase
                 .database()
                 .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
@@ -1911,7 +1911,7 @@ export class FBservicesService {
                     pesoEnviado: pesoEnviado,
                     pesoLimite: pesoLimite,
                     placa: placa,
-                    imagen: img
+
                 })
         }
 
@@ -1931,7 +1931,7 @@ export class FBservicesService {
                 .update({
                     costoVenta: a
                 });
-        } else if (accion == "suma") {
+        } else if (accion == "resta") {
             let a = (pesoPesada * valorPesada);
             a = (costoAnterior - a)
             firebase
