@@ -629,6 +629,12 @@ var FBservicesService = /** @class */ (function () {
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
             this.idCiudad = this.idGenerator();
+            firebase.firestore().collection("usuario/configuracion/ciudad").doc(this.idCiudad).set({
+                id: this.idCiudad,
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad,
+                estado: 1
+            });
             firebase
                 .database()
                 .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
@@ -1793,10 +1799,18 @@ var FBservicesService = /** @class */ (function () {
             .ref("usuario/compras/" + idProveedor)
             .remove();
     };
-    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen) {
+        var img;
         var nodo = fechaEnvio.split("-", 3);
         var fechaNodo = (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, this.idVenta, img);
+        }
+        else {
+            img = "No se adjunto imagen.";
+        }
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
@@ -1810,7 +1824,8 @@ var FBservicesService = /** @class */ (function () {
             pesadas: listaPesada,
             pesoEnviado: pesoEnviado,
             pesoLimite: pesoLimite,
-            placa: placa
+            placa: placa,
+            imagen: img
         });
         this.toastOperacionExitosa();
     };
@@ -1897,35 +1912,99 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     FBservicesService.prototype.eliminarVenta = function (idCliente, fechaNodo, idVenta) {
+        var nodo = fechaNodo.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .remove();
     };
     FBservicesService.prototype.eliminarPesada = function (idCliente, fechaNodo, idVenta, idPesada) {
+        var nodo = fechaNodo.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
             .on("value", function (snapshot) {
-            snapshot.val().pesada.forEach(function (element) {
+            console.log(" pesadasdsdasdasdasda ", snapshot.val());
+            snapshot.forEach(function (element) {
+                console.log("id bultos de pesadas ", element.val().id);
+                console.log("KEY bultos de pesadas ", element.key);
+                if (element.val().id == idPesada && element.val().valor == 0) {
+                    console.log("ingresamos");
+                    firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
+                        .remove();
+                }
             });
         });
     };
-    FBservicesService.prototype.updatecostoVenta = function (idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
+    FBservicesService.prototype.actualizarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen, costoVenta, idVenta) {
+        var nodo = fechaEnvio.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
+        var img;
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, idVenta, img);
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa,
+                imagen: img
+            });
+        }
+        else {
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa
+            });
+        }
+    };
+    FBservicesService.prototype.updatecostoVenta = function (idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, accion) {
         return __awaiter(this, void 0, void 0, function () {
-            var nodo, nodoEnv, a;
+            var nodo, nodoEnv, a, a;
             return __generator(this, function (_a) {
                 nodo = fechaNodo.split("-", 3);
                 nodoEnv = (nodo[0] + "-" + nodo[1]);
                 console.log("fecha:", nodoEnv);
-                a = (pesoPesada * valorPesada);
-                a = (a + costoAnterior);
-                firebase
-                    .database()
-                    .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
-                    .update({
-                    costoVenta: a
-                });
+                if (accion == "suma") {
+                    a = (pesoPesada * valorPesada);
+                    a = (a + costoAnterior);
+                    firebase
+                        .database()
+                        .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                        .update({
+                        costoVenta: a
+                    });
+                }
+                else if (accion == "resta") {
+                    a = (pesoPesada * valorPesada);
+                    a = (costoAnterior - a);
+                    firebase
+                        .database()
+                        .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                        .update({
+                        costoVenta: a
+                    });
+                }
                 return [2 /*return*/];
             });
         });

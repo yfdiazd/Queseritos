@@ -157,30 +157,12 @@ export class CardventasPage implements OnInit {
   async agregarValorVenta(lista, card) {
     console.log("lsita:", lista, " y tambien ", card);
     if (lista.valor == 0) {
-
-      const popover = await this.PopoverController.create({
-        component: AgregarvalorventaPage,
-        cssClass: 'popover_style',
-        translucent: true,
-        keyboardClose: false,
-        backdropDismiss: false,
-        componentProps: {
-          dataBulto: lista,
-          dataVenta: card
-        },
-      });
-      await popover.present();
-      const { data } = await popover.onWillDismiss();
-      if (data == "true") {
-        this.traerNombre();
-        this.recorriendolista();
-      }
+      this.irAgregarValorVenta(lista, card);
     } else {
-      this.alertAgregarValorVenta();
+      this.alertAgregarValorVenta(lista, card);
     }
-
   }
-  async alertAgregarValorVenta() {
+  async alertAgregarValorVenta(lista, card) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirmación.',
@@ -197,13 +179,32 @@ export class CardventasPage implements OnInit {
           text: 'SI',
           handler: () => {
             console.log('Confirm Okay');
-
+            this.irAgregarValorVenta(lista, card);
           }
         }
       ]
     });
 
     await alert.present();
+  }
+  async irAgregarValorVenta(lista, card) {
+    const popover = await this.PopoverController.create({
+      component: AgregarvalorventaPage,
+      cssClass: 'popover_style',
+      translucent: true,
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        dataBulto: lista,
+        dataVenta: card
+      },
+    });
+    await popover.present();
+    const { data } = await popover.onWillDismiss();
+    if (data == "true") {
+      this.traerNombre();
+      this.recorriendolista();
+    }
   }
   async editarRegistro(card) {
     console.log("card editar: ", card);
@@ -214,6 +215,7 @@ export class CardventasPage implements OnInit {
       backdropDismiss: false,
       componentProps: {
         editar: "true",
+        data: card,
         pesoLimite: card.pesoLimite,
         pesoAcumulado: card.pesoEnviado,
         codigociudadEdit: card.ciudad,
@@ -232,7 +234,31 @@ export class CardventasPage implements OnInit {
       this.traerNombre();
     }
   }
-  eliminarRegistro() {
-
+  eliminarRegistro(card) {
+    this.alertEliminarRegistro(card);
+  }
+  async alertEliminarRegistro(card) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmación.',
+      message: 'Esta seguro de eliminar la venta?',
+      buttons: [
+        {
+          text: 'NO',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'SI',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.FB.eliminarVenta(card.idCliente, card.fechaEnvio, card.id);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

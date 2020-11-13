@@ -90,6 +90,7 @@ var CrearenvioclientePage = /** @class */ (function () {
     CrearenvioclientePage.prototype.ngOnInit = function () {
         this.agregarPesoLimite();
         this.validacion();
+        this.contarPeso();
     };
     CrearenvioclientePage.prototype.volver = function () {
         this.modalCtrl.dismiss();
@@ -254,6 +255,7 @@ var CrearenvioclientePage = /** @class */ (function () {
         if (this.editar == "true") {
             var pesadaGuardar_1 = [];
             var i_1 = 1;
+            var sumaCostoVenta_1 = 0;
             this.pesadas.forEach(function (element) {
                 pesadaGuardar_1.push({
                     estadoQueso: element.estadoQueso,
@@ -264,8 +266,12 @@ var CrearenvioclientePage = /** @class */ (function () {
                     id: i_1++
                 });
                 console.log("lista recorrida", pesadaGuardar_1);
+                pesadaGuardar_1.forEach(function (sumar) {
+                    sumaCostoVenta_1 += sumar.valorTotal;
+                });
             });
-            // this.FB.actualizarVenta();
+            console.log("data de card", pesadaGuardar_1, " y ", sumaCostoVenta_1, "data", this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_1, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta_1, this.data.id);
+            this.FB.actualizarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_1, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta_1, this.data.id);
             this.modalCtrl.dismiss("true", "actualizar");
         }
         else {
@@ -282,7 +288,7 @@ var CrearenvioclientePage = /** @class */ (function () {
                 });
                 console.log("lista recorrida", pesadaGuardar_2);
             });
-            this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_2, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase());
+            this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_2, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), "suma");
             this.modalCtrl.dismiss("true", "actualizar");
         }
     };
@@ -354,9 +360,16 @@ var CrearenvioclientePage = /** @class */ (function () {
             document.getElementById("pesoAcumulado").style.color = "lime";
         }
     };
+    CrearenvioclientePage.prototype.subirImg = function (event) {
+        this.imagenVenta = event;
+        console.log("la imagen en la variable es ", this.imagenVenta);
+    };
     __decorate([
         core_1.Input()
     ], CrearenvioclientePage.prototype, "editar");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "data");
     __decorate([
         core_1.Input()
     ], CrearenvioclientePage.prototype, "pesoLimite");

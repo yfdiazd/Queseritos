@@ -546,12 +546,18 @@ export class FBservicesService {
     }
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
-
         this.pathPush = "";
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
-
             this.idCiudad = this.idGenerator();
+
+            firebase.firestore().collection("usuario/configuracion/ciudad").doc(this.idCiudad).set({
+                id: this.idCiudad,
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad,
+                estado: 1
+            })
+
             firebase
                 .database()
                 .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
@@ -1726,13 +1732,20 @@ export class FBservicesService {
             .remove();
 
     }
-    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
-
+    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen) {
+        let img;
         let nodo = fechaEnvio.split("-", 3);
-
-
         let fechaNodo = (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
+
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, this.idVenta, img);
+        } else {
+            img = "No se adjunto imagen.";
+        }
+
+
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
@@ -1746,7 +1759,8 @@ export class FBservicesService {
                 pesadas: listaPesada,
                 pesoEnviado: pesoEnviado,
                 pesoLimite: pesoLimite,
-                placa: placa
+                placa: placa,
+                imagen: img
             });
         this.toastOperacionExitosa();
     }
@@ -1846,37 +1860,106 @@ export class FBservicesService {
     }
 
     eliminarVenta(idCliente, fechaNodo, idVenta) {
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .remove();
     }
 
     eliminarPesada(idCliente, fechaNodo, idVenta, idPesada) {
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
             .on("value", snapshot => {
-                snapshot.val().pesada.forEach(element => {
+                console.log(" pesadasdsdasdasdasda ", snapshot.val());
+                snapshot.forEach(element => {
+                    console.log("id bultos de pesadas ", element.val().id);
+                    console.log("KEY bultos de pesadas ", element.key);
+                    if (element.val().id == idPesada && element.val().valor == 0) {
 
+                        console.log("ingresamos");
+                        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
+                            .remove();
+                    }
                 });
+
             });
     }
-    ventaCos: number;
+    actualizarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen, costoVenta, idVenta) {
 
-    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
+        let nodo = fechaEnvio.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        let img;
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, idVenta, img);
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    idCliente: idCliente,
+                    ciudad: ciudad,
+                    conductor: conductor,
+                    costoVenta: costoVenta,
+                    fechaEnvio: fechaEnvio,
+                    pesadas: listaPesada,
+                    pesoEnviado: pesoEnviado,
+                    pesoLimite: pesoLimite,
+                    placa: placa,
+                    imagen: img
+                })
+
+        } else {
+
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    idCliente: idCliente,
+                    ciudad: ciudad,
+                    conductor: conductor,
+                    costoVenta: costoVenta,
+                    fechaEnvio: fechaEnvio,
+                    pesadas: listaPesada,
+                    pesoEnviado: pesoEnviado,
+                    pesoLimite: pesoLimite,
+                    placa: placa,
+
+                })
+        }
+
+    }
+
+    ventaCos: number;
+    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, accion) {
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
         console.log("fecha:", nodoEnv);
-        let a = (pesoPesada * valorPesada);
-        a = (a + costoAnterior)
+        if (accion == "suma") {
+            let a = (pesoPesada * valorPesada);
+            a = (a + costoAnterior)
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    costoVenta: a
+                });
+        } else if (accion == "resta") {
+            let a = (pesoPesada * valorPesada);
+            a = (costoAnterior - a)
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    costoVenta: a
+                });
+        }
 
-        firebase
-            .database()
-            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
-            .update({
-                costoVenta: a
-            });
+
     }
 
     updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {

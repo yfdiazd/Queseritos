@@ -198,47 +198,22 @@ var CardventasPage = /** @class */ (function () {
     };
     CardventasPage.prototype.agregarValorVenta = function (lista, card) {
         return __awaiter(this, void 0, void 0, function () {
-            var popover, data;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log("lsita:", lista, " y tambien ", card);
-                        if (!(lista.valor == 0)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.PopoverController.create({
-                                component: agregarvalorventa_page_1.AgregarvalorventaPage,
-                                cssClass: 'popover_style',
-                                translucent: true,
-                                keyboardClose: false,
-                                backdropDismiss: false,
-                                componentProps: {
-                                    dataBulto: lista,
-                                    dataVenta: card
-                                }
-                            })];
-                    case 1:
-                        popover = _a.sent();
-                        return [4 /*yield*/, popover.present()];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, popover.onWillDismiss()];
-                    case 3:
-                        data = (_a.sent()).data;
-                        if (data == "true") {
-                            this.traerNombre();
-                            this.recorriendolista();
-                        }
-                        return [3 /*break*/, 5];
-                    case 4:
-                        this.alertAgregarValorVenta();
-                        _a.label = 5;
-                    case 5: return [2 /*return*/];
+                console.log("lsita:", lista, " y tambien ", card);
+                if (lista.valor == 0) {
+                    this.irAgregarValorVenta(lista, card);
                 }
+                else {
+                    this.alertAgregarValorVenta(lista, card);
+                }
+                return [2 /*return*/];
             });
         });
     };
-    CardventasPage.prototype.alertAgregarValorVenta = function () {
+    CardventasPage.prototype.alertAgregarValorVenta = function (lista, card) {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
@@ -257,6 +232,7 @@ var CardventasPage = /** @class */ (function () {
                                     text: 'SI',
                                     handler: function () {
                                         console.log('Confirm Okay');
+                                        _this.irAgregarValorVenta(lista, card);
                                     }
                                 }
                             ]
@@ -266,6 +242,39 @@ var CardventasPage = /** @class */ (function () {
                         return [4 /*yield*/, alert.present()];
                     case 2:
                         _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardventasPage.prototype.irAgregarValorVenta = function (lista, card) {
+        return __awaiter(this, void 0, void 0, function () {
+            var popover, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.PopoverController.create({
+                            component: agregarvalorventa_page_1.AgregarvalorventaPage,
+                            cssClass: 'popover_style',
+                            translucent: true,
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                dataBulto: lista,
+                                dataVenta: card
+                            }
+                        })];
+                    case 1:
+                        popover = _a.sent();
+                        return [4 /*yield*/, popover.present()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, popover.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.traerNombre();
+                            this.recorriendolista();
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -285,6 +294,7 @@ var CardventasPage = /** @class */ (function () {
                                 backdropDismiss: false,
                                 componentProps: {
                                     editar: "true",
+                                    data: card,
                                     pesoLimite: card.pesoLimite,
                                     pesoAcumulado: card.pesoEnviado,
                                     codigociudadEdit: card.ciudad,
@@ -312,7 +322,45 @@ var CardventasPage = /** @class */ (function () {
             });
         });
     };
-    CardventasPage.prototype.eliminarRegistro = function () {
+    CardventasPage.prototype.eliminarRegistro = function (card) {
+        this.alertEliminarRegistro(card);
+    };
+    CardventasPage.prototype.alertEliminarRegistro = function (card) {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Confirmación.',
+                            message: 'Esta seguro de eliminar la venta?',
+                            buttons: [
+                                {
+                                    text: 'NO',
+                                    role: 'cancel',
+                                    cssClass: 'secondary',
+                                    handler: function (blah) {
+                                        console.log('Confirm Cancel: blah');
+                                    }
+                                }, {
+                                    text: 'SI',
+                                    handler: function () {
+                                        console.log('Confirm Okay');
+                                        _this.FB.eliminarVenta(card.idCliente, card.fechaEnvio, card.id);
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     CardventasPage = __decorate([
         core_1.Component({

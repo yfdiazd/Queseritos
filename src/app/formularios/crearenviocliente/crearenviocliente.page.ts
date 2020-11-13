@@ -27,6 +27,7 @@ export class CrearenvioclientePage implements OnInit {
   num;
 
   @Input() editar;
+  @Input() data;
   @Input() pesoLimite;
   @Input() pesoAcumulado;
   @Input() codigociudadEdit;
@@ -79,6 +80,7 @@ export class CrearenvioclientePage implements OnInit {
   ngOnInit() {
     this.agregarPesoLimite();
     this.validacion();
+    this.contarPeso();
   }
   volver() {
     this.modalCtrl.dismiss();
@@ -205,6 +207,7 @@ export class CrearenvioclientePage implements OnInit {
     if (this.editar == "true") {
       let pesadaGuardar: any[] = [];
       let i = 1;
+      let sumaCostoVenta = 0;
       this.pesadas.forEach(element => {
         pesadaGuardar.push({
           estadoQueso: element.estadoQueso,
@@ -215,8 +218,12 @@ export class CrearenvioclientePage implements OnInit {
           id: i++
         })
         console.log("lista recorrida", pesadaGuardar);
+        pesadaGuardar.forEach(sumar => {
+          sumaCostoVenta += sumar.valorTotal;
+        })
       });
-      // this.FB.actualizarVenta();
+      console.log("data de card", pesadaGuardar, " y ", sumaCostoVenta, "data", this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta, this.data.id);
+      this.FB.actualizarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta, this.data.id);
       this.modalCtrl.dismiss("true", "actualizar");
     } else {
       let pesadaGuardar: any[] = [];
@@ -232,7 +239,7 @@ export class CrearenvioclientePage implements OnInit {
         })
         console.log("lista recorrida", pesadaGuardar);
       });
-      this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase());
+      this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), "suma");
       this.modalCtrl.dismiss("true", "actualizar");
     }
   }
@@ -298,7 +305,13 @@ export class CrearenvioclientePage implements OnInit {
     }
   }
 
+  imagenVenta: any;
+  subirImg(event) {
+    this.imagenVenta = event;
+    console.log("la imagen en la variable es ", this.imagenVenta);
 
+
+  }
 
 }
 
