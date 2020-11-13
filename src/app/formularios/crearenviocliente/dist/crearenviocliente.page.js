@@ -288,7 +288,7 @@ var CrearenvioclientePage = /** @class */ (function () {
                 });
                 console.log("lista recorrida", pesadaGuardar_2);
             });
-            this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_2, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), "suma");
+            this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_2, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta);
             this.modalCtrl.dismiss("true", "actualizar");
         }
     };

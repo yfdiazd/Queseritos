@@ -239,7 +239,7 @@ export class CrearenvioclientePage implements OnInit {
         })
         console.log("lista recorrida", pesadaGuardar);
       });
-      this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), "suma");
+      this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta);
       this.modalCtrl.dismiss("true", "actualizar");
     }
   }
