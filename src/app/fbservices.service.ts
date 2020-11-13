@@ -1711,13 +1711,20 @@ export class FBservicesService {
             .remove();
 
     }
-    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
-
+    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen) {
+        let img;
         let nodo = fechaEnvio.split("-", 3);
-
-
         let fechaNodo = (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
+
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, this.idVenta, img);
+        } else {
+            img = "No se adjunto imagen.";
+        }
+
+
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
@@ -1731,7 +1738,8 @@ export class FBservicesService {
                 pesadas: listaPesada,
                 pesoEnviado: pesoEnviado,
                 pesoLimite: pesoLimite,
-                placa: placa
+                placa: placa,
+                imagen: img
             });
         this.toastOperacionExitosa();
     }
@@ -1767,11 +1775,7 @@ export class FBservicesService {
                             .on("value", snapshot => {
                                 snapshot.forEach(element => {
                                     this.sumaVentas += element.val().costoVenta;
-<<<<<<< HEAD
-                                        this.ventasclienteLista.push(element.val());
-=======
                                     this.ventasclienteLista.push(element.val());
->>>>>>> 1071dc82855fcb254421edbb12bafd1d4cde6cff
                                 });
                             });
 
@@ -1851,16 +1855,6 @@ export class FBservicesService {
                 });
             });
     }
-<<<<<<< HEAD
-    ventaCos:number;
-   
-   async updatecostoVenta(idCliente, fechaNodo, idVenta, peso, costoVenta,costoAnterior) {
-       let nodo = fechaNodo.split("-",3);
-       let nodoEnv = (nodo[0]+"-"+nodo[1]);
-       let a = (peso * costoVenta);
-       a = (a + costoAnterior)
-      
-=======
     ventaCos: number;
 
     async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
@@ -1870,7 +1864,6 @@ export class FBservicesService {
         let a = (pesoPesada * valorPesada);
         a = (a + costoAnterior)
 
->>>>>>> 1071dc82855fcb254421edbb12bafd1d4cde6cff
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
@@ -1880,13 +1873,8 @@ export class FBservicesService {
     }
 
     updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
-<<<<<<< HEAD
-        let nodo = fechaNodo.split("-",3);
-        let nodoEnv = (nodo[0]+"-"+nodo[1]);
-=======
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
->>>>>>> 1071dc82855fcb254421edbb12bafd1d4cde6cff
         let a = (pesoPesada * valorPesada);
         console.log("fecha update:", nodoEnv);
         firebase

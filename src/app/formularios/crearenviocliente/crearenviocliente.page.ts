@@ -196,6 +196,8 @@ export class CrearenvioclientePage implements OnInit {
   guardar() {
     let pesadaGuardar: any[] = [];
     let i = 1;
+    console.log("esto es immmm ",  this.imagenVenta);
+    
     this.pesadas.forEach(element => {
       pesadaGuardar.push({
         estadoQueso: element.estadoQueso,
@@ -207,7 +209,7 @@ export class CrearenvioclientePage implements OnInit {
       })
       console.log("lista recorrida", pesadaGuardar);
     });
-    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
+    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase(), this.imagenVenta);
     this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
   }
 
@@ -270,7 +272,13 @@ export class CrearenvioclientePage implements OnInit {
     }
   }
 
+  imagenVenta: any;
+  subirImg(event) {
+    this.imagenVenta = event;
+    console.log("la imagen en la variable es ", this.imagenVenta);
+    
 
+  }
 
 }
 
