@@ -546,12 +546,18 @@ export class FBservicesService {
     }
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
-
         this.pathPush = "";
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
-
             this.idCiudad = this.idGenerator();
+
+            firebase.firestore().collection("usuario/configuracion/ciudad").doc(this.idCiudad).set({
+                id: this.idCiudad,
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad,
+                estado: 1
+            })
+
             firebase
                 .database()
                 .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
@@ -1846,14 +1852,25 @@ export class FBservicesService {
     }
 
     eliminarPesada(idCliente, fechaNodo, idVenta, idPesada) {
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
-            .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
-            .on("value", snapshot => {
-                snapshot.val().pesada.forEach(element => {
+        .database()
+        .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+        .on("value", snapshot => {
+            console.log(" pesadasdsdasdasdasda ", snapshot.val());
+            snapshot.forEach(element => {
+                console.log("id bultos de pesadas ", element.val().id);
+                console.log("KEY bultos de pesadas ", element.key);
+                if (element.val().id == idPesada && element.val().valor == 0) {
 
-                });
+                    console.log("ingresamos");
+                    firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
+                        .remove();
+                }
             });
+
+        });
     }
     ventaCos: number;
 
