@@ -35,12 +35,14 @@ ion-content {
             max-width: 700px;
             position: fixed;
             z-index: 50;
+            height: 120px;
             background-color: #c8f7f3;
 
             .label {
                 display: inline-block;
                 width: 30%;
                 max-width: 700px;
+                padding-left: 20px;
                 color: #1a1446;
             }
 
@@ -64,6 +66,8 @@ ion-content {
         .div__lista {
             margin-top: 30px;
             width: 100%;
+            position: absolute;
+            margin-top: 125px;
             max-width: 700px;
         }
     }

@@ -1642,7 +1642,8 @@ export class FBservicesService {
     async saldarDeudasProveedor(idProveedor, valor) {
         this.agregarEstadoProveedor(idProveedor, valor);
         this.getObjProveedor(idProveedor);
-        this.eliminarNodoProveedor(idProveedor);
+        this.agregarHistorico(idProveedor, this.objMoverHistorico);
+        // this.eliminarNodoProveedor(idProveedor);
     }
 
     async getObjProveedor(idProveedor) {
@@ -1660,11 +1661,25 @@ export class FBservicesService {
                 });
 
                 this.moverHistoricoLista.push(this.objMoverHistorico);
-                this.agregarHistorico(idProveedor, this.objMoverHistorico);
             });
-        this.agregarHistorico(idProveedor, this.objMoverHistorico);
-
-
+    }
+    async alertaSaldarLote(idProveedor, valorMensaje) {
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: 'Saldado correctamente',
+            message: 'El proximo lote inicia con $' + valorMensaje,
+            buttons: [
+                {
+                    text: 'Aceptar',
+                    handler: () => {
+                        this.saldarDeudasProveedor(idProveedor, valorMensaje);
+                        this.eliminarNodoProveedor(idProveedor);
+                        // this.navCtrl.navigateBack(["cardlistaproveedores"]);
+                    }
+                }
+            ]
+        });
+        await alert.present();
     }
     async agregarHistorico(idProveedor, objeto) {
 

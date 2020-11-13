@@ -45,12 +45,13 @@ exports.__esModule = true;
 exports.CardventasPage = void 0;
 var core_1 = require("@angular/core");
 var agregarvalorventa_page_1 = require("src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page");
+var crearenviocliente_page_1 = require("src/app/formularios/crearenviocliente/crearenviocliente.page");
 var CardventasPage = /** @class */ (function () {
-    function CardventasPage(FB, modalController, PopoverController, toastController, route, navCtrl, loadingCtrl) {
+    function CardventasPage(FB, modalController, PopoverController, alertController, route, navCtrl, loadingCtrl) {
         this.FB = FB;
         this.modalController = modalController;
         this.PopoverController = PopoverController;
-        this.toastController = toastController;
+        this.alertController = alertController;
         this.route = route;
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
@@ -146,8 +147,35 @@ var CardventasPage = /** @class */ (function () {
         }
     };
     CardventasPage.prototype.irVender = function (input) {
-        console.log("Se envia este id cliente", this.idcliente);
-        this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
+        return __awaiter(this, void 0, void 0, function () {
+            var modal, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: crearenviocliente_page_1.CrearenvioclientePage,
+                            cssClass: 'my-custom-class',
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idCliente: this.idcliente,
+                                pesadas: []
+                            }
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.traerNombre();
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     CardventasPage.prototype.recorriendolista = function () {
         this.FB.ventasclienteListaMes.forEach(function (element) {
@@ -175,6 +203,7 @@ var CardventasPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         console.log("lsita:", lista, " y tambien ", card);
+                        if (!(lista.valor == 0)) return [3 /*break*/, 4];
                         return [4 /*yield*/, this.PopoverController.create({
                                 component: agregarvalorventa_page_1.AgregarvalorventaPage,
                                 cssClass: 'popover_style',
@@ -198,10 +227,92 @@ var CardventasPage = /** @class */ (function () {
                             this.traerNombre();
                             this.recorriendolista();
                         }
+                        return [3 /*break*/, 5];
+                    case 4:
+                        this.alertAgregarValorVenta();
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardventasPage.prototype.alertAgregarValorVenta = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Confirmación.',
+                            message: 'La pesada ya tiene un valor asignado, desea cambiarla?',
+                            buttons: [
+                                {
+                                    text: 'NO',
+                                    role: 'cancel',
+                                    cssClass: 'secondary',
+                                    handler: function (blah) {
+                                        console.log('Confirm Cancel: blah');
+                                    }
+                                }, {
+                                    text: 'SI',
+                                    handler: function () {
+                                        console.log('Confirm Okay');
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
+    };
+    CardventasPage.prototype.editarRegistro = function (card) {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("card editar: ", card);
+                        return [4 /*yield*/, this.modalController.create({
+                                component: crearenviocliente_page_1.CrearenvioclientePage,
+                                cssClass: 'my-custom-class',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                componentProps: {
+                                    editar: "true",
+                                    pesoLimite: card.pesoLimite,
+                                    pesoAcumulado: card.pesoEnviado,
+                                    codigociudadEdit: card.ciudad,
+                                    fecha: card.fechaEnvio,
+                                    conductor: card.conductor,
+                                    ciudad: card.ciudad,
+                                    idCliente: card.idCliente,
+                                    placa: card.placa,
+                                    pesadas: card.pesadas
+                                }
+                            })];
+                    case 1:
+                        modal = _a.sent();
+                        return [4 /*yield*/, modal.present()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.traerNombre();
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardventasPage.prototype.eliminarRegistro = function () {
     };
     CardventasPage = __decorate([
         core_1.Component({

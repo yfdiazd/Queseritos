@@ -1682,7 +1682,7 @@ var FBservicesService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.agregarEstadoProveedor(idProveedor, valor);
                 this.getObjProveedor(idProveedor);
-                this.eliminarNodoProveedor(idProveedor);
+                this.agregarHistorico(idProveedor, this.objMoverHistorico);
                 return [2 /*return*/];
             });
         });
@@ -1703,10 +1703,39 @@ var FBservicesService = /** @class */ (function () {
                         objHistorico: snapshot.val()
                     });
                     _this.moverHistoricoLista.push(_this.objMoverHistorico);
-                    _this.agregarHistorico(idProveedor, _this.objMoverHistorico);
                 });
-                this.agregarHistorico(idProveedor, this.objMoverHistorico);
                 return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.alertaSaldarLote = function (idProveedor, valorMensaje) {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Saldado correctamente',
+                            message: 'El proximo lote inicia con $' + valorMensaje,
+                            buttons: [
+                                {
+                                    text: 'Aceptar',
+                                    handler: function () {
+                                        _this.saldarDeudasProveedor(idProveedor, valorMensaje);
+                                        _this.eliminarNodoProveedor(idProveedor);
+                                        // this.navCtrl.navigateBack(["cardlistaproveedores"]);
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };

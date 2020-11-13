@@ -26,14 +26,14 @@
       </div>
       <div class="div-fila-2">
         <div class="fila2_col1">
-          <p class="div-t">Débito</p>
-          <p class="div-v" id="saldo-debito">{{FB.saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
-          <p class="div-t">Crédito</p>
-          <p class="div-v" id="saldo-credito">{{FB.saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
+          <p class="p-t">Débito</p>
+          <p class="p-v" id="saldo-debito">{{FB.saldodebitototal | currency:'USD':true: '2.0-0'}}</p>
+          <p class="p-t">Crédito</p>
+          <p class="p-v" id="saldo-credito">{{FB.saldocreditotal | currency:'USD':true: '2.0-0'}}</p>
         </div>
         <div class="fila2_col2">
-          <p class="div-t">Saldo</p>
-          <p id="valorCss" class="div-v">{{(FB.saldodebitototal - FB.saldocreditotal) | currency:'USD':true: '2.0-0'}}
+          <p class="p-t">Saldo</p>
+          <p id="valorCss" class="p-v">{{(FB.saldodebitototal - FB.saldocreditotal) | currency:'USD':true: '2.0-0'}}
           </p>
         </div>
       </div>

@@ -33,7 +33,7 @@
 
     <div class="div-secundario">
       <p class="p-title_r">Ciudad</p>
-      <ion-select [(ngModel)]="codigociudadEdit" class="select" placeholder="Seleccione"
+      <ion-select [(ngModel)]="ciudad" class="select" placeholder="Seleccione"
         [interfaceOptions]="customAlertOptions" interface="alert" multiple="false" ok-text="Aceptar"
         cancel-text="CANCELAR">
         <ion-select-option [value]="lista.descripcion" *ngFor="let lista of FB.ciudadesLista">
@@ -48,7 +48,7 @@
 
 
       <p class="p-title_r">Conductor</p>
-      <ion-select [(ngModel)]="idconductor" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
+      <ion-select [(ngModel)]="conductor" class="select" [interfaceOptions]="customAlertOptions" interface="alert"
         multiple="false" ok-text="Aceptar" placeholder="Seleccione" cancel-text="Cancelar">
         <ion-select-option [value]="lista.nombres" *ngFor="let lista of FB.conductoresLista">
           {{lista.nombres}}
@@ -56,7 +56,7 @@
       </ion-select>
 
       <p class="p-title_r">Placa</p>
-      <input class="select" type="text" maxlength="8" placeholder="{{placaEdit}}" [(ngModel)]="placaEdit" />
+      <input class="select" type="text" maxlength="8" placeholder="{{placaEdit}}" [(ngModel)]="placa" />
       <div class="div-file">
         <label> {{nombreArchLoaded}} </label>
         <input class="file-upload" id="file-upload" type="file" (change)="subirImg($event)" />

@@ -6,6 +6,7 @@ import { AlertController } from '@ionic/angular';
 import { FBservicesService } from "../../fbservices.service";
 import { HomeventasPage } from 'src/app/home/homeventas/homeventas.page';
 import { AgregarvalorventaPage } from 'src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page';
+import { CrearenvioclientePage } from 'src/app/formularios/crearenviocliente/crearenviocliente.page';
 
 @Component({
   selector: 'app-cardventas',
@@ -33,7 +34,7 @@ export class CardventasPage implements OnInit {
     private FB: FBservicesService,
     private modalController: ModalController,
     private PopoverController: PopoverController,
-    private toastController: ToastController,
+    private alertController: AlertController,
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController
@@ -117,15 +118,28 @@ export class CardventasPage implements OnInit {
         return this.listaFiltrada;
       }
     }
-
-
-
   }
-  irVender(input) {
-    console.log("Se envia este id cliente", this.idcliente);
-    this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
-  }
+  async irVender(input) {
+    // console.log("Se envia este id cliente", this.idcliente);
+    // this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
 
+    const modal = await this.modalController.create({
+      component: CrearenvioclientePage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idCliente: this.idcliente,
+        pesadas: []
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+
+      this.traerNombre();
+    }
+  }
   recorriendolista() {
     this.FB.ventasclienteListaMes.forEach(element => {
       console.log("elementttttt", element)
@@ -139,46 +153,86 @@ export class CardventasPage implements OnInit {
       }
     });
     return this.nombreCliente;
-    // this.FB.ventasclienteLista.forEach(pesaje => {
-    //   this.FB.productosLista.forEach(producto => {
-    //     if (pesaje.idProducto == producto.id) {
-
-    //       this.listaVentas.push({
-    //         anticipos: pesaje.anticipos,
-    //         bultoLista: pesaje.bultoLista,
-    //         costoTotalCompra: pesaje.costoTotalCompra,
-    //         fechaCompra: pesaje.fechaCompra,
-    //         id: pesaje.id,
-    //         idProducto: pesaje.idProducto,
-    //         idProveedor: pesaje.idProveedor,
-    //         lote: pesaje.lote,
-    //         pesoBultos: pesaje.pesoBultos,
-    //         totalBulto: pesaje.totalBulto,
-    //         nompreProducto: producto.descripcion
-    //       })
-    //     }
-    //   })
-    // })
-
   }
   async agregarValorVenta(lista, card) {
     console.log("lsita:", lista, " y tambien ", card);
-    const popover = await this.PopoverController.create({
-      component: AgregarvalorventaPage,
-      cssClass: 'popover_style',
-      translucent: true,
+    if (lista.valor == 0) {
+
+      const popover = await this.PopoverController.create({
+        component: AgregarvalorventaPage,
+        cssClass: 'popover_style',
+        translucent: true,
+        keyboardClose: false,
+        backdropDismiss: false,
+        componentProps: {
+          dataBulto: lista,
+          dataVenta: card
+        },
+      });
+      await popover.present();
+      const { data } = await popover.onWillDismiss();
+      if (data == "true") {
+        this.traerNombre();
+        this.recorriendolista();
+      }
+    } else {
+      this.alertAgregarValorVenta();
+    }
+
+  }
+  async alertAgregarValorVenta() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmación.',
+      message: 'La pesada ya tiene un valor asignado, desea cambiarla?',
+      buttons: [
+        {
+          text: 'NO',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'SI',
+          handler: () => {
+            console.log('Confirm Okay');
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  async editarRegistro(card) {
+    console.log("card editar: ", card);
+    const modal = await this.modalController.create({
+      component: CrearenvioclientePage,
+      cssClass: 'my-custom-class',
       keyboardClose: false,
       backdropDismiss: false,
       componentProps: {
-        dataBulto: lista,
-        dataVenta: card
+        editar: "true",
+        pesoLimite: card.pesoLimite,
+        pesoAcumulado: card.pesoEnviado,
+        codigociudadEdit: card.ciudad,
+        fecha: card.fechaEnvio,
+        conductor: card.conductor,
+        ciudad: card.ciudad,
+        idCliente: card.idCliente,
+        placa: card.placa,
+        pesadas: card.pesadas
       },
     });
-    await popover.present();
-    const { data } = await popover.onWillDismiss();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
     if (data == "true") {
+
       this.traerNombre();
-      this.recorriendolista();
     }
+  }
+  eliminarRegistro() {
+
   }
 }

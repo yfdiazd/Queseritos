@@ -19,25 +19,37 @@ export class CrearenvioclientePage implements OnInit {
   public contadorPeso: number;
   public tipoQueso;
   public lote;
-  public fecha = "2020-10-01";
-  codigociudadEdit: any;
-  idconductor: any;
-  pesoLimite;
-  placaEdit;
+  // public fecha = "2020-10-01";
+  // codigociudadEdit: any;
+  // conductor: any;
+  // pesoLimite;
+  // placaEdit;
   num;
+
+  @Input() editar;
+  @Input() pesoLimite;
+  @Input() pesoAcumulado;
+  @Input() codigociudadEdit;
+  @Input() fecha;
+  @Input() conductor;
+  @Input() ciudad;
+  @Input() idCliente;
+  @Input() placa;
+  @Input() pesadas;
+
 
 
 
   //variables alejo
 
-  pesoAcumulado = 0;
+  // pesoAcumulado = 0;
   input_limite: boolean = false;
   customPickerOptions: any;
   nombreArchLoaded = "Subir archivo";
   bultoObj: any;
   toggle: boolean = false;
 
-  pesadas: any[] = [];
+  // pesadas: any[] = [];
 
 
   constructor(
@@ -64,16 +76,12 @@ export class CrearenvioclientePage implements OnInit {
       }]
     }
   }
-  public idcliente: any;
   ngOnInit() {
-    let id = this.route.snapshot.paramMap.get("id");
-    console.log("se recibe id solito", id);
-    this.idcliente = id;
     this.agregarPesoLimite();
     this.validacion();
   }
   volver() {
-    this.navCtrl.navigateBack(['cardventas/', this.idcliente])
+    this.modalCtrl.dismiss();
   }
 
   async agregarPesoLimite() {
@@ -194,21 +202,39 @@ export class CrearenvioclientePage implements OnInit {
     console.log("Total peso de los bultos: " + this.contadorPeso);
   }
   guardar() {
-    let pesadaGuardar: any[] = [];
-    let i = 1;
-    this.pesadas.forEach(element => {
-      pesadaGuardar.push({
-        estadoQueso: element.estadoQueso,
-        peso: element.peso,
-        tipoQueso: element.tipoQueso,
-        valor: 0,
-        valorTotal: 0,
-        id: i++
-      })
-      console.log("lista recorrida", pesadaGuardar);
-    });
-    this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
-    this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
+    if (this.editar == "true") {
+      let pesadaGuardar: any[] = [];
+      let i = 1;
+      this.pesadas.forEach(element => {
+        pesadaGuardar.push({
+          estadoQueso: element.estadoQueso,
+          peso: element.peso,
+          tipoQueso: element.tipoQueso,
+          valor: element.valor,
+          valorTotal: element.valorTotal,
+          id: i++
+        })
+        console.log("lista recorrida", pesadaGuardar);
+      });
+      // this.FB.actualizarVenta();
+      this.modalCtrl.dismiss("true", "actualizar");
+    } else {
+      let pesadaGuardar: any[] = [];
+      let i = 1;
+      this.pesadas.forEach(element => {
+        pesadaGuardar.push({
+          estadoQueso: element.estadoQueso,
+          peso: element.peso,
+          tipoQueso: element.tipoQueso,
+          valor: 0,
+          valorTotal: 0,
+          id: i++
+        })
+        console.log("lista recorrida", pesadaGuardar);
+      });
+      this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase());
+      this.modalCtrl.dismiss("true", "actualizar");
+    }
   }
 
   customAlertOptions: any = {
@@ -246,6 +272,7 @@ export class CrearenvioclientePage implements OnInit {
       this.validacion();
       this.validarPesos();
     }
+
   }
   sumarPesoAcumulado() {
     this.pesoAcumulado = 0;
@@ -256,10 +283,11 @@ export class CrearenvioclientePage implements OnInit {
   }
   btn_guardar: boolean = false;
   validacion() {
-    if (this.pesadas.length > 0) {
-      this.btn_guardar = true;
-    } else {
+    if (this.pesadas == undefined) {
+      console.log("viene  a crear el compae");
       this.btn_guardar = false;
+    } else if (this.pesadas.length > 0) {
+      this.btn_guardar = true;
     }
   }
   validarPesos() {

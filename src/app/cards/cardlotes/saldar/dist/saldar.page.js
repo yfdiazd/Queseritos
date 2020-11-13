@@ -96,6 +96,7 @@ var SaldarPage = /** @class */ (function () {
         }
         else if (sumado == 0) {
             this.input_saldo = true;
+            this.valor = 0;
             this.activarBoton = true;
         }
     };
@@ -104,28 +105,36 @@ var SaldarPage = /** @class */ (function () {
         var sumado = this.saldoGeneral + this.FB.estadoSaldoProveedor;
         if (sumado < 0) {
             valorEnviar = (sumado + this.valor);
+            console.log("se sumaaaaa es igual ? ", valorEnviar);
         }
         else {
             valorEnviar = (sumado - this.valor);
+            console.log("se resta es ifual = ", valorEnviar);
+            if (valorEnviar < 0) {
+                valorEnviar = (valorEnviar * -1);
+            }
         }
-        this.FB.saldarDeudasProveedor(this.idProv, valorEnviar);
+        console.log("esto se envia al metodo para saldar ", valorEnviar);
+        // this.FB.saldarDeudasProveedor(this.idProv, valorEnviar);
         this.valorMensaje = valorEnviar;
-        this.modalCtrl.dismiss("true", "actualizar");
         this.alerta();
+        // this.FB.alertaSaldarLote(this.idProv, valorEnviar);
     };
     SaldarPage.prototype.alerta = function () {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
-                            header: 'Saldado correctamente',
-                            message: 'El proximo lote inicia con $' + this.valorMensaje,
+                            header: 'Confirmación',
+                            message: 'Esta seguro de saldar este lote?',
                             buttons: [
                                 {
                                     text: 'Aceptar',
                                     handler: function () {
+                                        _this.modalCtrl.dismiss(_this.valorMensaje, "actualizar");
                                     }
                                 }
                             ]

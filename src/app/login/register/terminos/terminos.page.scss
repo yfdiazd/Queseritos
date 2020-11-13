@@ -1,7 +1,8 @@
 ion-toolbar {
     --background: #1a1446;
 }
-.titulo{
+
+.titulo {
     color: white;
 
 }
@@ -12,14 +13,20 @@ ion-content {
     padding: 0;
     --background: #c8f7f3;
 
-    .div-principal, .div-intermedio {
+    .div-principal,
+    .div-intermedio {
         padding: 0;
         width: 80%;
         margin: 30px auto;
+        color: #1a1446;
+
+        .title {
+            font-weight: bold;
+        }
     }
 
-    
- 
+
+
 
 
 }

@@ -98,7 +98,7 @@ ion-content {
                     text-align: center;
 
                     #saldo-credito {
-                        color: darkred;
+                        color: rgb(196, 51, 51);
                         text-shadow: #500707 1px 1px 1px;
                     }
 
@@ -117,20 +117,20 @@ ion-content {
                     height: 100%;
                     text-align: center;
 
-                    .div-t {
+                    .p-t {
 
                         width: 100%;
                         height: 40%;
                     }
 
-                    .div-v {
+                    .p-v {
                         width: 100%;
                         height: 60%;
                         font-size: 3.5vh;
                     }
                 }
 
-                .div-t {
+                .p-t {
                     color: white;
                     font-weight: bold;
                     width: 100%;
@@ -138,7 +138,7 @@ ion-content {
                     font-size: 3vh;
                 }
 
-                .div-v {
+                .p-v {
                     width: 100%;
                     height: 30%;
                     font-size: 3.5vh;
@@ -208,8 +208,8 @@ ion-content {
                         text-align: left;
                         font-weight: bold;
                         height: 100%;
-                        line-height: 100%;
-                        font-size: 2.7vmax;
+                        line-height: 1.5;
+                        font-size: 25px;
                         padding-left: 10px;
                     }
                 }
