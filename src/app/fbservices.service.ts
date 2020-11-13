@@ -1855,38 +1855,77 @@ export class FBservicesService {
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
-        .database()
-        .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
-        .on("value", snapshot => {
-            console.log(" pesadasdsdasdasdasda ", snapshot.val());
-            snapshot.forEach(element => {
-                console.log("id bultos de pesadas ", element.val().id);
-                console.log("KEY bultos de pesadas ", element.key);
-                if (element.val().id == idPesada && element.val().valor == 0) {
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", snapshot => {
+                console.log(" pesadasdsdasdasdasda ", snapshot.val());
+                snapshot.forEach(element => {
+                    console.log("id bultos de pesadas ", element.val().id);
+                    console.log("KEY bultos de pesadas ", element.key);
+                    if (element.val().id == idPesada && element.val().valor == 0) {
 
-                    console.log("ingresamos");
-                    firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
-                        .remove();
-                }
+                        console.log("ingresamos");
+                        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
+                            .remove();
+                    }
+                });
+
             });
-
-        });
     }
-    ventaCos: number;
+    actualizarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen, costoVenta, idVenta) {
 
-    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
-        let nodo = fechaNodo.split("-", 3);
+        let nodo = fechaEnvio.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
-        console.log("fecha:", nodoEnv);
-        let a = (pesoPesada * valorPesada);
-        a = (a + costoAnterior)
-
+        let img;
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, idVenta, img);
+        } else {
+            img = "No se adjunto imagen.";
+        }
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .update({
-                costoVenta: a
-            });
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa,
+                imagen: img
+            })
+    }
+
+    ventaCos: number;
+    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, accion) {
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        console.log("fecha:", nodoEnv);
+        if (accion == "suma") {
+            let a = (pesoPesada * valorPesada);
+            a = (a + costoAnterior)
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    costoVenta: a
+                });
+        }else if(accion == "suma"){
+            let a = (pesoPesada * valorPesada);
+            a = (costoAnterior - a )
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    costoVenta: a
+                });
+        }
+
+
     }
 
     updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
