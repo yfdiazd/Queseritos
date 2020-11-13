@@ -1880,24 +1880,41 @@ export class FBservicesService {
         if (imagen !== undefined) {
             img = imagen;
             this.upLoadImageVenta(idCliente, idVenta, img);
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    idCliente: idCliente,
+                    ciudad: ciudad,
+                    conductor: conductor,
+                    costoVenta: costoVenta,
+                    fechaEnvio: fechaEnvio,
+                    pesadas: listaPesada,
+                    pesoEnviado: pesoEnviado,
+                    pesoLimite: pesoLimite,
+                    placa: placa,
+                    imagen: img
+                })
+
         } else {
             img = "No se adjunto imagen.";
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    idCliente: idCliente,
+                    ciudad: ciudad,
+                    conductor: conductor,
+                    costoVenta: costoVenta,
+                    fechaEnvio: fechaEnvio,
+                    pesadas: listaPesada,
+                    pesoEnviado: pesoEnviado,
+                    pesoLimite: pesoLimite,
+                    placa: placa,
+                    imagen: img
+                })
         }
-        firebase
-            .database()
-            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
-            .update({
-                idCliente: idCliente,
-                ciudad: ciudad,
-                conductor: conductor,
-                costoVenta: costoVenta,
-                fechaEnvio: fechaEnvio,
-                pesadas: listaPesada,
-                pesoEnviado: pesoEnviado,
-                pesoLimite: pesoLimite,
-                placa: placa,
-                imagen: img
-            })
+
     }
 
     ventaCos: number;
@@ -1914,9 +1931,9 @@ export class FBservicesService {
                 .update({
                     costoVenta: a
                 });
-        }else if(accion == "suma"){
+        } else if (accion == "suma") {
             let a = (pesoPesada * valorPesada);
-            a = (costoAnterior - a )
+            a = (costoAnterior - a)
             firebase
                 .database()
                 .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
