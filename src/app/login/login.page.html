@@ -11,10 +11,10 @@
     <ion-img class="img-logo" src="assets/img/logo_oficial.png"></ion-img>
   </div>
   <div class="div-formulario">
-    <input type="text" placeholder="Ingresa tu usuario" [(ngModel)]="email"> 
-    <input type="password" placeholder="Ingresa tu contraseña" [(ngModel)]="password" >
-    <ion-button id="button-login" color="tertiary" (click)="irPaginaHome()">
-      <ion-icon color="dark" slot="start" name="log-in"></ion-icon>Entrar
+    <input class="input__user" type="text" placeholder="Ingresa tu usuario" [(ngModel)]="email" />
+    <input class="input__password" type="password" placeholder="Ingresa tu contraseña" [(ngModel)]="password" />
+    <ion-button class="btn__entrar" fill="clear" (click)="irPaginaHome()">
+      <ion-icon slot="start" name="log-in"></ion-icon>Entrar
     </ion-button>
   </div>
   <div class="div-links">

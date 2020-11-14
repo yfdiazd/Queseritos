@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -33,9 +32,8 @@
 
     <div class="div-secundario">
       <p class="p-title_r">Ciudad</p>
-      <ion-select [(ngModel)]="ciudad" class="select" placeholder="Seleccione"
-        [interfaceOptions]="customAlertOptions" interface="alert" multiple="false" ok-text="Aceptar"
-        cancel-text="CANCELAR">
+      <ion-select [(ngModel)]="ciudad" class="select" placeholder="Seleccione" [interfaceOptions]="customAlertOptions"
+        interface="alert" multiple="false" ok-text="Aceptar" cancel-text="CANCELAR">
         <ion-select-option [value]="lista.descripcion" *ngFor="let lista of FB.ciudadesLista">
           {{lista.descripcion}}
         </ion-select-option>
@@ -64,7 +62,9 @@
       <div class="div_table">
         <div class="div_toggle">
           <label class="label">Lista de Pesadas</label>
-          <ion-icon class="btn-add" (click)="agregar()" name="add" color="success"></ion-icon>
+          <ion-tab-button fill="clear" class="btn-add">
+            <ion-icon (click)="agregar()" name="add" color="success"></ion-icon>
+          </ion-tab-button>
           <!-- <ion-button fill="clear" class="btn-add" (click)="agregar()">
           </ion-button> -->
         </div>

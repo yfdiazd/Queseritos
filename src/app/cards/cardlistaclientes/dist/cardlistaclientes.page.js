@@ -54,6 +54,17 @@ var CardlistaclientesPage = /** @class */ (function () {
             }
         });
     };
+    CardlistaclientesPage.prototype.irInicio = function () {
+        this.navCtrl.navigateBack(["main-menu"]);
+    };
+    CardlistaclientesPage.prototype.irCompras = function () {
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+        this.navCtrl.navigateBack(["cardcompras"]);
+    };
+    CardlistaclientesPage.prototype.irEstado = function () {
+        this.navCtrl.navigateBack(["cardlistaproveedores"]);
+    };
     CardlistaclientesPage = __decorate([
         core_1.Component({
             selector: 'app-cardlistaclientes',

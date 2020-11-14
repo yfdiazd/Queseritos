@@ -18,10 +18,13 @@ ion-content {
         height: 100%;
         margin-left: auto;
         margin-right: auto;
+        margin-top: 20px;
+        padding: 0;
 
         .div-compras,
         .div-ventas,
         .div-estado {
+            padding: 0;
             width: 100%;
             max-width: 700px;
             height: 30%;
@@ -30,6 +33,7 @@ ion-content {
         .card1,
         .card2,
         .card3 {
+            margin: auto;
             height: 90%;
             width: 90%;
             border-radius: 15px;

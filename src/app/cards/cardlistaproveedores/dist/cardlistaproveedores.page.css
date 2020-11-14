@@ -5,11 +5,6 @@ ion-header ion-toolbar ion-title {
   font-size: 20px;
   color: white;
 }
-ion-header .search {
-  width: 100%;
-  max-width: 700px;
-  margin: auto;
-}
 
 ion-content {
   padding: 0;
@@ -27,27 +22,49 @@ ion-content .content .totales {
   max-width: 700px;
   position: fixed;
   z-index: 50;
-  height: 120px;
+  height: 115px;
+  margin-bottom: 10px;
   background-color: #c8f7f3;
 }
-ion-content .content .totales .label {
+ion-content .content .totales .div__totales {
+  width: 100%;
+  margin: auto;
+  background-color: #252525;
+}
+ion-content .content .totales .div__totales .label {
   display: inline-block;
   width: 30%;
   max-width: 700px;
   padding-left: 20px;
-  color: #1a1446;
+  color: white;
 }
-ion-content .content .totales .valor {
+ion-content .content .totales .div__totales .valorC,
+ion-content .content .totales .div__totales .valorD,
+ion-content .content .totales .div__totales .valorS {
+  padding-right: 20px;
   display: inline-block;
+  text-align: right;
   width: 70%;
   max-width: 700px;
-  color: #ff2f73;
-  font-family: monospace;
+}
+ion-content .content .totales .div__totales .valorC {
+  color: #C43333;
+}
+ion-content .content .totales .div__totales .valorD {
+  color: #90ee90;
+}
+ion-content .content .totales .div__totales .valorS {
+  color: #5d88ff;
 }
 ion-content .content .totales .search {
-  display: inline-block;
+  --background: #252525;
+  margin: auto;
   width: 100%;
-  max-width: 700px;
+  padding: 0;
+  background-color: transparent;
+  color: white;
+  --icon-color: #4376ff;
+  --placeholder-color: white;
 }
 ion-content .content .div__lista {
   margin-top: 30px;
@@ -56,7 +73,16 @@ ion-content .content .div__lista {
   margin-top: 125px;
   max-width: 700px;
 }
-
-.lista {
-  --background-activated: red;
+ion-content .content .div__lista .lista {
+  background-color: transparent;
+}
+ion-content .content .div__lista .lista .item {
+  margin-bottom: 3px;
+  --background: #252525;
+}
+ion-content .content .div__lista .lista .item .icon {
+  color: #4376ff;
+}
+ion-content .content .div__lista .lista .item .label {
+  color: white;
 }
