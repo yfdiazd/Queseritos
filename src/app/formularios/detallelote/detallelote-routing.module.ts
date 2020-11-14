@@ -7,9 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: DetallelotePage
-  },  {
-    path: 'vistaimg',
-    loadChildren: () => import('./vistaimg/vistaimg.module').then( m => m.VistaimgPageModule)
   }
 
 ];
@@ -18,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DetallelotePageRoutingModule {}
+export class DetallelotePageRoutingModule { }

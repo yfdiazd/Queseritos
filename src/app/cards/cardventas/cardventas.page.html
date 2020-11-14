@@ -37,8 +37,11 @@
                   <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
                   <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
                   <p><span>Peso total:</span> {{card.pesoEnviado}} </p>
-                  <p>Valor T.Venta: {{card.costoVenta  | currency:'USD':true: '2.0-0'}}</p>
+                  <p><span>Valor T.Venta:</span> {{card.costoVenta  | currency:'USD':true: '2.0-0'}}</p>
                 </div>
+                <label class="verImg" (ngModel)="concepto" (click)="verImagen(lista)">
+                  <ion-icon name="image-outline" color="tertiary"></ion-icon>
+                </label>
               </div>
               <div class="div_tabla">
                 <ion-list class="lista_item_ventas">
