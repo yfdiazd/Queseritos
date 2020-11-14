@@ -32,7 +32,7 @@ ion-content .div-formulario {
 ion-content .div-formulario .input__user,
 ion-content .div-formulario .input__password {
   border-style: none;
-  color: white;
+  color: #000;
   font-size: medium;
   padding-left: 20px;
   border-radius: 10px;
