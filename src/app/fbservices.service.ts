@@ -1764,8 +1764,20 @@ export class FBservicesService {
             });
         this.toastOperacionExitosa();
     }
-    updateVenta() {
 
+    imgVenta;
+    getFotoVenta(idCliente, idVenta) {
+        this.imgVenta = null;
+        firebase
+            .storage()
+            .ref("ventas/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
+                this.imgVenta = imgUr;
+
+                return this.imgVenta;
+            });
+    }
+    deleteImageVenta(idCliente, idVenta) {
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).delete();
     }
     upLoadImageVenta(idCliente, idVenta, file) {
 
@@ -1860,6 +1872,7 @@ export class FBservicesService {
     }
 
     eliminarVenta(idCliente, fechaNodo, idVenta) {
+        this.deleteImageVenta(idCliente, idVenta);
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
