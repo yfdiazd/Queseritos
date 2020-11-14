@@ -39,7 +39,7 @@
                   <p><span>Peso total:</span> {{card.pesoEnviado}} </p>
                   <p><span>Valor T.Venta:</span> {{card.costoVenta  | currency:'USD':true: '2.0-0'}}</p>
                 </div>
-                <label class="verImg" (ngModel)="concepto" (click)="verImagen(lista)">
+                <label class="verImg" (ngModel)="concepto" (click)="verImagen(card)">
                   <ion-icon name="image-outline" color="tertiary"></ion-icon>
                 </label>
               </div>

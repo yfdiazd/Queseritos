@@ -1,12 +1,11 @@
-import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, NavController, ToastController, LoadingController, PopoverController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
-import { FBservicesService } from "../../fbservices.service";
-import { HomeventasPage } from 'src/app/home/homeventas/homeventas.page';
+import { AlertController, LoadingController, ModalController, NavController, PopoverController } from '@ionic/angular';
 import { AgregarvalorventaPage } from 'src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page';
 import { CrearenvioclientePage } from 'src/app/formularios/crearenviocliente/crearenviocliente.page';
+import { VistaimgPage } from 'src/app/formularios/vistaimg/vistaimg.page';
+
+import { FBservicesService } from '../../fbservices.service';
 
 @Component({
   selector: 'app-cardventas',
@@ -261,6 +260,33 @@ export class CardventasPage implements OnInit {
         }
       ]
     });
+    await alert.present();
+  }
+  
+  async verImagen(data) {
+
+    if (data.imagen == "No se adjunto imagen.") {
+      this.alertImg()
+    } else {
+      let foto = await this.FB.getFotoVenta(this.idcliente, data.id);
+      console.log("esto es la foto", foto);
+      const popover = await this.modalController.create({
+        component: VistaimgPage,
+        cssClass: 'img_modal',
+        keyboardClose: false,
+        backdropDismiss: false
+      });
+      return await popover.present();
+    }
+  }
+  async alertImg() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alerta.',
+      message: 'Para esta venta no se adjuntó imagen.',
+      buttons: ['ACEPTAR']
+    });
+
     await alert.present();
   }
 }

@@ -1829,7 +1829,18 @@ var FBservicesService = /** @class */ (function () {
         });
         this.toastOperacionExitosa();
     };
-    FBservicesService.prototype.updateVenta = function () {
+    FBservicesService.prototype.getFotoVenta = function (idCliente, idVenta) {
+        var _this = this;
+        this.img = null;
+        firebase
+            .storage()
+            .ref("ventas/" + idCliente + "/" + idVenta).getDownloadURL().then(function (imgUr) {
+            _this.img = imgUr;
+            return _this.img;
+        });
+    };
+    FBservicesService.prototype.deleteImageVenta = function (idCliente, idVenta) {
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta)["delete"]();
     };
     FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
@@ -1912,6 +1923,7 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     FBservicesService.prototype.eliminarVenta = function (idCliente, fechaNodo, idVenta) {
+        this.deleteImageVenta(idCliente, idVenta);
         var nodo = fechaNodo.split("-", 3);
         var nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
@@ -1978,14 +1990,14 @@ var FBservicesService = /** @class */ (function () {
             });
         }
     };
-    FBservicesService.prototype.updatecostoVenta = function (idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, accion) {
+    FBservicesService.prototype.updatecostoVenta = function (idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, data, flag) {
         return __awaiter(this, void 0, void 0, function () {
-            var nodo, nodoEnv, a, a;
+            var nodo, nodoEnv, a, resta, a;
             return __generator(this, function (_a) {
+                console.log("que es flaaaaaaaaaaaf ", flag);
                 nodo = fechaNodo.split("-", 3);
                 nodoEnv = (nodo[0] + "-" + nodo[1]);
-                console.log("fecha:", nodoEnv);
-                if (accion == "suma") {
+                if (flag == true) {
                     a = (pesoPesada * valorPesada);
                     a = (a + costoAnterior);
                     firebase
@@ -1995,9 +2007,16 @@ var FBservicesService = /** @class */ (function () {
                         costoVenta: a
                     });
                 }
-                else if (accion == "resta") {
+                else if (flag == false) {
+                    console.log("flag es aqui flase");
+                    console.log("la operacion ", costoAnterior, data, "eso se opera ", (costoAnterior - data));
+                    resta = (costoAnterior - data);
+                    console.log("la resta es ", resta);
                     a = (pesoPesada * valorPesada);
-                    a = (costoAnterior - a);
+                    console.log("la nueva de a ", pesoPesada, valorPesada, "eso se opera ", (pesoPesada * valorPesada));
+                    console.log("la ultima operacione es ", a, resta, "los operadoeasdawed asdfa sda", (a + resta));
+                    a = (a + resta);
+                    console.log("esto es true aaaaaaaaaaaaa ", a);
                     firebase
                         .database()
                         .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
@@ -2010,6 +2029,20 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     FBservicesService.prototype.updatePesadas = function (idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        this.getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada);
+        console.log("eso es el kyyyyyyyyyyyyyyyyyyy ", this.keyPesadaUpdate);
+        var nodo = fechaNodo.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
+        var a = (pesoPesada * valorPesada);
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + this.keyPesadaUpdate)
+            .update({
+            valor: valorPesada,
+            valorTotal: a
+        });
+    };
+    FBservicesService.prototype.getKeyPesada = function (idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        var _this = this;
+        this.keyPesadaUpdate = 0;
         var nodo = fechaNodo.split("-", 3);
         var nodoEnv = (nodo[0] + "-" + nodo[1]);
         var a = (pesoPesada * valorPesada);
@@ -2018,20 +2051,18 @@ var FBservicesService = /** @class */ (function () {
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
             .on("value", function (snapshot) {
+            _this.keyPesadaUpdate = 0;
             console.log(" pesadasdsdasdasdasda ", snapshot.val());
             snapshot.forEach(function (element) {
                 console.log("id bultos de pesadas ", element.val().id);
-                console.log("KEY bultos de pesadas ", element.key);
-                if (element.val().id == idPesada && element.val().valor == 0) {
+                if (element.val().id == idPesada) {
+                    _this.keyPesadaUpdate = element.key;
+                    console.log("KEY bultos de pesadas ", element.key);
                     console.log("ingresamos");
-                    firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
-                        .update({
-                        valor: valorPesada,
-                        valorTotal: a
-                    });
                 }
             });
         });
+        return this.keyPesadaUpdate;
     };
     FBservicesService.prototype.getTodo = function () {
         return __awaiter(this, void 0, void 0, function () {

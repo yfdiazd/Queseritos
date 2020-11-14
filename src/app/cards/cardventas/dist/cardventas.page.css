@@ -88,8 +88,8 @@ ion-content .div-secundario .slider .item .div-card .card .div_info {
 ion-content .div-secundario .slider .item .div-card .card .div_info .verImg {
   display: inline-block;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 2px;
+  right: 2px;
   width: 40px;
   height: 40px;
   z-index: 40;

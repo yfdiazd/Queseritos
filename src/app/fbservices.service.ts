@@ -1765,15 +1765,14 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
-    imgVenta;
     getFotoVenta(idCliente, idVenta) {
-        this.imgVenta = null;
+        this.img = null;
         firebase
             .storage()
             .ref("ventas/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
-                this.imgVenta = imgUr;
+                this.img = imgUr;
 
-                return this.imgVenta;
+                return this.img;
             });
     }
     deleteImageVenta(idCliente, idVenta) {
