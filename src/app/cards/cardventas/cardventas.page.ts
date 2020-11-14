@@ -39,10 +39,10 @@ export class CardventasPage implements OnInit {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController
   ) { }
-
+  flag;
   public idcliente: any;
   public loading: any;
-  valueDate;
+  valueDate; 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idcliente = id;
@@ -157,7 +157,8 @@ export class CardventasPage implements OnInit {
   async agregarValorVenta(lista, card) {
     console.log("lsita:", lista, " y tambien ", card);
     if (lista.valor == 0) {
-      this.irAgregarValorVenta(lista, card);
+      
+      this.irAgregarValorVenta(lista, card, true);
     } else {
       this.alertAgregarValorVenta(lista, card);
     }
@@ -179,7 +180,7 @@ export class CardventasPage implements OnInit {
           text: 'SI',
           handler: () => {
             console.log('Confirm Okay');
-            this.irAgregarValorVenta(lista, card);
+            this.irAgregarValorVenta(lista, card, false);
           }
         }
       ]
@@ -187,7 +188,7 @@ export class CardventasPage implements OnInit {
 
     await alert.present();
   }
-  async irAgregarValorVenta(lista, card) {
+  async irAgregarValorVenta(lista, card, flag) {
     const popover = await this.PopoverController.create({
       component: AgregarvalorventaPage,
       cssClass: 'popover_style',
@@ -196,7 +197,8 @@ export class CardventasPage implements OnInit {
       backdropDismiss: false,
       componentProps: {
         dataBulto: lista,
-        dataVenta: card
+        dataVenta: card,
+        flag: flag
       },
     });
     await popover.present();

@@ -1890,6 +1890,7 @@ export class FBservicesService {
             });
     }
     actualizarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen, costoVenta, idVenta) {
+        
 
         let nodo = fechaEnvio.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
@@ -1935,11 +1936,12 @@ export class FBservicesService {
     }
 
     ventaCos: number;
-    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, accion) {
+    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, data, flag) {
+        console.log("que es flaaaaaaaaaaaf ", flag);
+
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
-        console.log("fecha:", nodoEnv);
-        if (accion == "suma") {
+        if (flag == true) {
             let a = (pesoPesada * valorPesada);
             a = (a + costoAnterior)
             firebase
@@ -1948,21 +1950,47 @@ export class FBservicesService {
                 .update({
                     costoVenta: a
                 });
-        } else if (accion == "resta") {
+
+        } else if (flag == false) {
+            console.log("flag es aqui flase");
+            console.log("la operacion ", costoAnterior, data, "eso se opera ", (costoAnterior - data))
+            let resta = (costoAnterior - data);
+            console.log("la resta es ", resta);
             let a = (pesoPesada * valorPesada);
-            a = (costoAnterior - a)
+            console.log("la nueva de a ", pesoPesada, valorPesada, "eso se opera ", (pesoPesada * valorPesada))
+            console.log("la ultima operacione es ", a, resta, "los operadoeasdawed asdfa sda", (a + resta));
+            a = (a + resta)
+            console.log("esto es true aaaaaaaaaaaaa ", a);
+
             firebase
                 .database()
                 .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
                 .update({
                     costoVenta: a
                 });
-        }
 
+        }
 
     }
 
     updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        this.getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada)
+        console.log("eso es el kyyyyyyyyyyyyyyyyyyy ", this.keyPesadaUpdate);
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        let a = (pesoPesada * valorPesada);
+
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + this.keyPesadaUpdate)
+            .update({
+                valor: valorPesada,
+                valorTotal: a
+            });
+
+
+    }
+    keyPesadaUpdate: any;
+    getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        this.keyPesadaUpdate = 0;
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
         let a = (pesoPesada * valorPesada);
@@ -1971,23 +1999,20 @@ export class FBservicesService {
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
             .on("value", snapshot => {
+                this.keyPesadaUpdate = 0;
                 console.log(" pesadasdsdasdasdasda ", snapshot.val());
                 snapshot.forEach(element => {
                     console.log("id bultos de pesadas ", element.val().id);
-                    console.log("KEY bultos de pesadas ", element.key);
-                    if (element.val().id == idPesada && element.val().valor == 0) {
-
+                    if (element.val().id == idPesada) {
+                        this.keyPesadaUpdate = element.key;
+                        console.log("KEY bultos de pesadas ", element.key);
                         console.log("ingresamos");
-                        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
-                            .update({
-                                valor: valorPesada,
-                                valorTotal: a
-                            })
+
                     }
                 });
 
             });
-
+        return this.keyPesadaUpdate;
 
     }
 
