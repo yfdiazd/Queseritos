@@ -218,11 +218,15 @@ export class CrearenvioclientePage implements OnInit {
           id: i++
         })
         console.log("lista recorrida", pesadaGuardar);
+        sumaCostoVenta = 0;
         pesadaGuardar.forEach(sumar => {
           sumaCostoVenta += sumar.valorTotal;
         })
       });
+      console.log("el valor de la pechada esssssssssssssssssss ", sumaCostoVenta);
+
       console.log("data de card", pesadaGuardar, " y ", sumaCostoVenta, "data", this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta, this.data.id);
+
       this.FB.actualizarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta, this.data.id);
       this.modalCtrl.dismiss("true", "actualizar");
     } else {
