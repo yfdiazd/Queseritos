@@ -82,7 +82,7 @@ ion-content .content .div-principal .div-fila-1 .item .div_toggle ion-toggle {
 ion-content .content .div-secundario {
   height: 90%;
   width: 100%;
-  padding-top: 8vh;
+  padding: 8vh 10px 10px 10px;
 }
 ion-content .content .div-secundario .p-title,
 ion-content .content .div-secundario .p-title_r {
@@ -159,21 +159,24 @@ ion-content .content .div-secundario .div_table .div_toggle {
   width: 90%;
   height: 30px;
   margin: auto;
+  text-align: center;
 }
 ion-content .content .div-secundario .div_table .div_toggle .label {
+  display: inline-block;
   width: 70%;
   padding: 0;
+  line-height: 1;
   font-size: 3vh;
-  line-height: 30px;
   font-weight: bold;
-  text-align: center;
-  display: inline-block;
 }
 ion-content .content .div-secundario .div_table .div_toggle .btn-add {
   display: inline-block;
-  background-color: rgba(0, 31, 0, 0.486);
-  width: 28%;
-  line-height: 30px;
+  margin: auto;
+  background-color: #252525;
+  width: 50px;
+  height: 70%;
+  float: right;
+  padding: auto;
   border-radius: 10px;
 }
 ion-content .content .div-secundario .div_table .table {

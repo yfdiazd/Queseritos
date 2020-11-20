@@ -81,5 +81,15 @@ export class CardlistaclientesPage implements OnInit {
 
   }
 
-
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
+  }
 }

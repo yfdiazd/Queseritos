@@ -1,15 +1,17 @@
-ion-header ion-toolbar{
+ion-header ion-toolbar {
     --background: #1a1446;
 }
-.titulo{
+
+.titulo {
     color: white;
 }
+
 ion-content {
     margin: 0;
     padding: 0;
-    --background: #c8f7f3; 
+    --background: #c8f7f3;
     // --background: rgba(147,206,222,1);
-    
+
 
     .div-img {
         height: 30%;
@@ -18,7 +20,8 @@ ion-content {
         width: 80%;
         margin-bottom: 30px;
     }
-    .img-logo{
+
+    .img-logo {
         width: 100%;
         height: 100%;
         margin: auto;
@@ -27,27 +30,37 @@ ion-content {
     .div-formulario {
         padding: 0;
         width: 80%;
+        max-width: 500px;
         margin: auto;
+
+        .input__user,
+        .input__password {
+            border-style: none;
+            color: #000;
+            font-size: medium;
+            padding-left: 20px;
+            border-radius: 10px;
+            height: 40px;
+            width: 100%;
+            margin-bottom: 20px;
+            border:#3eaeca 2px dashed ;
+        }
+
+        .btn__entrar {
+            margin: auto;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            font-size: 20px;
+            height: 60px;
+            width: 100%;
+            color: #c8f7f3;
+            --icon-color: red;
+            background: #006100;
+        }
     }
 
-    input {
-        background-color: transparentize($color: white, $amount: 0.5);
-        border-style: hidden;
-        color: #1a1446;
-        font-size: medium;
-        padding-left: 10px;
-        border-radius: 5px;
-        height: 40px;
-        width: 100%;
-        margin-bottom: 20px;
-    }
 
-    .div-formulario ion-button {
-        margin-bottom: 40px;
-        font-size: 20px;
-        height: 60px;
-        width: 100%;
-    }
+
 
     .div-links {
         margin-top: 40px;

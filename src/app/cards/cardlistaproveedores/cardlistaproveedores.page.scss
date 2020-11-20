@@ -9,12 +9,6 @@ ion-header {
         }
 
     }
-
-    .search {
-        width: 100%;
-        max-width: 700px;
-        margin: auto;
-    }
 }
 
 ion-content {
@@ -22,8 +16,6 @@ ion-content {
     margin: 0;
     --background: #c8f7f3;
     --color: black;
-
-
 
     .content {
         width: 100%;
@@ -35,31 +27,59 @@ ion-content {
             max-width: 700px;
             position: fixed;
             z-index: 50;
-            height: 120px;
+            height: 115px;
+            margin-bottom: 10px;
             background-color: #c8f7f3;
 
-            .label {
-                display: inline-block;
-                width: 30%;
-                max-width: 700px;
-                padding-left: 20px;
-                color: #1a1446;
-            }
+            .div__totales {
+                width: 100%;
+                margin: auto;
+                background-color: #252525;
+                // border-bottom-left-radius: 10px;
+                // border-bottom-right-radius: 10px;
 
-            .valor {
-                display: inline-block;
-                width: 70%;
-                max-width: 700px;
+                .label {
+                    display: inline-block;
+                    width: 30%;
+                    max-width: 700px;
+                    padding-left: 20px;
+                    color: white;
+                }
 
-                color: #ff2f73;
-                font-family: monospace;
+                .valorC,
+                .valorD,
+                .valorS {
+                    padding-right: 20px;
+                    display: inline-block;
+                    text-align: right;
+                    width: 70%;
+                    max-width: 700px;
+                }
+
+                .valorC {
+                    color: #C43333;
+                }
+
+                .valorD {
+                    color: #90ee90;
+                }
+
+                .valorS {
+                    color: #5d88ff;
+                }
+
+
             }
 
             .search {
-                display: inline-block;
+                --background: #252525;
+                margin: auto;
                 width: 100%;
-                max-width: 700px;
-
+                padding: 0;
+                background-color: transparent;
+                color: white;
+                --icon-color: #4376ff;
+                --placeholder-color: white;
             }
         }
 
@@ -69,11 +89,23 @@ ion-content {
             position: absolute;
             margin-top: 125px;
             max-width: 700px;
+
+            .lista {
+                background-color: transparent;
+
+                .item {
+                    margin-bottom: 3px;
+                    --background: #252525;
+
+                    .icon {
+                        color: #4376ff;
+                    }
+
+                    .label {
+                        color: white;
+                    }
+                }
+            }
         }
     }
-
-}
-
-.lista {
-    --background-activated: red;
 }

@@ -212,6 +212,17 @@ var CardlistaproveedoresPage = /** @class */ (function () {
             });
         });
     };
+    CardlistaproveedoresPage.prototype.irInicio = function () {
+        this.navCtrl.navigateBack(["main-menu"]);
+    };
+    CardlistaproveedoresPage.prototype.irCompras = function () {
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+        this.navCtrl.navigateBack(["cardcompras"]);
+    };
+    CardlistaproveedoresPage.prototype.irEstado = function () {
+        this.navCtrl.navigateBack(["cardlistaproveedores"]);
+    };
     CardlistaproveedoresPage = __decorate([
         core_1.Component({
             selector: 'app-cardlistaproveedores',
