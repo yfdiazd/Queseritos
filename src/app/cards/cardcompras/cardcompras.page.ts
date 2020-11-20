@@ -148,7 +148,7 @@ export class CardcomprasPage implements OnInit {
     this.listaProveedores = [];
     this.FB.proveedoresLista.forEach(element => {
       let provee = element;
-      this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
+      this.input.data.push({ name: provee.nombre + " " + provee.apellido, type: 'radio', label: provee.nombre, value: provee.id });
     });
     this.alertProveedores();
 
