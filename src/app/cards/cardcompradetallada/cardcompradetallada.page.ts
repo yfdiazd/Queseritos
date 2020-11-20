@@ -94,8 +94,8 @@ export class CardcompradetalladaPage implements OnInit {
 
   }
   async modalConfirmarPesaje(card) {
-    this.FB.getInfoCompra(this.idProveedor, card.id)
-    this.FB.getPesajeConfirmado(this.idProveedor, card.id);
+    this.FB.getInfoCompra(this.idProveedor, card.id, card.lote)
+    this.FB.getPesajeConfirmado(this.idProveedor, card.id, card.lote);
     const modal = await this.modalController.create({
       component: HomepesajesPage,
       cssClass: 'my-custom-class',
@@ -103,13 +103,15 @@ export class CardcompradetalladaPage implements OnInit {
       backdropDismiss: false,
       componentProps: {
         idCompra: card.id,
-        idProv: this.idProveedor
+        idProv: this.idProveedor,
+        lote: card.lote
       },
     });
+    console.log("Esto se envia desde detallelote:;", this.idProveedor, card.id, card.lote);
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data == "true") {
-      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+      this.FB.getPesajeCompra(this.idProveedor, card.lote);
       this.FB.getProductos();
       this.traerTipoQueso();
       this.traerNombre();

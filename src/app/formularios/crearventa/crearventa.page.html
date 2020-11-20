@@ -14,7 +14,7 @@
     <div class="div-principal">
 
       <p class="p-title_r">Tipo de queso</p>
-      <ion-select [(ngModel)]="tipoQueso" (ngModelChange)="permitirGuardar($event)" class="select" placeholder="Seleccione"
+      <ion-select [(ngModel)]="productoDefault" (ngModelChange)="permitirGuardar($event)" class="select" placeholder="Seleccione"
         [interfaceOptions]="customAlertOptions" interface="alert" multiple="false" ok-text="Aceptar"
         cancel-text="Cancelar">
         <ion-select-option [value]="lista.descripcion" *ngFor="let lista of FB.productosLista">

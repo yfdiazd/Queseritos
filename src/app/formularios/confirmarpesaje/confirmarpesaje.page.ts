@@ -23,6 +23,7 @@ export class ConfirmarpesajePage implements OnInit {
   @Input() idCompra;
   @Input() idProv;
   @Input() pesoTotal = 0;
+  @Input() lote;
 
   idEstadoProducto: string;
   peso = "";
@@ -74,13 +75,13 @@ export class ConfirmarpesajePage implements OnInit {
       this.presentAlert();
     } else if (parseInt(this.peso) <= 0 || (parseInt(this.costoKilo) <= 0)) {
       this.presentAlert2();
-    }else if(this.idEstadoProducto == undefined || this.idEstadoProducto == ""){
+    } else if (this.idEstadoProducto == undefined || this.idEstadoProducto == "") {
       this.presentAlert3()
     }
     else {
-      this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado);
-      this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado, "suma");
-      this.FB.getPesajeConfirmado(this.idProv, this.idCompra);
+      this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado, this.lote);
+      this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado, "suma", this.lote);
+      this.FB.getPesajeConfirmado(this.idProv, this.idCompra, this.lote);
       this.popover.dismiss();
     }
   }

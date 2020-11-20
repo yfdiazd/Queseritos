@@ -18,7 +18,7 @@ export class CrearventaPage implements OnInit {
   ) {
 
   }
-
+  productoDefault: any;
   //variables del form
   tipoQueso;
   estadoQueso;
@@ -26,6 +26,7 @@ export class CrearventaPage implements OnInit {
   activarBoton: boolean = false;
 
   ngOnInit() {
+    this.traerTipoQuesoDefault();
     this.FB.getProductos();
     this.FB.getEstadoProducto();
   }
@@ -54,7 +55,18 @@ export class CrearventaPage implements OnInit {
       this.activarBoton = false;
     }
   }
-
+  traerTipoQuesoDefault() {
+    if (this.tipoQueso == undefined) {
+      this.FB.productosLista.forEach(element => {
+        if (element.estado == 1 && element.predetermina == true) {
+          this.productoDefault = null;
+          this.productoDefault = element.descripcion;
+        }
+      })
+    } else {
+      this.productoDefault = this.tipoQueso;
+    }
+  }
 
   listaPesadas: any[];
   objPesadas: any;
@@ -62,7 +74,7 @@ export class CrearventaPage implements OnInit {
     this.listaPesadas = [];
     this.objPesadas = null;
     this.objPesadas = ({
-      tipoQueso: this.tipoQueso,
+      tipoQueso: this.productoDefault,
       estadoQueso: this.estadoQueso,
       peso: this.valor
     });

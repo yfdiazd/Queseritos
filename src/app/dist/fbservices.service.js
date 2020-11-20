@@ -65,12 +65,12 @@ var FBservicesService = /** @class */ (function () {
         //Lista lotes
         this.listaLotes = [];
         this.config = {
-            apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
-            authDomain: "queseritos.firebaseapp.com",
-            databaseURL: "https://queseritos.firebaseio.com",
-            projectId: "queseritos",
-            storageBucket: "queseritos.appspot.com",
-            messagingSenderId: "589566808528"
+            apiKey: "AIzaSyCRkC_GFC_m-OXhB43EcsOtbUrHF8oTUQk",
+            authDomain: "pruebasqueseritos.firebaseapp.com",
+            databaseURL: "https://pruebasqueseritos.firebaseio.com",
+            projectId: "pruebasqueseritos",
+            storageBucket: "pruebasqueseritos.appspot.com",
+            messagingSenderId: "69745233361"
         };
         this.options = {
             quality: 100,
@@ -78,6 +78,8 @@ var FBservicesService = /** @class */ (function () {
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE
         };
+        //offline
+        this.onlineFlag = "";
         this.ventasclienteLista = [];
         this.sumaCompras = 0;
         this.sumanticipo = 0;
@@ -87,20 +89,19 @@ var FBservicesService = /** @class */ (function () {
         firebase.initializeApp(this.config);
         this.verificarsesion();
     }
-    //offline
     FBservicesService.prototype.offLine = function () {
-        firebase.firestore().enablePersistence()["catch"](function (err) {
-            if (err.code == 'failed-precondition') {
-                // Multiple tabs open, persistence can only be enabled
-                // in one tab at a a time.
-                // ...
+        var ff;
+        firebase.database().ref(".info/connected").on("value", function (snap) {
+            if (snap.val() === true) {
+                ff = "true";
+                alert("connected");
             }
-            else if (err.code == 'unimplemented') {
-                // The current browser does not support all of the
-                // features required to enable persistence
-                // ...
+            else {
+                alert("No se pudo conectar a la red");
+                ff = "false";
             }
         });
+        return ff;
     };
     // todos los mentodos que tienen que ver solo con el usuario
     FBservicesService.prototype.mostrarNombre = function () {
@@ -168,27 +169,18 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     FBservicesService.prototype.verificarsesion = function () {
-        var _this = this;
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                // this.navCtrl.navigateForward("main-menu");
-                _this.router.navigate(["main-menu"]);
-                // this.mostrarNombre();
-                _this.getCiudades();
-                _this.getEstadoProducto();
-                _this.getProductos();
-                _this.getTipoAnticipos();
-                _this.getTiposIdentificacion();
-                _this.getProveedores();
-                _this.getClientes();
-                _this.getConductor();
-                _this.listaOrdenLotes();
-            }
-            else {
-                _this.navCtrl.navigateBack(["login"]);
-            }
-        });
-        return this.usuarioUid;
+        // this.navCtrl.navigateForward("main-menu");
+        this.router.navigate(["main-menu"]);
+        // this.mostrarNombre();
+        this.getCiudades();
+        this.getEstadoProducto();
+        this.getProductos();
+        this.getTipoAnticipos();
+        this.getTiposIdentificacion();
+        this.getProveedores();
+        this.getClientes();
+        this.getConductor();
+        this.listaOrdenLotes();
     };
     // TODOS LOS TOAS o mensajes emergentes
     //toast
@@ -1139,28 +1131,21 @@ var FBservicesService = /** @class */ (function () {
     // Traer los pesajes del proveedor seleccionado
     FBservicesService.prototype.getPesajeCompra = function (idProveedor, lote) {
         return __awaiter(this, void 0, void 0, function () {
-            var ordenLotes;
             var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.listaOrdenLotes()];
-                    case 1:
-                        ordenLotes = _a.sent();
-                        this.pesajeCompraLista = [];
-                        this.lastLote = [];
-                        this.lastLote = (ordenLotes.slice(this.listaOrdenLotes().length - 1));
-                        firebase
-                            .database()
-                            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
-                            .on("value", function (snapshot) {
-                            _this.pesajeCompraLista = [];
-                            snapshot.forEach(function (element) {
-                                _this.pesajeCompraLista.push(element.val());
-                            });
-                            return _this.pesajeCompraLista;
-                        });
-                        return [2 /*return*/];
-                }
+                console.log("Esto recibe", idProveedor, lote);
+                this.pesajeCompraLista = [];
+                firebase
+                    .database()
+                    .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
+                    .on("value", function (snapshot) {
+                    _this.pesajeCompraLista = [];
+                    snapshot.forEach(function (element) {
+                        _this.pesajeCompraLista.push(element.val());
+                    });
+                    return _this.pesajeCompraLista;
+                });
+                return [2 /*return*/];
             });
         });
     };
@@ -1174,7 +1159,7 @@ var FBservicesService = /** @class */ (function () {
             .remove();
         this.toastOperacionExitosa();
     };
-    FBservicesService.prototype.updateCostoCompra = function (idProveedor, idPesajeCompra, totalCompra, accion) {
+    FBservicesService.prototype.updateCostoCompra = function (idProveedor, idPesajeCompra, totalCompra, accion, lote) {
         if (accion == "suma") {
             var totalLocal = 0;
             this.getCostoCompra(idProveedor, idPesajeCompra);
@@ -1182,7 +1167,7 @@ var FBservicesService = /** @class */ (function () {
             totalLocal = (totalLocal + totalCompra);
             firebase
                 .database()
-                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesajeCompra)
                 .update({
                 costoTotalCompra: totalLocal
             });
@@ -1197,7 +1182,7 @@ var FBservicesService = /** @class */ (function () {
             console.log("esto queda se actualziara en la base de taos ", totalLocal);
             firebase
                 .database()
-                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesajeCompra)
                 .update({
                 costoTotalCompra: totalLocal
             });
@@ -1219,14 +1204,12 @@ var FBservicesService = /** @class */ (function () {
         return this.costoCompraTemp;
     };
     //Confirmar pesajes
-    FBservicesService.prototype.agregarConfirmaPesaje = function (idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
+    FBservicesService.prototype.agregarConfirmaPesaje = function (idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado, lote) {
         this.idConfirmarPesajeCompra = this.idGenerator();
-        this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado, "suma");
+        this.updateBalanceLoteCompra(idProveedor, lote, costoTotalEstado, "suma");
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
             .set({
             id: this.idConfirmarPesajeCompra,
             codigoLote: this.lastLote.toString(),
@@ -1238,67 +1221,58 @@ var FBservicesService = /** @class */ (function () {
         });
         this.toastOperacionExitosa();
     };
-    FBservicesService.prototype.getPesajeConfirmado = function (idProveedor, idPesajeCompra) {
+    FBservicesService.prototype.getPesajeConfirmado = function (idProveedor, idPesajeCompra, lote) {
         return __awaiter(this, void 0, void 0, function () {
-            var ordenLotes;
             var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.pesajeConfirmadoLista = [];
-                        this.objPesajeConfirmado = [];
-                        this.sumapesoConfirmado = 0;
-                        this.saldoPesoConfirmado = 0;
-                        return [4 /*yield*/, this.listaOrdenLotes()];
-                    case 1:
-                        ordenLotes = _a.sent();
-                        this.lastLote = [];
-                        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
-                        firebase
-                            .database()
-                            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra)
-                            .on("value", function (snapshot) {
-                            if (snapshot.exists()) {
-                                _this.pesajeConfirmadoLista = [];
-                                _this.sumapesoConfirmado = 0;
-                                _this.saldoPesoConfirmado = 0;
-                                snapshot.forEach(function (element) {
-                                    _this.estadoProductoLista.forEach(function (estadoPro) {
-                                        if (estadoPro.id == element.val().idEstadoProducto) {
-                                            _this.objPesajeConfirmado = ({
-                                                nombreEstadoQueso: estadoPro.descripcion,
-                                                cantidadEstado: element.val().cantidadEstado,
-                                                codigoLote: element.val().codigoLote,
-                                                costoKilo: element.val().costoKilo,
-                                                costoTotalEstado: element.val().costoTotalEstado,
-                                                id: element.val().id,
-                                                idEstadoProducto: element.val().idEstadoProducto,
-                                                idPesajeCompra: element.val().idPesajeCompra
-                                            });
-                                            _this.pesajeConfirmadoLista.push(_this.objPesajeConfirmado);
-                                            _this.objPesajeConfirmado = null;
-                                            _this.sumapesoConfirmado = (_this.sumapesoConfirmado + parseInt(element.val().cantidadEstado));
-                                            _this.saldoPesoConfirmado = (_this.saldoPesoConfirmado + parseInt(element.val().costoTotalEstado));
-                                        }
+                console.log("getPesajeConfirmado", idProveedor, idPesajeCompra, lote);
+                this.pesajeConfirmadoLista = [];
+                this.objPesajeConfirmado = [];
+                this.sumapesoConfirmado = 0;
+                this.saldoPesoConfirmado = 0;
+                firebase
+                    .database()
+                    .ref("usuario/compras/" + idProveedor + "/" + lote + "/confirmarPesajeCompra/" + idPesajeCompra)
+                    .on("value", function (snapshot) {
+                    if (snapshot.exists()) {
+                        console.log("Si existe");
+                        _this.pesajeConfirmadoLista = [];
+                        _this.sumapesoConfirmado = 0;
+                        _this.saldoPesoConfirmado = 0;
+                        snapshot.forEach(function (element) {
+                            _this.estadoProductoLista.forEach(function (estadoPro) {
+                                if (estadoPro.id == element.val().idEstadoProducto) {
+                                    _this.objPesajeConfirmado = ({
+                                        nombreEstadoQueso: estadoPro.descripcion,
+                                        cantidadEstado: element.val().cantidadEstado,
+                                        codigoLote: element.val().codigoLote,
+                                        costoKilo: element.val().costoKilo,
+                                        costoTotalEstado: element.val().costoTotalEstado,
+                                        id: element.val().id,
+                                        idEstadoProducto: element.val().idEstadoProducto,
+                                        idPesajeCompra: element.val().idPesajeCompra
                                     });
-                                });
-                            }
-                            return _this.pesajeConfirmadoLista, _this.sumapesoConfirmado;
+                                    _this.pesajeConfirmadoLista.push(_this.objPesajeConfirmado);
+                                    _this.objPesajeConfirmado = null;
+                                    _this.sumapesoConfirmado = (_this.sumapesoConfirmado + parseInt(element.val().cantidadEstado));
+                                    _this.saldoPesoConfirmado = (_this.saldoPesoConfirmado + parseInt(element.val().costoTotalEstado));
+                                }
+                            });
                         });
-                        return [2 /*return*/];
-                }
+                    }
+                    return _this.pesajeConfirmadoLista, _this.sumapesoConfirmado;
+                });
+                return [2 /*return*/];
             });
         });
     };
-    FBservicesService.prototype.deletePesajeConfirmado = function (idProveedor, idPesajeCompra, idPesajeConfirmado, valor) {
+    FBservicesService.prototype.deletePesajeConfirmado = function (idProveedor, idPesajeCompra, idPesajeConfirmado, valor, lote) {
         var ordenLotes = this.listaOrdenLotes();
-        this.lastLote = [];
-        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
-        this.updateCostoCompra(idProveedor, idPesajeCompra, valor, "resta");
-        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), valor, "resta");
+        this.updateCostoCompra(idProveedor, idPesajeCompra, valor, "resta", lote);
+        this.updateBalanceLoteCompra(idProveedor, lote, valor, "resta");
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + idPesajeConfirmado)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + idPesajeConfirmado)
             .remove();
         this.toastOperacionExitosa();
     };
@@ -1568,14 +1542,12 @@ var FBservicesService = /** @class */ (function () {
     };
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
     //Metodo para traer todos los funcionarios
-    FBservicesService.prototype.getInfoCompra = function (idProveedor, idCompra) {
+    FBservicesService.prototype.getInfoCompra = function (idProveedor, idCompra, lote) {
         var _this = this;
         this.infoCompraUnica = [];
-        this.lastLote = [];
-        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idCompra)
             .on("value", function (snapshot) {
             _this.infoCompraUnica = [];
             if (snapshot.val().estado == 1) {
@@ -1583,7 +1555,7 @@ var FBservicesService = /** @class */ (function () {
             }
             return _this.infoCompraUnica;
         });
-        this.getPesajeConfirmado(idProveedor, idCompra);
+        this.getPesajeConfirmado(idProveedor, idCompra, lote);
     };
     FBservicesService.prototype.getPesajeLoteProveedor = function (idProveedor, lote) {
         var _this = this;
