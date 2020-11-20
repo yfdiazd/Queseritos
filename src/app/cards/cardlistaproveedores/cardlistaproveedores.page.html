@@ -12,18 +12,21 @@
 <ion-content>
   <div class="content">
     <div class="totales">
-      <label class="label">Crédito</label>
-      <label class="valor">{{FB.credito | currency:'USD':true: '2.0-0'}}</label>
-      <label class="label">Débito</label>
-      <label class="valor">{{FB.debito | currency:'USD':true: '2.0-0'}}</label>
-      <label class="label">Saldo</label>
-      <label class="valor">{{(FB.debito - FB.credito) | currency:'USD':true: '2.0-0'}}</label>
+      <div class="div__totales">
+        <label class="label">Crédito</label>
+        <label class="valorC">{{FB.credito | currency:'USD':true: '2.0-0'}}</label>
+        <label class="label">Débito</label>
+        <label class="valorD">{{FB.debito | currency:'USD':true: '2.0-0'}}</label>
+        <label class="label">Saldo</label>
+        <label class="valorS">{{(FB.debito - FB.credito) | currency:'USD':true: '2.0-0'}}</label>
+      </div>
+      <ion-searchbar class="search" placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
     </div>
     <div class="div__lista">
       <ion-list class="lista">
-        <ion-item *ngFor="let input of listanombres1">
-          <ion-icon slot="start" name="chevron-forward"></ion-icon>
-          <ion-label class="lista" (click)="irCardLote(input)">{{input}}</ion-label>
+        <ion-item class="item" *ngFor="let input of listanombres1">
+          <ion-icon class="icon" slot="start" name="chevron-forward"></ion-icon>
+          <ion-label class="label" (click)="irCardLote(input)">{{input}}</ion-label>
           <ion-reorder slot="end"></ion-reorder>
         </ion-item>
       </ion-list>
@@ -31,3 +34,25 @@
   </div>
 
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-tabs class="">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="irInicio()">
+          <ion-icon name="home"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irCompras()">
+          <ion-icon name="cart"></ion-icon>
+          <ion-label>Compras</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irEstado()">
+          <ion-icon name="podium"></ion-icon>
+          <ion-label>Estado</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+</ion-footer>

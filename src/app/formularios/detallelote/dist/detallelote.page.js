@@ -47,7 +47,7 @@ var core_1 = require("@angular/core");
 var homepesajes_page_1 = require("src/app/home/homepesajes/homepesajes.page");
 var crearcompra_page_1 = require("../crearcompra/crearcompra.page");
 var creartrueque_page_1 = require("../creartrueque/creartrueque.page");
-var vistaimg_page_1 = require("./vistaimg/vistaimg.page");
+var vistaimg_page_1 = require("../vistaimg/vistaimg.page");
 var DetallelotePage = /** @class */ (function () {
     function DetallelotePage(route, FB, modalController, alertController, navCtrl) {
         this.route = route;

@@ -7,7 +7,7 @@ import { HomepesajesPage } from 'src/app/home/homepesajes/homepesajes.page';
 import { CrearcompraPage } from '../crearcompra/crearcompra.page';
 
 import { CreartruequePage } from '../creartrueque/creartrueque.page';
-import { VistaimgPage } from './vistaimg/vistaimg.page';
+import { VistaimgPage } from '../vistaimg/vistaimg.page';
 
 @Component({
   selector: 'app-detallelote',

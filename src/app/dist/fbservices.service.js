@@ -629,6 +629,12 @@ var FBservicesService = /** @class */ (function () {
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
             this.idCiudad = this.idGenerator();
+            firebase.firestore().collection("usuario/configuracion/ciudad").doc(this.idCiudad).set({
+                id: this.idCiudad,
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad,
+                estado: 1
+            });
             firebase
                 .database()
                 .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
@@ -1682,7 +1688,7 @@ var FBservicesService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.agregarEstadoProveedor(idProveedor, valor);
                 this.getObjProveedor(idProveedor);
-                this.eliminarNodoProveedor(idProveedor);
+                this.agregarHistorico(idProveedor, this.objMoverHistorico);
                 return [2 /*return*/];
             });
         });
@@ -1703,10 +1709,39 @@ var FBservicesService = /** @class */ (function () {
                         objHistorico: snapshot.val()
                     });
                     _this.moverHistoricoLista.push(_this.objMoverHistorico);
-                    _this.agregarHistorico(idProveedor, _this.objMoverHistorico);
                 });
-                this.agregarHistorico(idProveedor, this.objMoverHistorico);
                 return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.alertaSaldarLote = function (idProveedor, valorMensaje) {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Saldado correctamente',
+                            message: 'El proximo lote inicia con $' + valorMensaje,
+                            buttons: [
+                                {
+                                    text: 'Aceptar',
+                                    handler: function () {
+                                        _this.saldarDeudasProveedor(idProveedor, valorMensaje);
+                                        _this.eliminarNodoProveedor(idProveedor);
+                                        // this.navCtrl.navigateBack(["cardlistaproveedores"]);
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -1764,10 +1799,18 @@ var FBservicesService = /** @class */ (function () {
             .ref("usuario/compras/" + idProveedor)
             .remove();
     };
-    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
+    FBservicesService.prototype.agregarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen) {
+        var img;
         var nodo = fechaEnvio.split("-", 3);
         var fechaNodo = (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, this.idVenta, img);
+        }
+        else {
+            img = "No se adjunto imagen.";
+        }
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
@@ -1781,11 +1824,23 @@ var FBservicesService = /** @class */ (function () {
             pesadas: listaPesada,
             pesoEnviado: pesoEnviado,
             pesoLimite: pesoLimite,
-            placa: placa
+            placa: placa,
+            imagen: img
         });
         this.toastOperacionExitosa();
     };
-    FBservicesService.prototype.updateVenta = function () {
+    FBservicesService.prototype.getFotoVenta = function (idCliente, idVenta) {
+        var _this = this;
+        this.img = null;
+        firebase
+            .storage()
+            .ref("ventas/" + idCliente + "/" + idVenta).getDownloadURL().then(function (imgUr) {
+            _this.img = imgUr;
+            return _this.img;
+        });
+    };
+    FBservicesService.prototype.deleteImageVenta = function (idCliente, idVenta) {
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta)["delete"]();
     };
     FBservicesService.prototype.upLoadImageVenta = function (idCliente, idVenta, file) {
         firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).put(file.target.files[0]);
@@ -1868,44 +1923,17 @@ var FBservicesService = /** @class */ (function () {
         });
     };
     FBservicesService.prototype.eliminarVenta = function (idCliente, fechaNodo, idVenta) {
+        this.deleteImageVenta(idCliente, idVenta);
+        var nodo = fechaNodo.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .remove();
     };
     FBservicesService.prototype.eliminarPesada = function (idCliente, fechaNodo, idVenta, idPesada) {
-        firebase
-            .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
-            .on("value", function (snapshot) {
-            snapshot.val().pesada.forEach(function (element) {
-            });
-        });
-    };
-    FBservicesService.prototype.updatecostoVenta = function (idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
-        return __awaiter(this, void 0, void 0, function () {
-            var nodo, nodoEnv, a;
-            return __generator(this, function (_a) {
-                nodo = fechaNodo.split("-", 3);
-                nodoEnv = (nodo[0] + "-" + nodo[1]);
-                console.log("fecha:", nodoEnv);
-                a = (pesoPesada * valorPesada);
-                a = (a + costoAnterior);
-                firebase
-                    .database()
-                    .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
-                    .update({
-                    costoVenta: a
-                });
-                return [2 /*return*/];
-            });
-        });
-    };
-    FBservicesService.prototype.updatePesadas = function (idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
         var nodo = fechaNodo.split("-", 3);
         var nodoEnv = (nodo[0] + "-" + nodo[1]);
-        var a = (pesoPesada * valorPesada);
-        console.log("fecha update:", nodoEnv);
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
@@ -1917,13 +1945,124 @@ var FBservicesService = /** @class */ (function () {
                 if (element.val().id == idPesada && element.val().valor == 0) {
                     console.log("ingresamos");
                     firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
-                        .update({
-                        valor: valorPesada,
-                        valorTotal: a
-                    });
+                        .remove();
                 }
             });
         });
+    };
+    FBservicesService.prototype.actualizarVenta = function (idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen, costoVenta, idVenta) {
+        var nodo = fechaEnvio.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
+        var img;
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, idVenta, img);
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa,
+                imagen: img
+            });
+        }
+        else {
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                idCliente: idCliente,
+                ciudad: ciudad,
+                conductor: conductor,
+                costoVenta: costoVenta,
+                fechaEnvio: fechaEnvio,
+                pesadas: listaPesada,
+                pesoEnviado: pesoEnviado,
+                pesoLimite: pesoLimite,
+                placa: placa
+            });
+        }
+    };
+    FBservicesService.prototype.updatecostoVenta = function (idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, data, flag) {
+        return __awaiter(this, void 0, void 0, function () {
+            var nodo, nodoEnv, a, resta, a;
+            return __generator(this, function (_a) {
+                console.log("que es flaaaaaaaaaaaf ", flag);
+                nodo = fechaNodo.split("-", 3);
+                nodoEnv = (nodo[0] + "-" + nodo[1]);
+                if (flag == true) {
+                    a = (pesoPesada * valorPesada);
+                    a = (a + costoAnterior);
+                    firebase
+                        .database()
+                        .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                        .update({
+                        costoVenta: a
+                    });
+                }
+                else if (flag == false) {
+                    console.log("flag es aqui flase");
+                    console.log("la operacion ", costoAnterior, data, "eso se opera ", (costoAnterior - data));
+                    resta = (costoAnterior - data);
+                    console.log("la resta es ", resta);
+                    a = (pesoPesada * valorPesada);
+                    console.log("la nueva de a ", pesoPesada, valorPesada, "eso se opera ", (pesoPesada * valorPesada));
+                    console.log("la ultima operacione es ", a, resta, "los operadoeasdawed asdfa sda", (a + resta));
+                    a = (a + resta);
+                    console.log("esto es true aaaaaaaaaaaaa ", a);
+                    firebase
+                        .database()
+                        .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                        .update({
+                        costoVenta: a
+                    });
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
+    FBservicesService.prototype.updatePesadas = function (idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        this.getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada);
+        console.log("eso es el kyyyyyyyyyyyyyyyyyyy ", this.keyPesadaUpdate);
+        var nodo = fechaNodo.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
+        var a = (pesoPesada * valorPesada);
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + this.keyPesadaUpdate)
+            .update({
+            valor: valorPesada,
+            valorTotal: a
+        });
+    };
+    FBservicesService.prototype.getKeyPesada = function (idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        var _this = this;
+        this.keyPesadaUpdate = 0;
+        var nodo = fechaNodo.split("-", 3);
+        var nodoEnv = (nodo[0] + "-" + nodo[1]);
+        var a = (pesoPesada * valorPesada);
+        console.log("fecha update:", nodoEnv);
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", function (snapshot) {
+            _this.keyPesadaUpdate = 0;
+            console.log(" pesadasdsdasdasdasda ", snapshot.val());
+            snapshot.forEach(function (element) {
+                console.log("id bultos de pesadas ", element.val().id);
+                if (element.val().id == idPesada) {
+                    _this.keyPesadaUpdate = element.key;
+                    console.log("KEY bultos de pesadas ", element.key);
+                    console.log("ingresamos");
+                }
+            });
+        });
+        return this.keyPesadaUpdate;
     };
     FBservicesService.prototype.getTodo = function () {
         return __awaiter(this, void 0, void 0, function () {

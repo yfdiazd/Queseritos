@@ -85,6 +85,16 @@ ion-content .div-secundario .slider .item .div-card .card .div_info {
   padding: 15px;
   border-bottom: #1a1446 solid 1px;
 }
+ion-content .div-secundario .slider .item .div-card .card .div_info .verImg {
+  display: inline-block;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  z-index: 40;
+  font-size: 40px;
+}
 ion-content .div-secundario .slider .item .div-card .card .div_info .badge {
   position: absolute;
   top: 0;

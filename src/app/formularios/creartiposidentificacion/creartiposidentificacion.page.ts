@@ -31,14 +31,14 @@ export class CreartiposidentificacionPage implements OnInit {
       if (this.codigoEdit == "" || this.descripcionEdit == "") {
         this.toastCamposRequeridos();
       } else {
-        this.FB.agregarTipoIdentificacion(this.codigoEdit, this.descripcionEdit);
+        this.FB.agregarTipoIdentificacion(this.codigoEdit.toUpperCase(), this.descripcionEdit);
         this.modalCtrl.dismiss();
 
       }
 
     } else {
 
-      this.FB.updateTipoIdentificacion(this.id, this.codigoEdit, this.descripcionEdit);
+      this.FB.updateTipoIdentificacion(this.id, this.codigoEdit.toUpperCase(), this.descripcionEdit);
 
       this.modalCtrl.dismiss();
 

@@ -46,6 +46,7 @@ exports.CrearenvioclientePage = void 0;
 var core_1 = require("@angular/core");
 var crearventa_page_1 = require("../crearventa/crearventa.page");
 var CrearenvioclientePage = /** @class */ (function () {
+    // pesadas: any[] = [];
     function CrearenvioclientePage(FB, modalCtrl, alertController, toastController, route, navCtrl) {
         var _this = this;
         this.FB = FB;
@@ -58,13 +59,11 @@ var CrearenvioclientePage = /** @class */ (function () {
         this.nuevoRegistro = [];
         this.listaPesada = [];
         this.pesadaObj = null;
-        this.fecha = "2020-10-01";
         //variables alejo
-        this.pesoAcumulado = 0;
+        // pesoAcumulado = 0;
         this.input_limite = false;
         this.nombreArchLoaded = "Subir archivo";
         this.toggle = false;
-        this.pesadas = [];
         this.customAlertOptions = {
             header: "Seleccione",
             translucent: true,
@@ -89,14 +88,12 @@ var CrearenvioclientePage = /** @class */ (function () {
         };
     }
     CrearenvioclientePage.prototype.ngOnInit = function () {
-        var id = this.route.snapshot.paramMap.get("id");
-        console.log("se recibe id solito", id);
-        this.idcliente = id;
         this.agregarPesoLimite();
         this.validacion();
+        this.contarPeso();
     };
     CrearenvioclientePage.prototype.volver = function () {
-        this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
+        this.modalCtrl.dismiss();
     };
     CrearenvioclientePage.prototype.agregarPesoLimite = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -255,21 +252,45 @@ var CrearenvioclientePage = /** @class */ (function () {
         console.log("Total peso de los bultos: " + this.contadorPeso);
     };
     CrearenvioclientePage.prototype.guardar = function () {
-        var pesadaGuardar = [];
-        var i = 1;
-        this.pesadas.forEach(function (element) {
-            pesadaGuardar.push({
-                estadoQueso: element.estadoQueso,
-                peso: element.peso,
-                tipoQueso: element.tipoQueso,
-                valor: 0,
-                valorTotal: 0,
-                id: i++
+        if (this.editar == "true") {
+            var pesadaGuardar_1 = [];
+            var i_1 = 1;
+            var sumaCostoVenta_1 = 0;
+            this.pesadas.forEach(function (element) {
+                pesadaGuardar_1.push({
+                    estadoQueso: element.estadoQueso,
+                    peso: element.peso,
+                    tipoQueso: element.tipoQueso,
+                    valor: element.valor,
+                    valorTotal: element.valorTotal,
+                    id: i_1++
+                });
+                console.log("lista recorrida", pesadaGuardar_1);
+                pesadaGuardar_1.forEach(function (sumar) {
+                    sumaCostoVenta_1 += sumar.valorTotal;
+                });
             });
-            console.log("lista recorrida", pesadaGuardar);
-        });
-        this.FB.agregarVenta(this.idcliente, this.codigociudadEdit, this.idconductor, this.fecha, pesadaGuardar, this.contadorPeso, this.pesoLimite, this.placaEdit.toUpperCase());
-        this.navCtrl.navigateBack(['cardventas/', this.idcliente]);
+            console.log("data de card", pesadaGuardar_1, " y ", sumaCostoVenta_1, "data", this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_1, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta_1, this.data.id);
+            this.FB.actualizarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_1, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta, sumaCostoVenta_1, this.data.id);
+            this.modalCtrl.dismiss("true", "actualizar");
+        }
+        else {
+            var pesadaGuardar_2 = [];
+            var i_2 = 1;
+            this.pesadas.forEach(function (element) {
+                pesadaGuardar_2.push({
+                    estadoQueso: element.estadoQueso,
+                    peso: element.peso,
+                    tipoQueso: element.tipoQueso,
+                    valor: 0,
+                    valorTotal: 0,
+                    id: i_2++
+                });
+                console.log("lista recorrida", pesadaGuardar_2);
+            });
+            this.FB.agregarVenta(this.idCliente, this.ciudad, this.conductor, this.fecha, pesadaGuardar_2, this.contadorPeso, this.pesoLimite, this.placa.toUpperCase(), this.imagenVenta);
+            this.modalCtrl.dismiss("true", "actualizar");
+        }
     };
     CrearenvioclientePage.prototype.agregar = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -323,11 +344,12 @@ var CrearenvioclientePage = /** @class */ (function () {
         return this.pesoAcumulado;
     };
     CrearenvioclientePage.prototype.validacion = function () {
-        if (this.pesadas.length > 0) {
-            this.btn_guardar = true;
-        }
-        else {
+        if (this.pesadas == undefined) {
+            console.log("viene  a crear el compae");
             this.btn_guardar = false;
+        }
+        else if (this.pesadas.length > 0) {
+            this.btn_guardar = true;
         }
     };
     CrearenvioclientePage.prototype.validarPesos = function () {
@@ -338,6 +360,43 @@ var CrearenvioclientePage = /** @class */ (function () {
             document.getElementById("pesoAcumulado").style.color = "lime";
         }
     };
+    CrearenvioclientePage.prototype.subirImg = function (event) {
+        this.imagenVenta = event;
+        console.log("la imagen en la variable es ", this.imagenVenta);
+    };
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "editar");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "data");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "pesoLimite");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "pesoAcumulado");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "codigociudadEdit");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "fecha");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "conductor");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "ciudad");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "idCliente");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "placa");
+    __decorate([
+        core_1.Input()
+    ], CrearenvioclientePage.prototype, "pesadas");
     CrearenvioclientePage = __decorate([
         core_1.Component({
             selector: 'app-crearenviocliente',

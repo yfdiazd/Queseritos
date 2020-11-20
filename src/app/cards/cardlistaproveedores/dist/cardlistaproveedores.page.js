@@ -58,12 +58,19 @@ var CardlistaproveedoresPage = /** @class */ (function () {
         this.credito = 0;
         this.debito = 0;
         this.saldo = 0;
-    }
-    CardlistaproveedoresPage.prototype.ngOnInit = function () {
+        this.validarTotales();
         this.FB.getProveedoresCompra();
         this.listarproveedores();
         this.listadoproveedores();
         this.FB.getTodo();
+    }
+    CardlistaproveedoresPage.prototype.ngOnInit = function () {
+        console.log("Entro al ngOnInit de Cardlistaproveedores");
+        this.FB.getProveedoresCompra();
+        this.listarproveedores();
+        this.listadoproveedores();
+        this.FB.getTodo();
+        this.validarTotales();
         console.log("totales:", this.FB.credito, this.FB.debito, this.FB.saldo);
         this.credito = this.FB.credito;
         this.debito = this.FB.debito;
@@ -142,7 +149,7 @@ var CardlistaproveedoresPage = /** @class */ (function () {
                         console.log("Esto me envia el proveedor seleccionado", idProveedor);
                         return [4 /*yield*/, this.alertController.create({
                                 cssClass: 'my-custom-class',
-                                header: 'Confirm!',
+                                header: 'Alerta!',
                                 keyboardClose: false,
                                 backdropDismiss: false,
                                 message: 'El proveedor no tiene asociado lote de compra, ¿Desea crearle un anticipo?',
@@ -190,6 +197,31 @@ var CardlistaproveedoresPage = /** @class */ (function () {
                 return this.listadoproveedores();
             }
         }
+    };
+    CardlistaproveedoresPage.prototype.validarTotales = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var credito;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.FB.getTodo()];
+                    case 1:
+                        credito = _a.sent();
+                        console.log("Credito", this.credito);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CardlistaproveedoresPage.prototype.irInicio = function () {
+        this.navCtrl.navigateBack(["main-menu"]);
+    };
+    CardlistaproveedoresPage.prototype.irCompras = function () {
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+        this.navCtrl.navigateBack(["cardcompras"]);
+    };
+    CardlistaproveedoresPage.prototype.irEstado = function () {
+        this.navCtrl.navigateBack(["cardlistaproveedores"]);
     };
     CardlistaproveedoresPage = __decorate([
         core_1.Component({

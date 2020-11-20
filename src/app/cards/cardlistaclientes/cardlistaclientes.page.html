@@ -1,4 +1,3 @@
-<ion-router-outlet main> </ion-router-outlet>
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -6,19 +5,41 @@
     </ion-buttons>
     <ion-title class="titulo">CLIENTES</ion-title>
   </ion-toolbar>
-  <ion-searchbar placeholder="Buscar cliente" (ionChange)="getItems($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>
   <div class="content">
+    <ion-searchbar class="search" placeholder="Buscar cliente" (ionChange)="getItems($event)"></ion-searchbar>
 
     <ion-list class="lista">
-      <ion-item (click)="irCardListaClientes(input)" *ngFor="let input of listanombres">
-        <ion-icon slot="start" name="chevron-forward"></ion-icon>
-        <ion-label class="lista">{{input}}</ion-label>
+      <ion-item class="item" (click)="irCardListaClientes(input)" *ngFor="let input of listanombres">
+        <ion-icon class="icon" slot="start" name="chevron-forward"></ion-icon>
+        <ion-label class="label">{{input}}</ion-label>
         <ion-reorder slot="end"></ion-reorder>
       </ion-item>
     </ion-list>
 
   </div>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-tabs class="">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="irInicio()">
+          <ion-icon name="home"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irCompras()">
+          <ion-icon name="cart"></ion-icon>
+          <ion-label>Compras</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="irEstado()">
+          <ion-icon name="podium"></ion-icon>
+          <ion-label>Estado</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+</ion-footer>

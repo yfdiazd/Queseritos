@@ -13,35 +13,25 @@
 
 <ion-content>
   <div class="contenido">
-    <ion-row class="row1">
-      <div class="col1">
-        <ion-card class="card1" (click)="comprar()">
-          <!-- [href]="'/cardcompras'" routerDirection="forward" --- OR -----  (click)="comprar()"-->
-          <div class="div-label-compras" >
-            <p class="label">COMPRAR</p>
-            <img src="../../assets/img/cart.png.png">
-          </div>
-        </ion-card>
-      </div>
-      <div class="col2">
-        <ion-card class="card2">
-          <div class="div-label-ventas" (click)="irCardListaClientes()">
-            <p class="label">VENDER</p>
-            <img src="../../assets/img/cartLleno.png">
-          </div>
-        </ion-card>
-      </div>
-    </ion-row>
-    <ion-row class="row2">
-      <div class="col3">
-        <ion-card class="card3" (click)="irCardListaProveedores()">
-          <div class="div-label-prov">
-            <p class="label">ESTADO</p>
-            <img src="../../assets/img/prov.png">
-          </div>
-        </ion-card>
-      </div>
-    </ion-row>
+    <div class="div-compras">
+      <ion-card class="card1" (click)="comprar()">
+        <!-- [href]="'/cardcompras'" routerDirection="forward" --- OR -----  (click)="comprar()"-->
+        <img class="img" src="../../assets/img/cartBlack.png">
+        <label class="label">COMPRAR</label>
+      </ion-card>
+    </div>
+    <div class="div-ventas">
+      <ion-card class="card2" (click)="irCardListaClientes()">
+        <img class="img" src="../../assets/img/cartLleno.png">
+        <label class="label">VENDER</label>
+      </ion-card>
+    </div>
+    <div class="div-estado">
+      <ion-card class="card3" (click)="irCardListaProveedores()">
+        <label class="label">ESTADO</label>
+        <img class="img" src="../../assets/img/estado.png">
+      </ion-card>
+    </div>
   </div>
 </ion-content>
 <ion-menu side="start" type="push" menuId="first" contentId="first">

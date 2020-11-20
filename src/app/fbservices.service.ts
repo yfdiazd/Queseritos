@@ -94,12 +94,14 @@ export class FBservicesService {
     fecha: Date;
 
     config = {
-        apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
-        authDomain: "queseritos.firebaseapp.com",
-        databaseURL: "https://queseritos.firebaseio.com",
-        projectId: "queseritos",
-        storageBucket: "queseritos.appspot.com",
-        messagingSenderId: "589566808528"
+        apiKey: "AIzaSyCRkC_GFC_m-OXhB43EcsOtbUrHF8oTUQk",
+        authDomain: "pruebasqueseritos.firebaseapp.com",
+        databaseURL: "https://pruebasqueseritos.firebaseio.com",
+        projectId: "pruebasqueseritos",
+        storageBucket: "pruebasqueseritos.appspot.com",
+        messagingSenderId: "69745233361",
+
+
     };
 
     constructor(
@@ -123,20 +125,19 @@ export class FBservicesService {
 
 
     //offline
+    onlineFlag: string = "";
     offLine() {
-
-        firebase.firestore().enablePersistence()
-            .catch(function (err) {
-                if (err.code == 'failed-precondition') {
-                    // Multiple tabs open, persistence can only be enabled
-                    // in one tab at a a time.
-                    // ...
-                } else if (err.code == 'unimplemented') {
-                    // The current browser does not support all of the
-                    // features required to enable persistence
-                    // ...
-                }
-            });
+        let ff
+        firebase.database().ref(".info/connected").on("value", function (snap) {
+            if (snap.val() === true) {
+                ff = "true";
+                alert("connected");
+            } else {
+                alert("No se pudo conectar a la red");
+                ff = "false";
+            }
+        });
+        return ff;
     }
 
     // todos los mentodos que tienen que ver solo con el usuario
@@ -211,30 +212,20 @@ export class FBservicesService {
             });
     }
     verificarsesion() {
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
 
-                // this.navCtrl.navigateForward("main-menu");
-                this.router.navigate(["main-menu"]);
-                // this.mostrarNombre();
-                this.getCiudades();
-                this.getEstadoProducto();
-                this.getProductos();
-                this.getTipoAnticipos();
-                this.getTiposIdentificacion();
-                this.getProveedores();
-                this.getClientes();
-                this.getConductor();
-                this.listaOrdenLotes();
+        // this.navCtrl.navigateForward("main-menu");
+        this.router.navigate(["main-menu"]);
+        // this.mostrarNombre();
+        this.getCiudades();
+        this.getEstadoProducto();
+        this.getProductos();
+        this.getTipoAnticipos();
+        this.getTiposIdentificacion();
+        this.getProveedores();
+        this.getClientes();
+        this.getConductor();
+        this.listaOrdenLotes();
 
-
-
-            } else {
-
-                this.navCtrl.navigateBack(["login"]);
-            }
-        });
-        return this.usuarioUid;
     }
 
     // TODOS LOS TOAS o mensajes emergentes
@@ -547,11 +538,19 @@ export class FBservicesService {
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
 
+
         this.pathPush = "";
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
-
             this.idCiudad = this.idGenerator();
+
+            firebase.firestore().collection("usuario/configuracion/ciudad").doc(this.idCiudad).set({
+                id: this.idCiudad,
+                codigo: codigoCiudad,
+                descripcion: describcionCiudad,
+                estado: 1
+            })
+
             firebase
                 .database()
                 .ref("usuario/configuracion" + "/ciudad/" + this.idCiudad)
@@ -1642,7 +1641,8 @@ export class FBservicesService {
     async saldarDeudasProveedor(idProveedor, valor) {
         this.agregarEstadoProveedor(idProveedor, valor);
         this.getObjProveedor(idProveedor);
-        this.eliminarNodoProveedor(idProveedor);
+        this.agregarHistorico(idProveedor, this.objMoverHistorico);
+        // this.eliminarNodoProveedor(idProveedor);
     }
 
     async getObjProveedor(idProveedor) {
@@ -1660,11 +1660,25 @@ export class FBservicesService {
                 });
 
                 this.moverHistoricoLista.push(this.objMoverHistorico);
-                this.agregarHistorico(idProveedor, this.objMoverHistorico);
             });
-        this.agregarHistorico(idProveedor, this.objMoverHistorico);
-
-
+    }
+    async alertaSaldarLote(idProveedor, valorMensaje) {
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: 'Saldado correctamente',
+            message: 'El proximo lote inicia con $' + valorMensaje,
+            buttons: [
+                {
+                    text: 'Aceptar',
+                    handler: () => {
+                        this.saldarDeudasProveedor(idProveedor, valorMensaje);
+                        this.eliminarNodoProveedor(idProveedor);
+                        // this.navCtrl.navigateBack(["cardlistaproveedores"]);
+                    }
+                }
+            ]
+        });
+        await alert.present();
     }
     async agregarHistorico(idProveedor, objeto) {
 
@@ -1711,13 +1725,20 @@ export class FBservicesService {
             .remove();
 
     }
-    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa) {
-
+    agregarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen) {
+        let img;
         let nodo = fechaEnvio.split("-", 3);
-
-
         let fechaNodo = (nodo[0] + "-" + nodo[1]);
         this.idVenta = this.idGenerator();
+
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, this.idVenta, img);
+        } else {
+            img = "No se adjunto imagen.";
+        }
+
+
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + this.idVenta)
@@ -1731,12 +1752,24 @@ export class FBservicesService {
                 pesadas: listaPesada,
                 pesoEnviado: pesoEnviado,
                 pesoLimite: pesoLimite,
-                placa: placa
+                placa: placa,
+                imagen: img
             });
         this.toastOperacionExitosa();
     }
-    updateVenta() {
 
+    getFotoVenta(idCliente, idVenta) {
+        this.img = null;
+        firebase
+            .storage()
+            .ref("ventas/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
+                this.img = imgUr;
+
+                return this.img;
+            });
+    }
+    deleteImageVenta(idCliente, idVenta) {
+        firebase.storage().ref("ventas/" + idCliente + "/" + idVenta).delete();
     }
     upLoadImageVenta(idCliente, idVenta, file) {
 
@@ -1831,44 +1864,18 @@ export class FBservicesService {
     }
 
     eliminarVenta(idCliente, fechaNodo, idVenta) {
+        this.deleteImageVenta(idCliente, idVenta);
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
         firebase
             .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .remove();
     }
 
     eliminarPesada(idCliente, fechaNodo, idVenta, idPesada) {
-        firebase
-            .database()
-            .ref("usuario/ventas/" + idCliente + "/" + fechaNodo + "/" + idVenta)
-            .on("value", snapshot => {
-                snapshot.val().pesada.forEach(element => {
-
-                });
-            });
-    }
-    ventaCos: number;
-
-    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior) {
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
-        console.log("fecha:", nodoEnv);
-        let a = (pesoPesada * valorPesada);
-        a = (a + costoAnterior)
-
-        firebase
-            .database()
-            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
-            .update({
-                costoVenta: a
-            });
-    }
-
-    updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
-        let nodo = fechaNodo.split("-", 3);
-        let nodoEnv = (nodo[0] + "-" + nodo[1]);
-        let a = (pesoPesada * valorPesada);
-        console.log("fecha update:", nodoEnv);
         firebase
             .database()
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
@@ -1881,15 +1888,136 @@ export class FBservicesService {
 
                         console.log("ingresamos");
                         firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.key)
-                            .update({
-                                valor: valorPesada,
-                                valorTotal: a
-                            })
+                            .remove();
                     }
                 });
 
             });
+    }
+    actualizarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen, costoVenta, idVenta) {
 
+
+        let nodo = fechaEnvio.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        let img;
+        if (imagen !== undefined) {
+            img = imagen;
+            this.upLoadImageVenta(idCliente, idVenta, img);
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    idCliente: idCliente,
+                    ciudad: ciudad,
+                    conductor: conductor,
+                    costoVenta: costoVenta,
+                    fechaEnvio: fechaEnvio,
+                    pesadas: listaPesada,
+                    pesoEnviado: pesoEnviado,
+                    pesoLimite: pesoLimite,
+                    placa: placa,
+                    imagen: img
+                })
+
+        } else {
+
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    idCliente: idCliente,
+                    ciudad: ciudad,
+                    conductor: conductor,
+                    costoVenta: costoVenta,
+                    fechaEnvio: fechaEnvio,
+                    pesadas: listaPesada,
+                    pesoEnviado: pesoEnviado,
+                    pesoLimite: pesoLimite,
+                    placa: placa,
+
+                })
+        }
+
+    }
+
+    ventaCos: number;
+    async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, data, flag) {
+        console.log("que es flaaaaaaaaaaaf ", flag);
+
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        if (flag == true) {
+            let a = (pesoPesada * valorPesada);
+            a = (a + costoAnterior)
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    costoVenta: a
+                });
+
+        } else if (flag == false) {
+            console.log("flag es aqui flase");
+            console.log("la operacion ", costoAnterior, data, "eso se opera ", (costoAnterior - data))
+            let resta = (costoAnterior - data);
+            console.log("la resta es ", resta);
+            let a = (pesoPesada * valorPesada);
+            console.log("la nueva de a ", pesoPesada, valorPesada, "eso se opera ", (pesoPesada * valorPesada))
+            console.log("la ultima operacione es ", a, resta, "los operadoeasdawed asdfa sda", (a + resta));
+            a = (a + resta)
+            console.log("esto es true aaaaaaaaaaaaa ", a);
+
+            firebase
+                .database()
+                .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
+                .update({
+                    costoVenta: a
+                });
+
+        }
+
+    }
+
+    updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        this.getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada)
+        console.log("eso es el kyyyyyyyyyyyyyyyyyyy ", this.keyPesadaUpdate);
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        let a = (pesoPesada * valorPesada);
+
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + this.keyPesadaUpdate)
+            .update({
+                valor: valorPesada,
+                valorTotal: a
+            });
+
+
+    }
+    keyPesadaUpdate: any;
+    getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
+        this.keyPesadaUpdate = 0;
+        let nodo = fechaNodo.split("-", 3);
+        let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        let a = (pesoPesada * valorPesada);
+        console.log("fecha update:", nodoEnv);
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", snapshot => {
+                this.keyPesadaUpdate = 0;
+                console.log(" pesadasdsdasdasdasda ", snapshot.val());
+                snapshot.forEach(element => {
+                    console.log("id bultos de pesadas ", element.val().id);
+                    if (element.val().id == idPesada) {
+                        this.keyPesadaUpdate = element.key;
+                        console.log("KEY bultos de pesadas ", element.key);
+                        console.log("ingresamos");
+
+                    }
+                });
+
+            });
+        return this.keyPesadaUpdate;
 
     }
 

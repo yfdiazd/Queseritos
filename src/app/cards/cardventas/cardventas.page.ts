@@ -1,11 +1,11 @@
-import { Component, Input, NgModule, OnInit } from "@angular/core";
-import { ModalController, NavController, ToastController, LoadingController, PopoverController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
-import { FBservicesService } from "../../fbservices.service";
-import { HomeventasPage } from 'src/app/home/homeventas/homeventas.page';
+import { AlertController, LoadingController, ModalController, NavController, PopoverController } from '@ionic/angular';
 import { AgregarvalorventaPage } from 'src/app/formularios/crearenviocliente/agregarvalorventa/agregarvalorventa.page';
+import { CrearenvioclientePage } from 'src/app/formularios/crearenviocliente/crearenviocliente.page';
+import { VistaimgPage } from 'src/app/formularios/vistaimg/vistaimg.page';
+
+import { FBservicesService } from '../../fbservices.service';
 
 @Component({
   selector: 'app-cardventas',
@@ -33,15 +33,15 @@ export class CardventasPage implements OnInit {
     private FB: FBservicesService,
     private modalController: ModalController,
     private PopoverController: PopoverController,
-    private toastController: ToastController,
+    private alertController: AlertController,
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController
   ) { }
-
+  flag;
   public idcliente: any;
   public loading: any;
-  valueDate;
+  valueDate; 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idcliente = id;
@@ -117,15 +117,28 @@ export class CardventasPage implements OnInit {
         return this.listaFiltrada;
       }
     }
-
-
-
   }
-  irVender(input) {
-    console.log("Se envia este id cliente", this.idcliente);
-    this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
-  }
+  async irVender(input) {
+    // console.log("Se envia este id cliente", this.idcliente);
+    // this.navCtrl.navigateForward(["crearenviocliente/", this.idcliente]);
 
+    const modal = await this.modalController.create({
+      component: CrearenvioclientePage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        idCliente: this.idcliente,
+        pesadas: []
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+
+      this.traerNombre();
+    }
+  }
   recorriendolista() {
     this.FB.ventasclienteListaMes.forEach(element => {
       console.log("elementttttt", element)
@@ -139,30 +152,42 @@ export class CardventasPage implements OnInit {
       }
     });
     return this.nombreCliente;
-    // this.FB.ventasclienteLista.forEach(pesaje => {
-    //   this.FB.productosLista.forEach(producto => {
-    //     if (pesaje.idProducto == producto.id) {
-
-    //       this.listaVentas.push({
-    //         anticipos: pesaje.anticipos,
-    //         bultoLista: pesaje.bultoLista,
-    //         costoTotalCompra: pesaje.costoTotalCompra,
-    //         fechaCompra: pesaje.fechaCompra,
-    //         id: pesaje.id,
-    //         idProducto: pesaje.idProducto,
-    //         idProveedor: pesaje.idProveedor,
-    //         lote: pesaje.lote,
-    //         pesoBultos: pesaje.pesoBultos,
-    //         totalBulto: pesaje.totalBulto,
-    //         nompreProducto: producto.descripcion
-    //       })
-    //     }
-    //   })
-    // })
-
   }
   async agregarValorVenta(lista, card) {
     console.log("lsita:", lista, " y tambien ", card);
+    if (lista.valor == 0) {
+      
+      this.irAgregarValorVenta(lista, card, true);
+    } else {
+      this.alertAgregarValorVenta(lista, card);
+    }
+  }
+  async alertAgregarValorVenta(lista, card) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmación.',
+      message: 'La pesada ya tiene un valor asignado, desea cambiarla?',
+      buttons: [
+        {
+          text: 'NO',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'SI',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.irAgregarValorVenta(lista, card, false);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  async irAgregarValorVenta(lista, card, flag) {
     const popover = await this.PopoverController.create({
       component: AgregarvalorventaPage,
       cssClass: 'popover_style',
@@ -171,7 +196,8 @@ export class CardventasPage implements OnInit {
       backdropDismiss: false,
       componentProps: {
         dataBulto: lista,
-        dataVenta: card
+        dataVenta: card,
+        flag: flag
       },
     });
     await popover.present();
@@ -180,5 +206,98 @@ export class CardventasPage implements OnInit {
       this.traerNombre();
       this.recorriendolista();
     }
+  }
+  async editarRegistro(card) {
+    console.log("card editar: ", card);
+    const modal = await this.modalController.create({
+      component: CrearenvioclientePage,
+      cssClass: 'my-custom-class',
+      keyboardClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        editar: "true",
+        data: card,
+        pesoLimite: card.pesoLimite,
+        pesoAcumulado: card.pesoEnviado,
+        codigociudadEdit: card.ciudad,
+        fecha: card.fechaEnvio,
+        conductor: card.conductor,
+        ciudad: card.ciudad,
+        idCliente: card.idCliente,
+        placa: card.placa,
+        pesadas: card.pesadas
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+
+      this.traerNombre();
+    }
+  }
+  eliminarRegistro(card) {
+    this.alertEliminarRegistro(card);
+  }
+  async alertEliminarRegistro(card) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmación.',
+      message: 'Esta seguro de eliminar la venta?',
+      buttons: [
+        {
+          text: 'NO',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'SI',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.FB.eliminarVenta(card.idCliente, card.fechaEnvio, card.id);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  
+  async verImagen(data) {
+
+    if (data.imagen == "No se adjunto imagen.") {
+      this.alertImg()
+    } else {
+      let foto = await this.FB.getFotoVenta(this.idcliente, data.id);
+      console.log("esto es la foto", foto);
+      const popover = await this.modalController.create({
+        component: VistaimgPage,
+        cssClass: 'img_modal',
+        keyboardClose: false,
+        backdropDismiss: false
+      });
+      return await popover.present();
+    }
+  }
+  async alertImg() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alerta.',
+      message: 'Para esta venta no se adjuntó imagen.',
+      buttons: ['ACEPTAR']
+    });
+
+    await alert.present();
+  }
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 }

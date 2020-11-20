@@ -1,9 +1,8 @@
-<ion-router-outlet main></ion-router-outlet>
 <ion-header>
   <ion-toolbar>
     <ion-title class="titulo">DETALLE VENTAS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
+      <ion-back-button defaultHref="/cardlistaclientes" color="danger"></ion-back-button>
     </ion-buttons>
     <ion-button fill="clear" shape="round" slot="end" (click)="irVender()">
       <ion-icon name="bus" color="success"></ion-icon>
@@ -38,8 +37,11 @@
                   <p><span>Ciudad: </span><span class="ciudad">{{card.ciudad}}</span></p>
                   <p><span>Fecha envio:</span> {{card.fechaEnvio}}</p>
                   <p><span>Peso total:</span> {{card.pesoEnviado}} </p>
-                  <p>Valor T.Venta: {{card.costoVenta  | currency:'USD':true: '2.0-0'}}</p>
+                  <p><span>Valor T.Venta:</span> {{card.costoVenta  | currency:'USD':true: '2.0-0'}}</p>
                 </div>
+                <label class="verImg" (ngModel)="concepto" (click)="verImagen(card)">
+                  <ion-icon name="image-outline" color="tertiary"></ion-icon>
+                </label>
               </div>
               <div class="div_tabla">
                 <ion-list class="lista_item_ventas">
@@ -73,7 +75,7 @@
         </ion-item-options>
         <!-- Opción para editar el registro -->
         <ion-item-options side="start">
-          <ion-item-option color="warning" (click)="alertEditar(lista)">Editar</ion-item-option>
+          <ion-item-option color="warning" (click)="editarRegistro(card)">Editar</ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     </div>

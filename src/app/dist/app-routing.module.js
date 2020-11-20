@@ -26,7 +26,7 @@ var routes = [
     { path: 'crearciudad', loadChildren: function () { return Promise.resolve().then(function () { return require('./formularios/crearciudad/crearciudad.module'); }).then(function (m) { return m.CrearciudadPageModule; }); } },
     { path: 'crearconductor', loadChildren: function () { return Promise.resolve().then(function () { return require('./formularios/crearconductor/crearconductor.module'); }).then(function (m) { return m.CrearconductorPageModule; }); } },
     { path: 'creartrueque', loadChildren: function () { return Promise.resolve().then(function () { return require('./formularios/creartrueque/creartrueque.module'); }).then(function (m) { return m.CreartruequePageModule; }); } },
-    { path: 'crearenviocliente/:id', loadChildren: function () { return Promise.resolve().then(function () { return require('./formularios/crearenviocliente/crearenviocliente.module'); }).then(function (m) { return m.CrearenvioclientePageModule; }); } },
+    { path: 'crearenviocliente', loadChildren: function () { return Promise.resolve().then(function () { return require('./formularios/crearenviocliente/crearenviocliente.module'); }).then(function (m) { return m.CrearenvioclientePageModule; }); } },
     { path: 'cardcompras', loadChildren: function () { return Promise.resolve().then(function () { return require('./cards/cardcompras/cardcompras.module'); }).then(function (m) { return m.CardcomprasPageModule; }); } },
     { path: 'confirmarpesaje', loadChildren: function () { return Promise.resolve().then(function () { return require('./formularios/confirmarpesaje/confirmarpesaje.module'); }).then(function (m) { return m.ConfirmarpesajePageModule; }); } },
     { path: 'cardcompradetallada/:id', loadChildren: function () { return Promise.resolve().then(function () { return require('./cards/cardcompradetallada/cardcompradetallada.module'); }).then(function (m) { return m.CardcompradetalladaPageModule; }); } },
@@ -68,6 +68,10 @@ var routes = [
     {
         path: 'crearventa',
         loadChildren: function () { return Promise.resolve().then(function () { return require('./formularios/crearventa/crearventa.module'); }).then(function (m) { return m.CrearventaPageModule; }); }
+    },
+    {
+        path: 'terminos',
+        loadChildren: function () { return Promise.resolve().then(function () { return require('./login/register/terminos/terminos.module'); }).then(function (m) { return m.TerminosPageModule; }); }
     }
 ];
 var AppRoutingModule = /** @class */ (function () {

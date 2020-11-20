@@ -11,7 +11,7 @@ export class AgregarvalorventaPage implements OnInit {
   valor: number;
   @Input() dataBulto;
   @Input() dataVenta;
-
+  @Input() flag
   constructor(private FB: FBservicesService,
     private alertController: AlertController,
     private popover: PopoverController) { }
@@ -22,9 +22,11 @@ export class AgregarvalorventaPage implements OnInit {
     if (this.valor <= 0 || this.valor == undefined) {
       this.notificacionValorInvalido();
     } else {
+      // console.log("actualizar bultos >>>>>>>>>>>>>>>>>>>>  ", this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
+
       // console.log("Se updateará esto:", this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
       this.FB.updatePesadas(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
-      this.FB.updatecostoVenta(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.peso, this.valor, this.dataVenta.costoVenta);
+      this.FB.updatecostoVenta(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.peso, this.valor, this.dataVenta.costoVenta, this.dataBulto.valorTotal, this.flag);
       this.popover.dismiss("true", "actualizar");
     }
   }

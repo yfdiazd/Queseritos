@@ -13,7 +13,6 @@ export class VistaimgPage implements OnInit {
     private FB: FBservicesService,
     private modalController: ModalController
   ) { }
-
   ngOnInit() {
   }
   volver() {

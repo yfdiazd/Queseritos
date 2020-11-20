@@ -1,9 +1,9 @@
-ion-toolbar {
+ion-header ion-toolbar {
   --background: #1a1446;
 }
-
-ion-title {
+ion-header ion-toolbar ion-title {
   font-size: 20px;
+  color: white;
 }
 
 .titulo {
@@ -21,7 +21,29 @@ ion-content .content {
   max-width: 700px;
   margin: auto;
 }
-
-.lista {
-  --background-activated: red;
+ion-content .content .search {
+  --background: #252525;
+  margin: auto;
+  width: 100%;
+  padding: 0;
+  background-color: transparent;
+  color: white;
+  --icon-color: #ff2f73;
+  --placeholder-color: #white;
+}
+ion-content .content .search input {
+  background: #252525;
+}
+ion-content .content .lista {
+  background-color: transparent;
+}
+ion-content .content .lista .item {
+  margin-bottom: 3px;
+  --background: #252525;
+}
+ion-content .content .lista .item .icon {
+  color: #ff2f73;
+}
+ion-content .content .lista .item .label {
+  color: white;
 }

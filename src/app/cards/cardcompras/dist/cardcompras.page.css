@@ -1,0 +1,261 @@
+ion-header ion-toolbar {
+  --background: #1a1446;
+}
+ion-header ion-toolbar .titulo {
+  color: white;
+}
+
+ion-content {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  --background: #c8f7f3;
+  --color: #1a1446;
+}
+ion-content p {
+  margin: 0;
+  padding: 0;
+}
+ion-content .div_content {
+  width: 100%;
+  height: 100%;
+}
+ion-content .div_content .div-principal {
+  width: 100%;
+  margin: auto;
+  padding: 0;
+  position: fixed;
+  height: 20%;
+  background-color: #15317c;
+  border-bottom-style: solid;
+  border-color: #1a1446;
+  z-index: 20;
+}
+ion-content .div_content .div-principal .div-fila-1 {
+  display: inline-block;
+  position: flex;
+  width: 100%;
+  height: 30%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+ion-content .div_content .div-principal .div-fila-1 p {
+  padding: 0;
+  margin: 0;
+}
+ion-content .div_content .div-principal .div-fila-1 .fila1_p_titulo {
+  display: inline-block;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  margin: auto;
+  font-size: 2.5vmax;
+  color: #fff;
+  font-weight: bold;
+  text-align: end;
+}
+ion-content .div_content .div-principal .div-fila-1 .fila1_p_valor {
+  display: inline-block;
+  position: flex;
+  width: 50%;
+  height: 100%;
+  padding-left: 20px;
+  font-size: 4vh;
+  color: yellow;
+  text-align: start;
+}
+ion-content .div_content .div-principal .div-fila-1 .fila1_p_valor::after {
+  content: "Kg";
+  color: yellow;
+  font-size: 2vh;
+}
+ion-content .div_content .div-principal .div-fila-2 {
+  width: 100%;
+  height: 70%;
+  text-align: center;
+  display: flex;
+}
+ion-content .div_content .div-principal .div-fila-2 .fila2_col1 {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+}
+ion-content .div_content .div-principal .div-fila-2 .fila2_col1 #saldo-credito {
+  color: #c43333;
+  text-shadow: #500707 1px 1px 1px;
+}
+ion-content .div_content .div-principal .div-fila-2 .fila2_col1 #saldo-debito {
+  color: #90ee90;
+  text-shadow: #013303 1px 1px 1px;
+}
+ion-content .div_content .div-principal .div-fila-2 .fila2_col2 {
+  display: inline-block;
+  margin: auto;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+}
+ion-content .div_content .div-principal .div-fila-2 .fila2_col2 .p-t {
+  width: 100%;
+  height: 40%;
+}
+ion-content .div_content .div-principal .div-fila-2 .fila2_col2 .p-v {
+  width: 100%;
+  height: 60%;
+  font-size: 3.5vh;
+}
+ion-content .div_content .div-principal .div-fila-2 .p-t {
+  color: white;
+  font-weight: bold;
+  width: 100%;
+  height: 20%;
+  font-size: 3vh;
+}
+ion-content .div_content .div-principal .div-fila-2 .p-v {
+  width: 100%;
+  height: 30%;
+  font-size: 3.5vh;
+}
+ion-content .div_content .div-secundario {
+  height: 80%;
+  width: 100%;
+  margin-top: 8.5rem;
+  position: absolute;
+  z-index: 10;
+}
+ion-content .div_content .div-secundario .div-card {
+  width: 100%;
+  border: #1a1446 solid 3px;
+  border-radius: 5px;
+}
+ion-content .div_content .div-secundario .slider {
+  width: 100%;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  margin-top: 20px;
+}
+ion-content .div_content .div-secundario .item {
+  --background: transparent;
+  --border-style: none;
+}
+ion-content .div_content .div-secundario .div-head_button {
+  width: 100%;
+  height: 100%;
+  border-style: none;
+}
+ion-content .div_content .div-secundario .div-head_button .add {
+  width: 100%;
+  margin: 0;
+  height: 25px;
+  border-style: none;
+  background: #252525;
+}
+ion-content .div_content .div-secundario .card {
+  width: 100%;
+  margin: auto;
+  height: 150px;
+  background-color: white;
+}
+ion-content .div_content .div-secundario .card .div_head_title {
+  width: 100%;
+  height: 20%;
+}
+ion-content .div_content .div-secundario .card .div_head_title .nombre {
+  width: 100%;
+  height: 100%;
+  color: #ff2f73;
+  text-align: left;
+  font-weight: bold;
+  height: 100%;
+  line-height: 1.5;
+  font-size: 25px;
+  padding-left: 10px;
+}
+ion-content .div_content .div-secundario .card .div_body_content {
+  width: 100%;
+  height: 80%;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-1 {
+  width: 100%;
+  height: 40%;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-1 .seccion_title {
+  width: 100%;
+  height: 30%;
+  color: #1a1446;
+  font-weight: bold;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-1 .seccion_valor_bulto {
+  color: #000000;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  height: 70%;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-2 {
+  width: 100%;
+  height: 60%;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-2 .seccion_title {
+  width: 100%;
+  height: 20%;
+  padding: 0;
+  color: #1a1446;
+  font-weight: bold;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-2 .seccion_valor {
+  width: 100%;
+  height: 35%;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-2 #saldo-credito2 {
+  color: #ff3d3d;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-1 .div-cajita-2 #saldo-debito2 {
+  color: #2a9e2a;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-2 {
+  position: absolute;
+  display: inline-block;
+  width: 50%;
+  height: 80%;
+  text-align: center;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-2 .seccion2_title {
+  color: #1a1446;
+  font-weight: bold;
+  width: 100%;
+  height: 30%;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-2 .seccion2-valor {
+  width: 100%;
+  color: #000000;
+  font-size: 25px;
+  margin: auto;
+  font-weight: bold;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-2 .seccion2-valor2 {
+  width: 100%;
+  height: 60%;
+  margin: auto;
+  color: #0300ca;
+  font-size: 3vh;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-2 .div-cajita-1 {
+  width: 100%;
+  height: 50%;
+}
+ion-content .div_content .div-secundario .card .div_body_content .seccion-2 .div-cajita-2 {
+  width: 100%;
+  height: 50%;
+}

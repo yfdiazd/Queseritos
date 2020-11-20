@@ -22,7 +22,13 @@ export class CardlistaproveedoresPage implements OnInit {
     private alertController: AlertController,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.validarTotales();
+    this.FB.getProveedoresCompra();
+    this.listarproveedores();
+    this.listadoproveedores();
+    this.FB.getTodo();
+  }
 
   listanombres: any[];
   listanombres1: any[];
@@ -33,11 +39,13 @@ export class CardlistaproveedoresPage implements OnInit {
   saldo = 0;
 
   ngOnInit() {
+    console.log("Entro al ngOnInit de Cardlistaproveedores");
     this.FB.getProveedoresCompra();
     this.listarproveedores();
     this.listadoproveedores();
     this.FB.getTodo();
-    console.log("totales:",this.FB.credito,this.FB.debito,this.FB.saldo);
+    this.validarTotales();
+    console.log("totales:", this.FB.credito, this.FB.debito, this.FB.saldo);
     this.credito = this.FB.credito;
     this.debito = this.FB.debito;
     this.saldo = this.FB.saldo;
@@ -101,7 +109,7 @@ export class CardlistaproveedoresPage implements OnInit {
     console.log("Esto me envia el proveedor seleccionado", idProveedor)
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Confirm!',
+      header: 'Alerta!',
       keyboardClose: false,
       backdropDismiss: false,
       message: 'El proveedor no tiene asociado lote de compra, ¿Desea crearle un anticipo?',
@@ -151,6 +159,22 @@ export class CardlistaproveedoresPage implements OnInit {
       }
 
     }
+  }
+
+  async validarTotales() {
+    let credito = await this.FB.getTodo();
+    console.log("Credito", this.credito);
+  }
+  irInicio() {
+    this.navCtrl.navigateBack(["main-menu"]);
+  }
+  irCompras() {
+    this.FB.getProveedorCompra();
+    this.FB.getAnticipoProveedor();
+    this.navCtrl.navigateBack(["cardcompras"]);
+  }
+  irEstado() {
+    this.navCtrl.navigateBack(["cardlistaproveedores"]);
   }
 
 }

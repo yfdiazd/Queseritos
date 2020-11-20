@@ -69,6 +69,7 @@ export class SaldarPage implements OnInit {
       this.sumado = sumado;
     } else if (sumado == 0) {
       this.input_saldo = true;
+      this.valor = 0;
       this.activarBoton = true;
     }
   }
@@ -79,52 +80,52 @@ export class SaldarPage implements OnInit {
     if (sumado < 0) {
       valorEnviar = (sumado + this.valor);
       console.log("se sumaaaaa es igual ? ", valorEnviar);
-      
+
     } else {
       valorEnviar = (sumado - this.valor);
       console.log("se resta es ifual = ", valorEnviar);
-      if(valorEnviar < 0){
+      if (valorEnviar < 0) {
         valorEnviar = (valorEnviar * -1);
       }
-      
+
     }
     console.log("esto se envia al metodo para saldar ", valorEnviar);
-    
-    this.FB.saldarDeudasProveedor(this.idProv, valorEnviar);
+
+    // this.FB.saldarDeudasProveedor(this.idProv, valorEnviar);
     this.valorMensaje = valorEnviar;
-    this.modalCtrl.dismiss("true", "actualizar");
-    this.alerta();    
+    this.alerta();
+    // this.FB.alertaSaldarLote(this.idProv, valorEnviar);
   }
   async alerta() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Saldado correctamente',
-      message: 'El proximo lote inicia con $'+ this.valorMensaje,
+      header: 'Confirmación',
+      message: 'Esta seguro de saldar este lote?',
       buttons: [
         {
-        text: 'Aceptar',
-        handler: () => {        
-         
+          text: 'Aceptar',
+          handler: () => {
+            this.modalCtrl.dismiss(this.valorMensaje, "actualizar");
+          }
         }
-      }
-    ]
-  });
-  await alert.present();
-}
-
-permitirGuardar(event) {
-  console.log("cambiando", this.valor, event);
-  if (this.valor == undefined ||
-    this.valor == null ||
-    this.valor == "" || event == null) {
-    this.activarBoton = false;
-  } else {
-    this.activarBoton = true;
+      ]
+    });
+    await alert.present();
   }
 
-}
-volver() {
-  this.modalCtrl.dismiss();
-}
+  permitirGuardar(event) {
+    console.log("cambiando", this.valor, event);
+    if (this.valor == undefined ||
+      this.valor == null ||
+      this.valor == "" || event == null) {
+      this.activarBoton = false;
+    } else {
+      this.activarBoton = true;
+    }
+
+  }
+  volver() {
+    this.modalCtrl.dismiss();
+  }
 
 }

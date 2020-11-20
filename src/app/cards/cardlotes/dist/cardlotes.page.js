@@ -175,17 +175,34 @@ var CardlotesPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         console.log("Esperando esto: ", data);
-                        if (data == "true") {
+                        if (data != undefined) {
                             console.log("Entro al if: ", data);
                             // this.ngOnInit();
                             this.navCtrl.navigateBack(["main-menu"]);
-                            this.FB.eliminarNodoProveedor(this.idProveedorRecibido);
+                            this.FB.alertaSaldarLote(this.idProveedorRecibido, data);
+                            // this.FB.saldarDeudasProveedor(this.idProveedorRecibido, data);
+                            // this.FB.eliminarNodoProveedor(this.idProveedorRecibido);
                         }
                         return [2 /*return*/];
                 }
             });
         });
     };
+    // async alerta(data) {
+    //   const alert = await this.alertController.create({
+    //     cssClass: 'my-custom-class',
+    //     header: 'Saldado correctamente',
+    //     message: 'El proximo lote inicia con $' + data,
+    //     buttons: [
+    //       {
+    //         text: 'Aceptar',
+    //         handler: () => {
+    //         }
+    //       }
+    //     ]
+    //   });
+    //   await alert.present();
+    // }
     CardlotesPage.prototype.saldar = function () { };
     CardlotesPage = __decorate([
         core_1.Component({
