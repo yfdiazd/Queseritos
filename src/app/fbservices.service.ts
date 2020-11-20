@@ -100,8 +100,6 @@ export class FBservicesService {
         projectId: "pruebasqueseritos",
         storageBucket: "pruebasqueseritos.appspot.com",
         messagingSenderId: "69745233361",
-
-
     };
 
     constructor(
@@ -1235,7 +1233,16 @@ export class FBservicesService {
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, lote, idTipoAnticipo, valorAnticipo, archivo) {
         let objAnt: any = null;
         this.idAnticipos = this.idGenerator();
-        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+        console.log("esto es la imagen del anticipooooo ", archivo);
+
+        let imgTx = "";
+        if (archivo !== undefined) {
+            this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+            imgTx = archivo; 
+        } else {
+            imgTx = "No se adjunto imagen."
+        }
+
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "suma");
@@ -1248,7 +1255,7 @@ export class FBservicesService {
                 idProveedor: idProveedor,
                 idTipoAnticipo: idTipoAnticipo,
                 valorAnticipo: valorAnticipo,
-                archivo: archivo,
+                archivo: imgTx,
                 idPesajeCompra: idPesajeCompra,
                 estado: 1
             });
@@ -1936,6 +1943,7 @@ export class FBservicesService {
 
     ventaCos: number;
     async updatecostoVenta(idCliente, fechaNodo, idVenta, pesoPesada, valorPesada, costoAnterior, data, flag) {
+
         console.log("que es flaaaaaaaaaaaf ", flag);
 
         let nodo = fechaNodo.split("-", 3);
@@ -1943,6 +1951,7 @@ export class FBservicesService {
         if (flag == true) {
             let a = (pesoPesada * valorPesada);
             a = (a + costoAnterior)
+            this.getPesoUpdate(idCliente, nodoEnv, this.tipoQuesoUpdate, idVenta, this.estadoQuesoUpdate);
             firebase
                 .database()
                 .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
@@ -1973,23 +1982,91 @@ export class FBservicesService {
     }
 
     updatePesadas(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
-        this.getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada)
+        this.getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada);
         console.log("eso es el kyyyyyyyyyyyyyyyyyyy ", this.keyPesadaUpdate);
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
+        this.getPesoUpdate(idCliente, nodoEnv, this.tipoQuesoUpdate, idVenta, this.estadoQuesoUpdate);
+        this.actualizarRepetidos(idCliente, nodoEnv, idVenta, valorPesada)
+        this.getPesoUpdate(idCliente, nodoEnv, this.tipoQuesoUpdate, idVenta, this.estadoQuesoUpdate);
+        this.getValorPesadas(idCliente, nodoEnv, idVenta);
+        console.log("esto se va pal globooooooooooo ", this.valorPesadaUpda);
+
         let a = (pesoPesada * valorPesada);
 
-        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + this.keyPesadaUpdate)
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .update({
-                valor: valorPesada,
-                valorTotal: a
+                costoVenta: this.valorPesadaUpda
             });
 
 
+
     }
+
+    valorPesadaUpda: any;
+    getValorPesadas(idCliente, nodoEnv, idVenta,) {
+        this.valorPesadaUpda = 0;
+
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", snapshot => {
+                this.valorPesadaUpda = 0;
+                snapshot.forEach(element => {
+                    this.valorPesadaUpda += element.val().valorTotal
+                });
+
+            });
+
+
+        return this.valorPesadaUpda
+    }
+    actualizarRepetidos(idCliente, nodoEnv, idVenta, costoKilo) {
+        let costoEnv = 0;
+        this.listaKysUpdate.forEach(element => {
+            costoEnv = (element.peso * costoKilo);
+            console.log("esto le enviamos ome pues pues ", Math.round(costoEnv));
+
+            firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.llave)
+                .update({
+                    valor: costoKilo,
+                    valorTotal: costoEnv
+                });
+            costoEnv = 0;
+        });
+    }
+
+    listaKysUpdate: any[];
+    getPesoUpdate(idCliente, nodoEnv, tipoQueso, idVenta, estadoQueso) {
+        this.listaKysUpdate = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", snapshot => {
+                this.listaKysUpdate = [];
+                snapshot.forEach(element => {
+                    if (element.val().estadoQueso == estadoQueso && element.val().tipoQueso == tipoQueso) {
+                        this.listaKysUpdate.push(({ llave: element.key, peso: element.val().peso, valorTotal: element.val().valorTotal }));
+                    }
+                });
+            });
+        console.log("restonando lista KYSSSSSSSSSSSSSSSSSS ", this.listaKysUpdate);
+        this.listaKysUpdate.forEach(element => {
+            console.log("datossss pa siiasdiasdias ", element);
+
+        });
+
+
+        return this.listaKysUpdate;
+    }
+
     keyPesadaUpdate: any;
+    estadoQuesoUpdate: any;
+    tipoQuesoUpdate: any;
+    pesoUpdate: any;
     getKeyPesada(idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
         this.keyPesadaUpdate = 0;
+        this.estadoQuesoUpdate = "";
+        this.tipoQuesoUpdate = "";
+        this.pesoUpdate = 0;
         let nodo = fechaNodo.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);
         let a = (pesoPesada * valorPesada);
@@ -1999,19 +2076,27 @@ export class FBservicesService {
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
             .on("value", snapshot => {
                 this.keyPesadaUpdate = 0;
+                this.estadoQuesoUpdate = "";
+                this.tipoQuesoUpdate = "";
+                this.pesoUpdate = 0;
                 console.log(" pesadasdsdasdasdasda ", snapshot.val());
                 snapshot.forEach(element => {
                     console.log("id bultos de pesadas ", element.val().id);
                     if (element.val().id == idPesada) {
                         this.keyPesadaUpdate = element.key;
+                        this.estadoQuesoUpdate = element.val().estadoQueso;
+                        this.tipoQuesoUpdate = element.val().tipoQueso;
+                        this.pesoUpdate = element.val().peso;
                         console.log("KEY bultos de pesadas ", element.key);
-                        console.log("ingresamos");
+
 
                     }
                 });
 
             });
-        return this.keyPesadaUpdate;
+        console.log("retornooooooo " + this.keyPesadaUpdate, this.estadoQuesoUpdate, this.tipoQuesoUpdate, this.pesoUpdate);
+
+        return this.keyPesadaUpdate, this.estadoQuesoUpdate, this.tipoQuesoUpdate, this.pesoUpdate;
 
     }
 

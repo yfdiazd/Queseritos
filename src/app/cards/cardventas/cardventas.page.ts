@@ -225,7 +225,7 @@ export class CardventasPage implements OnInit {
         ciudad: card.ciudad,
         idCliente: card.idCliente,
         placa: card.placa,
-        pesadas: card.pesadas
+        pesadas: card.pesadas 
       },
     });
     await modal.present();

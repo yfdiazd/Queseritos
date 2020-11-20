@@ -99,7 +99,7 @@ export class CreartruequePage implements OnInit {
       this.nombreArchLoaded = (this.imagen.target.files[0].name + " fue cargado 100%");
       return this.imagen, this.nombreArchLoaded;
     } else {
-      this.FB.toastArchivoImagen();
+      this.imagen = "No se adjunto imagen.";
     }
 
   }
@@ -109,8 +109,9 @@ export class CreartruequePage implements OnInit {
 
 
     console.log(" esto es ", this.card);
+    
     if (this.card == "si") {
-      if (this.idProveedor == null || this.id, this.lote == null || this.tipoAnticipoEdit == null || this.valor == null || this.imagen == undefined) {
+      if (this.idProveedor == null || this.id, this.lote == null || this.tipoAnticipoEdit == null || this.valor == null ) {
         this.FB.toastCamposBlanco();
       }
       console.log("Cuando viene sin compra pepaa ", this.idProveedor, this.id, this.lote);
@@ -120,7 +121,7 @@ export class CreartruequePage implements OnInit {
       this.FB.getAnticipoDirectoProveedor(this.idProveedor, this.lote);
       this.modalCtrl.dismiss("true", "actualizar");
     } else {
-      if (this.datos.idProveedor == null || this.datos.id == null || this.datos.lote == null || this.tipoAnticipoEdit == null || this.valor == null || this.imagen == undefined) {
+      if (this.datos.idProveedor == null || this.datos.id == null || this.datos.lote == null || this.tipoAnticipoEdit == null || this.valor == null ) {
         this.FB.toastCamposBlanco();
       }
       console.log("Cuando viene de detalles pape  ", this.datos);
