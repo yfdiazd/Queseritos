@@ -1238,7 +1238,16 @@ export class FBservicesService {
     registrarAnticiposApesajeCompra(idProveedor, idPesajeCompra, lote, idTipoAnticipo, valorAnticipo, archivo) {
         let objAnt: any = null;
         this.idAnticipos = this.idGenerator();
-        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+        console.log("esto es la imagen del anticipooooo ", archivo);
+
+        let imgTx = "";
+        if (archivo !== undefined) {
+            this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+            imgTx = archivo; 
+        } else {
+            imgTx = "No se adjunto imagen."
+        }
+
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "suma");
@@ -1251,7 +1260,7 @@ export class FBservicesService {
                 idProveedor: idProveedor,
                 idTipoAnticipo: idTipoAnticipo,
                 valorAnticipo: valorAnticipo,
-                archivo: archivo,
+                archivo: imgTx,
                 idPesajeCompra: idPesajeCompra,
                 estado: 1
             });
@@ -1987,13 +1996,13 @@ export class FBservicesService {
         this.actualizarRepetidos(idCliente, nodoEnv, idVenta, valorPesada)
         this.getPesoUpdate(idCliente, nodoEnv, this.tipoQuesoUpdate, idVenta, this.estadoQuesoUpdate);
         this.getValorPesadas(idCliente, nodoEnv, idVenta);
-        console.log("esto se va pal globooooooooooo ", this.valorPesadaUpda  );
-        
+        console.log("esto se va pal globooooooooooo ", this.valorPesadaUpda);
+
         let a = (pesoPesada * valorPesada);
 
-        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta )
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .update({
-                costoVenta: this.valorPesadaUpda                
+                costoVenta: this.valorPesadaUpda
             });
 
 
@@ -2012,7 +2021,7 @@ export class FBservicesService {
                 });
 
             });
-        
+
 
         return this.valorPesadaUpda
     }
