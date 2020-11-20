@@ -26,7 +26,7 @@ export class AgregarvalorventaPage implements OnInit {
 
       // console.log("Se updateará esto:", this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
       this.FB.updatePesadas(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
-      this.FB.updatecostoVenta(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.peso, this.valor, this.dataVenta.costoVenta, this.dataBulto.valorTotal, this.flag);
+      //this.FB.updatecostoVenta(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.peso, this.valor, this.dataVenta.costoVenta, this.dataBulto.valorTotal, this.flag);
       this.popover.dismiss("true", "actualizar");
     }
   }
