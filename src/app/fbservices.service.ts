@@ -123,20 +123,19 @@ export class FBservicesService {
 
 
     //offline
+    onlineFlag: string = "";
     offLine() {
-
-        firebase.firestore().enablePersistence()
-            .catch(function (err) {
-                if (err.code == 'failed-precondition') {
-                    // Multiple tabs open, persistence can only be enabled
-                    // in one tab at a a time.
-                    // ...
-                } else if (err.code == 'unimplemented') {
-                    // The current browser does not support all of the
-                    // features required to enable persistence
-                    // ...
-                }
-            });
+        let ff
+        firebase.database().ref(".info/connected").on("value", function (snap) {
+            if (snap.val() === true) {
+                ff = "true";
+                alert("connected");
+            } else {
+                alert("No se pudo conectar a la red");
+                ff = "false";
+            }
+        });
+        return ff;
     }
 
     // todos los mentodos que tienen que ver solo con el usuario
@@ -211,9 +210,7 @@ export class FBservicesService {
             });
     }
     verificarsesion() {
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-
+   
                 // this.navCtrl.navigateForward("main-menu");
                 this.router.navigate(["main-menu"]);
                 // this.mostrarNombre();
@@ -227,14 +224,6 @@ export class FBservicesService {
                 this.getConductor();
                 this.listaOrdenLotes();
 
-
-
-            } else {
-
-                this.navCtrl.navigateBack(["login"]);
-            }
-        });
-        return this.usuarioUid;
     }
 
     // TODOS LOS TOAS o mensajes emergentes
@@ -546,6 +535,8 @@ export class FBservicesService {
     }
     //Metodo que permite crear las ciudades del sistema
     agregarCiudad(codigoCiudad, describcionCiudad) {
+
+
         this.pathPush = "";
         this.pathPush = ("usuario/configuracion" + "/ciudad");
         if (this.validaCodigos(codigoCiudad, this.pathPush) == false) {
@@ -1902,7 +1893,7 @@ export class FBservicesService {
             });
     }
     actualizarVenta(idCliente, ciudad, conductor, fechaEnvio, listaPesada, pesoEnviado, pesoLimite, placa, imagen, costoVenta, idVenta) {
-        
+
 
         let nodo = fechaEnvio.split("-", 3);
         let nodoEnv = (nodo[0] + "-" + nodo[1]);

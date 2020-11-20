@@ -149,39 +149,43 @@ export class CrearcompraPage implements OnInit {
   }
 
   guardar() {
-    if (this.idCompra == undefined) {
+    if (this.FB.offLine() == "true") {
+      if (this.idCompra == undefined) {
 
-      this.contarPeso();
-      this.FB.agregarPesaje(
-        this.idProveedor,
-        this.productoDefault,
-        this.listaBultosEdit.length,
-        this.contadorPeso,
-        this.listaBultosEdit
-      );
-      this.listaBultosEdit = [];
-      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
-      this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
-      this.modalCtrl.dismiss("true", "actualizar");
-      this.FB.getProveedorCompra();
-      this.FB.getAnticipoProveedor();
-    } else {
-      this.contarPeso();
-      this.FB.updateBultoPesajeDetallado(
-        this.idProveedor,
-        this.idCompra,
-        this.listaBultosEdit,
-        this.contadorPeso,
-        this.listaBultosEdit.length,
-        this.productoDefault
-      );
-      this.listaBultosEdit = [];
-      this.FB.getPesajeCompra(this.idProveedor,this.lastLote.toString());
-      this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
-      this.modalCtrl.dismiss("true", "actualizar");
-      this.FB.getProveedorCompra();
-      this.FB.getAnticipoProveedor();
+        this.contarPeso();
+        this.FB.agregarPesaje(
+          this.idProveedor,
+          this.productoDefault,
+          this.listaBultosEdit.length,
+          this.contadorPeso,
+          this.listaBultosEdit
+        );
+        this.listaBultosEdit = [];
+        this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+        this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+        this.modalCtrl.dismiss("true", "actualizar");
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+      } else {
+        this.contarPeso();
+        this.FB.updateBultoPesajeDetallado(
+          this.idProveedor,
+          this.idCompra,
+          this.listaBultosEdit,
+          this.contadorPeso,
+          this.listaBultosEdit.length,
+          this.productoDefault
+        );
+        this.listaBultosEdit = [];
+        this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+        this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+        this.modalCtrl.dismiss("true", "actualizar");
+        this.FB.getProveedorCompra();
+        this.FB.getAnticipoProveedor();
+
+      }
     }
+
   }
   volver() {
     this.modalCtrl.dismiss();
