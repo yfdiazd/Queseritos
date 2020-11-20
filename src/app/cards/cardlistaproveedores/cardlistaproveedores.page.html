@@ -5,6 +5,7 @@
       <ion-back-button defaultHref="/main-menu" color="danger"></ion-back-button>
     </ion-buttons>
     <ion-title class="titulo">PROVEEDORES</ion-title>
+    <ion-searchbar class="search" placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +18,6 @@
       <label class="valor">{{FB.debito | currency:'USD':true: '2.0-0'}}</label>
       <label class="label">Saldo</label>
       <label class="valor">{{(FB.debito - FB.credito) | currency:'USD':true: '2.0-0'}}</label>
-      <ion-searchbar class="search" placeholder="Buscar proveedor" (ionChange)="getItems($event)"></ion-searchbar>
     </div>
     <div class="div__lista">
       <ion-list class="lista">
