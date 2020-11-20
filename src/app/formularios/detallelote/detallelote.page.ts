@@ -258,16 +258,32 @@ export class DetallelotePage implements OnInit {
   }
 
   async verImagen(data) {
-    let foto = await this.FB.getFoto(this.provRecibido, data.id);
-    console.log("esto es la foto", foto);
-    const popover = await this.modalController.create({
-      component: VistaimgPage,
-      cssClass: 'img_modal',
-      keyboardClose: false,
-      backdropDismiss: false
-    });
-    return await popover.present();
+
+    if (data.archivo == "No se adjunto imagen.") {
+      this.alertImg()
+    } else {
+      let foto = await this.FB.getFotoVenta(this.idcliente, data.id);
+      console.log("esto es la foto", foto);
+      const popover = await this.modalController.create({
+        component: VistaimgPage,
+        cssClass: 'img_modal',
+        keyboardClose: false,
+        backdropDismiss: false
+      });
+      return await popover.present();
+    }
   }
+  async alertImg() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alerta.',
+      message: 'Para esta venta no se adjuntó imagen.',
+      buttons: ['ACEPTAR']
+    });
+
+    await alert.present();
+  }
+
 
   traerNombre() {
     this.nombreProv = [];
