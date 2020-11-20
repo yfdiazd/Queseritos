@@ -94,12 +94,14 @@ export class FBservicesService {
     fecha: Date;
 
     config = {
-        apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
-        authDomain: "queseritos.firebaseapp.com",
-        databaseURL: "https://queseritos.firebaseio.com",
-        projectId: "queseritos",
-        storageBucket: "queseritos.appspot.com",
-        messagingSenderId: "589566808528"
+        apiKey: "AIzaSyCRkC_GFC_m-OXhB43EcsOtbUrHF8oTUQk",
+        authDomain: "pruebasqueseritos.firebaseapp.com",
+        databaseURL: "https://pruebasqueseritos.firebaseio.com",
+        projectId: "pruebasqueseritos",
+        storageBucket: "pruebasqueseritos.appspot.com",
+        messagingSenderId: "69745233361",
+
+
     };
 
     constructor(
@@ -210,19 +212,19 @@ export class FBservicesService {
             });
     }
     verificarsesion() {
-   
-                // this.navCtrl.navigateForward("main-menu");
-                this.router.navigate(["main-menu"]);
-                // this.mostrarNombre();
-                this.getCiudades();
-                this.getEstadoProducto();
-                this.getProductos();
-                this.getTipoAnticipos();
-                this.getTiposIdentificacion();
-                this.getProveedores();
-                this.getClientes();
-                this.getConductor();
-                this.listaOrdenLotes();
+
+        // this.navCtrl.navigateForward("main-menu");
+        this.router.navigate(["main-menu"]);
+        // this.mostrarNombre();
+        this.getCiudades();
+        this.getEstadoProducto();
+        this.getProductos();
+        this.getTipoAnticipos();
+        this.getTiposIdentificacion();
+        this.getProveedores();
+        this.getClientes();
+        this.getConductor();
+        this.listaOrdenLotes();
 
     }
 
