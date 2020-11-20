@@ -124,8 +124,8 @@ export class DetallelotePage implements OnInit {
   }
 
   async modalConfirmarPesaje(card) {
-    this.FB.getInfoCompra(this.provRecibido, card.id)
-    this.FB.getPesajeConfirmado(this.provRecibido, card.id);
+    this.FB.getInfoCompra(this.provRecibido, card.id, card.lote)
+    this.FB.getPesajeConfirmado(this.provRecibido, card.id, card.lote);
     const modal = await this.modalController.create({
       component: HomepesajesPage,
       cssClass: 'my-custom-class',
@@ -133,9 +133,11 @@ export class DetallelotePage implements OnInit {
       backdropDismiss: false,
       componentProps: {
         idCompra: card.id,
-        idProv: this.provRecibido
+        idProv: this.provRecibido,
+        lote: card.lote
       },
     });
+    console.log("Esto se envia desde detallelote:;", this.provRecibido, card.id, card.lote);
     await modal.present();
   }
   eliminarRegistro(lista) {

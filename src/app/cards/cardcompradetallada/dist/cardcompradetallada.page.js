@@ -128,8 +128,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.FB.getInfoCompra(this.idProveedor, card.id);
-                        this.FB.getPesajeConfirmado(this.idProveedor, card.id);
+                        this.FB.getInfoCompra(this.idProveedor, card.id, card.lote);
+                        this.FB.getPesajeConfirmado(this.idProveedor, card.id, card.lote);
                         return [4 /*yield*/, this.modalController.create({
                                 component: homepesajes_page_1.HomepesajesPage,
                                 cssClass: 'my-custom-class',
@@ -137,11 +137,13 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                 backdropDismiss: false,
                                 componentProps: {
                                     idCompra: card.id,
-                                    idProv: this.idProveedor
+                                    idProv: this.idProveedor,
+                                    lote: card.lote
                                 }
                             })];
                     case 1:
                         modal = _a.sent();
+                        console.log("Esto se envia desde detallelote:;", this.idProveedor, card.id, card.lote);
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
@@ -149,7 +151,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+                            this.FB.getPesajeCompra(this.idProveedor, card.lote);
                             this.FB.getProductos();
                             this.traerTipoQueso();
                             this.traerNombre();

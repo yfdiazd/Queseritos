@@ -97,12 +97,12 @@ export class CardcomprasPage implements OnInit {
     let proveedoresLista = this.FB.proveedoresLista;
     let listaPaVer = this.FB.listaPaVer;
     console.log("Esto se ve: ", proveedoresLista, " y ", listaPaVer);
-//Ajustar que el nombre guarde tmb el apellido
+
     proveedoresLista.forEach(element => {
       listaPaVer.forEach(element2 => {
         if (element.id == element2.idProvedor) {
           this.objProv = ({
-            nombre: element.nombre,
+            nombre: element.nombre + " " + element.apellido,
             idProv: element.id,
             bultos: element2.bultos,
             costo: element2.costo,

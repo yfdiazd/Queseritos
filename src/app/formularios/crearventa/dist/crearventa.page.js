@@ -15,6 +15,7 @@ var CrearventaPage = /** @class */ (function () {
         this.activarBoton = false;
     }
     CrearventaPage.prototype.ngOnInit = function () {
+        this.traerTipoQuesoDefault();
         this.FB.getProductos();
         this.FB.getEstadoProducto();
     };
@@ -44,11 +45,25 @@ var CrearventaPage = /** @class */ (function () {
             this.activarBoton = false;
         }
     };
+    CrearventaPage.prototype.traerTipoQuesoDefault = function () {
+        var _this = this;
+        if (this.tipoQueso == undefined) {
+            this.FB.productosLista.forEach(function (element) {
+                if (element.estado == 1 && element.predetermina == true) {
+                    _this.productoDefault = null;
+                    _this.productoDefault = element.descripcion;
+                }
+            });
+        }
+        else {
+            this.productoDefault = this.tipoQueso;
+        }
+    };
     CrearventaPage.prototype.guardar = function () {
         this.listaPesadas = [];
         this.objPesadas = null;
         this.objPesadas = ({
-            tipoQueso: this.tipoQueso,
+            tipoQueso: this.productoDefault,
             estadoQueso: this.estadoQueso,
             peso: this.valor
         });

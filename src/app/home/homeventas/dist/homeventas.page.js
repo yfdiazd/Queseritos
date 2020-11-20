@@ -42,50 +42,43 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.HomepesajesPage = void 0;
+exports.HomeventasPage = void 0;
 var core_1 = require("@angular/core");
-var confirmarpesaje_page_1 = require("src/app/formularios/confirmarpesaje/confirmarpesaje.page");
-var HomepesajesPage = /** @class */ (function () {
-    function HomepesajesPage(FB, PopoverController, modalController, alertController) {
+var confirmarventa_page_1 = require("src/app/formularios/confirmarventa/confirmarventa.page");
+var HomeventasPage = /** @class */ (function () {
+    function HomeventasPage(FB, PopoverController, modalController, alertController) {
         this.FB = FB;
         this.PopoverController = PopoverController;
         this.modalController = modalController;
         this.alertController = alertController;
-        this.pesoTotal = 0;
+        this.fbsumapeso = "$2.000";
+        this.pesoTotal = "200";
+        this.fbsaldoPesoConfirmado = "3000.000";
         this.sumaPeso = 0;
         this.mostrarCrearConfirmar = true;
-        this.traerPeso();
-        this.sumarPesos();
     }
-    HomepesajesPage.prototype.ngOnInit = function () {
+    HomeventasPage.prototype.ngOnInit = function () {
         this.traerPeso();
         this.sumarPesos();
     };
-    HomepesajesPage.prototype.traerPeso = function () {
+    HomeventasPage.prototype.traerPeso = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var valorPeso, error_1;
+            var valorPeso;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        this.pesoTotal = 0;
-                        return [4 /*yield*/, this.FB.infoCompraUnica];
+                    case 0: return [4 /*yield*/, this.FB.infoCompraUnica];
                     case 1:
                         valorPeso = _a.sent();
                         valorPeso.forEach(function (info) {
-                            _this.pesoTotal = info.pesoBultos;
+                            _this.pesoTotal = info.pesoPesada;
                         });
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_1 = _a.sent();
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    HomepesajesPage.prototype.sumarPesos = function () {
+    HomeventasPage.prototype.sumarPesos = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
@@ -98,26 +91,23 @@ var HomepesajesPage = /** @class */ (function () {
             });
         });
     };
-    HomepesajesPage.prototype.presentPopover = function () {
+    HomeventasPage.prototype.presentPopover = function () {
         return __awaiter(this, void 0, void 0, function () {
             var popover;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("Esto recibe:", this.idCompra, this.idProv, this.lote);
-                        return [4 /*yield*/, this.PopoverController.create({
-                                component: confirmarpesaje_page_1.ConfirmarpesajePage,
-                                cssClass: 'popover_style',
-                                translucent: true,
-                                keyboardClose: false,
-                                backdropDismiss: false,
-                                componentProps: {
-                                    idCompra: this.idCompra,
-                                    idProv: this.idProv,
-                                    pesoTotal: this.pesoTotal,
-                                    lote: this.lote
-                                }
-                            })];
+                    case 0: return [4 /*yield*/, this.PopoverController.create({
+                            component: confirmarventa_page_1.ConfirmarventaPage,
+                            cssClass: 'popover_style',
+                            translucent: true,
+                            keyboardClose: false,
+                            backdropDismiss: false,
+                            componentProps: {
+                                idCompra: this.idVenta,
+                                idProv: this.idClient,
+                                pesoTotal: this.pesoTotal
+                            }
+                        })];
                     case 1:
                         popover = _a.sent();
                         return [4 /*yield*/, popover.present()];
@@ -130,17 +120,17 @@ var HomepesajesPage = /** @class */ (function () {
             });
         });
     };
-    HomepesajesPage.prototype.volver = function () {
-        this.modalController.dismiss("true", "actualizar");
+    HomeventasPage.prototype.volver = function () {
+        this.modalController.dismiss();
     };
-    HomepesajesPage.prototype.removeRegister = function (lista) {
+    HomeventasPage.prototype.removeRegister = function (lista) {
         return __awaiter(this, void 0, void 0, function () {
             var alert;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log("valores", this.idProv, this.idCompra, lista);
+                        console.log("valores", this.idClient, this.idVenta, lista);
                         return [4 /*yield*/, this.alertController.create({
                                 cssClass: 'my-custom-class',
                                 header: 'Cuidado!',
@@ -157,9 +147,9 @@ var HomepesajesPage = /** @class */ (function () {
                                         text: 'SI',
                                         handler: function () {
                                             console.log('Confirm Okay', lista);
-                                            _this.FB.deletePesajeConfirmado(_this.idProv, _this.idCompra, lista.id, lista.costoTotalEstado, _this.lote);
-                                            _this.FB.getInfoCompra(_this.idProv, _this.idCompra, _this.lote);
-                                            _this.FB.getPesajeConfirmado(_this.idProv, _this.idCompra, _this.lote);
+                                            _this.FB.deletePesajeConfirmado(_this.idClient, _this.idVenta, lista.id, lista.costoTotalEstado, _this.lote);
+                                            _this.FB.getInfoCompra(_this.idClient, _this.idVenta, _this.lote);
+                                            _this.FB.getPesajeConfirmado(_this.idClient, _this.idVenta, _this.lote);
                                         }
                                     }
                                 ]
@@ -176,23 +166,23 @@ var HomepesajesPage = /** @class */ (function () {
     };
     __decorate([
         core_1.Input()
-    ], HomepesajesPage.prototype, "idCompra");
+    ], HomeventasPage.prototype, "idVenta");
     __decorate([
         core_1.Input()
-    ], HomepesajesPage.prototype, "idProv");
+    ], HomeventasPage.prototype, "idClient");
     __decorate([
         core_1.Input()
-    ], HomepesajesPage.prototype, "lote");
-    HomepesajesPage = __decorate([
+    ], HomeventasPage.prototype, "lote");
+    HomeventasPage = __decorate([
         core_1.Injectable({
             providedIn: "root"
         }),
         core_1.Component({
-            selector: 'app-homepesajes',
-            templateUrl: './homepesajes.page.html',
-            styleUrls: ['./homepesajes.page.scss']
+            selector: 'app-homeventas',
+            templateUrl: './homeventas.page.html',
+            styleUrls: ['./homeventas.page.scss']
         })
-    ], HomepesajesPage);
-    return HomepesajesPage;
+    ], HomeventasPage);
+    return HomeventasPage;
 }());
-exports.HomepesajesPage = HomepesajesPage;
+exports.HomeventasPage = HomeventasPage;

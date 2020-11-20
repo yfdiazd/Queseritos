@@ -14,6 +14,9 @@ import { ConfirmarpesajePage } from 'src/app/formularios/confirmarpesaje/confirm
   styleUrls: ['./homepesajes.page.scss'],
 })
 export class HomepesajesPage implements OnInit {
+  @Input() idCompra;
+  @Input() idProv;
+  @Input() lote;
   constructor(
     private FB: FBservicesService,
     public PopoverController: PopoverController,
@@ -25,8 +28,7 @@ export class HomepesajesPage implements OnInit {
     this.sumarPesos();
   }
 
-  @Input() idCompra;
-  @Input() idProv;
+
 
 
   pesoTotal = 0;
@@ -42,11 +44,16 @@ export class HomepesajesPage implements OnInit {
   }
 
   async traerPeso() {
-    this.pesoTotal = 0;
-    let valorPeso = await this.FB.infoCompraUnica;
-    valorPeso.forEach(info => {
-      this.pesoTotal = info.pesoBultos;
-    })
+    try {
+      this.pesoTotal = 0;
+      let valorPeso = await this.FB.infoCompraUnica;
+      valorPeso.forEach(info => {
+        this.pesoTotal = info.pesoBultos;
+      })
+    } catch (error) {
+
+    }
+
   }
 
   async sumarPesos() {
@@ -58,6 +65,7 @@ export class HomepesajesPage implements OnInit {
   }
 
   async presentPopover() {
+    console.log("Esto recibe:", this.idCompra, this.idProv, this.lote);
     const popover = await this.PopoverController.create({
       component: ConfirmarpesajePage,
       cssClass: 'popover_style',
@@ -67,13 +75,14 @@ export class HomepesajesPage implements OnInit {
       componentProps: {
         idCompra: this.idCompra,
         idProv: this.idProv,
-        pesoTotal: this.pesoTotal
+        pesoTotal: this.pesoTotal,
+        lote: this.lote
       },
     });
     await popover.present();
     this.sumarPesos();
     this.traerPeso();
-  }  
+  }
   volver() {
     this.modalController.dismiss("true", "actualizar");
   }
@@ -96,9 +105,9 @@ export class HomepesajesPage implements OnInit {
           text: 'SI',
           handler: () => {
             console.log('Confirm Okay', lista);
-            this.FB.deletePesajeConfirmado(this.idProv, this.idCompra, lista.id, lista.costoTotalEstado);
-            this.FB.getInfoCompra(this.idProv, this.idCompra)
-            this.FB.getPesajeConfirmado(this.idProv, this.idCompra);
+            this.FB.deletePesajeConfirmado(this.idProv, this.idCompra, lista.id, lista.costoTotalEstado, this.lote);
+            this.FB.getInfoCompra(this.idProv, this.idCompra, this.lote)
+            this.FB.getPesajeConfirmado(this.idProv, this.idCompra, this.lote);
           }
         }
       ]

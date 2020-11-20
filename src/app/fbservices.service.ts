@@ -1076,10 +1076,8 @@ export class FBservicesService {
     }
     // Traer los pesajes del proveedor seleccionado
     async getPesajeCompra(idProveedor, lote) {
-        const ordenLotes = await this.listaOrdenLotes();
+        console.log("Esto recibe", idProveedor, lote);
         this.pesajeCompraLista = [];
-        this.lastLote = [];
-        this.lastLote = (ordenLotes.slice(this.listaOrdenLotes().length - 1));
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
@@ -1103,7 +1101,7 @@ export class FBservicesService {
         this.toastOperacionExitosa();
     }
 
-    updateCostoCompra(idProveedor, idPesajeCompra, totalCompra, accion) {
+    updateCostoCompra(idProveedor, idPesajeCompra, totalCompra, accion, lote) {
         if (accion == "suma") {
 
             let totalLocal = 0;
@@ -1112,7 +1110,7 @@ export class FBservicesService {
             totalLocal = (totalLocal + totalCompra);
             firebase
                 .database()
-                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesajeCompra)
                 .update({
                     costoTotalCompra: totalLocal
                 });
@@ -1127,7 +1125,7 @@ export class FBservicesService {
 
             firebase
                 .database()
-                .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+                .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesajeCompra)
                 .update({
                     costoTotalCompra: totalLocal
                 });
@@ -1154,14 +1152,13 @@ export class FBservicesService {
     }
 
     //Confirmar pesajes
-    agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado) {
+    agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado, lote) {
         this.idConfirmarPesajeCompra = this.idGenerator();
-        this.lastLote = [];
-        this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
-        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), costoTotalEstado, "suma");
+      
+        this.updateBalanceLoteCompra(idProveedor, lote, costoTotalEstado, "suma");
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
                 codigoLote: this.lastLote.toString(),
@@ -1178,20 +1175,19 @@ export class FBservicesService {
     public objPesajeConfirmado: any;
     public sumapesoConfirmado: any;
     public saldoPesoConfirmado: any;
-    async getPesajeConfirmado(idProveedor, idPesajeCompra) {
+    async getPesajeConfirmado(idProveedor, idPesajeCompra, lote) {
+        console.log("getPesajeConfirmado", idProveedor, idPesajeCompra, lote);
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
         this.sumapesoConfirmado = 0;
         this.saldoPesoConfirmado = 0;
-        const ordenLotes = await this.listaOrdenLotes();
-        this.lastLote = [];
-        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
 
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/confirmarPesajeCompra/" + idPesajeCompra)
             .on("value", snapshot => {
                 if (snapshot.exists()) {
+                    console.log("Si existe");
                     this.pesajeConfirmadoLista = [];
                     this.sumapesoConfirmado = 0;
                     this.saldoPesoConfirmado = 0;
@@ -1219,15 +1215,14 @@ export class FBservicesService {
                 return this.pesajeConfirmadoLista, this.sumapesoConfirmado;
             });
     }
-    deletePesajeConfirmado(idProveedor, idPesajeCompra, idPesajeConfirmado, valor) {
+    deletePesajeConfirmado(idProveedor, idPesajeCompra, idPesajeConfirmado, valor, lote) {
         const ordenLotes = this.listaOrdenLotes();
-        this.lastLote = [];
-        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
-        this.updateCostoCompra(idProveedor, idPesajeCompra, valor, "resta");
-        this.updateBalanceLoteCompra(idProveedor, this.lastLote.toString(), valor, "resta");
+
+        this.updateCostoCompra(idProveedor, idPesajeCompra, valor, "resta", lote);
+        this.updateBalanceLoteCompra(idProveedor, lote, valor, "resta");
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + idPesajeConfirmado)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + idPesajeConfirmado)
             .remove();
         this.toastOperacionExitosa();
     }
@@ -1523,13 +1518,12 @@ export class FBservicesService {
 
     //METODOS PARA LOS::::::::::::::::::::::::ESTADOS
     //Metodo para traer todos los funcionarios
-    getInfoCompra(idProveedor, idCompra) {
+    getInfoCompra(idProveedor, idCompra, lote) {
         this.infoCompraUnica = [];
-        this.lastLote = [];
-        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idCompra)
             .on("value", snapshot => {
                 this.infoCompraUnica = [];
                 if (snapshot.val().estado == 1) {
@@ -1537,7 +1531,7 @@ export class FBservicesService {
                 }
                 return this.infoCompraUnica;
             });
-        this.getPesajeConfirmado(idProveedor, idCompra);
+        this.getPesajeConfirmado(idProveedor, idCompra, lote);
     }
 
     public pesajeLoteProveedorLista: any[];

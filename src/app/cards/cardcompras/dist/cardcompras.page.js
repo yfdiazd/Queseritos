@@ -129,12 +129,11 @@ var CardcomprasPage = /** @class */ (function () {
                 proveedoresLista = this.FB.proveedoresLista;
                 listaPaVer = this.FB.listaPaVer;
                 console.log("Esto se ve: ", proveedoresLista, " y ", listaPaVer);
-                //Ajustar que el nombre guarde tmb el apellido
                 proveedoresLista.forEach(function (element) {
                     listaPaVer.forEach(function (element2) {
                         if (element.id == element2.idProvedor) {
                             _this.objProv = ({
-                                nombre: element.nombre,
+                                nombre: element.nombre + " " + element.apellido,
                                 idProv: element.id,
                                 bultos: element2.bultos,
                                 costo: element2.costo,

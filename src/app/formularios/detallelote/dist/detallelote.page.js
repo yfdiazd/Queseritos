@@ -148,8 +148,8 @@ var DetallelotePage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.FB.getInfoCompra(this.provRecibido, card.id);
-                        this.FB.getPesajeConfirmado(this.provRecibido, card.id);
+                        this.FB.getInfoCompra(this.provRecibido, card.id, card.lote);
+                        this.FB.getPesajeConfirmado(this.provRecibido, card.id, card.lote);
                         return [4 /*yield*/, this.modalController.create({
                                 component: homepesajes_page_1.HomepesajesPage,
                                 cssClass: 'my-custom-class',
@@ -157,11 +157,13 @@ var DetallelotePage = /** @class */ (function () {
                                 backdropDismiss: false,
                                 componentProps: {
                                     idCompra: card.id,
-                                    idProv: this.provRecibido
+                                    idProv: this.provRecibido,
+                                    lote: card.lote
                                 }
                             })];
                     case 1:
                         modal = _a.sent();
+                        console.log("Esto se envia desde detallelote:;", this.provRecibido, card.id, card.lote);
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();

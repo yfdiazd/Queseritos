@@ -25,6 +25,7 @@ export class HomeventasPage implements OnInit {
 
   @Input() idVenta;
   @Input() idClient;
+  @Input() lote;
   sumaPeso = 0;
   //pesoTotal=0;
   pesaje: any;
@@ -88,9 +89,9 @@ export class HomeventasPage implements OnInit {
           text: 'SI',
           handler: () => {
             console.log('Confirm Okay', lista);
-            this.FB.deletePesajeConfirmado(this.idClient, this.idVenta, lista.id, lista.costoTotalEstado);
-            this.FB.getInfoCompra(this.idClient, this.idVenta)
-            this.FB.getPesajeConfirmado(this.idClient, this.idVenta);
+            this.FB.deletePesajeConfirmado(this.idClient, this.idVenta, lista.id, lista.costoTotalEstado, this.lote);
+            this.FB.getInfoCompra(this.idClient, this.idVenta, this.lote)
+            this.FB.getPesajeConfirmado(this.idClient, this.idVenta, this.lote);
           }
         }
       ]
