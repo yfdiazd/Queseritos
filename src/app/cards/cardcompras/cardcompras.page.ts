@@ -139,21 +139,22 @@ export class CardcomprasPage implements OnInit {
     await modal.present();
   }
   async irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProv,this.lastLote.toString());
+    this.FB.getPesajeCompra(card.idProv, this.lastLote.toString());
     this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
   }
   async opciones() {
-
     this.input = { data: [] };
     this.listaProveedores = [];
     this.FB.proveedoresLista.forEach(element => {
       let provee = element;
-      this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
+      this.input.data.push({ name: provee.nombre + " " + provee.apellido, type: 'radio', label: provee.nombre + " " + provee.apellido, value: provee.id });
     });
+
     this.alertProveedores();
 
   }
   async alertProveedores() {
+    console.log("provee_: ", this.input.data);
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Proveedores',
@@ -162,13 +163,13 @@ export class CardcomprasPage implements OnInit {
       backdropDismiss: false,
       buttons: [
         {
-          text: 'Cancel',
+          text: 'CANCELAR',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
           }
         }, {
-          text: 'Ok',
+          text: 'ACEPTAR',
           handler: (value) => {
             this.irCompra(value);
           }

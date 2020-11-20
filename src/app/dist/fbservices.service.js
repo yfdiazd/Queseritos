@@ -1280,7 +1280,15 @@ var FBservicesService = /** @class */ (function () {
     FBservicesService.prototype.registrarAnticiposApesajeCompra = function (idProveedor, idPesajeCompra, lote, idTipoAnticipo, valorAnticipo, archivo) {
         var objAnt = null;
         this.idAnticipos = this.idGenerator();
-        this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+        console.log("esto es la imagen del anticipooooo ", archivo);
+        var imgTx = "";
+        if (archivo !== undefined) {
+            this.upLoadImage(idProveedor, this.idAnticipos, archivo);
+            imgTx = archivo;
+        }
+        else {
+            imgTx = "No se adjunto imagen.";
+        }
         this.lastLote = [];
         this.lastLote = (this.listaOrdenLotes().slice(this.listaOrdenLotes().length - 1));
         this.updateBalanceLoteAnt(idProveedor, lote, valorAnticipo, "suma");
@@ -1293,7 +1301,7 @@ var FBservicesService = /** @class */ (function () {
             idProveedor: idProveedor,
             idTipoAnticipo: idTipoAnticipo,
             valorAnticipo: valorAnticipo,
-            archivo: archivo,
+            archivo: imgTx,
             idPesajeCompra: idPesajeCompra,
             estado: 1
         });
@@ -1869,24 +1877,23 @@ var FBservicesService = /** @class */ (function () {
             return _this.ventasclienteListaMes, _this.sumaVentaMes;
         });
     };
-    FBservicesService.prototype.updateBultoPesajeDetallado = function (idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto) {
+    FBservicesService.prototype.updateBultoPesajeDetallado = function (idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto, lote) {
         var _this = this;
-        this.lastLote = [];
-        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesaje)
             .on("value", function (snapshot) {
             if (snapshot.val().costoTotalCompra == 0) {
                 firebase
                     .database()
-                    .ref("usuario/compras/" + idProveedor + "/" + _this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
+                    .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesaje)
                     .update({
                     bultoLista: listaBultos,
                     pesoBultos: peso,
                     totalBulto: totalBultos,
                     idProducto: idProducto
                 });
+                console.log("Updateado pesaje");
                 _this.toastOperacionExitosa();
             }
             else {
@@ -1972,6 +1979,7 @@ var FBservicesService = /** @class */ (function () {
                 if (flag == true) {
                     a = (pesoPesada * valorPesada);
                     a = (a + costoAnterior);
+                    this.getPesoUpdate(idCliente, nodoEnv, this.tipoQuesoUpdate, idVenta, this.estadoQuesoUpdate);
                     firebase
                         .database()
                         .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
@@ -2005,16 +2013,68 @@ var FBservicesService = /** @class */ (function () {
         console.log("eso es el kyyyyyyyyyyyyyyyyyyy ", this.keyPesadaUpdate);
         var nodo = fechaNodo.split("-", 3);
         var nodoEnv = (nodo[0] + "-" + nodo[1]);
+        this.getPesoUpdate(idCliente, nodoEnv, this.tipoQuesoUpdate, idVenta, this.estadoQuesoUpdate);
+        this.actualizarRepetidos(idCliente, nodoEnv, idVenta, valorPesada);
+        this.getPesoUpdate(idCliente, nodoEnv, this.tipoQuesoUpdate, idVenta, this.estadoQuesoUpdate);
+        this.getValorPesadas(idCliente, nodoEnv, idVenta);
+        console.log("esto se va pal globooooooooooo ", this.valorPesadaUpda);
         var a = (pesoPesada * valorPesada);
-        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + this.keyPesadaUpdate)
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta)
             .update({
-            valor: valorPesada,
-            valorTotal: a
+            costoVenta: this.valorPesadaUpda
         });
+    };
+    FBservicesService.prototype.getValorPesadas = function (idCliente, nodoEnv, idVenta) {
+        var _this = this;
+        this.valorPesadaUpda = 0;
+        firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", function (snapshot) {
+            _this.valorPesadaUpda = 0;
+            snapshot.forEach(function (element) {
+                _this.valorPesadaUpda += element.val().valorTotal;
+            });
+        });
+        return this.valorPesadaUpda;
+    };
+    FBservicesService.prototype.actualizarRepetidos = function (idCliente, nodoEnv, idVenta, costoKilo) {
+        var costoEnv = 0;
+        this.listaKysUpdate.forEach(function (element) {
+            costoEnv = (element.peso * costoKilo);
+            console.log("esto le enviamos ome pues pues ", Math.round(costoEnv));
+            firebase.database().ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas/" + element.llave)
+                .update({
+                valor: costoKilo,
+                valorTotal: costoEnv
+            });
+            costoEnv = 0;
+        });
+    };
+    FBservicesService.prototype.getPesoUpdate = function (idCliente, nodoEnv, tipoQueso, idVenta, estadoQueso) {
+        var _this = this;
+        this.listaKysUpdate = [];
+        firebase
+            .database()
+            .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
+            .on("value", function (snapshot) {
+            _this.listaKysUpdate = [];
+            snapshot.forEach(function (element) {
+                if (element.val().estadoQueso == estadoQueso && element.val().tipoQueso == tipoQueso) {
+                    _this.listaKysUpdate.push(({ llave: element.key, peso: element.val().peso, valorTotal: element.val().valorTotal }));
+                }
+            });
+        });
+        console.log("restonando lista KYSSSSSSSSSSSSSSSSSS ", this.listaKysUpdate);
+        this.listaKysUpdate.forEach(function (element) {
+            console.log("datossss pa siiasdiasdias ", element);
+        });
+        return this.listaKysUpdate;
     };
     FBservicesService.prototype.getKeyPesada = function (idCliente, fechaNodo, idVenta, idPesada, pesoPesada, valorPesada) {
         var _this = this;
         this.keyPesadaUpdate = 0;
+        this.estadoQuesoUpdate = "";
+        this.tipoQuesoUpdate = "";
+        this.pesoUpdate = 0;
         var nodo = fechaNodo.split("-", 3);
         var nodoEnv = (nodo[0] + "-" + nodo[1]);
         var a = (pesoPesada * valorPesada);
@@ -2024,17 +2084,23 @@ var FBservicesService = /** @class */ (function () {
             .ref("usuario/ventas/" + idCliente + "/" + nodoEnv + "/" + idVenta + "/pesadas")
             .on("value", function (snapshot) {
             _this.keyPesadaUpdate = 0;
+            _this.estadoQuesoUpdate = "";
+            _this.tipoQuesoUpdate = "";
+            _this.pesoUpdate = 0;
             console.log(" pesadasdsdasdasdasda ", snapshot.val());
             snapshot.forEach(function (element) {
                 console.log("id bultos de pesadas ", element.val().id);
                 if (element.val().id == idPesada) {
                     _this.keyPesadaUpdate = element.key;
+                    _this.estadoQuesoUpdate = element.val().estadoQueso;
+                    _this.tipoQuesoUpdate = element.val().tipoQueso;
+                    _this.pesoUpdate = element.val().peso;
                     console.log("KEY bultos de pesadas ", element.key);
-                    console.log("ingresamos");
                 }
             });
         });
-        return this.keyPesadaUpdate;
+        console.log("retornooooooo " + this.keyPesadaUpdate, this.estadoQuesoUpdate, this.tipoQuesoUpdate, this.pesoUpdate);
+        return this.keyPesadaUpdate, this.estadoQuesoUpdate, this.tipoQuesoUpdate, this.pesoUpdate;
     };
     FBservicesService.prototype.getTodo = function () {
         return __awaiter(this, void 0, void 0, function () {

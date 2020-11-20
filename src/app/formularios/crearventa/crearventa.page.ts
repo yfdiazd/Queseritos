@@ -36,11 +36,11 @@ export class CrearventaPage implements OnInit {
 
   permitirGuardar(event) {
     console.log("cambiando", this.valor, event);
-    if (this.tipoQueso == undefined
+    if (this.productoDefault == undefined
       || this.estadoQueso == undefined
-      || this.tipoQueso == null
+      || this.productoDefault == null
       || this.estadoQueso == null
-      || this.tipoQueso == ""
+      || this.productoDefault == ""
       || this.estadoQueso == ""
       || event == undefined
       || event == null

@@ -168,7 +168,8 @@ export class DetallelotePage implements OnInit {
           idProveedor: this.provRecibido,
           idCompra: card.id,
           listaBultosEdit: card.bultoLista,
-          productoEdit: card.idProducto
+          productoEdit: card.idProducto,
+          lote: card.lote
         },
       });
       await modal.present();
@@ -261,7 +262,7 @@ export class DetallelotePage implements OnInit {
   }
 
   async verImagen(data) {
-   
+
     if (data.archivo == "No se adjunto imagen.") {
       this.alertImg()
     } else {

@@ -218,7 +218,8 @@ var DetallelotePage = /** @class */ (function () {
                                     idProveedor: this.provRecibido,
                                     idCompra: card.id,
                                     listaBultosEdit: card.bultoLista,
-                                    productoEdit: card.idProducto
+                                    productoEdit: card.idProducto,
+                                    lote: card.lote
                                 }
                             })];
                     case 1:
@@ -333,7 +334,8 @@ var DetallelotePage = /** @class */ (function () {
                                         idPesajeCompra: anticipo.idPesajeCompra,
                                         idProveedor: anticipo.idProveedor,
                                         id: anticipo.id,
-                                        nompreProducto: tipoAnt.descripcion
+                                        nompreProducto: tipoAnt.descripcion,
+                                        archivo: anticipo.archivo
                                     });
                                 }
                             });
@@ -348,8 +350,12 @@ var DetallelotePage = /** @class */ (function () {
             var foto, popover;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.FB.getFoto(this.provRecibido, data.id)];
-                    case 1:
+                    case 0:
+                        if (!(data.archivo == "No se adjunto imagen.")) return [3 /*break*/, 1];
+                        this.alertImg();
+                        return [3 /*break*/, 5];
+                    case 1: return [4 /*yield*/, this.FB.getFotoVenta(this.idcliente, data.id)];
+                    case 2:
                         foto = _a.sent();
                         console.log("esto es la foto", foto);
                         return [4 /*yield*/, this.modalController.create({
@@ -358,10 +364,32 @@ var DetallelotePage = /** @class */ (function () {
                                 keyboardClose: false,
                                 backdropDismiss: false
                             })];
-                    case 2:
+                    case 3:
                         popover = _a.sent();
                         return [4 /*yield*/, popover.present()];
-                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4: return [2 /*return*/, _a.sent()];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DetallelotePage.prototype.alertImg = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Alerta.',
+                            message: 'Para esta venta no se adjuntó imagen.',
+                            buttons: ['ACEPTAR']
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });

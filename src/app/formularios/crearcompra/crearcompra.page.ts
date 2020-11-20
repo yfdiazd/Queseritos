@@ -20,7 +20,6 @@ export class CrearcompraPage implements OnInit {
   public nuevoRegistro: any[] = [];
   public bultoObj: any = null;
   public contadorPeso: number;
-  public lote;
   //Nombre el proveedor
   public nombreProv: any;
 
@@ -29,6 +28,7 @@ export class CrearcompraPage implements OnInit {
   @Input() idCompra;
   @Input() listaBultosEdit: any[] = [];
   @Input() productoEdit;
+  @Input() lote;
   lastLote = [];
 
   constructor(
@@ -47,8 +47,7 @@ export class CrearcompraPage implements OnInit {
     this.validacion();
     this.lastLote = [];
     this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
-    console.log("Se recibe id proveedor para editar: ", this.idProveedor);
-    console.log("lista a mostrar", this.listaBultosEdit);
+   
   }
 
   traerTipoQuesoDefault() {
@@ -167,6 +166,7 @@ export class CrearcompraPage implements OnInit {
       this.FB.getProveedorCompra();
       this.FB.getAnticipoProveedor();
     } else {
+      console.log("lista bulto edit", this.listaBultosEdit, this.lote);
       this.contarPeso();
       this.FB.updateBultoPesajeDetallado(
         this.idProveedor,
@@ -174,10 +174,11 @@ export class CrearcompraPage implements OnInit {
         this.listaBultosEdit,
         this.contadorPeso,
         this.listaBultosEdit.length,
-        this.productoDefault
+        this.productoDefault,
+        this.lote
       );
       this.listaBultosEdit = [];
-      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+      this.FB.getPesajeCompra(this.idProveedor, this.lote);
       this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
       this.modalCtrl.dismiss("true", "actualizar");
       this.FB.getProveedorCompra();

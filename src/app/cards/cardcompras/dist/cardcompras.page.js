@@ -209,7 +209,7 @@ var CardcomprasPage = /** @class */ (function () {
                 this.listaProveedores = [];
                 this.FB.proveedoresLista.forEach(function (element) {
                     var provee = element;
-                    _this.input.data.push({ name: provee.nombre, type: 'radio', label: provee.nombre, value: provee.id });
+                    _this.input.data.push({ name: provee.nombre + " " + provee.apellido, type: 'radio', label: provee.nombre + " " + provee.apellido, value: provee.id });
                 });
                 this.alertProveedores();
                 return [2 /*return*/];
@@ -222,27 +222,29 @@ var CardcomprasPage = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.alertController.create({
-                            cssClass: 'my-custom-class',
-                            header: 'Proveedores',
-                            inputs: this.input.data,
-                            keyboardClose: false,
-                            backdropDismiss: false,
-                            buttons: [
-                                {
-                                    text: 'Cancel',
-                                    role: 'cancel',
-                                    cssClass: 'secondary',
-                                    handler: function () {
+                    case 0:
+                        console.log("provee_: ", this.input.data);
+                        return [4 /*yield*/, this.alertController.create({
+                                cssClass: 'my-custom-class',
+                                header: 'Proveedores',
+                                inputs: this.input.data,
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                buttons: [
+                                    {
+                                        text: 'CANCELAR',
+                                        role: 'cancel',
+                                        cssClass: 'secondary',
+                                        handler: function () {
+                                        }
+                                    }, {
+                                        text: 'ACEPTAR',
+                                        handler: function (value) {
+                                            _this.irCompra(value);
+                                        }
                                     }
-                                }, {
-                                    text: 'Ok',
-                                    handler: function (value) {
-                                        _this.irCompra(value);
-                                    }
-                                }
-                            ]
-                        })];
+                                ]
+                            })];
                     case 1:
                         alert = _a.sent();
                         return [4 /*yield*/, alert.present()];

@@ -65,8 +65,6 @@ var CrearcompraPage = /** @class */ (function () {
         this.validacion();
         this.lastLote = [];
         this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
-        console.log("Se recibe id proveedor para editar: ", this.idProveedor);
-        console.log("lista a mostrar", this.listaBultosEdit);
     };
     CrearcompraPage.prototype.traerTipoQuesoDefault = function () {
         var _this = this;
@@ -192,10 +190,11 @@ var CrearcompraPage = /** @class */ (function () {
             this.FB.getAnticipoProveedor();
         }
         else {
+            console.log("lista bulto edit", this.listaBultosEdit, this.lote);
             this.contarPeso();
-            this.FB.updateBultoPesajeDetallado(this.idProveedor, this.idCompra, this.listaBultosEdit, this.contadorPeso, this.listaBultosEdit.length, this.productoDefault);
+            this.FB.updateBultoPesajeDetallado(this.idProveedor, this.idCompra, this.listaBultosEdit, this.contadorPeso, this.listaBultosEdit.length, this.productoDefault, this.lote);
             this.listaBultosEdit = [];
-            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+            this.FB.getPesajeCompra(this.idProveedor, this.lote);
             this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
             this.modalCtrl.dismiss("true", "actualizar");
             this.FB.getProveedorCompra();
@@ -217,6 +216,9 @@ var CrearcompraPage = /** @class */ (function () {
     __decorate([
         core_1.Input()
     ], CrearcompraPage.prototype, "productoEdit");
+    __decorate([
+        core_1.Input()
+    ], CrearcompraPage.prototype, "lote");
     CrearcompraPage = __decorate([
         core_1.Component({
             selector: 'app-crearcompra',

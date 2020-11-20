@@ -172,7 +172,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
                             keyboardClose: false,
                             backdropDismiss: false,
                             componentProps: {
-                                idProveedor: this.idProveedor
+                                idProveedor: this.idProveedor,
+                                lote: this.lastLote.toString()
                             }
                         })];
                     case 1:
@@ -273,6 +274,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        console.log("card", card);
                         if (!(card.costoTotalCompra == 0)) return [3 /*break*/, 4];
                         console.log("esta es la data a editar", card);
                         return [4 /*yield*/, this.modalController.create({
@@ -284,7 +286,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                     idProveedor: this.idProveedor,
                                     idCompra: card.id,
                                     listaBultosEdit: card.bultoLista,
-                                    productoEdit: card.idProducto
+                                    productoEdit: card.idProducto,
+                                    lote: card.lote
                                 }
                             })];
                     case 1:

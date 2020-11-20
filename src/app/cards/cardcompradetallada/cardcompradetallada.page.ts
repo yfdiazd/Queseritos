@@ -126,7 +126,8 @@ export class CardcompradetalladaPage implements OnInit {
       keyboardClose: false,
       backdropDismiss: false,
       componentProps: {
-        idProveedor: this.idProveedor
+        idProveedor: this.idProveedor,
+        lote: this.lastLote.toString()
       },
     });
     await modal.present();
@@ -189,6 +190,7 @@ export class CardcompradetalladaPage implements OnInit {
   }
 
   async editarRegistro(card) {
+    console.log("card", card);
     if (card.costoTotalCompra == 0) {
       console.log("esta es la data a editar", card);
       const modal = await this.modalController.create({
@@ -200,7 +202,8 @@ export class CardcompradetalladaPage implements OnInit {
           idProveedor: this.idProveedor,
           idCompra: card.id,
           listaBultosEdit: card.bultoLista,
-          productoEdit: card.idProducto
+          productoEdit: card.idProducto,
+          lote: card.lote
         },
       });
       await modal.present();

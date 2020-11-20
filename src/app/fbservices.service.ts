@@ -1154,7 +1154,7 @@ export class FBservicesService {
     //Confirmar pesajes
     agregarConfirmaPesaje(idProveedor, idPesajeCompra, idEstadoProducto, cantidadEstado, costoKilo, costoTotalEstado, lote) {
         this.idConfirmarPesajeCompra = this.idGenerator();
-      
+
         this.updateBalanceLoteCompra(idProveedor, lote, costoTotalEstado, "suma");
         firebase
             .database()
@@ -1238,7 +1238,7 @@ export class FBservicesService {
         let imgTx = "";
         if (archivo !== undefined) {
             this.upLoadImage(idProveedor, this.idAnticipos, archivo);
-            imgTx = archivo; 
+            imgTx = archivo;
         } else {
             imgTx = "No se adjunto imagen."
         }
@@ -1836,26 +1836,25 @@ export class FBservicesService {
             });
     }
 
-    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto) {
-        this.lastLote = [];
-        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+    updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto, lote) {
+
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesaje)
             .on("value", snapshot => {
 
                 if (snapshot.val().costoTotalCompra == 0) {
 
                     firebase
                         .database()
-                        .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesaje)
+                        .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesaje)
                         .update({
                             bultoLista: listaBultos,
                             pesoBultos: peso,
                             totalBulto: totalBultos,
                             idProducto: idProducto
                         });
-
+                    console.log("Updateado pesaje");
                     this.toastOperacionExitosa();
                 } else {
                     this.toastExistenPesajesDetale();
