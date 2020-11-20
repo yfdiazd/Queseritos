@@ -23,7 +23,7 @@ export class DetallelotePage implements OnInit {
     private modalController: ModalController,
     private alertController: AlertController,
     private navCtrl: NavController
-   
+
   ) { }
 
   public loteRecibido: any;
@@ -53,7 +53,7 @@ export class DetallelotePage implements OnInit {
     this.cambiarHoja(true);
   }
 
- 
+
 
 
 
@@ -248,7 +248,8 @@ export class DetallelotePage implements OnInit {
             idPesajeCompra: anticipo.idPesajeCompra,
             idProveedor: anticipo.idProveedor,
             id: anticipo.id,
-            nompreProducto: tipoAnt.descripcion
+            nompreProducto: tipoAnt.descripcion,
+            archivo: anticipo.archivo
           })
         }
       })
@@ -258,7 +259,7 @@ export class DetallelotePage implements OnInit {
   }
 
   async verImagen(data) {
-
+   
     if (data.archivo == "No se adjunto imagen.") {
       this.alertImg()
     } else {
