@@ -38,8 +38,11 @@ export class CardlistaproveedoresPage implements OnInit {
   debito = 0;
   saldo = 0;
 
+  lastLote: String;
   ngOnInit() {
     console.log("Entro al ngOnInit de Cardlistaproveedores");
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
     this.FB.getProveedoresCompra();
     this.listarproveedores();
     this.listadoproveedores();
@@ -100,10 +103,7 @@ export class CardlistaproveedoresPage implements OnInit {
 
       }
     })
-
   }
-
-
 
   async presentAlertConfirm(idProveedor) {
     console.log("Esto me envia el proveedor seleccionado", idProveedor)
@@ -169,8 +169,8 @@ export class CardlistaproveedoresPage implements OnInit {
     this.navCtrl.navigateBack(["main-menu"]);
   }
   irCompras() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.navCtrl.navigateBack(["cardcompras"]);
   }
   irEstado() {

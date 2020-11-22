@@ -24,20 +24,19 @@ export class MainMenuPage implements OnInit {
   ) {
 
   }
-
-  ngOnInit() {
+  lastLote = [];
+  ngOnInit() {    
     this.presentLoading('Espere...');
     // this.FB.getTodo();
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
   }
-
   comprar() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();   
+    let lote = this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1).toString();
+    this.FB.getProveedorCompra(lote);
+    this.FB.getAnticipoProveedor(lote);
     this.navCtrl.navigateForward('cardcompras');
-
   }
   async presentLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
@@ -50,7 +49,6 @@ export class MainMenuPage implements OnInit {
     });
     return this.loading.present();
   }
-
   irCardLotes() {
     this.navCtrl.navigateForward(["cardlistaproveedores"]);
   }
@@ -62,16 +60,13 @@ export class MainMenuPage implements OnInit {
     this.FB.getProveedores();
     this.navCtrl.navigateForward(["cardlistaproveedores"]);
   }
-
   lista() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
   }
-
   cerrarSesion() {
     this.FB.cerrarSesion();
   }
-
   //Redireccionamiento a las paginas de configuración
   irCiudad() {
     this.navCtrl.navigateForward('homeciudades')

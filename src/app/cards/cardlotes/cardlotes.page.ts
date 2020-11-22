@@ -26,18 +26,21 @@ export class CardlotesPage implements OnInit {
   public loading: any;
 
   public ultimoSaldo;
-
+  lastLote: String;
 
   ngOnInit() {
+    this.presentLoading('Espere...');
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedorRecibido = id;
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+    this.FB.getProductos();
     this.FB.getLotesDelProveedor(this.idProveedorRecibido);
     this.traerNombre();
     this.estadoGeneral();
     this.validarSaldo();
     this.FB.getEstadoProveedor(this.idProveedorRecibido);
     this.ultimoSaldo = this.FB.estadoSaldoProveedor;
-
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
@@ -92,8 +95,8 @@ export class CardlotesPage implements OnInit {
     this.navCtrl.navigateBack(["main-menu"]);
   }
   irCompras() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.navCtrl.navigateBack(["cardcompras"]);
   }
   irEstado() {
@@ -137,7 +140,7 @@ export class CardlotesPage implements OnInit {
       console.log("Entro al if: ", data);
       // this.ngOnInit();
       this.navCtrl.navigateBack(["main-menu"]);
-      this.FB.alertaSaldarLote(this.idProveedorRecibido,data);
+      this.FB.alertaSaldarLote(this.idProveedorRecibido, data);
       // this.FB.saldarDeudasProveedor(this.idProveedorRecibido, data);
       // this.FB.eliminarNodoProveedor(this.idProveedorRecibido);
     }
@@ -152,7 +155,7 @@ export class CardlotesPage implements OnInit {
   //       {
   //         text: 'Aceptar',
   //         handler: () => {
-            
+
   //         }
   //       }
   //     ]

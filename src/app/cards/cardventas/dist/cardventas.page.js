@@ -66,11 +66,12 @@ var CardventasPage = /** @class */ (function () {
     }
     CardventasPage.prototype.ngOnInit = function () {
         var _this = this;
-        var id = this.route.snapshot.paramMap.get("id");
-        this.idcliente = id;
         this.presentLoading('Espere...');
+        var id = this.route.snapshot.paramMap.get("id");
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+        this.idcliente = id;
         this.traerNombre();
-        console.log("Esta es la lista para ver en el front:", this.FB.ventasclienteListaMes);
         this.customPickerOptions = {
             buttons: [{
                     text: 'Aceptar',
@@ -417,8 +418,8 @@ var CardventasPage = /** @class */ (function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     CardventasPage.prototype.irCompras = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardventasPage.prototype.irEstado = function () {

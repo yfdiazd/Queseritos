@@ -21,6 +21,8 @@ var CardlistaclientesPage = /** @class */ (function () {
         this.listarnombresclientes();
     }
     CardlistaclientesPage.prototype.ngOnInit = function () {
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
     };
     CardlistaclientesPage.prototype.getItems = function (ev) {
         this.listanombres;
@@ -58,8 +60,8 @@ var CardlistaclientesPage = /** @class */ (function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     CardlistaclientesPage.prototype.irCompras = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardlistaclientesPage.prototype.irEstado = function () {

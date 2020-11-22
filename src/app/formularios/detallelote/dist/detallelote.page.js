@@ -60,17 +60,19 @@ var DetallelotePage = /** @class */ (function () {
         //Lista de anticipos para mostrar de la compra
         this.dataFront = [];
         this.dataFrontDirecta = [];
+        this.listaDataDetallada = [];
         //Controladores para visualizar el segment
         this.cards_Compras = true;
         this.cards_anticipos = false;
         this.cards_detalle = false;
         this.crearAnticipo = false;
-        this.listaDataDetallada = [];
         this.sumaAnticiposDirecto = 0;
     }
     DetallelotePage.prototype.ngOnInit = function () {
         var idLote = this.route.snapshot.paramMap.get("id");
         var idProv = this.route.snapshot.paramMap.get("prov");
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
         this.loteRecibido = idLote;
         this.provRecibido = idProv;
         this.traerNombre();
@@ -79,13 +81,11 @@ var DetallelotePage = /** @class */ (function () {
     };
     DetallelotePage.prototype.cambiarHoja = function (event) {
         if (event == true) {
-            console.log("entro desde onInit");
             this.generarData();
             this.generarDataDirecta();
             this.traerDataDetallada();
         }
         else {
-            console.log("Entro desde el html");
             var valorSegment = event.detail.value;
             if (valorSegment == "ccompras") {
                 this.cards_Compras = true;
@@ -125,6 +125,12 @@ var DetallelotePage = /** @class */ (function () {
         this.FB.pesajeCompraLista.forEach(function (pesaje) {
             _this.FB.productosLista.forEach(function (producto) {
                 if (pesaje.idProducto == producto.id) {
+                    _this.FB.proveedoresLista.forEach(function (element) {
+                        if (element.id == pesaje.idProveedor) {
+                            _this.nombreProv = element.nombre;
+                            console.log("nombre", _this.nombreProv);
+                        }
+                    });
                     _this.listaDataDetallada.push({
                         anticipos: pesaje.anticipos,
                         bultoLista: pesaje.bultoLista,
@@ -144,7 +150,7 @@ var DetallelotePage = /** @class */ (function () {
     };
     DetallelotePage.prototype.modalConfirmarPesaje = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var modal;
+            var modal, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -163,10 +169,16 @@ var DetallelotePage = /** @class */ (function () {
                             })];
                     case 1:
                         modal = _a.sent();
-                        console.log("Esto se envia desde detallelote:;", this.provRecibido, card.id, card.lote);
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
+                        console.log("Esto se envia desde detallelote:;", this.provRecibido, card.id, card.lote);
+                        return [4 /*yield*/, modal.onWillDismiss()];
+                    case 3:
+                        data = (_a.sent()).data;
+                        if (data == "true") {
+                            this.traerDataDetallada();
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -208,17 +220,18 @@ var DetallelotePage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!(card.costoTotalCompra == 0)) return [3 /*break*/, 4];
-                        console.log("esta es la data a editar", card);
+                        console.log("esta es la data a editar", this.provRecibido, card);
                         return [4 /*yield*/, this.modalController.create({
                                 component: crearcompra_page_1.CrearcompraPage,
                                 cssClass: 'my-custom-class',
                                 keyboardClose: false,
                                 backdropDismiss: false,
                                 componentProps: {
-                                    idProveedor: this.provRecibido,
+                                    idProveedor: card.idProveedor,
                                     idCompra: card.id,
                                     listaBultosEdit: card.bultoLista,
-                                    productoEdit: card.idProducto
+                                    productoEdit: card.idProducto,
+                                    lote: card.lote
                                 }
                             })];
                     case 1:
@@ -233,8 +246,8 @@ var DetallelotePage = /** @class */ (function () {
                             this.FB.getPesajeCompra(this.provRecibido, this.loteRecibido);
                             this.FB.getProductos();
                             this.traerDataDetallada();
-                            this.FB.getProveedorCompra();
-                            this.FB.getAnticipoProveedor();
+                            this.FB.getProveedorCompra(this.loteRecibido);
+                            this.FB.getAnticipoProveedor(this.loteRecibido);
                         }
                         return [3 /*break*/, 7];
                     case 4: return [4 /*yield*/, this.alertController.create({
@@ -333,7 +346,8 @@ var DetallelotePage = /** @class */ (function () {
                                         idPesajeCompra: anticipo.idPesajeCompra,
                                         idProveedor: anticipo.idProveedor,
                                         id: anticipo.id,
-                                        nompreProducto: tipoAnt.descripcion
+                                        nompreProducto: tipoAnt.descripcion,
+                                        archivo: anticipo.archivo
                                     });
                                 }
                             });
@@ -348,8 +362,12 @@ var DetallelotePage = /** @class */ (function () {
             var foto, popover;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.FB.getFoto(this.provRecibido, data.id)];
-                    case 1:
+                    case 0:
+                        if (!(data.archivo == "No se adjunto imagen.")) return [3 /*break*/, 1];
+                        this.alertImg();
+                        return [3 /*break*/, 5];
+                    case 1: return [4 /*yield*/, this.FB.getFotoVenta(this.idcliente, data.id)];
+                    case 2:
                         foto = _a.sent();
                         console.log("esto es la foto", foto);
                         return [4 /*yield*/, this.modalController.create({
@@ -358,10 +376,32 @@ var DetallelotePage = /** @class */ (function () {
                                 keyboardClose: false,
                                 backdropDismiss: false
                             })];
-                    case 2:
+                    case 3:
                         popover = _a.sent();
                         return [4 /*yield*/, popover.present()];
-                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4: return [2 /*return*/, _a.sent()];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DetallelotePage.prototype.alertImg = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var alert;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Alerta.',
+                            message: 'Para esta venta no se adjuntó imagen.',
+                            buttons: ['ACEPTAR']
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
@@ -385,7 +425,7 @@ var DetallelotePage = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.alertController.create({
                             cssClass: 'my-custom-class',
                             header: 'Cuidado!',
-                            message: 'Esta seguro de eliminar el anticipo?',
+                            message: 'Esta seguro de eliminar la compra?',
                             buttons: [
                                 {
                                     text: 'Cancelar',
@@ -487,8 +527,8 @@ var DetallelotePage = /** @class */ (function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     DetallelotePage.prototype.irCompras = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     DetallelotePage.prototype.irEstado = function () {

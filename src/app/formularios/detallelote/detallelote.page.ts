@@ -35,6 +35,7 @@ export class DetallelotePage implements OnInit {
   //Lista de anticipos para mostrar de la compra
   dataFront: any[] = [];
   dataFrontDirecta: any[] = [];
+  listaDataDetallada: any[] = [];
 
   //Controladores para visualizar el segment
   cards_Compras: boolean = true;
@@ -43,28 +44,26 @@ export class DetallelotePage implements OnInit {
   crearAnticipo: boolean = false;
 
 
+
+  lastLote: String;
   ngOnInit() {
     let idLote = this.route.snapshot.paramMap.get("id");
     let idProv = this.route.snapshot.paramMap.get("prov");
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
     this.loteRecibido = idLote;
     this.provRecibido = idProv;
     this.traerNombre();
     this.traerDataDetallada();
     this.cambiarHoja(true);
   }
-
-
-
-
-
   cambiarHoja(event) {
     if (event == true) {
-      console.log("entro desde onInit");
       this.generarData();
       this.generarDataDirecta();
       this.traerDataDetallada();
     } else {
-      console.log("Entro desde el html");
+
       const valorSegment = event.detail.value;
       if (valorSegment == "ccompras") {
         this.cards_Compras = true;
@@ -96,14 +95,20 @@ export class DetallelotePage implements OnInit {
     }
 
   }
-  listaDataDetallada: any[] = [];
   traerDataDetallada() {
     this.nombreProv = [];
     this.listaDataDetallada = [];
 
+
     this.FB.pesajeCompraLista.forEach(pesaje => {
       this.FB.productosLista.forEach(producto => {
         if (pesaje.idProducto == producto.id) {
+          this.FB.proveedoresLista.forEach(element => {
+            if (element.id == pesaje.idProveedor) {
+              this.nombreProv = element.nombre;
+              console.log("nombre", this.nombreProv);
+            }
+          })
 
           this.listaDataDetallada.push({
             anticipos: pesaje.anticipos,
@@ -122,7 +127,6 @@ export class DetallelotePage implements OnInit {
       })
     })
   }
-
   async modalConfirmarPesaje(card) {
     this.FB.getInfoCompra(this.provRecibido, card.id, card.lote)
     this.FB.getPesajeConfirmado(this.provRecibido, card.id, card.lote);
@@ -137,8 +141,12 @@ export class DetallelotePage implements OnInit {
         lote: card.lote
       },
     });
-    console.log("Esto se envia desde detallelote:;", this.provRecibido, card.id, card.lote);
     await modal.present();
+    console.log("Esto se envia desde detallelote:;", this.provRecibido, card.id, card.lote);
+    const { data } = await modal.onWillDismiss();
+    if (data == "true") {
+      this.traerDataDetallada();
+    }
   }
   eliminarRegistro(lista) {
     if (lista.anticipos == 0 && lista.costoTotalCompra == 0) {
@@ -158,17 +166,18 @@ export class DetallelotePage implements OnInit {
   }
   async editarRegistro(card) {
     if (card.costoTotalCompra == 0) {
-      console.log("esta es la data a editar", card);
+      console.log("esta es la data a editar", this.provRecibido, card);
       const modal = await this.modalController.create({
         component: CrearcompraPage,
         cssClass: 'my-custom-class',
         keyboardClose: false,
         backdropDismiss: false,
         componentProps: {
-          idProveedor: this.provRecibido,
+          idProveedor: card.idProveedor,
           idCompra: card.id,
           listaBultosEdit: card.bultoLista,
-          productoEdit: card.idProducto
+          productoEdit: card.idProducto,
+          lote: card.lote
         },
       });
       await modal.present();
@@ -177,8 +186,8 @@ export class DetallelotePage implements OnInit {
         this.FB.getPesajeCompra(this.provRecibido, this.loteRecibido);
         this.FB.getProductos();
         this.traerDataDetallada();
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.loteRecibido);
+        this.FB.getAnticipoProveedor(this.loteRecibido);
       }
     } else {
       const alert = await this.alertController.create({
@@ -191,7 +200,6 @@ export class DetallelotePage implements OnInit {
       await alert.present();
     }
   }
-
   async generarData() {
     this.dataFront = [];
     let lista = await this.FB.pesajeLoteProveedorLista;
@@ -233,7 +241,6 @@ export class DetallelotePage implements OnInit {
     return this.dataFront;
 
   }
-
   sumaAnticiposDirecto = 0;
   async generarDataDirecta() {
     this.dataFrontDirecta = [];
@@ -259,9 +266,8 @@ export class DetallelotePage implements OnInit {
     return this.dataFrontDirecta, this.sumaAnticiposDirecto;
 
   }
-
   async verImagen(data) {
-   
+
     if (data.archivo == "No se adjunto imagen.") {
       this.alertImg()
     } else {
@@ -286,8 +292,6 @@ export class DetallelotePage implements OnInit {
 
     await alert.present();
   }
-
-
   traerNombre() {
     this.nombreProv = [];
     console.log("Nombre prov", this.provRecibido);
@@ -297,13 +301,12 @@ export class DetallelotePage implements OnInit {
       }
     })
   }
-
   async removeRegister(lista) {
 
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Cuidado!',
-      message: 'Esta seguro de eliminar el anticipo?',
+      message: 'Esta seguro de eliminar la compra?',
       buttons: [
         {
           text: 'Cancelar',
@@ -326,7 +329,6 @@ export class DetallelotePage implements OnInit {
     });
     await alert.present();
   }
-
   async irHomeAnticipo(item) {
     const modal = await this.modalController.create({
       component: CreartruequePage,
@@ -345,7 +347,6 @@ export class DetallelotePage implements OnInit {
       this.cambiarHoja(true);
     }
   }
-
   async irHomeAnticipo2() {
     const modal = await this.modalController.create({
       component: CreartruequePage,
@@ -367,13 +368,12 @@ export class DetallelotePage implements OnInit {
       this.cambiarHoja(true);
     }
   }
-
   irInicio() {
     this.navCtrl.navigateBack(["main-menu"]);
   }
   irCompras() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.navCtrl.navigateBack(["cardcompras"]);
   }
   irEstado() {

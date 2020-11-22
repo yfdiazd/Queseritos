@@ -87,12 +87,10 @@ export class HomepesajesPage implements OnInit {
     this.modalController.dismiss("true", "actualizar");
   }
   async removeRegister(lista) {
-    console.log("valores", this.idProv, this.idCompra, lista);
-
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Cuidado!',
-      message: 'Esta seguro de <strong>eliminar</strong> el pesaje confirmado?',
+      message: 'Esta seguro de eliminar el pesaje confirmado?',
       buttons: [
         {
           text: 'Cancelar',
@@ -105,9 +103,12 @@ export class HomepesajesPage implements OnInit {
           text: 'SI',
           handler: () => {
             console.log('Confirm Okay', lista);
+            console.log("remove: ",this.idProv, this.idCompra, lista.id, lista.costoTotalEstado, this.lote);
             this.FB.deletePesajeConfirmado(this.idProv, this.idCompra, lista.id, lista.costoTotalEstado, this.lote);
             this.FB.getInfoCompra(this.idProv, this.idCompra, this.lote)
             this.FB.getPesajeConfirmado(this.idProv, this.idCompra, this.lote);
+            this.FB.getPesajeCompra(this.idProv, this.lote);
+
           }
         }
       ]

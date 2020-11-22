@@ -66,6 +66,8 @@ var CardlistaproveedoresPage = /** @class */ (function () {
     }
     CardlistaproveedoresPage.prototype.ngOnInit = function () {
         console.log("Entro al ngOnInit de Cardlistaproveedores");
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
         this.FB.getProveedoresCompra();
         this.listarproveedores();
         this.listadoproveedores();
@@ -216,8 +218,8 @@ var CardlistaproveedoresPage = /** @class */ (function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     CardlistaproveedoresPage.prototype.irCompras = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardlistaproveedoresPage.prototype.irEstado = function () {

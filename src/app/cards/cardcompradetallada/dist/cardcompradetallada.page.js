@@ -58,20 +58,17 @@ var CardcompradetalladaPage = /** @class */ (function () {
         this.listaCard = [];
         //lista de la compra que se recorre en el HTML
         this.listaCompras = [];
-        this.lastLote = [];
         this.cantidadConfirmaciones = 0;
     }
     CardcompradetalladaPage.prototype.ngOnInit = function () {
         var id = this.route.snapshot.paramMap.get("id");
         this.idProveedor = id;
-        this.lastLote = [];
-        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
-        this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
         this.FB.getProductos();
+        this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
         this.traerTipoQueso();
         this.traerNombre();
-        console.log("Se recibe el proveedor: ", this.idProveedor);
-        console.log("listaParaElFront", this.listaCompras);
     };
     CardcompradetalladaPage.prototype.traerTipoQueso = function () {
         var _this = this;
@@ -91,7 +88,6 @@ var CardcompradetalladaPage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.nombreProv = [];
                 this.listaCompras = [];
-                console.log("Lista comporassasssssssssssssss:", this.listaCompras);
                 this.FB.proveedoresLista.forEach(function (element) {
                     _this.FB.pesajeCompraLista.forEach(function (element2) {
                         if (element.id == element2.idProveedor) {
@@ -128,8 +124,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.FB.getInfoCompra(this.idProveedor, card.id, card.lote);
-                        this.FB.getPesajeConfirmado(this.idProveedor, card.id, card.lote);
+                        this.FB.getInfoCompra(this.idProveedor, card.id, this.lastLote);
+                        this.FB.getPesajeConfirmado(this.idProveedor, card.id, this.lastLote);
                         return [4 /*yield*/, this.modalController.create({
                                 component: homepesajes_page_1.HomepesajesPage,
                                 cssClass: 'my-custom-class',
@@ -143,7 +139,6 @@ var CardcompradetalladaPage = /** @class */ (function () {
                             })];
                     case 1:
                         modal = _a.sent();
-                        console.log("Esto se envia desde detallelote:;", this.idProveedor, card.id, card.lote);
                         return [4 /*yield*/, modal.present()];
                     case 2:
                         _a.sent();
@@ -151,7 +146,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.FB.getPesajeCompra(this.idProveedor, card.lote);
+                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
+                            this.FB.getPesajeConfirmado(this.idProveedor, card.id, this.lastLote);
                             this.FB.getProductos();
                             this.traerTipoQueso();
                             this.traerNombre();
@@ -172,7 +168,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
                             keyboardClose: false,
                             backdropDismiss: false,
                             componentProps: {
-                                idProveedor: this.idProveedor
+                                idProveedor: this.idProveedor,
+                                lote: this.lastLote
                             }
                         })];
                     case 1:
@@ -184,7 +181,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
                             this.FB.getProductos();
                             this.traerTipoQueso();
                             this.traerNombre();
@@ -224,12 +221,12 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                     text: 'SI',
                                     handler: function () {
                                         console.log("datos de la lista cuando elimina ", lista);
-                                        _this.FB.deletePesajeCompra(_this.idProveedor, lista.id);
-                                        _this.FB.getPesajeCompra(_this.idProveedor, _this.lastLote.toString());
+                                        _this.FB.deletePesajeCompra(_this.idProveedor, lista.id, _this.lastLote);
+                                        _this.FB.getPesajeCompra(_this.idProveedor, _this.lastLote);
+                                        _this.FB.getProveedorCompra(_this.lastLote);
+                                        _this.FB.getAnticipoProveedor(_this.lastLote);
                                         _this.traerTipoQueso();
                                         _this.traerNombre();
-                                        _this.FB.getProveedorCompra();
-                                        _this.FB.getAnticipoProveedor();
                                     }
                                 }
                             ]
@@ -239,8 +236,6 @@ var CardcompradetalladaPage = /** @class */ (function () {
                         return [4 /*yield*/, alert.present()];
                     case 2:
                         _a.sent();
-                        this.FB.getProveedorCompra();
-                        this.FB.getAnticipoProveedor();
                         return [2 /*return*/];
                 }
             });
@@ -274,7 +269,7 @@ var CardcompradetalladaPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!(card.costoTotalCompra == 0)) return [3 /*break*/, 4];
-                        console.log("esta es la data a editar", card);
+                        console.log("esta es la data a editar", this.idProveedor, card);
                         return [4 /*yield*/, this.modalController.create({
                                 component: crearcompra_page_1.CrearcompraPage,
                                 cssClass: 'my-custom-class',
@@ -284,7 +279,8 @@ var CardcompradetalladaPage = /** @class */ (function () {
                                     idProveedor: this.idProveedor,
                                     idCompra: card.id,
                                     listaBultosEdit: card.bultoLista,
-                                    productoEdit: card.idProducto
+                                    productoEdit: card.idProducto,
+                                    lote: card.lote
                                 }
                             })];
                     case 1:
@@ -296,12 +292,12 @@ var CardcompradetalladaPage = /** @class */ (function () {
                     case 3:
                         data = (_a.sent()).data;
                         if (data == "true") {
-                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+                            this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
                             this.FB.getProductos();
+                            this.FB.getProveedorCompra(this.lastLote);
+                            this.FB.getAnticipoProveedor(this.lastLote);
                             this.traerTipoQueso();
                             this.traerNombre();
-                            this.FB.getProveedorCompra();
-                            this.FB.getAnticipoProveedor();
                         }
                         return [3 /*break*/, 7];
                     case 4: return [4 /*yield*/, this.alertController.create({
@@ -322,16 +318,16 @@ var CardcompradetalladaPage = /** @class */ (function () {
         });
     };
     CardcompradetalladaPage.prototype.volver = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardcompradetalladaPage.prototype.irInicio = function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     CardcompradetalladaPage.prototype.irCompras = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardcompradetalladaPage.prototype.irEstado = function () {

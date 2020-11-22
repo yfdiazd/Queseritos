@@ -34,18 +34,17 @@ export class CardcompradetalladaPage implements OnInit {
   listaCard: any[] = [];
   //lista de la compra que se recorre en el HTML
   public listaCompras: any[] = [];
-  lastLote = [];
+  lastLote: String;
+
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get("id");
     this.idProveedor = id;
-    this.lastLote = [];
-    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
-    this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
     this.FB.getProductos();
+    this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
     this.traerTipoQueso();
     this.traerNombre();
-    console.log("Se recibe el proveedor: ", this.idProveedor);
-    console.log("listaParaElFront", this.listaCompras);
   }
   traerTipoQueso() {
     this.tipoQueso = [];
@@ -62,8 +61,6 @@ export class CardcompradetalladaPage implements OnInit {
   async traerNombre() {
     this.nombreProv = [];
     this.listaCompras = [];
-    console.log("Lista comporassasssssssssssssss:", this.listaCompras);
-
     this.FB.proveedoresLista.forEach(element => {
       this.FB.pesajeCompraLista.forEach(element2 => {
         if (element.id == element2.idProveedor) {
@@ -94,8 +91,8 @@ export class CardcompradetalladaPage implements OnInit {
 
   }
   async modalConfirmarPesaje(card) {
-    this.FB.getInfoCompra(this.idProveedor, card.id, card.lote)
-    this.FB.getPesajeConfirmado(this.idProveedor, card.id, card.lote);
+    this.FB.getInfoCompra(this.idProveedor, card.id, this.lastLote)
+    this.FB.getPesajeConfirmado(this.idProveedor, card.id, this.lastLote);
     const modal = await this.modalController.create({
       component: HomepesajesPage,
       cssClass: 'my-custom-class',
@@ -107,18 +104,17 @@ export class CardcompradetalladaPage implements OnInit {
         lote: card.lote
       },
     });
-    console.log("Esto se envia desde detallelote:;", this.idProveedor, card.id, card.lote);
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data == "true") {
-      this.FB.getPesajeCompra(this.idProveedor, card.lote);
+      this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
+      this.FB.getPesajeConfirmado(this.idProveedor, card.id, this.lastLote);
       this.FB.getProductos();
       this.traerTipoQueso();
       this.traerNombre();
     }
 
   }
-
   async irCompra() {
     const modal = await this.modalController.create({
       component: CrearcompraPage,
@@ -126,13 +122,14 @@ export class CardcompradetalladaPage implements OnInit {
       keyboardClose: false,
       backdropDismiss: false,
       componentProps: {
-        idProveedor: this.idProveedor
+        idProveedor: this.idProveedor,
+        lote: this.lastLote
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data == "true") {
-      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+      this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
       this.FB.getProductos();
       this.traerTipoQueso();
       this.traerNombre();
@@ -145,7 +142,6 @@ export class CardcompradetalladaPage implements OnInit {
       this.alertRemove();
     }
   }
-
   async removeRegister(lista) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -164,19 +160,17 @@ export class CardcompradetalladaPage implements OnInit {
           handler: () => {
             console.log("datos de la lista cuando elimina ", lista);
 
-            this.FB.deletePesajeCompra(this.idProveedor, lista.id);
-            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+            this.FB.deletePesajeCompra(this.idProveedor, lista.id, this.lastLote);
+            this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
+            this.FB.getProveedorCompra(this.lastLote);
+            this.FB.getAnticipoProveedor(this.lastLote);
             this.traerTipoQueso();
             this.traerNombre();
-            this.FB.getProveedorCompra();
-            this.FB.getAnticipoProveedor();
           }
         }
       ]
     });
     await alert.present();
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
   }
   async alertRemove() {
     const alert = await this.alertController.create({
@@ -187,10 +181,9 @@ export class CardcompradetalladaPage implements OnInit {
     });
     await alert.present();
   }
-
   async editarRegistro(card) {
     if (card.costoTotalCompra == 0) {
-      console.log("esta es la data a editar", card);
+      console.log("esta es la data a editar", this.idProveedor, card);
       const modal = await this.modalController.create({
         component: CrearcompraPage,
         cssClass: 'my-custom-class',
@@ -200,18 +193,20 @@ export class CardcompradetalladaPage implements OnInit {
           idProveedor: this.idProveedor,
           idCompra: card.id,
           listaBultosEdit: card.bultoLista,
-          productoEdit: card.idProducto
+          productoEdit: card.idProducto,
+          lote: card.lote
         },
       });
       await modal.present();
       const { data } = await modal.onWillDismiss();
       if (data == "true") {
-        this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+        this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
         this.FB.getProductos();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.traerTipoQueso();
         this.traerNombre();
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+
       }
     } else {
       const alert = await this.alertController.create({
@@ -225,17 +220,16 @@ export class CardcompradetalladaPage implements OnInit {
     }
   }
   volver() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.navCtrl.navigateBack(["cardcompras"]);
   }
-
   irInicio() {
     this.navCtrl.navigateBack(["main-menu"]);
   }
   irCompras() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.navCtrl.navigateBack(["cardcompras"]);
   }
   irEstado() {
