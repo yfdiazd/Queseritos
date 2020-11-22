@@ -81,7 +81,7 @@ var MainMenuPage = /** @class */ (function () {
                                 message: message,
                                 cssClass: 'cssLoading',
                                 keyboardClose: false,
-                                //backdropDismiss: false,
+                                backdropDismiss: true,
                                 spinner: 'lines',
                                 translucent: true
                             })];
