@@ -94,6 +94,7 @@ var ConfirmarpesajePage = /** @class */ (function () {
             this.FB.agregarConfirmaPesaje(this.idProv, this.idCompra, this.idEstadoProducto, this.peso, this.costoKilo, this.costoTotalEstado, this.lote);
             this.FB.updateCostoCompra(this.idProv, this.idCompra, this.costoTotalEstado, "suma", this.lote);
             this.FB.getPesajeConfirmado(this.idProv, this.idCompra, this.lote);
+            this.FB.getPesajeCompra(this.idProv, this.lote);
             this.popover.dismiss();
         }
     };

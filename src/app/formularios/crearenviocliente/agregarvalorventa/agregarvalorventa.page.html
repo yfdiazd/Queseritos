@@ -13,7 +13,7 @@
   <div>
     <p>Ingrese el valor</p>
     <input [(ngModel)]="valor" class="select" type="number" required>
-    <ion-button class="btn_guardar" (click)="guardar()" expand="block" fill="clear">
+    <ion-button class="btn_guardar"  [disabled]="btn_guardar" (click)="guardar()" expand="block" fill="clear">
       Guardar
     </ion-button>
   </div>

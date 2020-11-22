@@ -30,9 +30,10 @@ export class CardlistaclientesPage implements OnInit {
     this.listarnombresclientes();
 
   }
-
+lastLote: String;
   ngOnInit() {
-
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
   }
 
 
@@ -85,8 +86,8 @@ export class CardlistaclientesPage implements OnInit {
     this.navCtrl.navigateBack(["main-menu"]);
   }
   irCompras() {
-    this.FB.getProveedorCompra();
-    this.FB.getAnticipoProveedor();
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.navCtrl.navigateBack(["cardcompras"]);
   }
   irEstado() {

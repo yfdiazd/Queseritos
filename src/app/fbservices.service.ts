@@ -308,19 +308,13 @@ export class FBservicesService {
         const toast = await this.toastController.create({
             message: "Operacion ejecutada con exito",
             color: "success",
+            position: 'top',
             duration: 3000
         });
         toast.present();
     }
 
-    async toastExistenPesajesDetale() {
-        const toast = await this.toastController.create({
-            message: "Existen pesajes confirmados para esta compra",
-            color: "danger",
-            duration: 5000
-        });
-        toast.present();
-    }
+
 
     async toastElementoDuplicado() {
         const toas = await this.toastController.create({
@@ -1023,6 +1017,7 @@ export class FBservicesService {
                     this.ultimoLote.push(element.val().lote);
 
                 });
+                console.log("ultimo lote", this.ultimoLote.slice(this.ultimoLote.length - 1));
             });
         return this.ultimoLote;
 
@@ -1055,15 +1050,14 @@ export class FBservicesService {
             });
     }
     //Metodo que permite buscar y retornar las compras de los proveedores del ultimo lote
-    async getProveedorCompra() {
+    async getProveedorCompra(lote) {
         const ordenLotes = await this.listaOrdenLotes();
         this.proveedorCompraLista = [];
-        this.lastLote = [];
-        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
+
         this.proveedoresLista.forEach(element => {
             firebase
                 .database()
-                .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/pesajeCompra")
+                .ref("usuario/compras/" + element.id + "/" + lote + "/pesajeCompra")
                 .on("value", snapshot => {
 
                     if (snapshot.exists() && snapshot.val() !== null) {
@@ -1090,13 +1084,10 @@ export class FBservicesService {
             });
     }
 
-    deletePesajeCompra(idProveedor, idPesajeCompra) {
-        const ordenLotes = this.listaOrdenLotes();
-        this.lastLote = [];
-        this.lastLote = (ordenLotes.slice(ordenLotes.length - 1));
+    deletePesajeCompra(idProveedor, idPesajeCompra, lote) {
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra/" + idPesajeCompra)
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesajeCompra)
             .remove();
         this.toastOperacionExitosa();
     }
@@ -1105,7 +1096,7 @@ export class FBservicesService {
         if (accion == "suma") {
 
             let totalLocal = 0;
-            this.getCostoCompra(idProveedor, idPesajeCompra);
+            this.getCostoCompra(idProveedor, idPesajeCompra, lote);
             totalLocal = this.costoCompraTemp;
             totalLocal = (totalLocal + totalCompra);
             firebase
@@ -1116,13 +1107,9 @@ export class FBservicesService {
                 });
         } else if (accion == "resta") {
             let totalLocal = 0;
-            this.getCostoCompra(idProveedor, idPesajeCompra);
+            this.getCostoCompra(idProveedor, idPesajeCompra, lote);
             totalLocal = this.costoCompraTemp;
-            console.log("esto es la db en compra balance ", totalLocal);
-            console.log("esto es local lo que se quita de balance ", totalCompra);
             totalLocal = (totalLocal - totalCompra);
-            console.log("esto queda se actualziara en la base de taos ", totalLocal);
-
             firebase
                 .database()
                 .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesajeCompra)
@@ -1133,12 +1120,11 @@ export class FBservicesService {
     }
 
     costoCompraTemp: number;
-    getCostoCompra(idProveedor, idPesajeCompra) {
+    getCostoCompra(idProveedor, idPesajeCompra, lote) {
         this.costoCompraTemp = 0;
-
         firebase
             .database()
-            .ref("usuario/compras/" + idProveedor + "/" + this.lastLote.toString() + "/pesajeCompra")
+            .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra")
             .on("value", snapshot => {
                 snapshot.forEach(element => {
                     if (element.key == idPesajeCompra) {
@@ -1161,7 +1147,7 @@ export class FBservicesService {
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/confirmarPesajeCompra/" + idPesajeCompra + "/" + this.idConfirmarPesajeCompra)
             .set({
                 id: this.idConfirmarPesajeCompra,
-                codigoLote: this.lastLote.toString(),
+                codigoLote: lote,
                 idPesajeCompra: idPesajeCompra,
                 idEstadoProducto: idEstadoProducto,
                 cantidadEstado: cantidadEstado,
@@ -1176,7 +1162,6 @@ export class FBservicesService {
     public sumapesoConfirmado: any;
     public saldoPesoConfirmado: any;
     async getPesajeConfirmado(idProveedor, idPesajeCompra, lote) {
-        console.log("getPesajeConfirmado", idProveedor, idPesajeCompra, lote);
         this.pesajeConfirmadoLista = [];
         this.objPesajeConfirmado = [];
         this.sumapesoConfirmado = 0;
@@ -1216,8 +1201,6 @@ export class FBservicesService {
             });
     }
     deletePesajeConfirmado(idProveedor, idPesajeCompra, idPesajeConfirmado, valor, lote) {
-        const ordenLotes = this.listaOrdenLotes();
-
         this.updateCostoCompra(idProveedor, idPesajeCompra, valor, "resta", lote);
         this.updateBalanceLoteCompra(idProveedor, lote, valor, "resta");
         firebase
@@ -1293,16 +1276,15 @@ export class FBservicesService {
             });
     }
 
-    async getAnticipoProveedor() {
+    async getAnticipoProveedor(lote) {
 
-        this.lastLote = [];
-        this.lastLote = (this.ultimoLote.slice(this.ultimoLote.length - 1));
+      
         this.anticipoCompraLista = [];
         let proveedoresLista = await this.proveedoresLista;
         proveedoresLista.forEach(element => {
             firebase
                 .database()
-                .ref("usuario/compras/" + element.id + "/" + this.lastLote.toString() + "/anticipos")
+                .ref("usuario/compras/" + element.id + "/" + lote + "/anticipos")
                 .on('value', snapshot => {
                     if (snapshot.exists() && snapshot.val() !== null) {
                         this.anticipoCompraLista.push(snapshot.val());
@@ -1837,31 +1819,19 @@ export class FBservicesService {
     }
 
     updateBultoPesajeDetallado(idProveedor, idPesaje, listaBultos, peso, totalBultos, idProducto, lote) {
-
+        console.log("Entra a editar");
         firebase
             .database()
             .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesaje)
-            .on("value", snapshot => {
-
-                if (snapshot.val().costoTotalCompra == 0) {
-
-                    firebase
-                        .database()
-                        .ref("usuario/compras/" + idProveedor + "/" + lote + "/pesajeCompra/" + idPesaje)
-                        .update({
-                            bultoLista: listaBultos,
-                            pesoBultos: peso,
-                            totalBulto: totalBultos,
-                            idProducto: idProducto
-                        });
-                    console.log("Updateado pesaje");
-                    this.toastOperacionExitosa();
-                } else {
-                    this.toastExistenPesajesDetale();
-                }
+            .update({
+                bultoLista: listaBultos,
+                pesoBultos: peso,
+                totalBulto: totalBultos,
+                idProducto: idProducto
             });
-
+        this.toastOperacionExitosa();
     }
+
 
     eliminarVenta(idCliente, fechaNodo, idVenta) {
         this.deleteImageVenta(idCliente, idVenta);

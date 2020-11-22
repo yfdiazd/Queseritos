@@ -56,18 +56,21 @@ var CardcomprasPage = /** @class */ (function () {
         this.input = { data: [] };
         //Lista de nombres a mostrar
         this.listaDatos = [];
-        this.lastLote = [];
-        console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
+        var lote = this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1).toString();
+        this.FB.getProveedorCompra(lote);
+        this.FB.getAnticipoProveedor(lote);
     }
     CardcomprasPage.prototype.ngOnInit = function () {
         var _this = this;
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.validacionLote();
         this.FB.getLoteProveedor();
         this.traerNombre();
         this.cambioSaldo();
         this.presentLoading('Espere...');
-        this.lastLote = [];
-        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
         setTimeout(function () {
             _this.loading.dismiss();
         }, 1500);
@@ -95,11 +98,13 @@ var CardcomprasPage = /** @class */ (function () {
         });
     };
     CardcomprasPage.prototype.doRefresh = function (event) {
-        this.lastLote = [];
-        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.validacionLote();
         this.FB.getLoteProveedor();
-        this.FB.getAnticipoProveedor();
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.traerNombre();
         this.cambioSaldo();
         setTimeout(function () {
@@ -151,20 +156,13 @@ var CardcomprasPage = /** @class */ (function () {
     //Validación del ultimo lote con el día en que ingresa a cardcompras: Muestra el alert
     CardcomprasPage.prototype.validacionLote = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var ordenLotes;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.FB.listaOrdenLotes()];
-                    case 1:
-                        ordenLotes = _a.sent();
-                        this.loteActual = (ordenLotes.slice(this.FB.ultimoLote.length - 1));
-                        if (this.loteActual.toString().includes(this.FB.fechaActual())) {
-                        }
-                        else {
-                            this.alertConfirmarNuevoLote();
-                        }
-                        return [2 /*return*/];
+                if (this.lastLote.includes(this.FB.fechaActual())) {
                 }
+                else {
+                    this.alertConfirmarNuevoLote();
+                }
+                return [2 /*return*/];
             });
         });
     };
@@ -195,7 +193,7 @@ var CardcomprasPage = /** @class */ (function () {
     CardcomprasPage.prototype.irCompraDetallada = function (card) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.FB.getPesajeCompra(card.idProv, this.lastLote.toString());
+                this.FB.getPesajeCompra(card.idProv, this.lastLote);
                 this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
                 return [2 /*return*/];
             });

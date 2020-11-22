@@ -56,8 +56,12 @@ var CardlotesPage = /** @class */ (function () {
     }
     CardlotesPage.prototype.ngOnInit = function () {
         var _this = this;
+        this.presentLoading('Espere...');
         var id = this.route.snapshot.paramMap.get("id");
         this.idProveedorRecibido = id;
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+        this.FB.getProductos();
         this.FB.getLotesDelProveedor(this.idProveedorRecibido);
         this.traerNombre();
         this.estadoGeneral();
@@ -128,8 +132,8 @@ var CardlotesPage = /** @class */ (function () {
         this.navCtrl.navigateBack(["main-menu"]);
     };
     CardlotesPage.prototype.irCompras = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        this.FB.getProveedorCompra(this.lastLote);
+        this.FB.getAnticipoProveedor(this.lastLote);
         this.navCtrl.navigateBack(["cardcompras"]);
     };
     CardlotesPage.prototype.irEstado = function () {

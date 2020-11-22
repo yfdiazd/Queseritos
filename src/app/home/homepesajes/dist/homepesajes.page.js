@@ -139,31 +139,31 @@ var HomepesajesPage = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("valores", this.idProv, this.idCompra, lista);
-                        return [4 /*yield*/, this.alertController.create({
-                                cssClass: 'my-custom-class',
-                                header: 'Cuidado!',
-                                message: 'Esta seguro de <strong>eliminar</strong> el pesaje confirmado?',
-                                buttons: [
-                                    {
-                                        text: 'Cancelar',
-                                        role: 'cancel',
-                                        cssClass: 'secondary',
-                                        handler: function (blah) {
-                                            console.log('Confirm Cancel: blah');
-                                        }
-                                    }, {
-                                        text: 'SI',
-                                        handler: function () {
-                                            console.log('Confirm Okay', lista);
-                                            _this.FB.deletePesajeConfirmado(_this.idProv, _this.idCompra, lista.id, lista.costoTotalEstado, _this.lote);
-                                            _this.FB.getInfoCompra(_this.idProv, _this.idCompra, _this.lote);
-                                            _this.FB.getPesajeConfirmado(_this.idProv, _this.idCompra, _this.lote);
-                                        }
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            cssClass: 'my-custom-class',
+                            header: 'Cuidado!',
+                            message: 'Esta seguro de eliminar el pesaje confirmado?',
+                            buttons: [
+                                {
+                                    text: 'Cancelar',
+                                    role: 'cancel',
+                                    cssClass: 'secondary',
+                                    handler: function (blah) {
+                                        console.log('Confirm Cancel: blah');
                                     }
-                                ]
-                            })];
+                                }, {
+                                    text: 'SI',
+                                    handler: function () {
+                                        console.log('Confirm Okay', lista);
+                                        console.log("remove: ", _this.idProv, _this.idCompra, lista.id, lista.costoTotalEstado, _this.lote);
+                                        _this.FB.deletePesajeConfirmado(_this.idProv, _this.idCompra, lista.id, lista.costoTotalEstado, _this.lote);
+                                        _this.FB.getInfoCompra(_this.idProv, _this.idCompra, _this.lote);
+                                        _this.FB.getPesajeConfirmado(_this.idProv, _this.idCompra, _this.lote);
+                                        _this.FB.getPesajeCompra(_this.idProv, _this.lote);
+                                    }
+                                }
+                            ]
+                        })];
                     case 1:
                         alert = _a.sent();
                         return [4 /*yield*/, alert.present()];

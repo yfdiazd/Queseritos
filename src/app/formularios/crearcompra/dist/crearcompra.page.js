@@ -56,15 +56,14 @@ var CrearcompraPage = /** @class */ (function () {
         this.nuevoRegistro = [];
         this.bultoObj = null;
         this.listaBultosEdit = [];
-        this.lastLote = [];
     }
     CrearcompraPage.prototype.ngOnInit = function () {
         this.fecha = this.FB.fechaActual();
         this.traerTipoQuesoDefault();
         this.traerNombre();
         this.validacion();
-        this.lastLote = [];
-        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
+        this.lastLote = "";
+        this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
     };
     CrearcompraPage.prototype.traerTipoQuesoDefault = function () {
         var _this = this;
@@ -183,22 +182,22 @@ var CrearcompraPage = /** @class */ (function () {
             this.contarPeso();
             this.FB.agregarPesaje(this.idProveedor, this.productoDefault, this.listaBultosEdit.length, this.contadorPeso, this.listaBultosEdit);
             this.listaBultosEdit = [];
-            this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+            this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
+            this.FB.getProveedorCompra(this.lastLote);
+            this.FB.getAnticipoProveedor(this.lastLote);
             this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
             this.modalCtrl.dismiss("true", "actualizar");
-            this.FB.getProveedorCompra();
-            this.FB.getAnticipoProveedor();
         }
         else {
-            console.log("lista bulto edit", this.listaBultosEdit, this.lote);
             this.contarPeso();
+            console.log("datos enviados", this.idProveedor, this.idCompra, this.listaBultosEdit, this.contadorPeso, this.listaBultosEdit.length, this.productoDefault, this.lote);
             this.FB.updateBultoPesajeDetallado(this.idProveedor, this.idCompra, this.listaBultosEdit, this.contadorPeso, this.listaBultosEdit.length, this.productoDefault, this.lote);
             this.listaBultosEdit = [];
             this.FB.getPesajeCompra(this.idProveedor, this.lote);
-            this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+            this.FB.getProveedorCompra(this.lastLote);
+            this.FB.getAnticipoProveedor(this.lastLote);
             this.modalCtrl.dismiss("true", "actualizar");
-            this.FB.getProveedorCompra();
-            this.FB.getAnticipoProveedor();
+            console.log("Sale del guardar compra");
         }
     };
     CrearcompraPage.prototype.volver = function () {
@@ -219,6 +218,9 @@ var CrearcompraPage = /** @class */ (function () {
     __decorate([
         core_1.Input()
     ], CrearcompraPage.prototype, "lote");
+    __decorate([
+        core_1.Input()
+    ], CrearcompraPage.prototype, "costoTotalCompra");
     CrearcompraPage = __decorate([
         core_1.Component({
             selector: 'app-crearcompra',

@@ -45,23 +45,51 @@ exports.__esModule = true;
 exports.AgregarvalorventaPage = void 0;
 var core_1 = require("@angular/core");
 var AgregarvalorventaPage = /** @class */ (function () {
-    function AgregarvalorventaPage(FB, alertController, popover) {
+    function AgregarvalorventaPage(FB, alertController, popover, loadingCtrl) {
         this.FB = FB;
         this.alertController = alertController;
         this.popover = popover;
+        this.loadingCtrl = loadingCtrl;
+        this.btn_guardar = false;
     }
     AgregarvalorventaPage.prototype.ngOnInit = function () {
     };
     AgregarvalorventaPage.prototype.guardar = function () {
-        if (this.valor <= 0 || this.valor == undefined) {
-            this.notificacionValorInvalido();
-        }
-        else {
-            // console.log("Se updateará esto:", this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
-            this.FB.updatePesadas(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.id, this.dataBulto.peso, this.valor);
-            this.FB.updatecostoVenta(this.dataVenta.idCliente, this.dataVenta.fechaEnvio, this.dataVenta.id, this.dataBulto.peso, this.valor, this.dataVenta.costoVenta, "resta");
-            this.popover.dismiss("true", "actualizar");
-        }
+        var _this = this;
+        this.presentLoading('Estamos actualizando las coincidencias, por favor espere.');
+        setTimeout(function () {
+            _this.loading.dismiss();
+            if (_this.valor <= 0 || _this.valor == undefined) {
+                _this.notificacionValorInvalido();
+            }
+            else {
+                _this.FB.updatePesadas(_this.dataVenta.idCliente, _this.dataVenta.fechaEnvio, _this.dataVenta.id, _this.dataBulto.id, _this.dataBulto.peso, _this.valor);
+                _this.popover.dismiss("true", "actualizar");
+            }
+        }, 2000);
+        this.btn_guardar = true;
+    };
+    AgregarvalorventaPage.prototype.presentLoading = function (message) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.loadingCtrl.create({
+                                message: message,
+                                cssClass: 'cssLoading',
+                                keyboardClose: false,
+                                backdropDismiss: false,
+                                spinner: 'lines',
+                                translucent: true
+                            })];
+                    case 1:
+                        _a.loading = _b.sent();
+                        return [2 /*return*/, this.loading.present()];
+                }
+            });
+        });
     };
     AgregarvalorventaPage.prototype.volver = function () {
         this.popover.dismiss();
@@ -93,6 +121,9 @@ var AgregarvalorventaPage = /** @class */ (function () {
     __decorate([
         core_1.Input()
     ], AgregarvalorventaPage.prototype, "dataVenta");
+    __decorate([
+        core_1.Input()
+    ], AgregarvalorventaPage.prototype, "flag");
     AgregarvalorventaPage = __decorate([
         core_1.Component({
             selector: 'app-agregarvalorventa',

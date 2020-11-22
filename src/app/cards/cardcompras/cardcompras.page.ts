@@ -35,22 +35,25 @@ export class CardcomprasPage implements OnInit {
     private modalController: ModalController
 
   ) {
-    console.log("Esto debe imprimirse siempre. CONSTRUCTOR");
+    let lote = this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1).toString();
+    this.FB.getProveedorCompra(lote);
+    this.FB.getAnticipoProveedor(lote);
   }
-  lastLote = [];
+  lastLote: String;
   ngOnInit() {
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.validacionLote();
     this.FB.getLoteProveedor();
     this.traerNombre();
     this.cambioSaldo();
     this.presentLoading('Espere...');
-    this.lastLote = [];
-    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
     setTimeout(() => {
       this.loading.dismiss();
     }, 1500);
   }
-
   async presentLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
       message,
@@ -63,11 +66,13 @@ export class CardcomprasPage implements OnInit {
     return this.loading.present();
   }
   doRefresh(event) {
-    this.lastLote = [];
-    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+    this.FB.getProveedorCompra(this.lastLote);
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.validacionLote();
     this.FB.getLoteProveedor();
-    this.FB.getAnticipoProveedor();
+    this.FB.getAnticipoProveedor(this.lastLote);
     this.traerNombre();
     this.cambioSaldo();
 
@@ -119,9 +124,8 @@ export class CardcomprasPage implements OnInit {
   }
   //Validación del ultimo lote con el día en que ingresa a cardcompras: Muestra el alert
   async validacionLote() {
-    const ordenLotes = await this.FB.listaOrdenLotes();
-    this.loteActual = (ordenLotes.slice(this.FB.ultimoLote.length - 1));
-    if (this.loteActual.toString().includes(this.FB.fechaActual())) {
+
+    if (this.lastLote.includes(this.FB.fechaActual())) {
     } else {
       this.alertConfirmarNuevoLote();
     }
@@ -139,7 +143,7 @@ export class CardcomprasPage implements OnInit {
     await modal.present();
   }
   async irCompraDetallada(card) {
-    this.FB.getPesajeCompra(card.idProv, this.lastLote.toString());
+    this.FB.getPesajeCompra(card.idProv, this.lastLote);
     this.navCtrl.navigateForward(["cardcompradetallada/", card.idProv]);
   }
   async opciones() {

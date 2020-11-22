@@ -54,6 +54,7 @@ var MainMenuPage = /** @class */ (function () {
         this.router = router;
         this.loadingCtrl = loadingCtrl;
         this.input = { data: [] };
+        this.lastLote = [];
     }
     MainMenuPage.prototype.ngOnInit = function () {
         var _this = this;
@@ -64,8 +65,9 @@ var MainMenuPage = /** @class */ (function () {
         }, 1500);
     };
     MainMenuPage.prototype.comprar = function () {
-        this.FB.getProveedorCompra();
-        this.FB.getAnticipoProveedor();
+        var lote = this.FB.ultimoLote.slice(this.FB.ultimoLote.length - 1).toString();
+        this.FB.getProveedorCompra(lote);
+        this.FB.getAnticipoProveedor(lote);
         this.navCtrl.navigateForward('cardcompras');
     };
     MainMenuPage.prototype.presentLoading = function (message) {

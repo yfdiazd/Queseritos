@@ -29,7 +29,8 @@ export class CrearcompraPage implements OnInit {
   @Input() listaBultosEdit: any[] = [];
   @Input() productoEdit;
   @Input() lote;
-  lastLote = [];
+  @Input() costoTotalCompra;
+  lastLote: String;
 
   constructor(
     private alertController: AlertController,
@@ -45,9 +46,9 @@ export class CrearcompraPage implements OnInit {
     this.traerTipoQuesoDefault();
     this.traerNombre();
     this.validacion();
-    this.lastLote = [];
-    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1));
-   
+    this.lastLote = "";
+    this.lastLote = (this.FB.listaOrdenLotes().slice(this.FB.listaOrdenLotes().length - 1).toString());
+
   }
 
   traerTipoQuesoDefault() {
@@ -160,14 +161,20 @@ export class CrearcompraPage implements OnInit {
         this.listaBultosEdit
       );
       this.listaBultosEdit = [];
-      this.FB.getPesajeCompra(this.idProveedor, this.lastLote.toString());
+      this.FB.getPesajeCompra(this.idProveedor, this.lastLote);
+      this.FB.getProveedorCompra(this.lastLote);
+      this.FB.getAnticipoProveedor(this.lastLote);
       this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
       this.modalCtrl.dismiss("true", "actualizar");
-      this.FB.getProveedorCompra();
-      this.FB.getAnticipoProveedor();
     } else {
-      console.log("lista bulto edit", this.listaBultosEdit, this.lote);
       this.contarPeso();
+      console.log("datos enviados", this.idProveedor,
+        this.idCompra,
+        this.listaBultosEdit,
+        this.contadorPeso,
+        this.listaBultosEdit.length,
+        this.productoDefault,
+        this.lote);
       this.FB.updateBultoPesajeDetallado(
         this.idProveedor,
         this.idCompra,
@@ -179,10 +186,10 @@ export class CrearcompraPage implements OnInit {
       );
       this.listaBultosEdit = [];
       this.FB.getPesajeCompra(this.idProveedor, this.lote);
-      this.navCtrl.navigateBack(["cardcompradetallada/", this.idProveedor]);
+      this.FB.getProveedorCompra(this.lastLote);
+      this.FB.getAnticipoProveedor(this.lastLote);
       this.modalCtrl.dismiss("true", "actualizar");
-      this.FB.getProveedorCompra();
-      this.FB.getAnticipoProveedor();
+      console.log("Sale del guardar compra");
 
     }
 
