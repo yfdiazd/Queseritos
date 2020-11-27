@@ -271,7 +271,8 @@ export class DetallelotePage implements OnInit {
     if (data.archivo == "No se adjunto imagen.") {
       this.alertImg()
     } else {
-      let foto = await this.FB.getFotoVenta(this.idcliente, data.id);
+      console.log("data", data);
+      let foto = await this.FB.getFoto(data.idProveedor, data.id);
       console.log("esto es la foto", foto);
       const popover = await this.modalController.create({
         component: VistaimgPage,

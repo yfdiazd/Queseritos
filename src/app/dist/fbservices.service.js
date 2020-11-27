@@ -65,12 +65,12 @@ var FBservicesService = /** @class */ (function () {
         //Lista lotes
         this.listaLotes = [];
         this.config = {
-            apiKey: "AIzaSyCRkC_GFC_m-OXhB43EcsOtbUrHF8oTUQk",
-            authDomain: "pruebasqueseritos.firebaseapp.com",
-            databaseURL: "https://pruebasqueseritos.firebaseio.com",
-            projectId: "pruebasqueseritos",
-            storageBucket: "pruebasqueseritos.appspot.com",
-            messagingSenderId: "69745233361"
+            apiKey: "AIzaSyCnnBGKeb3uuEs0KtP3x1od1KGlRSEIuvM",
+            authDomain: "queseritos.firebaseapp.com",
+            databaseURL: "https://queseritos.firebaseio.com",
+            projectId: "queseritos",
+            storageBucket: "queseritos.appspot.com",
+            messagingSenderId: "589566808528"
         };
         this.options = {
             quality: 100,
@@ -1783,11 +1783,13 @@ var FBservicesService = /** @class */ (function () {
     };
     FBservicesService.prototype.getFotoVenta = function (idCliente, idVenta) {
         var _this = this;
+        console.log("datos img", idCliente, idVenta);
         this.img = null;
         firebase
             .storage()
             .ref("ventas/" + idCliente + "/" + idVenta).getDownloadURL().then(function (imgUr) {
             _this.img = imgUr;
+            console.log("Esta es la imagen", _this.img);
             return _this.img;
         });
     };

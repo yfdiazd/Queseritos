@@ -115,7 +115,7 @@ var CardlotesPage = /** @class */ (function () {
                 this.nombreProv = [];
                 this.FB.proveedoresLista.forEach(function (element) {
                     if (element.id == _this.idProveedorRecibido) {
-                        _this.nombreProv = element.nombre;
+                        _this.nombreProv = element.nombre + " " + element.apellido;
                     }
                 });
                 return [2 /*return*/];

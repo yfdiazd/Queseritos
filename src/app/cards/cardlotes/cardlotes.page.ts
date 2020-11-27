@@ -79,7 +79,7 @@ export class CardlotesPage implements OnInit {
     this.nombreProv = [];
     this.FB.proveedoresLista.forEach(element => {
       if (element.id == this.idProveedorRecibido) {
-        this.nombreProv = element.nombre;
+        this.nombreProv = element.nombre + " " + element.apellido;
       }
     })
   }

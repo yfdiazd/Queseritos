@@ -1278,7 +1278,7 @@ export class FBservicesService {
 
     async getAnticipoProveedor(lote) {
 
-      
+
         this.anticipoCompraLista = [];
         let proveedoresLista = await this.proveedoresLista;
         proveedoresLista.forEach(element => {
@@ -1742,13 +1742,15 @@ export class FBservicesService {
     }
 
     getFotoVenta(idCliente, idVenta) {
+        console.log("datos img", idCliente, idVenta);
         this.img = null;
         firebase
             .storage()
             .ref("ventas/" + idCliente + "/" + idVenta).getDownloadURL().then(imgUr => {
                 this.img = imgUr;
-
+                console.log("Esta es la imagen", this.img);
                 return this.img;
+
             });
     }
     deleteImageVenta(idCliente, idVenta) {

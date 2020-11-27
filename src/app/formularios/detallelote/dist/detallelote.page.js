@@ -366,7 +366,9 @@ var DetallelotePage = /** @class */ (function () {
                         if (!(data.archivo == "No se adjunto imagen.")) return [3 /*break*/, 1];
                         this.alertImg();
                         return [3 /*break*/, 5];
-                    case 1: return [4 /*yield*/, this.FB.getFotoVenta(this.idcliente, data.id)];
+                    case 1:
+                        console.log("data", data);
+                        return [4 /*yield*/, this.FB.getFoto(data.idProveedor, data.id)];
                     case 2:
                         foto = _a.sent();
                         console.log("esto es la foto", foto);
